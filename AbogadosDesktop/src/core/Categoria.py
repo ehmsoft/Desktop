@@ -4,7 +4,7 @@ Created on 03/08/2011
 @author: elfotografo007
 '''
 
-class Categoria:
+class Categoria(object):
     '''
     Clase Categoria
     '''
