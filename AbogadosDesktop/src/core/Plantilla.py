@@ -4,7 +4,6 @@ Created on 05/08/2011
 @author: elfotografo007
 '''
 from Categoria import Categoria
-from Actuacion import Actuacion
 from Juzgado import Juzgado
 from Persona import Persona
 from CampoPersonalizado import CampoPersonalizado
