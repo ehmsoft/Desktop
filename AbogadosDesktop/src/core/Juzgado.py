@@ -11,7 +11,8 @@ class Juzgado(object):
     '''
 
 
-    def __init__(self, nombre = None, ciudad = None, direccion = None, telefono = None, tipo = None, id_juzgado = None):
+    def __init__(self, nombre = None, ciudad = None, direccion = None, 
+                telefono = None, tipo = None, id_juzgado = None):
         if isinstance(nombre, basestring) or isinstance(nombre, NoneType):
             self.__nombre = nombre
         else:
