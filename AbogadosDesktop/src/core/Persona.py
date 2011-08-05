@@ -4,6 +4,7 @@ Created on 04/08/2011
 @author: elfotografo007
 '''
 from types import IntType, NoneType
+
 class Persona(object):
     '''
     Clase Persona

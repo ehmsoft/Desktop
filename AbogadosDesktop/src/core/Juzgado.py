@@ -4,6 +4,7 @@ Created on 04/08/2011
 @author: elfotografo007
 '''
 from types import NoneType
+
 class Juzgado(object):
     '''
     Clase Juzgado
