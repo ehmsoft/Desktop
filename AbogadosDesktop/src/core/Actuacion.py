@@ -4,6 +4,9 @@ Created on 04/08/2011
 @author: elfotografo007
 '''
 from Juzgado import Juzgado
+from datetime import datetime
+from types import NoneType
+
 class Actuacion(object):
     '''
     Clase Actuacion
@@ -11,12 +14,35 @@ class Actuacion(object):
 
 
     def __init__(self, juzgado, fecha, fechaProxima, descripcion, id_actuacion = None, uid = None):
-        self.__juzgado = juzgado
-        self.__fecha = fecha
-        self.__fechaProxima = fechaProxima
-        self.__descripcion = descripcion
-        self.__id_actuacion = id_actuacion
-        self.__uid = uid
+        if isinstance(juzgado, Juzgado):
+            self.__juzgado = juzgado
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(fecha, datetime):
+            self.__fecha = fecha
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(fechaProxima, datetime):
+            self.__fechaProxima = fechaProxima
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(descripcion, basestring):
+            self.__descripcion = descripcion
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(id_actuacion, basestring) or isinstance(id_actuacion, NoneType):
+            self.__id_actuacion = id_actuacion
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(uid, basestring) or isinstance(uid, NoneType):
+            self.__uid = uid
+        else:
+            raise TypeError('Tipo de dato no admitido')
     
     #Getters
     def getJuzgado(self):
@@ -33,16 +59,40 @@ class Actuacion(object):
         return self.__uid
     #Setters
     def setJuzgado(self, juzgado):
-        self.__juzgado = juzgado
+        if isinstance(juzgado, Juzgado):
+            self.__juzgado = juzgado
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def setFecha(self, fecha):
-        self.__fecha = fecha
+        if isinstance(fecha, datetime):
+            self.__fecha = fecha
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def setFechaProxima(self, fechaProxima):
-        self.__fechaProxima = fechaProxima
+        if isinstance(fechaProxima, datetime):
+            self.__fechaProxima = fechaProxima
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def setDescripcion(self, descripcion):
-        self.__descripcion = descripcion
+        if isinstance(descripcion, basestring):
+            self.__descripcion = descripcion
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def setId_actuacion(self, id_actuacion):
-        self.__id_actuacion = id_actuacion
+        if isinstance(id_actuacion, basestring) or isinstance(id_actuacion, NoneType):
+            self.__id_actuacion = id_actuacion
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def setUid(self, uid):
-        self.__uid = uid
+        if isinstance(uid, basestring) or isinstance(uid, NoneType):
+            self.__uid = uid
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def __str__(self):
         return self.getDescripcion()
