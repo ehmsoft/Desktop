@@ -8,7 +8,8 @@ from Actuacion import Actuacion
 from Juzgado import Juzgado
 from Persona import Persona
 from CampoPersonalizado import CampoPersonalizado
-
+from types import IntType, NoneType, ListType
+from datetime import datetime
 
 class Proceso(object):
     '''
@@ -16,29 +17,95 @@ class Proceso(object):
     '''
 
 
-    def __init__(self, demandante, demandado, fecha, juzgado, radicado, radicadoUnico, actuaciones, estado, categoria, tipo, notas, campos, prioridad, id_proceso = None):
-        self.__demandante = demandante
-        self.__demandado = demandado
-        self.__fecha = fecha
-        self.__juzgado = juzgado
-        self.__radicado = radicado
-        self.__radicadoUnico = radicadoUnico
-        self.__actuaciones = actuaciones
-        self.__estado = estado
-        self.__categoria = categoria
-        self.__tipo = tipo
-        self.__notas = notas
-        self.__campos = campos
-        self.__prioridad = prioridad
-        self.__id_proceso = id_proceso
+    def __init__(self, demandante, demandado, fecha, juzgado, radicado, 
+                 radicadoUnico, actuaciones, estado, categoria, tipo, notas, campos, prioridad, id_proceso = None):
+        if isinstance(demandante, Persona):
+            self.__demandante = demandante
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(demandado, Persona):
+            self.__demandado = demandado
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(fecha, datetime):
+            self.__fecha = fecha
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(juzgado, Juzgado):
+            self.__juzgado = juzgado
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(radicado, basestring):
+            self.__radicado = radicado
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(radicadoUnico, basestring):
+            self.__radicadoUnico = radicadoUnico
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(actuaciones, ListType):
+            self.__actuaciones = actuaciones
+        else:
+            raise TypeError('Tipo de dato no admitido')
+           
+        if isinstance(estado, basestring):
+            self.__estado = estado
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(categoria, Categoria):
+            self.__categoria = categoria
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(tipo, basestring):
+            self.__tipo = tipo
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(notas, basestring):
+            self.__notas  = notas
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(campos, ListType):
+            self.__campos = campos
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(prioridad, IntType):
+            self.__prioridad = prioridad
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(id_proceso, basestring) or isinstance(id_proceso, NoneType):
+            self.__id_proceso = id_proceso
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def addActuacion(self, actuacion):
-        self.__actuaciones.append(actuacion)
+        if isinstance(actuacion, Actuacion):
+            self.__actuaciones.append(actuacion)
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def delActuacion(self, actuacion):
         self.__actuaciones.remove(actuacion)
     def addCampo(self, campo):
-        self.__campos.append(campo)
+        if isinstance(campo, CampoPersonalizado):
+            self.__campos.append(campo)
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def delCampo(self, campo):
         self.__campos.remove(campo)
+        
     #Getters
     def getDemandante(self):
         return self.__demandante
@@ -70,30 +137,84 @@ class Proceso(object):
         return self.__id_proceso
     #Setters
     def setDemandante(self, demandante):
-        self.__demandante = demandante
-    def setDemandado(self, demandado):
-        self.__demandado = demandado
+        if isinstance(demandante, Persona):
+            self.__demandante = demandante
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+    def setDemandado(self,demandado):
+        if isinstance(demandado, Persona):
+            self.__demandado = demandado
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def setFecha(self, fecha):
-        self.__fecha = fecha
+        if isinstance(fecha, datetime):
+            self.__fecha = fecha
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def setJuzgado(self, juzgado):
-        self.__juzgado = juzgado
+        if isinstance(juzgado, Juzgado):
+            self.__juzgado = juzgado
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def setRadicado(self, radicado):
-        self.__radicado = radicado
+        if isinstance(radicado, basestring):
+            self.__radicado = radicado
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def setRadicadoUnico(self, radicadoUnico):
-        self.__radicadoUnico = radicadoUnico
+        if isinstance(radicadoUnico, basestring):
+            self.__radicadoUnico = radicadoUnico
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def setActuaciones(self, actuaciones):
-        self.__actuaciones = actuaciones
+        if isinstance(actuaciones, ListType):
+            self.__actuaciones = actuaciones
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def setEstado(self, estado):
-        self.__estado = estado
+        if isinstance(estado, basestring):
+            self.__estado = estado
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def setCategoria(self, categoria):
-        self.__categoria = categoria
+        if isinstance(categoria, Categoria):
+            self.__categoria = categoria
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def setTipo(self, tipo):
-        self.__tipo = tipo
+        if isinstance(tipo, basestring):
+            self.__tipo = tipo
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def setNotas(self, notas):
-        self.__notas = notas
+        if isinstance(notas, basestring):
+            self.__notas  = notas
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def setCampos(self, campos):
-        self.__campos = campos
+        if isinstance(campos, ListType):
+            self.__campos = campos
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
     def setPrioridad(self, prioridad):
-        self.__prioridad = prioridad
+        if isinstance(prioridad, IntType):
+            self.__prioridad = prioridad
+        else:
+            raise TypeError('Tipo de dato no admitido')
     def setId_proceso(self, id_proceso):
-        self.__id_proceso = id_proceso
+        if isinstance(id_proceso, basestring) or isinstance(id_proceso, NoneType):
+            self.__id_proceso = id_proceso
+        else:
+            raise TypeError('Tipo de dato no admitido')
