@@ -6,6 +6,13 @@ Created on 07/08/2011
 from ConnectionManager import ConnectionManager
 import sqlite3
 from datetime import datetime
+from core.Persona import Persona
+from core.Proceso import Proceso
+from core.Actuacion import Actuacion
+from core.CampoPersonalizado import CampoPersonalizado
+from core.Categoria import Categoria
+from core.Juzgado import Juzgado
+from core.Plantilla import Plantilla
 
 class Persistence(object):
     '''
@@ -87,7 +94,23 @@ class Persistence(object):
     #Metodos de Cargado
     
     def consultarDemandantes(self):
-        pass
+        self.__conMgr.prepararBD()
+        conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+        conn.row_factory = sqlite3.Row
+        c = conn.cursor()
+        c.execute('''SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes order by nombre''')
+        demandantes = []
+        for row in c:
+            id_demandante = str(row['id_demandante'])
+            cedula = str(row['cedula'])
+            nombre = str(row['nombre'])
+            telefono = str(row['telefono'])
+            direccion = str(row['direccion'])            
+            correo = str(row['correo'])
+            notas = str(row['notas'])
+            demandante = Persona(1, cedula, nombre, telefono, direccion, correo, notas, id_demandante)
+            demandantes.append(demandante)
+        return demandantes
     def consultarDemandados(self):
         pass
     def consultarPersonas(self):
