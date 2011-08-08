@@ -111,8 +111,26 @@ class Persistence(object):
             demandante = Persona(1, cedula, nombre, telefono, direccion, correo, notas, id_demandante)
             demandantes.append(demandante)
         return demandantes
+    
     def consultarDemandados(self):
-        pass
+        self.__conMgr.prepararBD()
+        conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+        conn.row_factory = sqlite3.Row
+        c = conn.cursor()
+        c.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados order by nombre''')
+        demandados = []
+        for row in c:
+            id_demandado = str(row['id_demandado'])
+            cedula = str(row['cedula'])
+            nombre = str(row['nombre'])
+            telefono = str(row['telefono'])
+            direccion = str(row['direccion'])            
+            correo = str(row['correo'])
+            notas = str(row['notas'])
+            demandado = Persona(2, cedula, nombre, telefono, direccion, correo, notas, id_demandado)
+            demandados.append(demandado)
+        return demandados
+    
     def consultarPersonas(self):
         pass
     def consultarPersona(self, id_persona, tipo):
