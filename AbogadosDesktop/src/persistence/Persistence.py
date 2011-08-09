@@ -143,40 +143,252 @@ class Persistence(object):
         return demandados
     
     def consultarPersonas(self):
-        pass
+        personas = []
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados order by nombre''')
+            for row in c:
+                id_demandado = str(row['id_demandado'])
+                cedula = str(row['cedula'])
+                nombre = str(row['nombre'])
+                telefono = str(row['telefono'])
+                direccion = str(row['direccion'])            
+                correo = str(row['correo'])
+                notas = str(row['notas'])
+                demandado = Persona(2, cedula, nombre, telefono, direccion, correo, notas, id_demandado)
+                personas.append(demandado)
+            c.execute('''SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes order by nombre''')
+            for row in c:
+                id_demandante = str(row['id_demandante'])
+                cedula = str(row['cedula'])
+                nombre = str(row['nombre'])
+                telefono = str(row['telefono'])
+                direccion = str(row['direccion'])            
+                correo = str(row['correo'])
+                notas = str(row['notas'])
+                demandante = Persona(1, cedula, nombre, telefono, direccion, correo, notas, id_demandante)
+                personas.append(demandante)
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        return personas
+            
     def consultarPersona(self, id_persona, tipo):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute(''' ''')
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+            
     def consultarProcesos(self):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute(''' ''')
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+            
     def consultarProceso(self, id_proceso):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute(''' ''')
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+            
     def consultarActuaciones(self, proceso):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute(''' ''')
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+            
     def consultarActuacion(self, id_actuacion):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute(''' ''')
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+            
     def consultarActuacionesCriticas(self, cantidad):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute(''' ''')
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+            
     def consultarJuzgados(self):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute(''' ''')
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+            
     def consultarJuzgado(self, id_juzgado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute(''' ''')
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+            
     def consultarCategoria(self, id_categoria):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute(''' ''')
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+            
     def consultarCategorias(self):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute(''' ''')
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+            
     def consultarCampos(self):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute(''' ''')
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+            
     def consultarCampo(self, id_campo):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute(''' ''')
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+            
     def consultarAtributos(self):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute(''' ''')
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+            
     def consultarPlantillas(self):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute(''' ''')
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+            
     def consultarPlantilla(self, id_plantilla):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute(''' ''')
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+            
     def consultarCamposPlantilla(self, plantilla):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute(''' ''')
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+            
     def consultarCampoPlantilla(self, id_plantilla):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute(''' ''')
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+            
     def consultarPreferencia(self, id_preferencia):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute(''' ''')
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
