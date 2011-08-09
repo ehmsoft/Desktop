@@ -240,65 +240,124 @@ class Persistence(object):
             conn.close()
             
     def consultarActuaciones(self, proceso):
+        actuaciones = []
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute(''' ''')
+            c.execute('''SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE id_proceso = ? ORDER BY fecha_creacion, fecha_proxima''', (proceso.getId_proceso(),))
+            for row in c:
+                id_actuacion = str(row['id_actuacion'])
+                id_juzgado = str(row['id_juzgado'])
+                fecha_creacion = row['fecha_creacion']
+                fecha_proxima = row['fecha_proxima']
+                descripcion = str(row['descripcion'])
+                uid = str(row['uid'])
+                juzgado = Juzgado(id_juzgado = id_juzgado)
+                actuacion = Actuacion(juzgado, fecha_creacion, fecha_proxima, descripcion, id_actuacion, uid)
+                actuaciones.append(actuacion)
         except Exception as e:
             raise e
         finally:
             conn.close()
-            
+        for act in actuaciones:
+            act.setJuzgado(self.consultarJuzgado(act.getJuzgado().getId_juzgado()))
+        return actuaciones
+        
     def consultarActuacion(self, id_actuacion):
+        actuacion = []
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute(''' ''')
+            c.execute('''SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE id_actuacion = ?''',(id_actuacion,))
+            row = c.fetchone()
+            if row:
+                id_actuacion = str(row['id_actuacion'])
+                id_juzgado = str(row['id_juzgado'])
+                fecha_creacion = row['fecha_creacion']
+                fecha_proxima = row['fecha_proxima']
+                descripcion = str(row['descripcion'])
+                uid = str(row['uid'])
+                juzgado = Juzgado(id_juzgado = id_juzgado)
+                actuacion = Actuacion(juzgado, fecha_creacion, fecha_proxima, descripcion, id_actuacion, uid)  
         except Exception as e:
             raise e
         finally:
             conn.close()
-            
+        return actuacion
     def consultarActuacionesCriticas(self, cantidad):
+        actuaciones = []
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute(''' ''')
+            c.execute('''SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE fecha_proxima >= date() ORDER BY fecha_proxima LIMIT ?''', (cantidad,))
+            for row in c:
+                id_actuacion = str(row['id_actuacion'])
+                id_juzgado = str(row['id_juzgado'])
+                fecha_creacion = row['fecha_creacion']
+                fecha_proxima = row['fecha_proxima']
+                descripcion = str(row['descripcion'])
+                uid = str(row['uid'])
+                juzgado = Juzgado(id_juzgado = id_juzgado)
+                actuacion = Actuacion(juzgado, fecha_creacion, fecha_proxima, descripcion, id_actuacion, uid)
+                actuaciones.append(actuacion)
         except Exception as e:
             raise e
         finally:
             conn.close()
+        for act in actuaciones:
+            act.setJuzgado(self.consultarJuzgado(act.getJuzgado().getId_juzgado()))
+        return actuaciones
             
     def consultarJuzgados(self):
+        juzgados = []
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute(''' ''')
+            c.execute('''SELECT id_juzgado, nombre, ciudad, telefono, direccion, tipo FROM juzgados ORDER BY nombre''')
+            for row in c:
+                id_juzgado = str(row['id_juzgado'])
+                nombre = str(row['nombre'])
+                ciudad = str(row['ciudad'])
+                telefono = str(row['telefono'])
+                direccion = str(row['direccion'])
+                tipo = str(row['tipo'])
+                juzgado = Juzgado(nombre, ciudad, direccion, telefono, tipo, id_juzgado)
+                juzgados.append(juzgado)
         except Exception as e:
             raise e
         finally:
             conn.close()
-            
+        return juzgados    
     def consultarJuzgado(self, id_juzgado):
+        juzgado = None
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute(''' ''')
+            c.execute('''SELECT id_juzgado, nombre, ciudad, telefono, direccion, tipo FROM juzgados WHERE id_juzgado = ?''',(id_juzgado,))
+            row = c.fetchone()
+            if row:
+                id_juzgado = str(row['id_juzgado'])
+                nombre = str(row['nombre'])
+                ciudad = str(row['ciudad'])
+                telefono = str(row['telefono'])
+                direccion = str(row['direccion'])
+                tipo = str(row['tipo'])
+                juzgado = Juzgado(nombre, ciudad, direccion, telefono, tipo, id_juzgado)            
         except Exception as e:
             raise e
         finally:
             conn.close()
-            
+        return juzgado    
     def consultarCategoria(self, id_categoria):
         try:
             self.__conMgr.prepararBD()
