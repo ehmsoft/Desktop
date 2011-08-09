@@ -183,12 +183,38 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute(''' ''')
+            persona = None
+            if tipo == 1:
+                c.execute('''SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes WHERE id_demandante = ?''', (id_persona,))
+                row = c.fetchone()
+                if row:
+                    id_demandante = str(row['id_demandante'])
+                    cedula = str(row['cedula'])
+                    nombre = str(row['nombre'])
+                    telefono = str(row['telefono'])
+                    direccion = str(row['direccion'])            
+                    correo = str(row['correo'])
+                    notas = str(row['notas'])
+                    persona = Persona(1, cedula, nombre, telefono, direccion, correo, notas, id_demandante)
+            elif tipo == 2:
+                c.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE id_demandado = ?''', (id_persona,))
+                row = c.fetchone()
+                if row:
+                    id_demandado = str(row['id_demandado'])
+                    cedula = str(row['cedula'])
+                    nombre = str(row['nombre'])
+                    telefono = str(row['telefono'])
+                    direccion = str(row['direccion'])            
+                    correo = str(row['correo'])
+                    notas = str(row['notas'])
+                    persona = Persona(2, cedula, nombre, telefono, direccion, correo, notas, id_demandado)
+            else:
+                raise ValueError('El tipo de persona no es correcto')
         except Exception as e:
             raise e
         finally:
             conn.close()
-            
+        return persona
     def consultarProcesos(self):
         try:
             self.__conMgr.prepararBD()
