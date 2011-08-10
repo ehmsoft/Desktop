@@ -359,29 +359,43 @@ class Persistence(object):
             conn.close()
         return juzgado    
     def consultarCategoria(self, id_categoria):
+        categoria = None
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute(''' ''')
+            c.execute('''SELECT id_categoria, descripcion FROM categorias WHERE id_categoria = ?''', (id_categoria,))
+            row = c.fetchone()
+            if row:
+                id_categoria = str(row['id_categoria'])
+                descripcion = str(row['descripcion'])
+                categoria = Categoria(descripcion, id_categoria)
         except Exception as e:
             raise e
         finally:
             conn.close()
-            
+        return categoria
+    
     def consultarCategorias(self):
+        categorias = []
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute(''' ''')
+            c.execute('''SELECT id_categoria, descripcion FROM categorias ORDER BY descripcion''')
+            for row in c:
+                id_categoria = str(row['id_categoria'])
+                descripcion = str(row['descripcion'])
+                categoria = Categoria(descripcion, id_categoria)
+                categorias.append(categoria)
         except Exception as e:
             raise e
         finally:
             conn.close()
-            
+        return categorias
+    
     def consultarCampos(self):
         try:
             self.__conMgr.prepararBD()
