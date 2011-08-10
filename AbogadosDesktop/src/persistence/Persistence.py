@@ -506,29 +506,63 @@ class Persistence(object):
             conn.close()
             
     def consultarCamposPlantilla(self, plantilla):
+        campos = []
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute(''' ''')
+            c.execute('''SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_plantilla = ?''', (plantilla.getId_plantilla(), ))
+            for row in c:
+                id_atributo_plantilla = str(row['id_atributo_plantilla'])
+                id_atributo = str(row['id_atributo'])
+                valor = str(row['valor'])
+                nombre = str(row['nombre'])
+                ob = row['obligatorio']
+                longitud_max = row['longitud_max']
+                longitud_min = row['longitud_min']
+                #Pasar el obligatorio a Boolean:
+                if ob == 1:
+                    obligatorio = True
+                else:
+                    obligatorio = False
+                campo = CampoPersonalizado(nombre, valor, obligatorio, longitud_max, longitud_min, id_atributo_plantilla, id_atributo)
+                campos.append(campo)
         except Exception as e:
             raise e
         finally:
             conn.close()
-            
+        return campos
+    
     def consultarCampoPlantilla(self, id_plantilla):
+        campo = None
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute(''' ''')
+            c.execute('''SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_plantilla = ?''', (id_plantilla,))
+            row = c.fetchone()
+            if row:
+                id_atributo_plantilla = str(row['id_atributo_plantilla'])
+                id_atributo = str(row['id_atributo'])
+                valor = str(row['valor'])
+                nombre = str(row['nombre'])
+                ob = row['obligatorio']
+                longitud_max = row['longitud_max']
+                longitud_min = row['longitud_min']
+                #Pasar el obligatorio a Boolean:
+                if ob == 1:
+                    obligatorio = True
+                else:
+                    obligatorio = False
+                campo = CampoPersonalizado(nombre, valor, obligatorio, longitud_max, longitud_min, id_atributo_plantilla, id_atributo)
         except Exception as e:
             raise e
         finally:
             conn.close()
-            
+        return campo
+      
     def consultarPreferencia(self, id_preferencia):
         try:
             self.__conMgr.prepararBD()
