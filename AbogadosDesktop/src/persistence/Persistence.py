@@ -396,30 +396,63 @@ class Persistence(object):
             conn.close()
         return categorias
     
-    def consultarCampos(self):
+    def consultarCampos(self, proceso):
+        campos = []
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute(''' ''')
+            c.execute('''SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_proceso = ?''', (proceso.getId_proceso(),))
+            for row in c:
+                id_atributo_proceso = str(row['id_atributo_proceso'])
+                id_atributo = str(row['id_atributo'])
+                valor = row['valor']
+                nombre = row['nombre']
+                ob = row['obligatorio']
+                longitud_max = row['longitud_max']
+                longitud_min = row['longitud_min']
+                #Pasar el obligatorio a Boolean:
+                if ob == 1:
+                    obligatorio = True
+                else:
+                    obligatorio = False
+                campo = CampoPersonalizado(nombre, valor, obligatorio, longitud_max, longitud_min, id_atributo_proceso, id_atributo)
+                campos.append(campo)
         except Exception as e:
             raise e
         finally:
             conn.close()
-            
+        return campos
+    
     def consultarCampo(self, id_campo):
+        campo = None
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute(''' ''')
+            c.execute('''SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_proceso = ?''', (id_campo,))
+            row = c.fetchone()
+            if row:
+                id_atributo_proceso = str(row['id_atributo_proceso'])
+                id_atributo = str(row['id_atributo'])
+                valor = row['valor']
+                nombre = row['nombre']
+                ob = row['obligatorio']
+                longitud_max = row['longitud_max']
+                longitud_min = row['longitud_min']
+                #Pasar el obligatorio a Boolean:
+                if ob == 1:
+                    obligatorio = True
+                else:
+                    obligatorio = False
+                campo = CampoPersonalizado(nombre, valor, obligatorio, longitud_max, longitud_min, id_atributo_proceso, id_atributo)
         except Exception as e:
             raise e
         finally:
             conn.close()
-            
+        return campo 
     def consultarAtributos(self):
         try:
             self.__conMgr.prepararBD()
