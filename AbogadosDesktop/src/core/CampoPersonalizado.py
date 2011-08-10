@@ -18,7 +18,7 @@ class CampoPersonalizado(object):
         else:
             raise TypeError('Tipo de dato no admitido')
         
-        if isinstance(valor, basestring):
+        if isinstance(valor, basestring) or isinstance(valor, NoneType):
             self.__valor = valor
         else:
             raise TypeError('Tipo de dato no admitido')
