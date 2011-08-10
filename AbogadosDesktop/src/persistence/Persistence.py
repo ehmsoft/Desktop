@@ -564,13 +564,18 @@ class Persistence(object):
         return campo
       
     def consultarPreferencia(self, id_preferencia):
+        valor = 0
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute(''' ''')
+            c.execute('''SELECT valor FROM preferencias WHERE id_preferencia = ? ''', (id_preferencia,))
+            row = c.fetchone()
+            if row:
+                valor = row['valor']
         except Exception as e:
             raise e
         finally:
             conn.close()
+        return valor
