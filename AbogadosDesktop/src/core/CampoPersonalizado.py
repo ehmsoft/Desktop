@@ -11,7 +11,7 @@ class CampoPersonalizado(object):
     '''
 
 
-    def __init__(self, nombre, valor, obligatorio = False, longitudMax = 0,
+    def __init__(self, nombre, valor = None, obligatorio = False, longitudMax = 0,
                 longitudMin = 0, id_campo = None, id_atributo = None):
         if isinstance(nombre, basestring):
             self.__nombre = nombre
