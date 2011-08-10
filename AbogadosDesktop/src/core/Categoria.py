@@ -10,7 +10,7 @@ class Categoria(object):
     '''
 
 
-    def __init__(self, descripcion, id_categoria = None):
+    def __init__(self, descripcion = None, id_categoria = None):
         if isinstance(id_categoria, basestring) or isinstance(id_categoria, NoneType):
             self.__id_categoria = id_categoria
         else:
@@ -35,7 +35,7 @@ class Categoria(object):
             raise TypeError('Tipo de dato no admitido')
         
     def setDescripcion(self, descripcion):
-        if isinstance(descripcion, basestring):
+        if isinstance(descripcion, basestring) or isinstance(descripcion, NoneType):
             self.__descripcion = descripcion
         else:
             raise TypeError('Tipo de dato no admitido')
