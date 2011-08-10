@@ -344,6 +344,7 @@ class Persistence(object):
         finally:
             conn.close()
         return actuacion
+    
     def consultarActuacionesCriticas(self, cantidad):
         actuaciones = []
         try:
@@ -391,7 +392,8 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
-        return juzgados    
+        return juzgados 
+       
     def consultarJuzgado(self, id_juzgado):
         juzgado = None
         try:
@@ -413,7 +415,8 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
-        return juzgado    
+        return juzgado
+        
     def consultarCategoria(self, id_categoria):
         categoria = None
         try:
@@ -538,29 +541,82 @@ class Persistence(object):
         return atributos
      
     def consultarPlantillas(self):
+        plantillas = []
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute(''' ''')
+            c.execute('''SELECT p.id_plantilla, p.id_demandante, p.id_demandado, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria, p.nombre FROM plantillas p''')
+            for row in c:
+                id_plantilla = str(row['id_plantilla'])
+                id_demandante = str(row['id_demandante'])
+                id_demandado = str(row['id_demandado'])
+                radicado = str(row['radicado'])
+                radicado_unico = str(row['radicado_unico'])
+                estado = str(row['estado'])
+                tipo = str(row['tipo'])
+                notas = str(row['notas'])
+                prioridad = int(row['prioridad'])
+                id_juzgado = str(row['id_juzgado'])
+                id_categoria = str(row['id_categoria'])
+                nombre = str(row['nombre'])
+                demandante = Persona(1, id_persona= id_demandante)
+                demandado = Persona(2, id_persona= id_demandado)
+                juzgado = Juzgado(id_juzgado= id_juzgado)
+                categoria = Categoria(id_categoria= id_categoria)
+                plantilla = Plantilla(nombre, demandante, demandado, juzgado, radicado, radicado_unico, estado, categoria, tipo, notas, [], prioridad, id_plantilla)
+                plantillas.append(plantilla)
         except Exception as e:
             raise e
         finally:
             conn.close()
-            
+        for plantilla_act in plantillas:
+            plantilla_act.setDemandante(self.consultarPersona(plantilla_act.getDemandante().getId_persona(), 1))
+            plantilla_act.setDemandado(self.consultarPersona(plantilla_act.getDemandado().getId_persona(), 2))
+            plantilla_act.setJuzgado(self.consultarJuzgado(plantilla_act.getJuzgado().getId_juzgado()))
+            plantilla_act.setCampos(self.consultarCamposPlantilla(plantilla_act))
+            plantilla_act.setCategoria(self.consultarCategoria(plantilla_act.getCategoria().getId_categoria()))
+        return plantillas 
+    
     def consultarPlantilla(self, id_plantilla):
+        plantilla = None
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute(''' ''')
+            c.execute('''SELECT p.id_plantilla, p.id_demandante, p.id_demandado, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria, p.nombre FROM plantillas p WHERE p.id_plantilla = ?''', (id_plantilla,))
+            row = c.fetchone()
+            if row:
+                id_plantilla = str(row['id_plantilla'])
+                id_demandante = str(row['id_demandante'])
+                id_demandado = str(row['id_demandado'])
+                radicado = str(row['radicado'])
+                radicado_unico = str(row['radicado_unico'])
+                estado = str(row['estado'])
+                tipo = str(row['tipo'])
+                notas = str(row['notas'])
+                prioridad = int(row['prioridad'])
+                id_juzgado = str(row['id_juzgado'])
+                id_categoria = str(row['id_categoria'])
+                nombre = str(row['nombre'])
+                demandante = Persona(1, id_persona= id_demandante)
+                demandado = Persona(2, id_persona= id_demandado)
+                juzgado = Juzgado(id_juzgado= id_juzgado)
+                categoria = Categoria(id_categoria= id_categoria)
+                plantilla = Plantilla(nombre, demandante, demandado, juzgado, radicado, radicado_unico, estado, categoria, tipo, notas, [], prioridad, id_plantilla)
         except Exception as e:
             raise e
         finally:
             conn.close()
-            
+        plantilla.setDemandante(self.consultarPersona(plantilla.getDemandante().getId_persona(), 1))
+        plantilla.setDemandado(self.consultarPersona(plantilla.getDemandado().getId_persona(), 2))
+        plantilla.setJuzgado(self.consultarJuzgado(plantilla.getJuzgado().getId_juzgado()))
+        plantilla.setCampos(self.consultarCamposPlantilla(plantilla))
+        plantilla.setCategoria(self.consultarCategoria(plantilla.getCategoria().getId_categoria()))
+        return plantilla
+    
     def consultarCamposPlantilla(self, plantilla):
         campos = []
         try:
