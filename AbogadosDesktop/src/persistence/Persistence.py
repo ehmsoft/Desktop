@@ -407,8 +407,8 @@ class Persistence(object):
             for row in c:
                 id_atributo_proceso = str(row['id_atributo_proceso'])
                 id_atributo = str(row['id_atributo'])
-                valor = row['valor']
-                nombre = row['nombre']
+                valor = str(row['valor'])
+                nombre = str(row['nombre'])
                 ob = row['obligatorio']
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
@@ -437,8 +437,8 @@ class Persistence(object):
             if row:
                 id_atributo_proceso = str(row['id_atributo_proceso'])
                 id_atributo = str(row['id_atributo'])
-                valor = row['valor']
-                nombre = row['nombre']
+                valor = str(row['valor'])
+                nombre = str(row['nombre'])
                 ob = row['obligatorio']
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
@@ -453,18 +453,34 @@ class Persistence(object):
         finally:
             conn.close()
         return campo 
+    
     def consultarAtributos(self):
+        atributos = []
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute(''' ''')
+            c.execute('''SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributos''')
+            for row in c:
+                id_atributo = str(row['id_atributo'])
+                nombre = str(row['nombre'])
+                ob = row['obligatorio']
+                longitud_max = row['longitud_max']
+                longitud_min = row['longitud_min']
+                #Pasar el obligatorio a Boolean:
+                if ob == 1:
+                    obligatorio = True
+                else:
+                    obligatorio = False 
+                campo = CampoPersonalizado(id_atributo= id_atributo, nombre= nombre, obligatorio= obligatorio, longitudMax= longitud_max, longitudMin= longitud_min)    
+                atributos.append(campo)
         except Exception as e:
             raise e
         finally:
             conn.close()
-            
+        return atributos
+     
     def consultarPlantillas(self):
         try:
             self.__conMgr.prepararBD()
