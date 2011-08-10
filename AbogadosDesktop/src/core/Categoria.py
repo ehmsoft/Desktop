@@ -16,7 +16,7 @@ class Categoria(object):
         else:
             raise TypeError('Tipo de dato no admitido')
         
-        if isinstance(descripcion, basestring):
+        if isinstance(descripcion, basestring) or isinstance(descripcion, NoneType):
             self.__descripcion = descripcion
         else:
             raise TypeError('Tipo de dato no admitido')
