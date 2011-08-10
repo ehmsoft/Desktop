@@ -215,30 +215,86 @@ class Persistence(object):
         finally:
             conn.close()
         return persona
+    
     def consultarProcesos(self):
+        procesos = []
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute(''' ''')
+            c.execute('''SELECT p.id_proceso, p.id_demandante, p.id_demandado, p.fecha_creacion as "fecha_creacion [timestamp]", p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria FROM procesos p''')
+            for row in c:
+                id_proceso = str(row['id_proceso'])
+                id_demandante = str(row['id_demandante'])
+                id_demandado = str(row['id_demandado'])
+                fecha_creacion = row['fecha_creacion']
+                radicado = str(row['radicado'])
+                radicado_unico = str(row['radicado_unico'])
+                estado = str(row['estado'])
+                tipo = str(row['tipo'])
+                notas = str(row['notas'])
+                prioridad = int(row['prioridad'])
+                id_juzgado = str(row['id_juzgado'])
+                id_categoria = str(row['id_categoria'])
+                demandante = Persona(1, id_persona= id_demandante)
+                demandado = Persona(2, id_persona= id_demandado)
+                juzgado = Juzgado(id_juzgado= id_juzgado)
+                categoria = Categoria(id_categoria= id_categoria)
+                proceso = Proceso(demandante, demandado, fecha_creacion, juzgado, radicado, radicado_unico, [], estado, categoria, tipo, notas, [], prioridad, id_proceso)
+                procesos.append(proceso)
         except Exception as e:
             raise e
         finally:
             conn.close()
-            
+        for proceso_act in procesos:
+            proceso_act.setDemandante(self.consultarPersona(proceso_act.getDemandante().getId_persona(), 1))
+            proceso_act.setDemandado(self.consultarPersona(proceso_act.getDemandado().getId_persona(), 2))
+            proceso_act.setJuzgado(self.consultarJuzgado(proceso_act.getJuzgado().getId_juzgado()))
+            proceso_act.setActuaciones(self.consultarActuaciones(proceso_act))
+            proceso_act.setCampos(self.consultarCampos(proceso_act))
+            proceso_act.setCategoria(self.consultarCategoria(proceso_act.getCategoria().getId_categoria()))
+        return procesos
+    
     def consultarProceso(self, id_proceso):
+        proceso = None
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute(''' ''')
+            c.execute('''SELECT p.id_proceso, p.id_demandante, p.id_demandado, p.fecha_creacion as "fecha_creacion [timestamp]", p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria FROM procesos p WHERE p.id_proceso = ?''', (id_proceso,))
+            row = c.fetchone()
+            if row:
+                id_proceso = str(row['id_proceso'])
+                id_demandante = str(row['id_demandante'])
+                id_demandado = str(row['id_demandado'])
+                fecha_creacion = row['fecha_creacion']
+                radicado = str(row['radicado'])
+                radicado_unico = str(row['radicado_unico'])
+                estado = str(row['estado'])
+                tipo = str(row['tipo'])
+                notas = str(row['notas'])
+                prioridad = int(row['prioridad'])
+                id_juzgado = str(row['id_juzgado'])
+                id_categoria = str(row['id_categoria'])
+                demandante = Persona(1, id_persona= id_demandante)
+                demandado = Persona(2, id_persona= id_demandado)
+                juzgado = Juzgado(id_juzgado= id_juzgado)
+                categoria = Categoria(id_categoria= id_categoria)
+                proceso = Proceso(demandante, demandado, fecha_creacion, juzgado, radicado, radicado_unico, [], estado, categoria, tipo, notas, [], prioridad, id_proceso)
         except Exception as e:
             raise e
         finally:
             conn.close()
-            
+        proceso.setDemandante(self.consultarPersona(proceso.getDemandante().getId_persona(), 1))
+        proceso.setDemandado(self.consultarPersona(proceso.getDemandado().getId_persona(), 2))
+        proceso.setJuzgado(self.consultarJuzgado(proceso.getJuzgado().getId_juzgado()))
+        proceso.setActuaciones(self.consultarActuaciones(proceso))
+        proceso.setCampos(self.consultarCampos(proceso))
+        proceso.setCategoria(self.consultarCategoria(proceso.getCategoria().getId_categoria()))
+        return proceso
+    
     def consultarActuaciones(self, proceso):
         actuaciones = []
         try:
