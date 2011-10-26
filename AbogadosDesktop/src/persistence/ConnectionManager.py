@@ -26,37 +26,35 @@ class ConnectionManager(object):
             #Crear Tablas
             
             #Crear tabla Demandantes
-            c.execute('''CREATE TABLE 'demandantes'('id_demandante' INTEGER PRIMARY KEY,'cedula' TEXT,'nombre' TEXT,'telefono' TEXT,'direccion' TEXT,'correo' TEXT,'notas' TEXT, UNIQUE('cedula','nombre'))''')
+            c.execute('''CREATE TABLE 'demandantes'('id_demandante' INTEGER PRIMARY KEY,'cedula' TEXT,'nombre' TEXT,'telefono' TEXT,'direccion' TEXT,'correo' TEXT,'notas' TEXT, 'nuevo' BOOLEAN DEFAULT 0, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')), UNIQUE('cedula','nombre'))''')
             #Crear tabla Demandados
-            c.execute('''CREATE TABLE 'demandados'('id_demandado' INTEGER PRIMARY KEY,'cedula' TEXT,'nombre' TEXT,'telefono' TEXT,'direccion' TEXT,'correo' TEXT,'notas' TEXT, UNIQUE('cedula','nombre'))''')
+            c.execute('''CREATE TABLE 'demandados'('id_demandado' INTEGER PRIMARY KEY,'cedula' TEXT,'nombre' TEXT,'telefono' TEXT,'direccion' TEXT,'correo' TEXT,'notas' TEXT, 'nuevo' BOOLEAN DEFAULT 0, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')), UNIQUE('cedula','nombre'))''')
             #Crear tabla Juzgados
-            c.execute('''CREATE TABLE 'juzgados'('id_juzgado' INTEGER PRIMARY KEY,'nombre' TEXT,'ciudad' TEXT,'telefono' TEXT,'direccion' TEXT,'tipo' TEXT, UNIQUE('nombre','ciudad','tipo'))''')
+            c.execute('''CREATE TABLE 'juzgados'('id_juzgado' INTEGER PRIMARY KEY,'nombre' TEXT,'ciudad' TEXT,'telefono' TEXT,'direccion' TEXT,'tipo' TEXT, 'nuevo' BOOLEAN DEFAULT 0, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')), UNIQUE('nombre','ciudad','tipo'))''')
             #Crear tabla Actuaciones
-            c.execute('''CREATE TABLE 'actuaciones'('id_actuacion' INTEGER PRIMARY KEY,'id_proceso' INTEGER,'id_juzgado' INTEGER,'fecha_creacion' DATE,'fecha_proxima' DATE,'descripcion' TEXT,'uid' TEXT,FOREIGN KEY(id_proceso) REFERENCES procesos(id_proceso),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado), UNIQUE('id_proceso','id_juzgado','fecha_creacion','fecha_proxima','descripcion'))''')
+            c.execute('''CREATE TABLE 'actuaciones'('id_actuacion' INTEGER PRIMARY KEY,'id_proceso' INTEGER,'id_juzgado' INTEGER,'fecha_creacion' DATE,'fecha_proxima' DATE,'descripcion' TEXT,'uid' TEXT, 'nuevo' BOOLEAN DEFAULT 0, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')), FOREIGN KEY(id_proceso) REFERENCES procesos(id_proceso),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado), UNIQUE('id_proceso','id_juzgado','fecha_creacion','fecha_proxima','descripcion'))''')
             #Crear tabla Categorias
-            c.execute('''CREATE TABLE 'categorias'('id_categoria' INTEGER PRIMARY KEY,'descripcion' TEXT)''')
+            c.execute('''CREATE TABLE 'categorias'('id_categoria' INTEGER PRIMARY KEY,'descripcion' TEXT, 'nuevo' BOOLEAN DEFAULT 0, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')))''')
             #Crear tabla Atributos
-            c.execute('''CREATE TABLE 'atributos'('id_atributo' INTEGER PRIMARY KEY,'nombre' TEXT,'obligatorio' BOOLEAN,'longitud_max' INTEGER,'longitud_min' INTEGER, UNIQUE('nombre','obligatorio'))''')
+            c.execute('''CREATE TABLE 'atributos'('id_atributo' INTEGER PRIMARY KEY,'nombre' TEXT,'obligatorio' BOOLEAN,'longitud_max' INTEGER,'longitud_min' INTEGER, 'nuevo' BOOLEAN DEFAULT 0, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')), UNIQUE('nombre','obligatorio'))''')
             #Crear tabla Atritutos por Proceso
-            c.execute('''CREATE TABLE 'atributos_proceso'('id_atributo_proceso' INTEGER PRIMARY KEY,'id_atributo' INTEGER,'id_proceso' INTEGER,'valor' TEXT,FOREIGN KEY(id_atributo) REFERENCES atributos(id_atributo),FOREIGN KEY(id_proceso) REFERENCES procesos(id_proceso),UNIQUE('id_atributo','id_proceso','valor'))''')
+            c.execute('''CREATE TABLE 'atributos_proceso'('id_atributo_proceso' INTEGER PRIMARY KEY,'id_atributo' INTEGER,'id_proceso' INTEGER,'valor' TEXT, 'nuevo' BOOLEAN DEFAULT 0, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')), FOREIGN KEY(id_atributo) REFERENCES atributos(id_atributo),FOREIGN KEY(id_proceso) REFERENCES procesos(id_proceso),UNIQUE('id_atributo','id_proceso','valor'))''')
             #Crear tabla Procesos
-            c.execute('''CREATE TABLE 'procesos'('id_proceso' INTEGER PRIMARY KEY,'id_demandante' INTEGER,'id_demandado' INTEGER,'fecha_creacion' DATE,'radicado' TEXT,'radicado_unico' TEXT,'estado' TEXT,'tipo' TEXT,'notas' TEXT,'prioridad' TEXT,'id_juzgado' INTEGER,'id_categoria' INTEGER,FOREIGN KEY(id_demandante) REFERENCES demandantes(id_demandante),FOREIGN KEY(id_demandado) REFERENCES demandados(id_demandado),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado),FOREIGN KEY(id_categoria) REFERENCES categorias(id_categoria), UNIQUE('id_demandante','id_demandado','radicado','radicado_unico','id_juzgado'))''')
-            #Crear tabla Filtros 
-            c.execute('''CREATE TABLE 'filtros'('id_filtro' INTEGER PRIMARY KEY,'nombre' TEXT,'sentencia' TEXT)''')
+            c.execute('''CREATE TABLE 'procesos'('id_proceso' INTEGER PRIMARY KEY,'id_demandante' INTEGER,'id_demandado' INTEGER,'fecha_creacion' DATE,'radicado' TEXT,'radicado_unico' TEXT,'estado' TEXT,'tipo' TEXT,'notas' TEXT,'prioridad' TEXT,'id_juzgado' INTEGER,'id_categoria' INTEGER, 'nuevo' BOOLEAN DEFAULT 0, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')), FOREIGN KEY(id_demandante) REFERENCES demandantes(id_demandante),FOREIGN KEY(id_demandado) REFERENCES demandados(id_demandado),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado),FOREIGN KEY(id_categoria) REFERENCES categorias(id_categoria), UNIQUE('id_demandante','id_demandado','radicado','radicado_unico','id_juzgado'))''')
             #Crear tabla Plantillas
-            c.execute('''CREATE TABLE 'plantillas'('id_plantilla' INTEGER PRIMARY KEY,'nombre' TEXT,'id_demandante' INTEGER,'id_demandado' INTEGER,'radicado' TEXT,'radicado_unico' TEXT,'estado' TEXT,'tipo' TEXT,'notas' TEXT,'prioridad' TEXT,'id_juzgado' INTEGER,'id_categoria' INTEGER,FOREIGN KEY(id_demandante) REFERENCES demandantes(id_demandante),FOREIGN KEY(id_demandado) REFERENCES demandados(id_demandado),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado),FOREIGN KEY(id_categoria) REFERENCES categorias(id_categoria), UNIQUE('id_demandante','id_demandado','radicado','radicado_unico','id_juzgado'))''')
+            c.execute('''CREATE TABLE 'plantillas'('id_plantilla' INTEGER PRIMARY KEY,'nombre' TEXT,'id_demandante' INTEGER,'id_demandado' INTEGER,'radicado' TEXT,'radicado_unico' TEXT,'estado' TEXT,'tipo' TEXT,'notas' TEXT,'prioridad' TEXT,'id_juzgado' INTEGER,'id_categoria' INTEGER, 'nuevo' BOOLEAN DEFAULT 0, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')), FOREIGN KEY(id_demandante) REFERENCES demandantes(id_demandante),FOREIGN KEY(id_demandado) REFERENCES demandados(id_demandado),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado),FOREIGN KEY(id_categoria) REFERENCES categorias(id_categoria), UNIQUE('id_demandante','id_demandado','radicado','radicado_unico','id_juzgado'))''')
             #Crear tabla Atributos por Plantilla
-            c.execute('''CREATE TABLE 'atributos_plantilla'('id_atributo_plantilla' INTEGER PRIMARY KEY,'id_atributo' INTEGER,'id_plantilla' INTEGER,'valor' TEXT,FOREIGN KEY(id_atributo) REFERENCES atributos(id_atributo),FOREIGN KEY(id_plantilla) REFERENCES plantillas(id_plantilla),UNIQUE('id_atributo','id_plantilla','valor'))''')
+            c.execute('''CREATE TABLE 'atributos_plantilla'('id_atributo_plantilla' INTEGER PRIMARY KEY,'id_atributo' INTEGER,'id_plantilla' INTEGER,'valor' TEXT, 'nuevo' BOOLEAN DEFAULT 0, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')), FOREIGN KEY(id_atributo) REFERENCES atributos(id_atributo),FOREIGN KEY(id_plantilla) REFERENCES plantillas(id_plantilla),UNIQUE('id_atributo','id_plantilla','valor'))''')
             #Crear tabla Preferencias
             c.execute('''CREATE TABLE 'preferencias'('id_preferencia' INTEGER PRIMARY KEY,'valor' INTEGER)''')
             #Crear Categorias
-            c.execute('''INSERT INTO 'categorias' VALUES(1,'Ninguna')''')
+            c.execute('''INSERT INTO 'categorias'(id_categoria, descripcion) VALUES(1,'Ninguna')''')
             #Insertar Valores por defecto
-            c.execute('''INSERT INTO demandantes VALUES(1, 'No id', 'vacio', 'vacio', 'vacio', 'vacio', 'vacio')''')
-            c.execute('''INSERT INTO demandados VALUES(1, 'No id', 'vacio', 'vacio', 'vacio', 'vacio', 'vacio')''')
-            c.execute('''INSERT INTO juzgados VALUES(1,'vacio','vacio', 'vacio','vacio', 'vacio')''')
+            c.execute('''INSERT INTO demandantes(id_demandante, cedula, nombre, telefono, direccion, correo, notas) VALUES(1, 'No id', 'vacio', 'vacio', 'vacio', 'vacio', 'vacio')''')
+            c.execute('''INSERT INTO demandados(id_demandado, cedula, nombre, telefono, direccion, correo, notas) VALUES(1, 'No id', 'vacio', 'vacio', 'vacio', 'vacio', 'vacio')''')
+            c.execute('''INSERT INTO juzgados(id_juzgado, nombre, ciudad, telefono, direccion, tipo) VALUES(1,'vacio','vacio', 'vacio','vacio', 'vacio')''')
             #Insertar la version de la base de datos
-            c.execute('''INSERT INTO 'preferencias' VALUES(999,2)''')
+            c.execute('''INSERT INTO 'preferencias' VALUES(999,1)''')
             conn.commit()
         except Exception as e:
             raise e
@@ -65,3 +63,6 @@ class ConnectionManager(object):
     
     def getDbLocation(self):
         return self.__DBNAME                        
+
+hola = ConnectionManager()
+hola.prepararBD()
