@@ -5,7 +5,8 @@ Created on 04/08/2011
 '''
 from Juzgado import Juzgado
 from datetime import datetime
-from types import NoneType
+from types import NoneType, ListType
+from CampoPersonalizado import CampoPersonalizado
 
 class Actuacion(object):
     '''
@@ -13,7 +14,7 @@ class Actuacion(object):
     '''
 
 
-    def __init__(self, juzgado, fecha, fechaProxima, descripcion, id_actuacion = None, uid = None):
+    def __init__(self, juzgado, fecha, fechaProxima, descripcion, id_actuacion = None, uid = None, campos=[]):
         if isinstance(juzgado, Juzgado):
             self.__juzgado = juzgado
         else:
@@ -43,6 +44,21 @@ class Actuacion(object):
             self.__uid = uid
         else:
             raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(campos, ListType):
+            self.__campos = campos
+        else:
+            raise TypeError('Tipo de dato no admitido')
+    
+    
+    def addCampo(self, campo):
+        if isinstance(campo, CampoPersonalizado):
+            self.__campos.append(campo)
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+    def delCampo(self, campo):
+        self.__campos.remove(campo)
     
     #Getters
     def getJuzgado(self):
@@ -57,6 +73,8 @@ class Actuacion(object):
         return self.__id_actuacion
     def getUid(self):
         return self.__uid
+    def getCampos(self):
+        return self.__campos
     #Setters
     def setJuzgado(self, juzgado):
         if isinstance(juzgado, Juzgado):
@@ -93,6 +111,11 @@ class Actuacion(object):
             self.__uid = uid
         else:
             raise TypeError('Tipo de dato no admitido')
-        
+    def setCampos(self, campos):
+        if isinstance(campos, ListType):
+            self.__campos = campos
+        else:
+            raise TypeError('Tipo de dato no admitido')
+    
     def __str__(self):
         return self.getDescripcion()
