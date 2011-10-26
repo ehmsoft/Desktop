@@ -3,7 +3,8 @@ Created on 04/08/2011
 
 @author: elfotografo007
 '''
-from types import NoneType
+from types import NoneType, ListType
+from CampoPersonalizado import CampoPersonalizado
 
 class Juzgado(object):
     '''
@@ -12,7 +13,7 @@ class Juzgado(object):
 
 
     def __init__(self, nombre = None, ciudad = None, direccion = None, 
-                telefono = None, tipo = None, id_juzgado = None):
+                telefono = None, tipo = None, id_juzgado = None, campos= []):
         if isinstance(nombre, basestring) or isinstance(nombre, NoneType):
             self.__nombre = nombre
         else:
@@ -42,7 +43,19 @@ class Juzgado(object):
             self.__id_juzgado = id_juzgado
         else:
             raise TypeError('Tipo de dato no admitido')
-            
+        
+        if isinstance(campos, ListType):
+            self.__campos = campos
+        else:
+            raise TypeError('Tipo de dato no admitido')
+    def addCampo(self, campo):
+        if isinstance(campo, CampoPersonalizado):
+            self.__campos.append(campo)
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+    def delCampo(self, campo):
+        self.__campos.remove(campo)        
     #Getters
     def getNombre(self):
         return self.__nombre
@@ -56,6 +69,8 @@ class Juzgado(object):
         return self.__tipo
     def getId_juzgado(self):
         return self.__id_juzgado
+    def getCampos(self):
+        return self.__campos
     #Setters
     def setNombre(self, nombre):
         if isinstance(nombre, basestring) or isinstance(nombre, NoneType):
@@ -90,6 +105,11 @@ class Juzgado(object):
     def setId_juzgado(self, id_juzgado):
         if isinstance(id_juzgado, basestring) or isinstance(id_juzgado, NoneType):
             self.__id_juzgado = id_juzgado
+        else:
+            raise TypeError('Tipo de dato no admitido')
+    def setCampos(self, campos):
+        if isinstance(campos, ListType):
+            self.__campos = campos
         else:
             raise TypeError('Tipo de dato no admitido')
     
