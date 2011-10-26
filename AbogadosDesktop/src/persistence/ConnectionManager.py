@@ -3,6 +3,7 @@ Created on 06/08/2011
 
 @author: elfotografo007
 '''
+import hashlib
 import sqlite3
 from os.path import exists
 
@@ -71,6 +72,7 @@ class ConnectionManager(object):
             c.execute('''INSERT INTO demandantes(id_demandante, cedula, nombre, telefono, direccion, correo, notas) VALUES(1, 'No id', 'vacio', 'vacio', 'vacio', 'vacio', 'vacio')''')
             c.execute('''INSERT INTO demandados(id_demandado, cedula, nombre, telefono, direccion, correo, notas) VALUES(1, 'No id', 'vacio', 'vacio', 'vacio', 'vacio', 'vacio')''')
             c.execute('''INSERT INTO juzgados(id_juzgado, nombre, ciudad, telefono, direccion, tipo) VALUES(1,'vacio','vacio', 'vacio','vacio', 'vacio')''')
+            c.execute('''INSERT INTO usuarios(id_usuario, nombre_usuario, permisos, password, telefono, direccion, correo) VALUES(1, 'Administrador', 1,?, 'vacio', 'vacio', 'vacio')''', (hashlib.sha1('admin').hexdigest(),))
             #Insertar la version de la base de datos
             c.execute('''INSERT INTO 'preferencias' VALUES(999,1)''')
             conn.commit()
