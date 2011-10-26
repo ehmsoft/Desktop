@@ -100,7 +100,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes order by nombre''')
+            c.execute('''SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes WHERE eliminado = 0 ORDER BY nombre''')
             demandantes = []
             for row in c:
                 id_demandante = str(row['id_demandante'])
@@ -125,7 +125,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados order by nombre''')
+            c.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE eliminado = 0 ORDER BY nombre''')
             for row in c:
                 id_demandado = str(row['id_demandado'])
                 cedula = str(row['cedula'])
@@ -149,7 +149,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados order by nombre''')
+            c.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE eliminado = 0 ORDER BY nombre''')
             for row in c:
                 id_demandado = str(row['id_demandado'])
                 cedula = str(row['cedula'])
@@ -160,7 +160,7 @@ class Persistence(object):
                 notas = str(row['notas'])
                 demandado = Persona(2, cedula, nombre, telefono, direccion, correo, notas, id_demandado)
                 personas.append(demandado)
-            c.execute('''SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes order by nombre''')
+            c.execute('''SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes WHERE eliminado = 0 ORDER BY nombre''')
             for row in c:
                 id_demandante = str(row['id_demandante'])
                 cedula = str(row['cedula'])
@@ -223,7 +223,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT p.id_proceso, p.id_demandante, p.id_demandado, p.fecha_creacion as "fecha_creacion [timestamp]", p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria FROM procesos p''')
+            c.execute('''SELECT p.id_proceso, p.id_demandante, p.id_demandado, p.fecha_creacion as "fecha_creacion [timestamp]", p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria FROM procesos p WHERE eliminado = 0''')
             for row in c:
                 id_proceso = str(row['id_proceso'])
                 id_demandante = str(row['id_demandante'])
@@ -302,7 +302,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE id_proceso = ? ORDER BY fecha_creacion, fecha_proxima''', (proceso.getId_proceso(),))
+            c.execute('''SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE id_proceso = ? AND eliminado = 0 ORDER BY fecha_creacion, fecha_proxima''', (proceso.getId_proceso(),))
             for row in c:
                 id_actuacion = str(row['id_actuacion'])
                 id_juzgado = str(row['id_juzgado'])
@@ -352,7 +352,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE fecha_proxima >= date() ORDER BY fecha_proxima LIMIT ?''', (cantidad,))
+            c.execute('''SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE fecha_proxima >= date() AND eliminado = 0 ORDER BY fecha_proxima LIMIT ?''', (cantidad,))
             for row in c:
                 id_actuacion = str(row['id_actuacion'])
                 id_juzgado = str(row['id_juzgado'])
@@ -378,7 +378,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT id_juzgado, nombre, ciudad, telefono, direccion, tipo FROM juzgados ORDER BY nombre''')
+            c.execute('''SELECT id_juzgado, nombre, ciudad, telefono, direccion, tipo FROM juzgados WHERE eliminado = 0 ORDER BY nombre''')
             for row in c:
                 id_juzgado = str(row['id_juzgado'])
                 nombre = str(row['nombre'])
@@ -443,7 +443,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT id_categoria, descripcion FROM categorias ORDER BY descripcion''')
+            c.execute('''SELECT id_categoria, descripcion FROM categorias WHERE eliminado = 0 ORDER BY descripcion''')
             for row in c:
                 id_categoria = str(row['id_categoria'])
                 descripcion = str(row['descripcion'])
@@ -462,7 +462,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_proceso = ?''', (proceso.getId_proceso(),))
+            c.execute('''SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_proceso = ? AND eliminado = 0''', (proceso.getId_proceso(),))
             for row in c:
                 id_atributo_proceso = str(row['id_atributo_proceso'])
                 id_atributo = str(row['id_atributo'])
@@ -520,7 +520,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributos''')
+            c.execute('''SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributos WHERE eliminado = 0''')
             for row in c:
                 id_atributo = str(row['id_atributo'])
                 nombre = str(row['nombre'])
@@ -547,7 +547,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT p.id_plantilla, p.id_demandante, p.id_demandado, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria, p.nombre FROM plantillas p''')
+            c.execute('''SELECT p.id_plantilla, p.id_demandante, p.id_demandado, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria, p.nombre FROM plantillas p WHERE eliminado = 0''')
             for row in c:
                 id_plantilla = str(row['id_plantilla'])
                 id_demandante = str(row['id_demandante'])
@@ -624,7 +624,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_plantilla = ?''', (plantilla.getId_plantilla(), ))
+            c.execute('''SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_plantilla = ? AND eliminado = 0''', (plantilla.getId_plantilla(), ))
             for row in c:
                 id_atributo_plantilla = str(row['id_atributo_plantilla'])
                 id_atributo = str(row['id_atributo'])
