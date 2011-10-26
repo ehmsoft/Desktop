@@ -84,5 +84,3 @@ class ConnectionManager(object):
     def getDbLocation(self):
         return self.__DBNAME                        
 
-hola = ConnectionManager()
-hola.prepararBD()
