@@ -18,7 +18,7 @@ class Proceso(object):
 
 
     def __init__(self, demandante, demandado, fecha, juzgado, radicado, 
-                 radicadoUnico, actuaciones, estado, categoria, tipo, notas, campos, prioridad, id_proceso = None):
+                 radicadoUnico, actuaciones, estado, categoria, tipo, notas, prioridad, campos=[], id_proceso = None):
         if isinstance(demandante, Persona):
             self.__demandante = demandante
         else:
