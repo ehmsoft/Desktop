@@ -462,7 +462,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_proceso = ? AND eliminado = 0''', (proceso.getId_proceso(),))
+            c.execute('''SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_proceso = ? AND at.eliminado = 0''', (proceso.getId_proceso(),))
             for row in c:
                 id_atributo_proceso = str(row['id_atributo_proceso'])
                 id_atributo = str(row['id_atributo'])
@@ -624,7 +624,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_plantilla = ? AND eliminado = 0''', (plantilla.getId_plantilla(),))
+            c.execute('''SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_plantilla = ? AND at.eliminado = 0''', (plantilla.getId_plantilla(),))
             for row in c:
                 id_atributo_plantilla = str(row['id_atributo_plantilla'])
                 id_atributo = str(row['id_atributo'])
@@ -692,6 +692,7 @@ class Persistence(object):
             conn.close()
         return valor
     
+    #Campos personalizados para las personas    
     def consultarAtributosPersona(self):
         atributos = []
         try:
@@ -719,6 +720,7 @@ class Persistence(object):
             conn.close()
         return atributos
     
+    #Cargar los campos personalizados de un demandante
     def consultarCamposDemandante(self, demandante):
         campos = []
         try:
@@ -726,7 +728,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT at.id_atributo_demandante, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_demandante at, atributosPersona a WHERE at.id_atributo = a.id_atributo AND at.id_plantilla = ? AND eliminado = 0''', (demandante.getId_persona(),))
+            c.execute('''SELECT at.id_atributo_demandante, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_demandante at, atributosPersona a WHERE at.id_atributo = a.id_atributo AND at.id_demandante = ? AND at.eliminado = 0''', (demandante.getId_persona(),))
             for row in c:
                 id_atributo_demandante = str(row['id_atributo_demandante'])
                 id_atributo = str(row['id_atributo'])
@@ -748,6 +750,7 @@ class Persistence(object):
             conn.close()
         return campos    
     
+    #Cargar un campo personalizado de demandante especifico
     def consultarCampoDemandante(self, id_campo):
         campo = None
         try:
@@ -776,8 +779,6 @@ class Persistence(object):
         finally:
             conn.close()
         return campo
-    
-    
     
     def consultarAtributosJuzgado(self):
         atributos = []
@@ -832,6 +833,3 @@ class Persistence(object):
         finally:
             conn.close()
         return atributos   
-    
-    
-    
