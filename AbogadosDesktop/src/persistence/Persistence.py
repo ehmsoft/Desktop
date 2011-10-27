@@ -780,6 +780,66 @@ class Persistence(object):
             conn.close()
         return campo
     
+    #Cargar los campos personalizados de un demandado
+    def consultarCamposDemandado(self, demandado):
+        campos = []
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''SELECT at.id_atributo_demandado, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_demandado at, atributosPersona a WHERE at.id_atributo = a.id_atributo AND at.id_demandado = ? AND at.eliminado = 0''', (demandado.getId_persona(),))
+            for row in c:
+                id_atributo_demandado = str(row['id_atributo_demandado'])
+                id_atributo = str(row['id_atributo'])
+                valor = str(row['valor'])
+                nombre = str(row['nombre'])
+                ob = row['obligatorio']
+                longitud_max = row['longitud_max']
+                longitud_min = row['longitud_min']
+                #Pasar el obligatorio a Boolean:
+                if ob == 1:
+                    obligatorio = True
+                else:
+                    obligatorio = False
+                campo = CampoPersonalizado(nombre, valor, obligatorio, longitud_max, longitud_min, id_atributo_demandado, id_atributo)
+                campos.append(campo)
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        return campos    
+    
+    #Cargar un campo personalizado de demandado especifico
+    def consultarCampoDemandado(self, id_campo):
+        campo = None
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''SELECT at.id_atributo_demandado, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_demandado at, atributosPersona a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_demandado = ?''', (id_campo,))
+            row = c.fetchone()
+            if row:
+                id_atributo_demandado = str(row['id_atributo_demandado'])
+                id_atributo = str(row['id_atributo'])
+                valor = str(row['valor'])
+                nombre = str(row['nombre'])
+                ob = row['obligatorio']
+                longitud_max = row['longitud_max']
+                longitud_min = row['longitud_min']
+                #Pasar el obligatorio a Boolean:
+                if ob == 1:
+                    obligatorio = True
+                else:
+                    obligatorio = False
+                campo = CampoPersonalizado(nombre, valor, obligatorio, longitud_max, longitud_min, id_atributo_demandado, id_atributo)
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        return campo
+    
     def consultarAtributosJuzgado(self):
         atributos = []
         try:
@@ -807,6 +867,66 @@ class Persistence(object):
             conn.close()
         return atributos
 
+    #Cargar los campos personalizados de un juzgado
+    def consultarCamposJuzgado(self, juzgado):
+        campos = []
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''SELECT at.id_atributo_juzgado, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_juzgado at, atributosJuzgado a WHERE at.id_atributo = a.id_atributo AND at.id_juzgado = ? AND at.eliminado = 0''', (juzgado.getId_juzgado(),))
+            for row in c:
+                id_atributo_juzgado = str(row['id_atributo_juzgado'])
+                id_atributo = str(row['id_atributo'])
+                valor = str(row['valor'])
+                nombre = str(row['nombre'])
+                ob = row['obligatorio']
+                longitud_max = row['longitud_max']
+                longitud_min = row['longitud_min']
+                #Pasar el obligatorio a Boolean:
+                if ob == 1:
+                    obligatorio = True
+                else:
+                    obligatorio = False
+                campo = CampoPersonalizado(nombre, valor, obligatorio, longitud_max, longitud_min, id_atributo_juzgado, id_atributo)
+                campos.append(campo)
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        return campos    
+    
+    #Cargar un campo personalizado de juzgado especifico
+    def consultarCampoJuzgado(self, id_campo):
+        campo = None
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''SELECT at.id_atributo_juzgado, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_juzgado at, atributosJuzgado a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_juzgado = ?''', (id_campo,))
+            row = c.fetchone()
+            if row:
+                id_atributo_juzgado = str(row['id_atributo_juzgado'])
+                id_atributo = str(row['id_atributo'])
+                valor = str(row['valor'])
+                nombre = str(row['nombre'])
+                ob = row['obligatorio']
+                longitud_max = row['longitud_max']
+                longitud_min = row['longitud_min']
+                #Pasar el obligatorio a Boolean:
+                if ob == 1:
+                    obligatorio = True
+                else:
+                    obligatorio = False
+                campo = CampoPersonalizado(nombre, valor, obligatorio, longitud_max, longitud_min, id_atributo_juzgado, id_atributo)
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        return campo
+
     def consultarAtributosActuacion(self):
         atributos = []
         try:
@@ -833,3 +953,63 @@ class Persistence(object):
         finally:
             conn.close()
         return atributos   
+
+    #Cargar los campos personalizados de un actuacion
+    def consultarCamposActuacion(self, actuacion):
+        campos = []
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''SELECT at.id_atributo_actuacion, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_actuacion at, atributosActuacion a WHERE at.id_atributo = a.id_atributo AND at.id_actuacion = ? AND at.eliminado = 0''', (actuacion.getId_actuacion(),))
+            for row in c:
+                id_atributo_actuacion = str(row['id_atributo_actuacion'])
+                id_atributo = str(row['id_atributo'])
+                valor = str(row['valor'])
+                nombre = str(row['nombre'])
+                ob = row['obligatorio']
+                longitud_max = row['longitud_max']
+                longitud_min = row['longitud_min']
+                #Pasar el obligatorio a Boolean:
+                if ob == 1:
+                    obligatorio = True
+                else:
+                    obligatorio = False
+                campo = CampoPersonalizado(nombre, valor, obligatorio, longitud_max, longitud_min, id_atributo_actuacion, id_atributo)
+                campos.append(campo)
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        return campos    
+    
+    #Cargar un campo personalizado de actuacion especifico
+    def consultarCampoActuacion(self, id_campo):
+        campo = None
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''SELECT at.id_atributo_actuacion, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_actuacion at, atributosActuacion a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_actuacion = ?''', (id_campo,))
+            row = c.fetchone()
+            if row:
+                id_atributo_actuacion = str(row['id_atributo_actuacion'])
+                id_atributo = str(row['id_atributo'])
+                valor = str(row['valor'])
+                nombre = str(row['nombre'])
+                ob = row['obligatorio']
+                longitud_max = row['longitud_max']
+                longitud_min = row['longitud_min']
+                #Pasar el obligatorio a Boolean:
+                if ob == 1:
+                    obligatorio = True
+                else:
+                    obligatorio = False
+                campo = CampoPersonalizado(nombre, valor, obligatorio, longitud_max, longitud_min, id_atributo_actuacion, id_atributo)
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        return campo
