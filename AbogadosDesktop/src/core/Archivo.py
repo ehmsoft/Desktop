@@ -46,3 +46,6 @@ class Archivo(object):
         
     def setArchivo(self, archivo):
         self.__archivo = archivo
+        
+    def __str__(self):
+        return self.__ruta
