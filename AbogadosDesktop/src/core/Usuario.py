@@ -94,3 +94,7 @@ class Usuario(object):
             self.__id_usuario = id_usuario
         else:
             raise TypeError('Tipo de dato no admitido')   
+
+    
+    def __str__(self):
+        return self.__nombre
