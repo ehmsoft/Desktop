@@ -237,10 +237,10 @@ class Persistence(object):
                 prioridad = int(row['prioridad'])
                 id_juzgado = str(row['id_juzgado'])
                 id_categoria = str(row['id_categoria'])
-                demandante = Persona(1, id_persona= id_demandante)
-                demandado = Persona(2, id_persona= id_demandado)
-                juzgado = Juzgado(id_juzgado= id_juzgado)
-                categoria = Categoria(id_categoria= id_categoria)
+                demandante = Persona(1, id_persona=id_demandante)
+                demandado = Persona(2, id_persona=id_demandado)
+                juzgado = Juzgado(id_juzgado=id_juzgado)
+                categoria = Categoria(id_categoria=id_categoria)
                 proceso = Proceso(demandante, demandado, fecha_creacion, juzgado, radicado, radicado_unico, [], estado, categoria, tipo, notas, [], prioridad, id_proceso)
                 procesos.append(proceso)
         except Exception as e:
@@ -278,10 +278,10 @@ class Persistence(object):
                 prioridad = int(row['prioridad'])
                 id_juzgado = str(row['id_juzgado'])
                 id_categoria = str(row['id_categoria'])
-                demandante = Persona(1, id_persona= id_demandante)
-                demandado = Persona(2, id_persona= id_demandado)
-                juzgado = Juzgado(id_juzgado= id_juzgado)
-                categoria = Categoria(id_categoria= id_categoria)
+                demandante = Persona(1, id_persona=id_demandante)
+                demandado = Persona(2, id_persona=id_demandado)
+                juzgado = Juzgado(id_juzgado=id_juzgado)
+                categoria = Categoria(id_categoria=id_categoria)
                 proceso = Proceso(demandante, demandado, fecha_creacion, juzgado, radicado, radicado_unico, [], estado, categoria, tipo, notas, [], prioridad, id_proceso)
         except Exception as e:
             raise e
@@ -310,7 +310,7 @@ class Persistence(object):
                 fecha_proxima = row['fecha_proxima']
                 descripcion = str(row['descripcion'])
                 uid = str(row['uid'])
-                juzgado = Juzgado(id_juzgado = id_juzgado)
+                juzgado = Juzgado(id_juzgado=id_juzgado)
                 actuacion = Actuacion(juzgado, fecha_creacion, fecha_proxima, descripcion, id_actuacion, uid)
                 actuaciones.append(actuacion)
         except Exception as e:
@@ -328,7 +328,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE id_actuacion = ?''',(id_actuacion,))
+            c.execute('''SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE id_actuacion = ?''', (id_actuacion,))
             row = c.fetchone()
             if row:
                 id_actuacion = str(row['id_actuacion'])
@@ -337,7 +337,7 @@ class Persistence(object):
                 fecha_proxima = row['fecha_proxima']
                 descripcion = str(row['descripcion'])
                 uid = str(row['uid'])
-                juzgado = Juzgado(id_juzgado = id_juzgado)
+                juzgado = Juzgado(id_juzgado=id_juzgado)
                 actuacion = Actuacion(juzgado, fecha_creacion, fecha_proxima, descripcion, id_actuacion, uid)  
         except Exception as e:
             raise e
@@ -360,7 +360,7 @@ class Persistence(object):
                 fecha_proxima = row['fecha_proxima']
                 descripcion = str(row['descripcion'])
                 uid = str(row['uid'])
-                juzgado = Juzgado(id_juzgado = id_juzgado)
+                juzgado = Juzgado(id_juzgado=id_juzgado)
                 actuacion = Actuacion(juzgado, fecha_creacion, fecha_proxima, descripcion, id_actuacion, uid)
                 actuaciones.append(actuacion)
         except Exception as e:
@@ -401,7 +401,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT id_juzgado, nombre, ciudad, telefono, direccion, tipo FROM juzgados WHERE id_juzgado = ?''',(id_juzgado,))
+            c.execute('''SELECT id_juzgado, nombre, ciudad, telefono, direccion, tipo FROM juzgados WHERE id_juzgado = ?''', (id_juzgado,))
             row = c.fetchone()
             if row:
                 id_juzgado = str(row['id_juzgado'])
@@ -532,7 +532,7 @@ class Persistence(object):
                     obligatorio = True
                 else:
                     obligatorio = False 
-                campo = CampoPersonalizado(id_atributo= id_atributo, nombre= nombre, obligatorio= obligatorio, longitudMax= longitud_max, longitudMin= longitud_min)    
+                campo = CampoPersonalizado(id_atributo=id_atributo, nombre=nombre, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min)    
                 atributos.append(campo)
         except Exception as e:
             raise e
@@ -561,10 +561,10 @@ class Persistence(object):
                 id_juzgado = str(row['id_juzgado'])
                 id_categoria = str(row['id_categoria'])
                 nombre = str(row['nombre'])
-                demandante = Persona(1, id_persona= id_demandante)
-                demandado = Persona(2, id_persona= id_demandado)
-                juzgado = Juzgado(id_juzgado= id_juzgado)
-                categoria = Categoria(id_categoria= id_categoria)
+                demandante = Persona(1, id_persona=id_demandante)
+                demandado = Persona(2, id_persona=id_demandado)
+                juzgado = Juzgado(id_juzgado=id_juzgado)
+                categoria = Categoria(id_categoria=id_categoria)
                 plantilla = Plantilla(nombre, demandante, demandado, juzgado, radicado, radicado_unico, estado, categoria, tipo, notas, [], prioridad, id_plantilla)
                 plantillas.append(plantilla)
         except Exception as e:
@@ -601,10 +601,10 @@ class Persistence(object):
                 id_juzgado = str(row['id_juzgado'])
                 id_categoria = str(row['id_categoria'])
                 nombre = str(row['nombre'])
-                demandante = Persona(1, id_persona= id_demandante)
-                demandado = Persona(2, id_persona= id_demandado)
-                juzgado = Juzgado(id_juzgado= id_juzgado)
-                categoria = Categoria(id_categoria= id_categoria)
+                demandante = Persona(1, id_persona=id_demandante)
+                demandado = Persona(2, id_persona=id_demandado)
+                juzgado = Juzgado(id_juzgado=id_juzgado)
+                categoria = Categoria(id_categoria=id_categoria)
                 plantilla = Plantilla(nombre, demandante, demandado, juzgado, radicado, radicado_unico, estado, categoria, tipo, notas, [], prioridad, id_plantilla)
         except Exception as e:
             raise e
@@ -624,7 +624,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_plantilla = ? AND eliminado = 0''', (plantilla.getId_plantilla(), ))
+            c.execute('''SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_plantilla = ? AND eliminado = 0''', (plantilla.getId_plantilla(),))
             for row in c:
                 id_atributo_plantilla = str(row['id_atributo_plantilla'])
                 id_atributo = str(row['id_atributo'])
@@ -691,3 +691,147 @@ class Persistence(object):
         finally:
             conn.close()
         return valor
+    
+    def consultarAtributosPersona(self):
+        atributos = []
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributosPersona WHERE eliminado = 0''')
+            for row in c:
+                id_atributo = str(row['id_atributo'])
+                nombre = str(row['nombre'])
+                ob = row['obligatorio']
+                longitud_max = row['longitud_max']
+                longitud_min = row['longitud_min']
+                #Pasar el obligatorio a Boolean:
+                if ob == 1:
+                    obligatorio = True
+                else:
+                    obligatorio = False 
+                campo = CampoPersonalizado(id_atributo=id_atributo, nombre=nombre, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min)    
+                atributos.append(campo)
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        return atributos
+    
+    def consultarCamposDemandante(self, demandante):
+        campos = []
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''SELECT at.id_atributo_demandante, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_demandante at, atributosPersona a WHERE at.id_atributo = a.id_atributo AND at.id_plantilla = ? AND eliminado = 0''', (demandante.getId_persona(),))
+            for row in c:
+                id_atributo_demandante = str(row['id_atributo_demandante'])
+                id_atributo = str(row['id_atributo'])
+                valor = str(row['valor'])
+                nombre = str(row['nombre'])
+                ob = row['obligatorio']
+                longitud_max = row['longitud_max']
+                longitud_min = row['longitud_min']
+                #Pasar el obligatorio a Boolean:
+                if ob == 1:
+                    obligatorio = True
+                else:
+                    obligatorio = False
+                campo = CampoPersonalizado(nombre, valor, obligatorio, longitud_max, longitud_min, id_atributo_demandante, id_atributo)
+                campos.append(campo)
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        return campos    
+    
+    def consultarCampoDemandante(self, id_campo):
+        campo = None
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''SELECT at.id_atributo_demandante, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_demandante at, atributosPersona a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_demandante = ?''', (id_campo,))
+            row = c.fetchone()
+            if row:
+                id_atributo_demandante = str(row['id_atributo_demandante'])
+                id_atributo = str(row['id_atributo'])
+                valor = str(row['valor'])
+                nombre = str(row['nombre'])
+                ob = row['obligatorio']
+                longitud_max = row['longitud_max']
+                longitud_min = row['longitud_min']
+                #Pasar el obligatorio a Boolean:
+                if ob == 1:
+                    obligatorio = True
+                else:
+                    obligatorio = False
+                campo = CampoPersonalizado(nombre, valor, obligatorio, longitud_max, longitud_min, id_atributo_demandante, id_atributo)
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        return campo
+    
+    
+    
+    def consultarAtributosJuzgado(self):
+        atributos = []
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributosJuzgado WHERE eliminado = 0''')
+            for row in c:
+                id_atributo = str(row['id_atributo'])
+                nombre = str(row['nombre'])
+                ob = row['obligatorio']
+                longitud_max = row['longitud_max']
+                longitud_min = row['longitud_min']
+                #Pasar el obligatorio a Boolean:
+                if ob == 1:
+                    obligatorio = True
+                else:
+                    obligatorio = False 
+                campo = CampoPersonalizado(id_atributo=id_atributo, nombre=nombre, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min)    
+                atributos.append(campo)
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        return atributos
+
+    def consultarAtributosActuacion(self):
+        atributos = []
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributosActuacion WHERE eliminado = 0''')
+            for row in c:
+                id_atributo = str(row['id_atributo'])
+                nombre = str(row['nombre'])
+                ob = row['obligatorio']
+                longitud_max = row['longitud_max']
+                longitud_min = row['longitud_min']
+                #Pasar el obligatorio a Boolean:
+                if ob == 1:
+                    obligatorio = True
+                else:
+                    obligatorio = False 
+                campo = CampoPersonalizado(id_atributo=id_atributo, nombre=nombre, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min)    
+                atributos.append(campo)
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        return atributos   
+    
+    
+    
