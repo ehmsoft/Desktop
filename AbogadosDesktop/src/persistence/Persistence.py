@@ -411,6 +411,8 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
+        for juz in juzgados:
+            juz.setCampos(self.consultarCamposJuzgado(juz))
         return juzgados 
        
     def consultarJuzgado(self, id_juzgado):
@@ -434,6 +436,7 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
+        juzgado.setCampos(self.consultarCamposJuzgado(juzgado))
         return juzgado
         
     def consultarCategoria(self, id_categoria):
