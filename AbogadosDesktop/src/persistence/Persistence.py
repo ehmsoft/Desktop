@@ -1073,4 +1073,3 @@ class Persistence(object):
         finally:
             conn.close()
         return archivo
-    
