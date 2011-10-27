@@ -117,6 +117,9 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
+        for deman_act in demandantes:
+            deman_act.setCampos(self.consultarCamposDemandante(deman_act))
+            
         return demandantes
     
     def consultarDemandados(self):
@@ -141,6 +144,8 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
+        for deman_act in demandados:
+            deman_act.setCampos(self.consultarCamposDemandado(deman_act))
         return demandados
     
     def consultarPersonas(self):
@@ -176,6 +181,11 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
+        for deman_act in personas:
+            if deman_act.getTipo() == 1:
+                deman_act.setCampos(self.consultarCamposDemandante(deman_act))
+            else:
+                deman_act.setCampos(self.consultarCamposDemandado(deman_act))
         return personas
             
     def consultarPersona(self, id_persona, tipo):
@@ -215,6 +225,11 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
+        if tipo == 1:
+            persona.setCampos(self.consultarCamposDemandante(persona))
+        else:
+            persona.setCampos(self.consultarCamposDemandado(persona))
+        
         return persona
     
     def consultarProcesos(self):
