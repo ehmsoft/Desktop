@@ -646,14 +646,14 @@ class Persistence(object):
             conn.close()
         return campos
     
-    def consultarCampoPlantilla(self, id_plantilla):
+    def consultarCampoPlantilla(self, id_campo):
         campo = None
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_plantilla = ?''', (id_plantilla,))
+            c.execute('''SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_plantilla = ?''', (id_campo,))
             row = c.fetchone()
             if row:
                 id_atributo_plantilla = str(row['id_atributo_plantilla'])
