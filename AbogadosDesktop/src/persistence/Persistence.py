@@ -13,6 +13,7 @@ from core.CampoPersonalizado import CampoPersonalizado
 from core.Categoria import Categoria
 from core.Juzgado import Juzgado
 from core.Plantilla import Plantilla
+from core.Archivo import Archivo
 
 class Persistence(object):
     '''
@@ -1013,3 +1014,42 @@ class Persistence(object):
         finally:
             conn.close()
         return campo
+    
+    def consultarArchivosProceso(self, proceso):
+        archivos = []
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''SELECT id_archivo_proceso, ruta FROM archivos_proceso WHERE id_proceso = ? AND eliminado = 0''', (proceso.getId_proceso(),))
+            for row in c:
+                id_archivo_proceso = str(row['id_archivo_proceso'])
+                ruta_proceso = str(row['ruta'])
+                archivo = Archivo(ruta = ruta_proceso, id_archivo = id_archivo_proceso)
+                archivos.append(archivo)
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        return archivos
+    
+    def consultarArchivo(self, id_archivo_proceso):
+        archivo = None
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''SELECT id_archivo_proceso, ruta FROM archivos_proceso WHERE id_archivo_proceso = ? AND eliminado = 0''', (id_archivo_proceso,))
+            row = c.fetchone()
+            if row:
+                id_archivo_proceso = str(row['id_archivo_proceso'])
+                ruta_proceso = str(row['ruta'])
+                archivo = Archivo(ruta = ruta_proceso, id_archivo = id_archivo_proceso)
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        return archivo
+    
