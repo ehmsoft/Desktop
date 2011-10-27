@@ -335,6 +335,7 @@ class Persistence(object):
             conn.close()
         for act in actuaciones:
             act.setJuzgado(self.consultarJuzgado(act.getJuzgado().getId_juzgado()))
+            act.setCampos(self.consultarCamposActuacion(act))
         return actuaciones
         
     def consultarActuacion(self, id_actuacion):
@@ -359,6 +360,7 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
+        actuacion.setCampos(self.consultarCamposActuacion(actuacion))
         return actuacion
     
     def consultarActuacionesCriticas(self, cantidad):
@@ -385,6 +387,7 @@ class Persistence(object):
             conn.close()
         for act in actuaciones:
             act.setJuzgado(self.consultarJuzgado(act.getJuzgado().getId_juzgado()))
+            act.setCampos(self.consultarCamposActuacion(act))
         return actuaciones
             
     def consultarJuzgados(self):
