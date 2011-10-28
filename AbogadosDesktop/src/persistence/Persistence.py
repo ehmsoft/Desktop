@@ -469,12 +469,48 @@ class Persistence(object):
         finally:
             conn.close()
         
-    def actualizarAtributoPerona(self, campoPersonalizado):
-        pass
+    def actualizarAtributoPersona(self, campoPersonalizado):
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            obligatorio = 0
+            if(campoPersonalizado.isObligatorio()):
+                obligatorio = 1                   
+            c.execute('''UPDATE atributosPersona SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,'''+ ''' longitud_min = ?, modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin(),campoPersonalizado.getId_campo()))                
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def guardarAtributoPersona(self, campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            obligatorio = 0
+            if(campoPersonalizado.isObligatorio()):
+                obligatorio = 1                   
+            c.execute('''INSERT INTO atributosPersona (id_atributo, nombre, obligatorio, longitud_max, longitud_min,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin()))                
+            campoPersonalizado.seId_atributo = c.lastrowid
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def borrarAtributoPersona(self, campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE atributosPersona SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributos_persona SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_campo(),))
+            
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     
     def actualizarCampoDemandante(self, campoPersonalizado):
         pass
@@ -493,11 +529,47 @@ class Persistence(object):
     
     
     def actualizarAtributoJuzgado(self,campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            obligatorio = 0
+            if(campoPersonalizado.isObligatorio()):
+                obligatorio = 1                   
+            c.execute('''UPDATE atributosJuzgado SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,'''+ ''' longitud_min = ?, modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin(),campoPersonalizado.getId_campo()))                
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def guardarAtributoJuzgado(self, campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            obligatorio = 0
+            if(campoPersonalizado.isObligatorio()):
+                obligatorio = 1                   
+            c.execute('''INSERT INTO atributosJuzgado (id_atributo, nombre, obligatorio, longitud_max, longitud_min,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin()))                
+            campoPersonalizado.seId_atributo = c.lastrowid
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def borrarAtributoJuzgado(self, campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE atributosJuzgado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributos_juzgado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_campo(),))
+            
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     
     
     def actualizarCampoJuzgado(self,campoPersonalizado):
@@ -509,11 +581,47 @@ class Persistence(object):
     
     
     def actualizarAtributoActuacion(self,campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            obligatorio = 0
+            if(campoPersonalizado.isObligatorio()):
+                obligatorio = 1                   
+            c.execute('''UPDATE atributosActuacion SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,'''+ ''' longitud_min = ?, modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin(),campoPersonalizado.getId_campo()))                
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def guardarAtributoActuacion(self, campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            obligatorio = 0
+            if(campoPersonalizado.isObligatorio()):
+                obligatorio = 1                   
+            c.execute('''INSERT INTO atributosActuacion (id_atributo, nombre, obligatorio, longitud_max, longitud_min,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin()))                
+            campoPersonalizado.seId_atributo = c.lastrowid
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def borrarAtributoActuacion(self, campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE atributosActuacion SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributos_actuacion SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_campo(),))
+            
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     
     
     def actualizarCampoActuacion(self,campoPersonalizado):
