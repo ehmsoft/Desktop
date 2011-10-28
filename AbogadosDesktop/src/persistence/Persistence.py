@@ -513,19 +513,75 @@ class Persistence(object):
             conn.close()
     
     def actualizarCampoDemandante(self, campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE atributos_demandante SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close    
     def guardarCampoDemandante(self, campoPersonalizado, id_demandante):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''INSERT INTO atributos_demandante (id_atributo_proceso, id_atributo, id_proceso, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getId_atributo(),id_demandante,campoPersonalizado.getValor()))
+            campoPersonalizado.setId_campo = c.lastrowid
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def borrarCampoDemandante(self,campoPersonalizado):
-        pass 
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE atributos_demandante SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getId_campo(),))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     
     
     def actualizarCampoDemandado(self, campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE atributos_demandado SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close    
     def guardarCampoDemandado(self, campoPersonalizado, id_demandado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''INSERT INTO atributos_demandado (id_atributo_proceso, id_atributo, id_proceso, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getId_atributo(),id_demandado,campoPersonalizado.getValor()))
+            campoPersonalizado.setId_campo = c.lastrowid
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def borrarCampoDemandado(self,campoPersonalizado):
-        pass 
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE atributos_demandado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getId_campo(),))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     
     
     def actualizarAtributoJuzgado(self,campoPersonalizado):
@@ -573,11 +629,39 @@ class Persistence(object):
     
     
     def actualizarCampoJuzgado(self,campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE atributos_juzgado SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close    
     def guardarCampoJuzgado(self, campoPersonalizado, id_juzgado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''INSERT INTO atributos_juzgado (id_atributo_proceso, id_atributo, id_proceso, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getId_atributo(),id_juzgado,campoPersonalizado.getValor()))
+            campoPersonalizado.setId_campo = c.lastrowid
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def borrarCampoJuzgado(self, campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE atributos_juzgado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getId_campo(),))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     
     
     def actualizarAtributoActuacion(self,campoPersonalizado):
@@ -625,19 +709,75 @@ class Persistence(object):
     
     
     def actualizarCampoActuacion(self,campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE atributos_actuacion SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close    
     def guardarCampoActuacion(self, campoPersonalizado, id_actuacion):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''INSERT INTO atributos_actuacion (id_atributo_proceso, id_atributo, id_proceso, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getId_atributo(),id_actuacion,campoPersonalizado.getValor()))
+            campoPersonalizado.setId_campo = c.lastrowid
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def borrarCampoActuacion(self, campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE atributos_actuacion SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getId_campo(),))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     
     
     def actualizarArchivoProceso(self, archivo):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE archivos_proceso SET id_proceso = ?,ruta = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_archivo_proceso = ?''',(archivo.getId_proceso(),archivo.getRuta(),archivo.getId_archivo_proceso(),))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close   
     def guardarArchivoProceso(self, archivo, id_proceso):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()                  
+            c.execute('''INSERT INTO archivos_proceso (id_archivo_proceso, id_proceso, ruta,nuevo, fecha_mod) VALUES( NULL,?,?,1,datetime('now','localtime'))''',(archivo.getId_proceso(),archivo.getRuta()))                
+            archivo.setId_archivo_proceso = c.lastrowid
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def borrarArchivoProceso(self, archivo):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE archivo_proceso SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_archivo_proceso = ?''',(archivo.getId_archivo_proceso(),))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     
     #Metodos de Cargado
     
