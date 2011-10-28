@@ -26,72 +26,511 @@ class Persistence(object):
     
     #Metodos de Guardado
     def actualizarPersona(self, persona):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            if persona.getTipo() == 1:
+                c.execute('''UPDATE demandantes SET cedula = ?,'''+ ''' nombre = ?,'''+ ''' telefono = ?, direccion = ?,'''+ '''correo= ?,'''+ '''notas = ?, fecha_mod = datetime('now','localtime'), modificado =1 WHERE id_demandante = ?''',(persona.getId(),persona.getNombre(),persona.getTelefono(),persona.getDireccion(),persona.getCorreo(),persona.getNotas(),persona.getId_persona(),))
+            elif persona.getTipo() == 2:
+                c.execute('''UPDATE demandados SET cedula = ?,'''+ ''' nombre = ?,''' + ''' telefono = ?,'''+ ''' direccion = ?,''' + '''correo= ?,'''+ ''' notas = ?, fecha_mod = datetime('now','localtime'), modificado =1 WHERE id_demandado = ?''',(persona.getId(),persona.getNombre(),persona.getTelefono(),persona.getDireccion(),persona.getCorreo(),persona.getNotas(),persona.getId_persona(),))
+            else:
+                print( "eso no es asi")  
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def guardarPersona(self, persona):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            if persona.getTipo() == 1:
+                c.execute('''INSERT INTO demandantes (id_demandante,cedula,nombre,telefono,direccion,correo,notas,nuevo,fecha_mod) VALUES(NULL,?,?,?,?,?,?,1,datetime('now','localtime'))''',(persona.getId(),persona.getNombre(),persona.getTelefono(),persona.getDireccion(),persona.getCorreo(),persona.getNotas()))
+            elif persona.getTipo() == 2:
+                c.execute('''INSERT INTO demandados (id_demandado,cedula,nombre,telefono,direccion,correo,notas,nuevo,fecha_mod) VALUES(NULL,?,?,?,?,?,?,1,datetime('now','localtime'))''',(persona.getId(),persona.getNombre(),persona.getTelefono(),persona.getDireccion(),persona.getCorreo(),persona.getNotas()))
+            else:
+                print( "eso no es asi")
+            persona.setId_persona = c.lastrowid  
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def borrarPersona(self, persona):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            if persona.getTipo() == 1:
+                # c.execute('''DELETE FROM demandantes WHERE id_demandante = ?''',(persona.getId_persona(),))
+                c.execute('''UPDATE demandantes SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_demandante = ?''',(persona.getId_persona(),))
+                c.execute('''UPDATE procesos SET id_demandante = 1 WHERE id_demandante = ?''',(persona.getId_persona(),))
+                c.execute('''UPDATE plantillas SET id_demandante = 1 WHERE id_demandante = ?''',(persona.getId_persona(),))
+
+            elif persona.getTipo() == 2:
+                #c.execute('''DELETE FROM demandados WHERE id_demandado = ?''',(persona.getId_persona(),))
+                c.execute('''UPDATE demandados SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_demandado = ?''',(persona.getId_persona(),))
+                c.execute('''UPDATE procesos SET id_demandado = 1 WHERE id_demandado = ?''',(persona.getId_persona(),))
+                c.execute('''UPDATE plantillas SET id_demandado = 1 WHERE id_demandado = ?''',(persona.getId_persona(),))
+
+            else:
+                print( "eso no es asi") 
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     
     def actualizarJuzgado(self, juzgado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE juzgados SET nombre = ?,'''+ ''' ciudad = ?,''' + ''' telefono = ?,''' + ''' direccion= ?,''' + ''' tipo = ?, modificado =1, fecha_mod = datetime('now','localtime') WHERE id_juzgado = ?''',(juzgado.getNombre(),juzgado.getCiudad(),juzgado.getTelefono(),juzgado.getDireccion(),juzgado.getTipo(),juzgado.getId_juzgado()))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def guardarJuzgado(self, juzgado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''INSERT INTO juzgados (id_juzgado,nombre,ciudad,telefono,direccion,tipo,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,?,1,datetime('now','localtime'))''',(juzgado.getNombre(),juzgado.getCiudad(),juzgado.getTelefono(),juzgado.getDireccion(),juzgado.getTipo()))
+            juzgado.setId_juzgado = c.lastrowid
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def borrarJuzgado(self, juzgado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            
+            #c.execute('''DELETE FROM juzgados WHERE id_juzgado = ?''',(juzgado.getId_juzgado(),))
+            c.execute('''UPDATE juzgados SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_juzgado = ?''',(juzgado.getId_juzgado(),))
+            c.execute('''UPDATE procesos SET id_juzgado = 1 WHERE id_juzgado = ?''',(juzgado.getId_juzgado(),))
+            c.execute('''UPDATE actuaciones SET id_juzgado = 1 WHERE id_juzgado = ?''',(juzgado.getId_juzgado(),))
+            c.execute('''UPDATE plantillas SET id_juzgado = 1 WHERE id_juzgado = ?''',(juzgado.getId_juzgado(),))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     
     def actualizarActuacion(self, actuacion):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE actuaciones SET id_juzgado = ?,'''+ ''' fecha_creacion = datetime(?),'''+ ''' fecha_proxima = datetime(?),'''+ ''' descripcion = (?),'''+ ''' uid = ?, modificado =1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''',(actuacion.getJuzgado().getId_juzgado(),actuacion.getFecha(),actuacion.getFechaProxima(), actuacion.getDescripcion(),actuacion.getUid(),actuacion.getId_actuacion()))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def guardarActuacion(self, actuacion, id_proceso):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''INSERT INTO actuaciones (id_actuacion,id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid, nuevo, fecha_mod) VALUES( NULL,?,?,datetime(?),datetime(?),?,?,1,datetime('now','localtime'))''',(id_proceso,actuacion.getJuzgado().getId_juzgado(),actuacion.getFecha(),actuacion.getFechaProxima(), actuacion.getDescripcion(),actuacion.getUid()))
+            actuacion.setId_actuacion = c.lastrowid
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def borrarActuacion(self, actuacion):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            #c.execute('''DELETE FROM actuaciones WHERE id_actuacion = ?''',(actuacion.getId_actuacion(),))
+            c.execute('''UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''',(actuacion.getId_actuacion(),))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     
     def actualizarCampoPersonalizado(self, campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE atributos_proceso SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close    
     def guardarCampoPersonalizado(self, campoPersonalizado, id_proceso):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''INSERT INTO atributos_proceso (id_atributo_proceso, id_atributo, id_proceso, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getId_atributo(),id_proceso,campoPersonalizado.getValor()))
+            campoPersonalizado.setId_campo = c.lastrowid
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def borrarCampoPersonalizado(self, campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            #c.execute('''DELETE FROM atributos_proceso WHERE id_atributo_proceso = ?''',(campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributos_proceso SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getId_campo(),))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     
     def actualizarAtributo(self, campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            obligatorio = 0
+            if(campoPersonalizado.isObligatorio()):
+                obligatorio = 1                   
+            c.execute('''UPDATE atributos SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,'''+ ''' longitud_min = ?, modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin(),campoPersonalizado.getId_campo()))                
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        
     def guardarAtributo(self, campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            obligatorio = 0
+            if(campoPersonalizado.isObligatorio()):
+                obligatorio = 1                   
+            c.execute('''INSERT INTO atributos (id_atributo, nombre, obligatorio, longitud_max, longitud_min,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin()))                
+            campoPersonalizado.seId_atributo = c.lastrowid
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+       
     def borrarAtributo(self, campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            #c.execute('''DELETE FROM atributos WHERE id_atributo = ?''',( campoPersonalizado.getId_atributo(),))                
+            #c.execute('''DELETE FROM atributos_proceso WHERE id_atributo = ?''',( campoPersonalizado.getId_atributo(),))                
+            c.execute('''UPDATE atributos SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
+            c.execute('''UPDATE atributos_proceso SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
+          
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     
     def actualizarProceso(self, proceso):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            demandante = "1"
+            if demandante != None:
+                demandante= proceso.getDemandante().getId_persona()
+            demandado = "1"
+            if demandado != None:
+                proceso.getDemandado().getId_persona()
+            juzgado = "1"
+            if juzgado != None:
+                proceso.getJuzgado().getId_juzgado()
+                
+            c.execute('''UPDATE procesos SET id_demandante = ?,'''+ ''' id_demandado = ?,'''+ ''' fecha_creacion = datetime(?),''' + ''' radicado = ?,''' + ''' radicado_unico = ?,'''+ ''' estado = ?,''' + ''' tipo = ?,''' + ''' notas = ?,'''+ ''' prioridad = ?,''' + ''' id_juzgado = ?,'''+ ''' id_categoria = ?, modificado =1, fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''',(demandante,demandado,proceso.getFecha(),proceso.getRadicado(), proceso.getRadicadoUnico(),proceso.getEstado(),proceso.getTipo(),proceso.getNotas(),proceso.getPrioridad(),juzgado,proceso.getCategoria().getId_categoria(),proceso.getId_proceso()))                                                         
+            conn.commit()
+                      
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        campos = proceso.getCampos()
+        for campo in campos:
+            self.guardarCampoPersonalizado(campo,proceso.getId_proceso())
+            
     def guardarProceso(self, proceso):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''INSERT INTO procesos (id_proceso,id_demandante,id_demandado,fecha_creacion,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nuevo,fecha_mod) VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?,?,1,fecha_mod = datetime('now','localtime'))''',(proceso.getDemandante().getId_persona(),proceso.getDemandado().getId_persona(),proceso.getFecha(),proceso.getRadicado(), proceso.getRadicadoUnico(),proceso.getEstado(),proceso.getTipo(),proceso.getNotas(),proceso.getPrioridad(),proceso.getJuzgado().getId_juzgado(),proceso.getCategoria().getId_categoria()))                                                         
+            proceso.setId_proceso = c.lastrowid
+            conn.commit()
+                
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        
+        campos = proceso.getCampos()
+        for campo in campos:
+            self.guardarCampoPersonalizado(campo,proceso.getId_proceso())
+        actuaciones = proceso.getActuaciones()
+        for actuacion in actuaciones:
+            self.guardarActuacion(actuacion,proceso.getId_proceso())   
+        
+        
     def borrarProceso(self, proceso):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            #c.execute('''DELETE FROM procesos WHERE id_proceso = ?''',(proceso.getId_proceso(),))                                                         
+            #c.execute('''DELETE FROM actuaciones WHERE id_proceso = ?''',(proceso.getId_proceso(),))
+            #c.execute('''DELETE FROM atributos_proceso WHERE id_proceso = ?''',(proceso.getId_proceso(),))
+            c.execute('''UPDATE procesos SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''',(proceso.getId_proceso(),))
+            c.execute('''UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''',(proceso.getId_proceso(),))
+            c.execute('''UPDATE atributos_proceso SET eliminado = 1,fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''',(proceso.getId_proceso(),))
+            proceso.setId_proceso = c.lastrowid
+            conn.commit()
+                
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     
     def actualizarCategoria(self, categoria):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE categorias SET descripcion = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_categoria = ?''',(categoria.getDescripcion(),categoria.getId_categoria()))        
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def guardarCategoria(self, categoria):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''INSERT INTO categorias (id_categoria,descripcion,nuevo,fecha_mod) VALUES( NULL,?,1,datetime('now','localtime'))''',(categoria.getDescripcion(),))        
+            categoria.setId_categoria = c.lastrowid
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def borrarCategoria(self, categoria):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            #c.execute('''DELETE FROM categorias WHERE id_categoria = ?''',(categoria.getId_categoria(),))        
+            c.execute('''UPDATE categorias SET eliminado = 1,fecha_mod = datetime('now','localtime') WHERE id_categoria = ?''',(categoria.getId_categoria(),))        
+            c.execute('''UPDATE procesos SET id_categoria = 1 WHERE id_categoria = ?''',(categoria.getId_categoria(),))        
+            c.execute('''UPDATE plantillas SET id_categoria = 1 WHERE id_categoria = ?''',(categoria.getId_categoria(),))        
+
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     
     def actualizarPlantilla(self, plantilla):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            demandante = "1"
+            if demandante != None:
+                demandante= plantilla.getDemandante().getId_persona()
+            demandado = "1"
+            if demandado != None:
+                plantilla.getDemandado().getId_persona()
+            juzgado = "1"
+            if juzgado != None:
+                plantilla.getJuzgado().getId_juzgado()
+                
+            c.execute('''UPDATE plantillas SET nombre=?,'''+'''id_demandante = ?,'''+ ''' id_demandado = ?,'''+ ''' fecha_creacion = datetime(?),''' + ''' radicado = ?,''' + ''' radicado_unico = ?,'''+ ''' estado = ?,''' + ''' tipo = ?,''' + ''' notas = ?,'''+ ''' prioridad = ?,''' + ''' id_juzgado = ?,'''+ ''' id_categoria = ?, modificado =1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''',(plantilla.getNombre(),demandante,demandado,plantilla.getFecha(),plantilla.getRadicado(), plantilla.getRadicadoUnico(),plantilla.getEstado(),plantilla.getTipo(),plantilla.getNotas(),plantilla.getPrioridad(),juzgado,plantilla.getCategoria().getId_categoria(),plantilla.getId_plantilla()))                                                         
+            conn.commit()
+                      
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        campos = plantilla.getCampos()
+        for campo in campos:
+            self.guardarCampoPersonalizado(campo,plantilla.getId_proceso())
+
     def guardarPlantilla(self, plantilla):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''INSERT INTO plantillas (nombre,id_plantilla,id_demandante,id_demandado,fecha_creacion,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nuevo, fecha_mod) VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?,?,1,fecha_mod = datetime('now','localtime'))''',(plantilla.getNombre(),plantilla.getDemandante().getId_persona(),plantilla.getDemandado().getId_persona(),plantilla.getFecha(),plantilla.getRadicado(), plantilla.getRadicadoUnico(),plantilla.getEstado(),plantilla.getTipo(),plantilla.getNotas(),plantilla.getPrioridad(),plantilla.getJuzgado().getId_juzgado(),plantilla.getCategoria().getId_categoria()))                                                         
+            plantilla.setId_plantilla = c.lastrowid
+            conn.commit()
+                
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        
+        campos =plantilla.getCampos()
+        for campo in campos:
+            self.guardarCampoPersonalizado(campo,plantilla.getId_proceso())
+        
     def borrarPlantilla(self, plantilla):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE plantillas SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''',(plantilla.getId_proceso(),))
+            c.execute('''UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''',(plantilla.getId_proceso(),))
+            conn.commit()
+                
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     
     def actualizarCampoPlantilla(self, campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE atributos_plantilla SET valor = ?, modificado =1fecha_mod = datetime('now','localtime'),  WHERE id_atributo_plantilla = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def guardarCampoPlantilla(self, campoPersonalizado, id_proceso):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''INSERT INTO atributos_plantilla (id_atributo_plantilla, id_atributo, id_proceso, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getId_atributo(),id_proceso,campoPersonalizado.getValor()))
+            campoPersonalizado.setId_campo = c.lastrowid
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def borrarCampoPlantilla(self, campoPersonalizado):
-        pass
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_plantilla = ?''',(campoPersonalizado.getId_campo(),))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     
     def actualizarPreferencia(self, id_preferencia, valor):
         pass
+    
     def borrarPreferencia(self, id_preferencia):
+      
+    
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+                    
+            #la fuente como se pone???
+            #c.execute('''UPDATE preferencias SET valor=? WHERE id_preferencia = 10001''',(Font.getDefault().getFontFamily().getName()))
+            #c.execute('''UPDATE preferencias SET valor=? WHERE id_preferencia = 10002''',(Font.getDefault().getHeight()))
+            #c.execute('''UPDATE preferencias SET valor=? WHERE id_preferencia = 10003''',(Integer.toString(Font.getDefault().getStyle())))
+            #este si esta bien
+            c.execute('''UPDATE preferencias SET valor=20001 WHERE id_preferencia = 10101''')
+            c.execute('''UPDATE preferencias SET valor=1 WHERE id_preferencia = 10102''')
+            c.execute('''UPDATE preferencias SET valor=0 WHERE id_preferencia =10201''')
+            c.execute('''UPDATE preferencias SET valor=1 WHERE id_preferencia = 10301''')
+            c.execute('''UPDATE preferencias SET valor= 'Usuario' WHERE id_preferencia = 10401''')
+            c.execute('''UPDATE preferencias SET valor=10 WHERE id_preferencia = 10501''')
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        
+    def actualizarAtributoPerona(self, campoPersonalizado):
         pass
+    def guardarAtributoPersona(self, campoPersonalizado):
+        pass
+    def borrarAtributoPersona(self, campoPersonalizado):
+        pass
+    
+    def actualizarCampoDemandante(self, campoPersonalizado):
+        pass
+    def guardarCampoDemandante(self, campoPersonalizado, id_demandante):
+        pass
+    def borrarCampoDemandante(self,campoPersonalizado):
+        pass 
+    
+    
+    def actualizarCampoDemandado(self, campoPersonalizado):
+        pass
+    def guardarCampoDemandado(self, campoPersonalizado, id_demandado):
+        pass
+    def borrarCampoDemandado(self,campoPersonalizado):
+        pass 
+    
+    
+    def actualizarAtributoJuzgado(self,campoPersonalizado):
+        pass
+    def guardarAtributoJuzgado(self, campoPersonalizado):
+        pass
+    def borrarAtributoJuzgado(self, campoPersonalizado):
+        pass
+    
+    
+    def actualizarCampoJuzgado(self,campoPersonalizado):
+        pass
+    def guardarCampoJuzgado(self, campoPersonalizado, id_juzgado):
+        pass
+    def borrarCampoJuzgado(self, campoPersonalizado):
+        pass
+    
+    
+    def actualizarAtributoActuacion(self,campoPersonalizado):
+        pass
+    def guardarAtributoActuacion(self, campoPersonalizado):
+        pass
+    def borrarAtributoActuacion(self, campoPersonalizado):
+        pass
+    
+    
+    def actualizarCampoActuacion(self,campoPersonalizado):
+        pass
+    def guardarCampoActuacion(self, campoPersonalizado, id_actuacion):
+        pass
+    def borrarCampoActuacion(self, campoPersonalizado):
+        pass
+    
+    
+    def actualizarArchivoProceso(self, archivo):
+        pass
+    def guardarArchivoProceso(self, archivo, id_proceso):
+        pass
+    def borrarArchivoProceso(self, archivo):
+        pass
+    
     #Metodos de Cargado
     
     def consultarDemandantes(self):
