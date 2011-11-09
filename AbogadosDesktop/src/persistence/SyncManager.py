@@ -129,7 +129,27 @@ class SyncManager(object):
                 cLocal.execute('''INSERT INTO procesos(id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria) VALUES (?,?,?,?,?,?,?,?,?,?,?)''', (id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria,))
                 id = cLocal.lastrowid
                 cMovil.execute('''UPDATE atributos_proceso SET id_proceso = ? WHERE id_proceso = ? ''', (id, id_proceso,))
-                cMovil.execute('''UPDATE atributos_plantilla SET id_proceso = ? WHERE id_proceso = ? ''', (id, id_proceso,))
+                cMovil.execute('''UPDATE actuaciones SET id_proceso = ? WHERE id_proceso = ? ''', (id, id_proceso,))
+            
+            #Seccion Plantillas
+            cMovil.execute('''SELECT id_plantilla, nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria FROM plantillas WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            listaCMovil = cMovil.fetchall()
+            for row in listaCMovil:
+                id_plantilla = str(row['id_plantilla'])
+                nombre = str(row['nombre'])
+                id_demandante = str(row['id_demandante'])
+                id_demandado = str(row['id_demandado'])
+                radicado = str(row['radicado'])
+                radicado_unico = str(row['radicado_unico'])
+                estado = str(row['estado'])
+                tipo = str(row['tipo'])
+                notas = str(row['notas'])
+                prioridad = int(row['prioridad'])
+                id_juzgado = str(row['id_juzgado'])
+                id_categoria = str(row['id_categoria'])
+                cLocal.execute('''INSERT INTO plantillas(nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria) VALUES (?,?,?,?,?,?,?,?,?,?,?)''', (nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria,))
+                id = cLocal.lastrowid
+                cMovil.execute('''UPDATE atributos_plantilla SET id_plantilla = ? WHERE id_plantilla = ? ''', (id, id_plantilla,))
             
             #Seccion Actuaciones
             cMovil.execute('''SELECT id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
