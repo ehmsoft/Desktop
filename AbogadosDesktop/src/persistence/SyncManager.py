@@ -96,6 +96,22 @@ class SyncManager(object):
                 cMovil.execute('''UPDATE procesos SET id_categoria = ? WHERE id_categoria = ? ''', (id, id_categoria,))
                 cMovil.execute('''UPDATE plantillas SET id_categoria = ? WHERE id_categoria = ? ''', (id, id_categoria,))
             
+            #Seccion Atributos
+            cMovil.execute('''SELECT id_atributo, nombre, obligatorio, longitud_max, longitud_min FROM atributos WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            listaCMovil = cMovil.fetchall()
+            for row in listaCMovil:
+                id_atributo = str(row['id_atributo'])
+                nombre = str(row['nombre'])
+                obligatorio = str(row['obligatorio'])
+                longitud_max = str(row['longitud_max'])
+                longitud_min = str(row['longitud_min'])
+                cLocal.execute('''INSERT INTO atributos(nombre, obligatorio, longitud_max, longitud_min) VALUES(?,?,?,?)''', (nombre, obligatorio, longitud_max, longitud_min,))
+                id = cLocal.lastrowid
+                cMovil.execute('''UPDATE atributos_proceso SET id_atributo = ? WHERE id_atributo = ? ''', (id, id_atributo,))
+                cMovil.execute('''UPDATE atributos_plantilla SET id_atributo = ? WHERE id_atributo = ? ''', (id, id_atributo,))
+            
+            
+            
             #Seccion Actuaciones
             cMovil.execute('''SELECT id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid FROM actuaciones WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
             for row in cMovil:
