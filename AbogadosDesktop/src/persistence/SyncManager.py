@@ -52,8 +52,21 @@ class SyncManager(object):
                 id = cLocal.lastrowid
                 cMovil.execute('''UPDATE procesos SET id_demandante = ? WHERE id_demandante = ? ''', (id, id_demandante,))
                 cMovil.execute('''UPDATE plantillas SET id_demandante = ? WHERE id_demandante = ? ''', (id, id_demandante,))
-            
-            
+            #Seccion demandados
+            cMovil.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            listaCMovil = cMovil.fetchall()
+            for row in listaCMovil:
+                id_demandado = str(row['id_demandado'])
+                cedula = str(row['cedula'])
+                nombre = str(row['nombre'])
+                telefono = str(row['telefono'])
+                direccion = str(row['direccion'])
+                correo = str(row['correo'])
+                notas = str(row['notas'])
+                cLocal.execute('''INSERT INTO demandados(cedula, nombre, telefono, direccion, correo, notas) VALUES(?,?,?,?,?,?)''', (cedula, nombre, telefono, direccion, correo, notas,))
+                id = cLocal.lastrowid
+                cMovil.execute('''UPDATE procesos SET id_demandado = ? WHERE id_demandado = ? ''', (id, id_demandado,))
+                cMovil.execute('''UPDATE plantillas SET id_demandado = ? WHERE id_demandado = ? ''', (id, id_demandado,))            
                 
                 
             connMovil.commit()
