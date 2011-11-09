@@ -85,6 +85,16 @@ class SyncManager(object):
                 cMovil.execute('''UPDATE plantillas SET id_juzgado = ? WHERE id_juzgado = ? ''', (id, id_juzgado,))
                 cMovil.execute('''UPDATE actuaciones SET id_juzgado = ? WHERE id_juzgado = ? ''', (id, id_juzgado,))
             
+            #Seccion categorias
+            cMovil.execute('''SELECT id_categoria, descripcion WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            listaCMovil = cMovil.fetchall()
+            for row in listaCMovil:
+                id_categoria = str(row['id_categoria'])
+                descripcion = str(row['descripcion'])
+                cLocal.execute('''INSERT INTO categorias(descripcion) VALUES(?)''', (descripcion,))
+                id = cLocal.lastrowid
+                cMovil.execute('''UPDATE procesos SET id_categoria = ? WHERE id_categoria = ? ''', (id, id_categoria,))
+                cMovil.execute('''UPDATE plantillas SET id_categoria = ? WHERE id_categoria = ? ''', (id, id_categoria,))
             
                 
             connMovil.commit()
