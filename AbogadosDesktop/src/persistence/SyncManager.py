@@ -53,6 +53,7 @@ class SyncManager(object):
                 cMovil.execute('''UPDATE procesos SET id_demandante = ? WHERE id_demandante = ? ''', (id, id_demandante,))
                 cMovil.execute('''UPDATE plantillas SET id_demandante = ? WHERE id_demandante = ? ''', (id, id_demandante,))
             #Seccion demandados
+            
             cMovil.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
             listaCMovil = cMovil.fetchall()
             for row in listaCMovil:
@@ -67,7 +68,24 @@ class SyncManager(object):
                 id = cLocal.lastrowid
                 cMovil.execute('''UPDATE procesos SET id_demandado = ? WHERE id_demandado = ? ''', (id, id_demandado,))
                 cMovil.execute('''UPDATE plantillas SET id_demandado = ? WHERE id_demandado = ? ''', (id, id_demandado,))            
-                
+            
+            #Seccion Juzgados
+            cMovil.execute('''SELECT id_juzgado, nombre, ciudad, telefono, direccion, tipo FROM juzgados WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            listaCMovil = cMovil.fetchall()
+            for row in listaCMovil:
+                id_juzgado = str(row['id_juzgado'])
+                nombre = str(row['nombre'])
+                ciudad = str(row['ciudad'])
+                telefono = str(row['telefono'])
+                direccion = str(row['direccion']) 
+                tipo = str(row['tipo'])
+                cLocal.execute('''INSERT INTO juzgados(nombre, ciudad, telefono, direccion, tipo) VALUES(?,?,?,?,?)''', (nombre, ciudad, telefono, direccion, tipo,))
+                id = cLocal.lastrowid
+                cMovil.execute('''UPDATE procesos SET id_juzgado = ? WHERE id_juzgado = ? ''', (id, id_juzgado,))
+                cMovil.execute('''UPDATE plantillas SET id_juzgado = ? WHERE id_juzgado = ? ''', (id, id_juzgado,))
+                cMovil.execute('''UPDATE actuaciones SET id_juzgado = ? WHERE id_juzgado = ? ''', (id, id_juzgado,))
+            
+            
                 
             connMovil.commit()
             connLocal.commit()            
