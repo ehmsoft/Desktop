@@ -53,11 +53,24 @@ class Persistence(object):
             else:
                 print( "eso no es asi")
             persona.setId_persona = c.lastrowid  
-            conn.commit()            
+            conn.commit()          
         except Exception as e:
             raise e
         finally:
             conn.close()
+            
+        if persona.getTipo() == 1:
+            campos = persona.getCampos()
+            for campo in campos:
+                self.guardarCampoDemandante(campo,persona.getId_persona())
+        elif persona.getTipo() == 2:
+            campos = persona.getCampos()
+            for campo in campos:
+                self.guardarCampoDemandado(campo,persona.getId_persona())
+        else:
+            print( "eso no es asi")
+         
+        
     def borrarPersona(self, persona):
         try:
             self.__conMgr.prepararBD()
@@ -106,6 +119,9 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
+        campos = juzgado.getCampos()
+        for campo in campos:
+            self.guardarCampoJuzgado(campo,juzgado.getId_juzgado())
     def borrarJuzgado(self, juzgado):
         try:
             self.__conMgr.prepararBD()
@@ -146,6 +162,10 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
+            
+        campos = actuacion.getCampos()
+        for campo in campos:
+            self.guardarCampoActuacion(campo,actuacion.getId_actuacion())
     def borrarActuacion(self, actuacion):
         try:
             self.__conMgr.prepararBD()
