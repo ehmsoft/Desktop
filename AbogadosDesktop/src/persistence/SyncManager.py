@@ -36,9 +36,26 @@ class SyncManager(object):
             cMovil.execute('''DELETE FROM plantillas WHERE nuevo = 1 AND eliminado = 1''')
             cMovil.execute('''DELETE FROM atributos_proceso WHERE nuevo = 1 AND eliminado = 1''')
             cMovil.execute('''DELETE FROM atributos_plantilla WHERE nuevo = 1 AND eliminado = 1''')
+            #Agregar +n y -me
+            #Seccion demandantes
+            cMovil.execute('''SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            listaCMovil = cMovil.fetchall()
+            for row in listaCMovil:
+                id_demandante = str(row['id_demandante'])
+                cedula = str(row['cedula'])
+                nombre = str(row['nombre'])
+                telefono = str(row['telefono'])
+                direccion = str(row['direccion'])
+                correo = str(row['correo'])
+                notas = str(row['notas'])
+                cLocal.execute('''INSERT INTO demandantes(cedula, nombre, telefono, direccion, correo, notas) VALUES(?,?,?,?,?,?)''', (cedula, nombre, telefono, direccion, correo, notas,))
+                id = cLocal.lastrowid
+                cMovil.execute('''UPDATE procesos SET id_demandante = ? WHERE id_demandante = ? ''', (id, id_demandante,))
+                cMovil.execute('''UPDATE plantillas SET id_demandante = ? WHERE id_demandante = ? ''', (id, id_demandante,))
             
             
-            
+                
+                
             connMovil.commit()
             connLocal.commit()            
         except Exception as e:
