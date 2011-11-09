@@ -161,7 +161,16 @@ class SyncManager(object):
                 descripcion = str(row['descripcion'])
                 uid = str(row['uid'])
                 cLocal.execute('''INSERT INTO actuaciones(id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid) VALUES(?,?,?,?,?,?)''', (id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid,))
-                id = cLocal.lastrowid
+
+            #Seccion Atributos por Proceso
+            cMovil.execute('''SELECT id_atributo, id_proceso, valor FROM atributos_proceso WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            for row in cMovil:
+                id_atributo = str(row['id_atributo'])
+                id_proceso = str(row['id_proceso'])
+                valor = str(row['valor'])
+                cLocal.execute('''INSERT INTO atributos_proceso(id_atributo, id_proceso, valor) VALUES (?,?,?)''', (id_atributo, id_proceso, valor,))
+                
+                
                 
             connMovil.commit()
             connLocal.commit()            
