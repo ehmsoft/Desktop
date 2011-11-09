@@ -86,7 +86,7 @@ class SyncManager(object):
                 cMovil.execute('''UPDATE actuaciones SET id_juzgado = ? WHERE id_juzgado = ? ''', (id, id_juzgado,))
             
             #Seccion categorias
-            cMovil.execute('''SELECT id_categoria, descripcion WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            cMovil.execute('''SELECT id_categoria, descripcion FROM categorias WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
             listaCMovil = cMovil.fetchall()
             for row in listaCMovil:
                 id_categoria = str(row['id_categoria'])
@@ -110,10 +110,29 @@ class SyncManager(object):
                 cMovil.execute('''UPDATE atributos_proceso SET id_atributo = ? WHERE id_atributo = ? ''', (id, id_atributo,))
                 cMovil.execute('''UPDATE atributos_plantilla SET id_atributo = ? WHERE id_atributo = ? ''', (id, id_atributo,))
             
-            
+            #Seccion Procesos
+            cMovil.execute('''SELECT id_proceso, id_demandante, id_demandado, fecha_creacion as "fecha_creacion [timestamp]", radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria FROM procesos WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            listaCMovil = cMovil.fetchall()
+            for row in listaCMovil:
+                id_proceso = str(row['id_proceso'])
+                id_demandante = str(row['id_demandante'])
+                id_demandado = str(row['id_demandado'])
+                fecha_creacion = row['fecha_creacion']
+                radicado = str(row['radicado'])
+                radicado_unico = str(row['radicado_unico'])
+                estado = str(row['estado'])
+                tipo = str(row['tipo'])
+                notas = str(row['notas'])
+                prioridad = int(row['prioridad'])
+                id_juzgado = str(row['id_juzgado'])
+                id_categoria = str(row['id_categoria'])
+                cLocal.execute('''INSERT INTO procesos(id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria) VALUES (?,?,?,?,?,?,?,?,?,?,?)''', (id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria,))
+                id = cLocal.lastrowid
+                cMovil.execute('''UPDATE atributos_proceso SET id_proceso = ? WHERE id_proceso = ? ''', (id, id_proceso,))
+                cMovil.execute('''UPDATE atributos_plantilla SET id_proceso = ? WHERE id_proceso = ? ''', (id, id_proceso,))
             
             #Seccion Actuaciones
-            cMovil.execute('''SELECT id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid FROM actuaciones WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            cMovil.execute('''SELECT id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
             for row in cMovil:
                 id_proceso = str(row['id_proceso'])
                 id_juzgado = str(row['id_juzgado'])
