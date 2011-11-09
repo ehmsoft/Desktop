@@ -170,8 +170,14 @@ class SyncManager(object):
                 valor = str(row['valor'])
                 cLocal.execute('''INSERT INTO atributos_proceso(id_atributo, id_proceso, valor) VALUES (?,?,?)''', (id_atributo, id_proceso, valor,))
                 
-                
-                
+            #Seccion Atributos por plantilla
+            cMovil.execute('''SELECT id_atributo, id_plantilla, valor FROM atributos_plantilla WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            for row in cMovil:
+                id_atributo = str(row['id_atributo'])
+                id_plantilla = str(row['id_plantilla'])
+                valor = str(row['valor'])
+                cLocal.execute('''INSERT INTO atributos_plantilla(id_atributo, id_plantilla, valor) VALUES (?,?,?)''', (id_atributo, id_plantilla, valor,))
+                            
             connMovil.commit()
             connLocal.commit()            
         except Exception as e:
