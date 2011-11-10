@@ -345,6 +345,90 @@ class SyncManager(object):
             cMovil.execute('''UPDATE atributos_proceso SET nuevo = 0, modificado = 0 WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')   
             cMovil.execute('''UPDATE atributos_plantilla SET nuevo = 0, modificado = 0 WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')
             
+            #Eliminar +e
+            #Demandantes
+            cMovil.execute('''SELECT id_demandante FROM demandantes WHERE eliminado = 1''')
+            listaMovil = cMovil.fetchall()
+            for row in listaMovil:
+                id_demandante = str(row['id_demandante'])
+                cLocal.execute('''DELETE FROM demandantes WHERE id_demandante = ?''', (id_demandante,))
+            cMovil.execute('''DELETE FROM demandantes WHERE eliminado = 1''')
+            
+            #Demandados
+            cMovil.execute('''SELECT id_demandado FROM demandados WHERE eliminado = 1''')
+            listaMovil = cMovil.fetchall()
+            for row in listaMovil:
+                id_demandado = str(row['id_demandado'])
+                cLocal.execute('''DELETE FROM demandados WHERE id_demandado = ?''', (id_demandado,))
+            cMovil.execute('''DELETE FROM demandados WHERE eliminado = 1''')
+            
+            #Juzgados
+            cMovil.execute('''SELECT id_juzgado FROM juzgados WHERE eliminado = 1''')
+            listaMovil = cMovil.fetchall()
+            for row in listaMovil:
+                id_juzgado = str(row['id_juzgado'])
+                cLocal.execute('''DELETE FROM juzgados WHERE id_juzgado = ?''', (id_juzgado,))
+            cMovil.execute('''DELETE FROM juzgados WHERE eliminado = 1''')
+            
+            #Categorias
+            cMovil.execute('''SELECT id_categoria FROM categorias WHERE eliminado = 1''')
+            listaMovil = cMovil.fetchall()
+            for row in listaMovil:
+                id_categoria = str(row['id_categoria'])
+                cLocal.execute('''DELETE FROM categorias WHERE id_categoria = ?''', (id_categoria,))
+            cMovil.execute('''DELETE FROM categorias WHERE eliminado = 1''')
+            
+            #Atributos
+            cMovil.execute('''SELECT id_atributo FROM atributos WHERE eliminado = 1''')
+            listaMovil = cMovil.fetchall()
+            for row in listaMovil:
+                id_atributo = str(row['id_atributo'])
+                cLocal.execute('''DELETE FROM atributos WHERE id_atributo = ?''', (id_atributo,))
+            cMovil.execute('''DELETE FROM atributos WHERE eliminado = 1''')
+            
+            #Procesos
+            cMovil.execute('''SELECT id_proceso FROM procesos WHERE eliminado = 1''')
+            listaMovil = cMovil.fetchall()
+            for row in listaMovil:
+                id_proceso = str(row['id_proceso'])
+                cLocal.execute('''DELETE FROM procesos WHERE id_proceso = ?''', (id_proceso,))
+            cMovil.execute('''DELETE FROM procesos WHERE eliminado = 1''')
+            
+            #Actuaciones
+            cMovil.execute('''SELECT id_actuacion FROM actuaciones WHERE eliminado = 1''')
+            listaMovil = cMovil.fetchall()
+            for row in listaMovil:
+                id_actuacion = str(row['id_actuacion'])
+                cLocal.execute('''DELETE FROM actuaciones WHERE id_actuacion = ?''', (id_actuacion,))
+            cMovil.execute('''DELETE FROM actuaciones WHERE eliminado = 1''')
+            
+            #Plantillas
+            cMovil.execute('''SELECT id_plantilla FROM plantillas WHERE eliminado = 1''')
+            listaMovil = cMovil.fetchall()
+            for row in listaMovil:
+                id_plantilla = str(row['id_plantilla'])
+                cLocal.execute('''DELETE FROM plantillas WHERE id_plantilla = ?''', (id_plantilla,))
+            cMovil.execute('''DELETE FROM plantillas WHERE eliminado = 1''')
+            
+            #Atributos por Proceso
+            cMovil.execute('''SELECT id_atributo_proceso FROM atributos_proceso WHERE eliminado = 1''')
+            listaMovil = cMovil.fetchall()
+            for row in listaMovil:
+                id_atributo_proceso = str(row['id_atributo_proceso'])
+                cLocal.execute('''DELETE FROM atributos_proceso WHERE id_atributo_proceso = ?''', (id_atributo_proceso,))
+            cMovil.execute('''DELETE FROM atributos_proceso WHERE eliminado = 1''')
+            
+            #Atributos por plantilla
+            cMovil.execute('''SELECT id_atributo_plantilla FROM atributos_plantilla WHERE eliminado = 1''')
+            listaMovil = cMovil.fetchall()
+            for row in listaMovil:
+                id_atributo_plantilla = str(row['id_atributo_plantilla'])
+                cLocal.execute('''DELETE FROM atributos_plantilla WHERE id_atributo_plantilla = ?''', (id_atributo_plantilla,))
+            cMovil.execute('''DELETE FROM atributos_plantilla WHERE eliminado = 1''')
+            
+            
+            
+            
             connMovil.commit()
             connLocal.commit()            
         except Exception as e:
