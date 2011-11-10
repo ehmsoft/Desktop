@@ -5,7 +5,6 @@ Created on 08/11/2011
 '''
 from ConnectionManager import ConnectionManager
 import sqlite3
-from datetime import datetime
 
 class SyncManager(object):
     '''
