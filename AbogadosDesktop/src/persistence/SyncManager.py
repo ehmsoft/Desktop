@@ -177,7 +177,19 @@ class SyncManager(object):
                 id_plantilla = str(row['id_plantilla'])
                 valor = str(row['valor'])
                 cLocal.execute('''INSERT INTO atributos_plantilla(id_atributo, id_plantilla, valor) VALUES (?,?,?)''', (id_atributo, id_plantilla, valor,))
-                            
+            #Bajar Flag +n -me
+            cMovil.execute('''UPDATE demandantes SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')     
+            cMovil.execute('''UPDATE demandados SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')   
+            cMovil.execute('''UPDATE juzgados SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')   
+            cMovil.execute('''UPDATE categorias SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            cMovil.execute('''UPDATE atributos SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            cMovil.execute('''UPDATE procesos SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''') 
+            cMovil.execute('''UPDATE plantillas SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')           
+            cMovil.execute('''UPDATE actuaciones SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')   
+            cMovil.execute('''UPDATE atributos_proceso SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')   
+            cMovil.execute('''UPDATE atributos_plantilla SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            
+            
             connMovil.commit()
             connLocal.commit()            
         except Exception as e:
