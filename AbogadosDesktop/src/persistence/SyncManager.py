@@ -332,7 +332,7 @@ class SyncManager(object):
                 valor = str(row['valor'])
                 cLocal.execute('''INSERT INTO atributos_plantilla(id_atributo, id_plantilla, valor) VALUES (?,?,?)''', (id_atributo, id_plantilla, valor,))
             
-            #Bajar Flag +n -me
+            #Bajar Flag +nm -e
             cMovil.execute('''UPDATE demandantes SET nuevo = 0, modificado = 0 WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')     
             cMovil.execute('''UPDATE demandados SET nuevo = 0, modificado = 0 WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')   
             cMovil.execute('''UPDATE juzgados SET nuevo = 0, modificado = 0 WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')   
@@ -426,6 +426,232 @@ class SyncManager(object):
             cMovil.execute('''DELETE FROM atributos_plantilla WHERE eliminado = 1''')
             
             
+            
+            
+            
+            
+            
+            #Actualizar +m 
+            #Seccion demandantes
+            cMovil.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes WHERE modificado = 1''')
+            listaCMovil = cMovil.fetchall()
+            for row in listaCMovil:
+                fecha_mod = row['fecha_mod']
+                id_demandante = str(row['id_demandante'])
+                cedula = str(row['cedula'])
+                nombre = str(row['nombre'])
+                telefono = str(row['telefono'])
+                direccion = str(row['direccion'])
+                correo = str(row['correo'])
+                notas = str(row['notas'])
+                cLocal.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", modificado FROM demandantes WHERE id_demandante = ? ''', (id_demandante,))
+                row = cLocal.fetchone()
+                if row:
+                    modificado = row(['modificado'])
+                    fecha_modLocal = row(['fecha_mod'])
+                    if modificado:
+                        if fecha_mod > fecha_modLocal:
+                            raise Exception('Conflicto de sincronizacion, el local es mas antiguo que el movil')
+                        else:
+                            raise Exception('Conflicto de sincronizacion, el movil es mas antiguo que el local')
+                    else:
+                        cLocal.execute('''UPDATE demandantes SET cedula = ?, nombre = ?, telefono = ?, direccion = ?, correo = ?, notas = ? WHERE id_demandante = ?''', (cedula, nombre, telefono, direccion, correo, notas, id_demandante,))
+                else:
+                    raise Exception('registro No encontrado')
+            
+            #Seccion demandados
+            cMovil.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE modificado = 1''')
+            listaCMovil = cMovil.fetchall()
+            for row in listaCMovil:
+                fecha_mod = row['fecha_mod']
+                id_demandado = str(row['id_demandado'])
+                cedula = str(row['cedula'])
+                nombre = str(row['nombre'])
+                telefono = str(row['telefono'])
+                direccion = str(row['direccion'])
+                correo = str(row['correo'])
+                notas = str(row['notas'])
+                cLocal.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", modificado FROM demandados WHERE id_demandado = ? ''', (id_demandado,))
+                row = cLocal.fetchone()
+                if row:
+                    modificado = row(['modificado'])
+                    fecha_modLocal = row(['fecha_mod'])
+                    if modificado:
+                        if fecha_mod > fecha_modLocal:
+                            raise Exception('Conflicto de sincronizacion, el local es mas antiguo que el movil')
+                        else:
+                            raise Exception('Conflicto de sincronizacion, el movil es mas antiguo que el local')
+                    else:
+                        cLocal.execute('''UPDATE demandados SET cedula = ?, nombre = ?, telefono = ?, direccion = ?, correo = ?, notas = ? WHERE id_demandado = ?''', (cedula, nombre, telefono, direccion, correo, notas, id_demandado,))
+                else:
+                    raise Exception('registro No encontrado')  
+            
+            #Seccion Juzgados
+            cMovil.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", id_juzgado, nombre, ciudad, telefono, direccion, tipo FROM juzgados WHERE modificado = 1''')
+            listaCMovil = cMovil.fetchall()
+            for row in listaCMovil:
+                fecha_mod = row['fecha_mod']
+                id_juzgado = str(row['id_juzgado'])
+                nombre = str(row['nombre'])
+                ciudad = str(row['ciudad'])
+                telefono = str(row['telefono'])
+                direccion = str(row['direccion']) 
+                tipo = str(row['tipo'])
+                cLocal.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", modificado FROM juzgados WHERE id_juzgado = ? ''', (id_juzgado,))
+                row = cLocal.fetchone()
+                if row:
+                    modificado = row(['modificado'])
+                    fecha_modLocal = row(['fecha_mod'])
+                    if modificado:
+                        if fecha_mod > fecha_modLocal:
+                            raise Exception('Conflicto de sincronizacion, el local es mas antiguo que el movil')
+                        else:
+                            raise Exception('Conflicto de sincronizacion, el movil es mas antiguo que el local')
+                    else:
+                        cLocal.execute('''UPDATE juzgados SET nombre = ?, ciudad = ?, telefono = ?, direccion = ?, tipo = ? WHERE id_juzgado = ?''', (nombre, ciudad, telefono, direccion, tipo, id_juzgado,))
+                else:
+                    raise Exception('registro No encontrado')  
+            
+            #Seccion categorias
+            cMovil.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", id_categoria, descripcion FROM categorias WHERE modificado = 1''')
+            listaCMovil = cMovil.fetchall()
+            for row in listaCMovil:
+                fecha_mod = row['fecha_mod']
+                id_categoria = str(row['id_categoria'])
+                descripcion = str(row['descripcion'])
+                cLocal.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", modificado FROM categorias WHERE id_categoria = ? ''', (id_categoria,))
+                row = cLocal.fetchone()
+                if row:
+                    modificado = row(['modificado'])
+                    fecha_modLocal = row(['fecha_mod'])
+                    if modificado:
+                        if fecha_mod > fecha_modLocal:
+                            raise Exception('Conflicto de sincronizacion, el local es mas antiguo que el movil')
+                        else:
+                            raise Exception('Conflicto de sincronizacion, el movil es mas antiguo que el local')
+                    else:
+                        cLocal.execute('''UPDATE categorias SET descripcion = ? WHERE id_categoria = ?''', (descripcion, id_categoria,))
+                else:
+                    raise Exception('registro No encontrado')  
+            
+            #Seccion Atributos
+            cMovil.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", id_atributo, nombre, obligatorio, longitud_max, longitud_min FROM atributos WHERE modificado = 1''')
+            listaCMovil = cMovil.fetchall()
+            for row in listaCMovil:
+                fecha_mod = row['fecha_mod']
+                id_atributo = str(row['id_atributo'])
+                nombre = str(row['nombre'])
+                obligatorio = str(row['obligatorio'])
+                longitud_max = str(row['longitud_max'])
+                longitud_min = str(row['longitud_min'])
+                cLocal.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", modificado FROM atributos WHERE id_atributo = ? ''', (id_atributo,))
+                row = cLocal.fetchone()
+                if row:
+                    modificado = row(['modificado'])
+                    fecha_modLocal = row(['fecha_mod'])
+                    if modificado:
+                        if fecha_mod > fecha_modLocal:
+                            raise Exception('Conflicto de sincronizacion, el local es mas antiguo que el movil')
+                        else:
+                            raise Exception('Conflicto de sincronizacion, el movil es mas antiguo que el local')
+                    else:
+                        cLocal.execute('''UPDATE atributos SET nombre = ?, obligatorio = ?, longitud_max = ?, longitud_min = ? WHERE id_atributo = ?''', (nombre, obligatorio, longitud_max, longitud_min, id_atributo,))
+                else:
+                    raise Exception('registro No encontrado')
+            
+            #Seccion Procesos
+            cMovil.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", id_proceso, id_demandante, id_demandado, fecha_creacion as "fecha_creacion [timestamp]", radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria FROM procesos WHERE modificado = 1''')
+            listaCMovil = cMovil.fetchall()
+            for row in listaCMovil:
+                fecha_mod = row['fecha_mod']
+                id_proceso = str(row['id_proceso'])
+                id_demandante = str(row['id_demandante'])
+                id_demandado = str(row['id_demandado'])
+                fecha_creacion = row['fecha_creacion']
+                radicado = str(row['radicado'])
+                radicado_unico = str(row['radicado_unico'])
+                estado = str(row['estado'])
+                tipo = str(row['tipo'])
+                notas = str(row['notas'])
+                prioridad = int(row['prioridad'])
+                id_juzgado = str(row['id_juzgado'])
+                id_categoria = str(row['id_categoria'])
+                cLocal.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", modificado FROM procesos WHERE id_proceso = ? ''', (id_proceso,))
+                row = cLocal.fetchone()
+                if row:
+                    modificado = row(['modificado'])
+                    fecha_modLocal = row(['fecha_mod'])
+                    if modificado:
+                        if fecha_mod > fecha_modLocal:
+                            raise Exception('Conflicto de sincronizacion, el local es mas antiguo que el movil')
+                        else:
+                            raise Exception('Conflicto de sincronizacion, el movil es mas antiguo que el local')
+                    else:
+                        cLocal.execute('''UPDATE procesos SET id_demandante = ?, id_demandado = ?, fecha_creacion = ?, radicado = ?, radicado_unico = ?, estado = ?, tipo = ?, notas = ?, prioridad = ?, id_juzgado = ?, id_categoria = ?  WHERE id_proceso = ?''', (id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, id_proceso,))
+                else:
+                    raise Exception('registro No encontrado')  
+            
+            #Seccion Plantillas
+            cMovil.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", id_plantilla, nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria FROM plantillas WHERE modificado = 1''')
+            listaCMovil = cMovil.fetchall()
+            for row in listaCMovil:
+                fecha_mod = row['fecha_mod']
+                id_plantilla = str(row['id_plantilla'])
+                nombre = str(row['nombre'])
+                id_demandante = str(row['id_demandante'])
+                id_demandado = str(row['id_demandado'])
+                radicado = str(row['radicado'])
+                radicado_unico = str(row['radicado_unico'])
+                estado = str(row['estado'])
+                tipo = str(row['tipo'])
+                notas = str(row['notas'])
+                prioridad = int(row['prioridad'])
+                id_juzgado = str(row['id_juzgado'])
+                id_categoria = str(row['id_categoria'])
+                cLocal.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", modificado FROM plantillas WHERE id_plantilla = ? ''', (id_plantilla,))
+                row = cLocal.fetchone()
+                if row:
+                    modificado = row(['modificado'])
+                    fecha_modLocal = row(['fecha_mod'])
+                    if modificado:
+                        if fecha_mod > fecha_modLocal:
+                            raise Exception('Conflicto de sincronizacion, el local es mas antiguo que el movil')
+                        else:
+                            raise Exception('Conflicto de sincronizacion, el movil es mas antiguo que el local')
+                    else:
+                        cLocal.execute('''UPDATE plantillas SET nombre = ? id_demandante = ?, id_demandado = ?, radicado = ?, radicado_unico = ?, estado = ?, tipo = ?, notas = ?, prioridad = ?, id_juzgado = ?, id_categoria = ?  WHERE id_plantilla = ?''', (nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, id_plantilla,))
+                else:
+                    raise Exception('registro No encontrado')
+            
+            #Seccion Actuaciones
+            cMovil.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE modificado = 1''')
+            for row in cMovil:
+                fecha_mod = row['fecha_mod']
+                id_proceso = str(row['id_proceso'])
+                id_juzgado = str(row['id_juzgado'])
+                fecha_creacion = row['fecha_creacion']
+                fecha_proxima = row['fecha_proxima']
+                descripcion = str(row['descripcion'])
+                uid = str(row['uid'])
+                cLocal.execute('''INSERT INTO actuaciones(id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid) VALUES(?,?,?,?,?,?)''', (id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid,))
+
+            #Seccion Atributos por Proceso
+            cMovil.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", id_atributo, id_proceso, valor FROM atributos_proceso WHERE modificado = 1''')
+            for row in cMovil:
+                fecha_mod = row['fecha_mod']
+                id_atributo = str(row['id_atributo'])
+                id_proceso = str(row['id_proceso'])
+                valor = str(row['valor'])
+                cLocal.execute('''INSERT INTO atributos_proceso(id_atributo, id_proceso, valor) VALUES (?,?,?)''', (id_atributo, id_proceso, valor,))
+                
+            #Seccion Atributos por plantilla
+            cMovil.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", id_atributo, id_plantilla, valor FROM atributos_plantilla WHERE modificado = 1''')
+            for row in cMovil:
+                fecha_mod = row['fecha_mod']
+                id_atributo = str(row['id_atributo'])
+                id_plantilla = str(row['id_plantilla'])
+                valor = str(row['valor'])
+                cLocal.execute('''INSERT INTO atributos_plantilla(id_atributo, id_plantilla, valor) VALUES (?,?,?)''', (id_atributo, id_plantilla, valor,))
             
             
             connMovil.commit()
