@@ -688,6 +688,18 @@ class SyncManager(object):
                         cLocal.execute('''UPDATE atributos_plantilla SET id_atributo = ?, id_plantilla = ?, valor = ? WHERE id_atributo_plantilla = ?''', (id_atributo, id_plantilla, valor, id_atributo_plantilla,))
                 else:
                     raise Exception('registro No encontrado')
+            #Bajar Flags +m
+            cMovil.execute('''UPDATE demandantes SET modificado = 0 WHERE modificado = 1''')     
+            cMovil.execute('''UPDATE demandados SET modificado = 0 WHERE modificado = 1''')   
+            cMovil.execute('''UPDATE juzgados SET modificado = 0 WHERE modificado = 1''')   
+            cMovil.execute('''UPDATE categorias SET modificado = 0 WHERE modificado = 1''')
+            cMovil.execute('''UPDATE atributos SET modificado = 0 WHERE modificado = 1''')
+            cMovil.execute('''UPDATE procesos SET modificado = 0 WHERE modificado = 1''') 
+            cMovil.execute('''UPDATE plantillas SET modificado = 0 WHERE modificado = 1''')           
+            cMovil.execute('''UPDATE actuaciones SET modificado = 0 WHERE modificado = 1''')   
+            cMovil.execute('''UPDATE atributos_proceso SET modificado = 0 WHERE modificado = 1''')   
+            cMovil.execute('''UPDATE atributos_plantilla SET modificado = 0 WHERE modificado = 1''')
+            
             
             connMovil.commit()
             connLocal.commit()            
