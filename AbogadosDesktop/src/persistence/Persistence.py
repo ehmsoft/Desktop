@@ -255,7 +255,7 @@ class Persistence(object):
             #c.execute('''DELETE FROM atributos_proceso WHERE id_atributo = ?''',( campoPersonalizado.getId_atributo(),))                
             c.execute('''UPDATE atributos SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
             c.execute('''UPDATE atributos_proceso SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
-          
+            c.execute('''UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -293,7 +293,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''INSERT INTO procesos (id_proceso,id_demandante,id_demandado,fecha_creacion,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nuevo,fecha_mod) VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?,?,1,fecha_mod = datetime('now','localtime'))''',(proceso.getDemandante().getId_persona(),proceso.getDemandado().getId_persona(),proceso.getFecha(),proceso.getRadicado(), proceso.getRadicadoUnico(),proceso.getEstado(),proceso.getTipo(),proceso.getNotas(),proceso.getPrioridad(),proceso.getJuzgado().getId_juzgado(),proceso.getCategoria().getId_categoria()))                                                         
+            c.execute('''INSERT INTO procesos (id_proceso,id_demandante,id_demandado,fecha_creacion,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nuevo,fecha_mod) VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?,?,1,datetime('now','localtime'))''',(proceso.getDemandante().getId_persona(),proceso.getDemandado().getId_persona(),proceso.getFecha(),proceso.getRadicado(), proceso.getRadicadoUnico(),proceso.getEstado(),proceso.getTipo(),proceso.getNotas(),proceso.getPrioridad(),proceso.getJuzgado().getId_juzgado(),proceso.getCategoria().getId_categoria()))                                                         
             proceso.setId_proceso = c.lastrowid
             conn.commit()
                 
@@ -399,7 +399,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''INSERT INTO plantillas (nombre,id_plantilla,id_demandante,id_demandado,fecha_creacion,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nuevo, fecha_mod) VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?,?,1,fecha_mod = datetime('now','localtime'))''',(plantilla.getNombre(),plantilla.getDemandante().getId_persona(),plantilla.getDemandado().getId_persona(),plantilla.getFecha(),plantilla.getRadicado(), plantilla.getRadicadoUnico(),plantilla.getEstado(),plantilla.getTipo(),plantilla.getNotas(),plantilla.getPrioridad(),plantilla.getJuzgado().getId_juzgado(),plantilla.getCategoria().getId_categoria()))                                                         
+            c.execute('''INSERT INTO plantillas (nombre,id_plantilla,id_demandante,id_demandado,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nuevo, fecha_mod) VALUES(NULL,?,?,?,?,?,?,?,?,?,?,1,datetime('now','localtime'))''',(plantilla.getNombre(),plantilla.getDemandante().getId_persona(),plantilla.getDemandado().getId_persona(),plantilla.getFecha(),plantilla.getRadicado(), plantilla.getRadicadoUnico(),plantilla.getEstado(),plantilla.getTipo(),plantilla.getNotas(),plantilla.getPrioridad(),plantilla.getJuzgado().getId_juzgado(),plantilla.getCategoria().getId_categoria()))                                                         
             plantilla.setId_plantilla = c.lastrowid
             conn.commit()
                 
@@ -419,6 +419,7 @@ class Persistence(object):
             c = conn.cursor()
             c.execute('''UPDATE plantillas SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''',(plantilla.getId_proceso(),))
             c.execute('''UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''',(plantilla.getId_proceso(),))
+            
             conn.commit()
                 
         except Exception as e:
@@ -1780,3 +1781,35 @@ class Persistence(object):
         finally:
             conn.close()
         return archivo
+    
+demandante0= Persona(tipo = 1, id = '214342466', nombre = 'mariana', telefono = '6567567', direccion = 'calle 44 numer 55', correo = 'mariana@demandante.com', notas = 'no tiene notas')
+demandante1= Persona(tipo = 1, id = '868676456', nombre = 'hugo', telefono = '7544325', direccion = 'calle 46 numer 57', correo = 'hugo@demandante.com', notas = 'no tiene notas')
+demandante2= Persona(tipo = 1, id = '902348057', nombre = 'luisa fernanda', telefono = '3245432', direccion = 'calle 48 numer 59', correo = 'luisafernanda@demandante.com', notas = 'no tiene notas')
+
+demandado0= Persona(tipo = 2, id = '897348783', nombre = 'pedro juan', telefono = '7649087', direccion = 'calle 22 numer 33', correo = 'pedrojuan@demandado.com', notas = 'no tiene notas')
+demandado1= Persona(tipo = 2, id = '349736948', nombre = 'alejandra', telefono = '5354890', direccion = 'calle 24 numer 35', correo = 'alejandra@demandado.com', notas = 'no tiene notas')
+demandado2= Persona(tipo = 2, id = '227609847', nombre = 'pedro juan', telefono = '7649087', direccion = 'calle 22 numer 33', correo = 'pedrojuan@demandado.com', notas = 'no tiene notas')
+
+juzgado0 = Juzgado(nombre = 'juzgado primero de familia', ciudad = 'Pereira', direccion ='centro', telefono = '8765434', tipo = 'deloscorruptos')  
+juzgado1 = Juzgado(nombre = 'juzgado penal acusatorio', ciudad = 'Pereira', direccion ='centro', telefono = '76546578', tipo = 'deloscorruptos')  
+juzgado2 = Juzgado(nombre = 'juzgado unico', ciudad = 'Santa rosa de cabal', direccion ='centro', telefono = '8875654', tipo = 'deloscorruptos')  
+   
+
+persistence = Persistence()
+
+
+persistence.guardarPersona(demandante0)
+persistence.guardarPersona(demandante1)
+persistence.guardarPersona(demandante2)
+
+persistence.guardarPersona(demandado0)
+persistence.guardarPersona(demandado1)
+persistence.guardarPersona(demandado2)
+
+persistence.guardarJuzgado(juzgado0)
+persistence.guardarJuzgado(juzgado1)
+persistence.guardarJuzgado(juzgado2)
+
+
+    
+    
