@@ -588,8 +588,19 @@ class SyncManager(object):
             cMovil.execute('''DELETE FROM atributos_proceso WHERE id_atributo_proceso <> 0''')
             cMovil.execute('''DELETE FROM atributos_plantilla WHERE id_atributo_plantilla <> 0''')
             
-            
-            
+            #Copiar demandantes
+            cLocal.execute('''SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes WHERE id_demandante <> 1''')
+            for row in cLocal:
+                id_demandante = row['id_demandante']
+                cedula = row['cedula']
+                nombre = row['nombre']
+                telefono = row['telefono']
+                direccion = row['direccion']
+                correo = row['correo']
+                notas = row['notas']
+                cMovil.execute('''INSERT INTO demandantes(id_demandante, cedula, nombre, telefono, direccion, correo, notas, nuevo) VALUES(?,?,?,?,?,?,?, 0)''', (id_demandante, cedula, nombre, telefono, direccion, correo, notas,))
+
+
             print 'Archivo Movil actualizado'         
         except Exception as e:
             raise e
