@@ -628,8 +628,19 @@ class SyncManager(object):
             for row in cLocal:
                 id_categoria = row['id_categoria']
                 descripcion = row['descripcion']
-                cLocal.execute('''INSERT INTO categorias(id_categoria, descripcion, nuevo) VALUES(?,?,0)''', (id_categoria, descripcion,))
-
+                cMovil.execute('''INSERT INTO categorias(id_categoria, descripcion, nuevo) VALUES(?,?,0)''', (id_categoria, descripcion,))
+                
+            #Copiar atributos
+            cLocal.execute('''SELECT id_atributo, nombre, obligatorio, longitud_max, longitud_min FROM atributos WHERE id_atributo <> 0''')
+            for row in cLocal:
+                id_atributo = row['id_atributo']
+                nombre = row['nombre']
+                obligatorio = row['obligatorio']
+                longitud_max = row['longitud_max']
+                longitud_min = row['longitud_min']
+                cMovil.execute('''INSERT INTO atributos(id_atributo, nombre, obligatorio, longitud_max, longitud_min, nuevo) VALUES(?,?,?,?,?,0)''', (id_atributo, nombre, obligatorio, longitud_max, longitud_min,))
+            
+            
 
             print 'Archivo Movil actualizado'         
         except Exception as e:
