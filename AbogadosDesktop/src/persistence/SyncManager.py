@@ -705,9 +705,10 @@ class SyncManager(object):
                 cMovil.execute('''INSERT INTO atributos_plantilla(id_atributo_plantilla, id_atributo, id_plantilla, valor, nuevo) VALUES (?,?,?,?,0)''', (id_atributo_plantilla, id_atributo, id_plantilla, valor,))
             
             #Insertar preferencia de sincronizacion
-            cMovil.execute(''' INSERT INTO preferencias(id_preferencia, valor) VALUES(997, datetime('now', 'localtime'))''')
+            cMovil.execute(''' INSERT OR IGNORE INTO preferencias(id_preferencia, valor) VALUES(997, datetime('now', 'localtime'))''')
             cMovil.execute(''' UPDATE preferencias SET valor = datetime('now', 'localtime') WHERE id_preferencia = 997''' )
-            
+            cLocal.execute(''' INSERT OR IGNORE INTO preferencias(id_preferencia, valor) VALUES(997, datetime('now', 'localtime'))''')
+            cLocal.execute(''' UPDATE preferencias SET valor = datetime('now', 'localtime') WHERE id_preferencia = 997''' )
             print 'Archivo Movil actualizado'         
         except Exception as e:
             raise e
