@@ -623,7 +623,13 @@ class SyncManager(object):
                 tipo = row['tipo']
                 cMovil.execute('''INSERT INTO juzgados(id_juzgado, nombre, ciudad, telefono, direccion, tipo, nuevo) VALUES(?,?,?,?,?,?,0)''', (id_juzgado, nombre, ciudad, telefono, direccion, tipo,))
 
-            
+            #Copiar categorias
+            cLocal.execute('''SELECT id_categoria, descripcion FROM categorias WHERE id_categoria <> 1''')
+            for row in cLocal:
+                id_categoria = row['id_categoria']
+                descripcion = row['descripcion']
+                cLocal.execute('''INSERT INTO categorias(id_categoria, descripcion, nuevo) VALUES(?,?,0)''', (id_categoria, descripcion,))
+
 
             print 'Archivo Movil actualizado'         
         except Exception as e:
