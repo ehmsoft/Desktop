@@ -640,8 +640,25 @@ class SyncManager(object):
                 longitud_min = row['longitud_min']
                 cMovil.execute('''INSERT INTO atributos(id_atributo, nombre, obligatorio, longitud_max, longitud_min, nuevo) VALUES(?,?,?,?,?,0)''', (id_atributo, nombre, obligatorio, longitud_max, longitud_min,))
             
+            #Copiar procesos
+            cLocal.execute('''SELECT id_proceso, id_demandante, id_demandado, fecha_creacion as "fecha_creacion [timestamp]", radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria FROM procesos WHERE id_proceso <> 0''')
+            for row in cLocal:
+                id_proceso = row['id_proceso']
+                id_demandante = row['id_demandante']
+                id_demandado = row['id_demandado']
+                fecha_creacion = row['fecha_creacion']
+                radicado = row['radicado']
+                radicado_unico = row['radicado_unico']
+                estado = row['estado']
+                tipo = row['tipo']
+                notas = row['notas']
+                prioridad = row['prioridad']
+                id_juzgado = row['id_juzgado']
+                id_categoria = row['id_categoria']
+                cLocal.execute('''INSERT INTO procesos(id_proceso, id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, nuevo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,0)''', (id_proceso, id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria,))
+                
             
-
+            
             print 'Archivo Movil actualizado'         
         except Exception as e:
             raise e
