@@ -655,8 +655,24 @@ class SyncManager(object):
                 prioridad = row['prioridad']
                 id_juzgado = row['id_juzgado']
                 id_categoria = row['id_categoria']
-                cLocal.execute('''INSERT INTO procesos(id_proceso, id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, nuevo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,0)''', (id_proceso, id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria,))
-                
+                cMovil.execute('''INSERT INTO procesos(id_proceso, id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, nuevo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,0)''', (id_proceso, id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria,))
+            
+            #Copiar plantillas
+            cLocal.execute('''SELECT id_plantilla, nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria FROM plantillas WHERE id_plantilla <> 0''')
+            for row in cLocal:
+                id_plantilla = row['id_plantilla']
+                nombre = row['nombre']
+                id_demandante = row['id_demandante']
+                id_demandado = row['id_demandado']
+                radicado = row['radicado']
+                radicado_unico = row['radicado_unico']
+                estado = row['estado']
+                tipo = row['tipo']
+                notas = row['notas']
+                prioridad = row['prioridad']
+                id_juzgado = row['id_juzgado']
+                id_categoria = row['id_categoria']
+                cMovil.execute('''INSERT INTO plantillas(id_plantilla, nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, nuevo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,0)''', (id_plantilla, nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria,))
             
             
             print 'Archivo Movil actualizado'         
