@@ -695,6 +695,15 @@ class SyncManager(object):
                 valor = row['valor']
                 cMovil.execute('''INSERT INTO atributos_proceso(id_atributo_proceso, id_atributo, id_proceso, valor, nuevo) VALUES (?,?,?,?,0)''', (id_atributo_proceso, id_atributo, id_proceso, valor,))
             
+            #Copiar atributos por plantilla
+            cLocal.execute('''SELECT id_atributo_plantilla, id_atributo, id_plantilla, valor FROM atributos_plantilla WHERE id_atributo_plantilla <> 0''')
+            for row in cLocal:
+                id_atributo_plantilla = row['id_atributo_plantilla']
+                id_atributo = row['id_atributo']
+                id_plantilla = row['id_plantilla']
+                valor = row['valor']
+                cMovil.execute('''INSERT INTO atributos_plantilla(id_atributo_plantilla, id_atributo, id_plantilla, valor, nuevo) VALUES (?,?,?,?,0)''', (id_atributo_plantilla, id_atributo, id_plantilla, valor,))
+            
             print 'Archivo Movil actualizado'         
         except Exception as e:
             raise e
