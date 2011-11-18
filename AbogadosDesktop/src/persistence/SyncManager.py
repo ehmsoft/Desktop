@@ -674,6 +674,18 @@ class SyncManager(object):
                 id_categoria = row['id_categoria']
                 cMovil.execute('''INSERT INTO plantillas(id_plantilla, nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, nuevo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,0)''', (id_plantilla, nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria,))
             
+            #Copiar actuaciones
+            cLocal.execute('''SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE id_actuacion <> 0''')
+            for row in cLocal:
+                id_actuacion = row['id_actuacion']
+                id_proceso = row['id_proceso']
+                id_juzgado = row['id_juzgado']
+                fecha_creacion = row['fecha_creacion']
+                fecha_proxima = row['fecha_proxima']
+                descripcion = row['descripcion']
+                uid = row['uid']
+                cMovil.execute('''INSERT INTO actuaciones(id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid, nuevo) VALUES(?,?,?,?,?,?,?,0)''', (id_actuacion, id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid,))
+
             
             print 'Archivo Movil actualizado'         
         except Exception as e:
