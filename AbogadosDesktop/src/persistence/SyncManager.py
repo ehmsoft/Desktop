@@ -15,7 +15,7 @@ class SyncManager(object):
     def __init__(self):
         self.__conMgr = ConnectionManager()
         
-    def sincronizar(self, archivo_movil):
+    def sincronizarLocal(self, archivo_movil):
         try:
             self.__conMgr.prepararBD()
             connLocal = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
@@ -557,9 +557,6 @@ class SyncManager(object):
             cMovil.execute('''UPDATE actuaciones SET modificado = 0 WHERE modificado = 1''')   
             cMovil.execute('''UPDATE atributos_proceso SET modificado = 0 WHERE modificado = 1''')   
             cMovil.execute('''UPDATE atributos_plantilla SET modificado = 0 WHERE modificado = 1''')
-            
-            
-            
             print 'sincronizacion terminada'         
         except Exception as e:
             raise e
@@ -569,3 +566,35 @@ class SyncManager(object):
             connLocal.close()
             connMovil.close()
         
+    def restaurarArchivo(self, archivo_movil):
+        try:
+            self.__conMgr.prepararBD()
+            connLocal = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            connLocal.row_factory = sqlite3.Row
+            connMovil = sqlite3.connect(archivo_movil, detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            connMovil.row_factory = sqlite3.Row
+            cLocal = connLocal.cursor()
+            cMovil = connMovil.cursor()
+            
+            #Vaciar tablas
+            cMovil.execute('''DELETE FROM demandantes WHERE id_demandante <> 1''')
+            cMovil.execute('''DELETE FROM demandados WHERE id_demandados <> 1''')
+            cMovil.execute('''DELETE FROM juzgados WHERE id_juzgado <> 1''')
+            cMovil.execute('''DELETE FROM categorias WHERE id_categoria <> 1''')
+            cMovil.execute('''DELETE FROM atributos WHERE id_atributo <> 0''')
+            cMovil.execute('''DELETE FROM procesos WHERE id_proceso <> 0''')
+            cMovil.execute('''DELETE FROM plantillas WHERE id_plantilla <> 0''')
+            cMovil.execute('''DELETE FROM actuaciones WHERE id_actuacion <> 0''')
+            cMovil.execute('''DELETE FROM atributos_proceso WHERE id_atributo_proceso <> 0''')
+            cMovil.execute('''DELETE FROM atributos_plantilla WHERE id_atributo_plantilla <> 0''')
+            
+            
+            
+            print 'Archivo Movil actualizado'         
+        except Exception as e:
+            raise e
+        finally:
+            connMovil.commit()
+            connLocal.commit()
+            connLocal.close()
+            connMovil.close()
