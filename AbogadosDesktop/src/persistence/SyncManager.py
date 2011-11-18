@@ -611,7 +611,18 @@ class SyncManager(object):
                 correo = row['correo']
                 notas = row['notas']
                 cMovil.execute('''INSERT INTO demandados(id_demandado, cedula, nombre, telefono, direccion, correo, notas, nuevo) VALUES(?,?,?,?,?,?,?,0)''', (id_demandado, cedula, nombre, telefono, direccion, correo, notas,))
-                     
+                    
+            #Copiar Juzgados
+            cLocal.execute('''SELECT id_juzgado, nombre, ciudad, telefono, direccion, tipo FROM juzgados WHERE id_juzgado <> 1''')
+            for row in cLocal:
+                id_juzgado = row['id_juzgado']
+                nombre = row['nombre']
+                ciudad = row['ciudad']
+                telefono = row['telefono']
+                direccion = row['direccion'] 
+                tipo = row['tipo']
+                cMovil.execute('''INSERT INTO juzgados(id_juzgado, nombre, ciudad, telefono, direccion, tipo, nuevo) VALUES(?,?,?,?,?,?,0)''', (id_juzgado, nombre, ciudad, telefono, direccion, tipo,))
+
             
 
             print 'Archivo Movil actualizado'         
