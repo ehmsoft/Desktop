@@ -36,9 +36,9 @@ class SyncManager(object):
             cMovil.execute('''DELETE FROM atributos_proceso WHERE nuevo = 1 AND eliminado = 1''')
             cMovil.execute('''DELETE FROM atributos_plantilla WHERE nuevo = 1 AND eliminado = 1''')
             
-            #Agregar +n y -me
+            #Agregar +n y -e
             #Seccion demandantes
-            cMovil.execute('''SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            cMovil.execute('''SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes WHERE nuevo = 1 AND eliminado = 0''')
             listaCMovil = cMovil.fetchall()
             for row in listaCMovil:
                 id_demandante = row['id_demandante']
@@ -54,7 +54,7 @@ class SyncManager(object):
                 cMovil.execute('''UPDATE plantillas SET id_demandante = ? WHERE id_demandante = ? ''', (id, id_demandante,))
             
             #Seccion demandados
-            cMovil.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            cMovil.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE nuevo = 1 AND eliminado = 0''')
             listaCMovil = cMovil.fetchall()
             for row in listaCMovil:
                 id_demandado = row['id_demandado']
@@ -70,7 +70,7 @@ class SyncManager(object):
                 cMovil.execute('''UPDATE plantillas SET id_demandado = ? WHERE id_demandado = ? ''', (id, id_demandado,))            
             
             #Seccion Juzgados
-            cMovil.execute('''SELECT id_juzgado, nombre, ciudad, telefono, direccion, tipo FROM juzgados WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            cMovil.execute('''SELECT id_juzgado, nombre, ciudad, telefono, direccion, tipo FROM juzgados WHERE nuevo = 1 AND eliminado = 0''')
             listaCMovil = cMovil.fetchall()
             for row in listaCMovil:
                 id_juzgado = row['id_juzgado']
@@ -86,7 +86,7 @@ class SyncManager(object):
                 cMovil.execute('''UPDATE actuaciones SET id_juzgado = ? WHERE id_juzgado = ? ''', (id, id_juzgado,))
             
             #Seccion categorias
-            cMovil.execute('''SELECT id_categoria, descripcion FROM categorias WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            cMovil.execute('''SELECT id_categoria, descripcion FROM categorias WHERE nuevo = 1 AND eliminado = 0''')
             listaCMovil = cMovil.fetchall()
             for row in listaCMovil:
                 id_categoria = row['id_categoria']
@@ -97,7 +97,7 @@ class SyncManager(object):
                 cMovil.execute('''UPDATE plantillas SET id_categoria = ? WHERE id_categoria = ? ''', (id, id_categoria,))
             
             #Seccion Atributos
-            cMovil.execute('''SELECT id_atributo, nombre, obligatorio, longitud_max, longitud_min FROM atributos WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            cMovil.execute('''SELECT id_atributo, nombre, obligatorio, longitud_max, longitud_min FROM atributos WHERE nuevo = 1 AND eliminado = 0''')
             listaCMovil = cMovil.fetchall()
             for row in listaCMovil:
                 id_atributo = row['id_atributo']
@@ -111,7 +111,7 @@ class SyncManager(object):
                 cMovil.execute('''UPDATE atributos_plantilla SET id_atributo = ? WHERE id_atributo = ? ''', (id, id_atributo,))
             
             #Seccion Procesos
-            cMovil.execute('''SELECT id_proceso, id_demandante, id_demandado, fecha_creacion as "fecha_creacion [timestamp]", radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria FROM procesos WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            cMovil.execute('''SELECT id_proceso, id_demandante, id_demandado, fecha_creacion as "fecha_creacion [timestamp]", radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria FROM procesos WHERE nuevo = 1 AND eliminado = 0''')
             listaCMovil = cMovil.fetchall()
             for row in listaCMovil:
                 id_proceso = row['id_proceso']
@@ -132,7 +132,7 @@ class SyncManager(object):
                 cMovil.execute('''UPDATE actuaciones SET id_proceso = ? WHERE id_proceso = ? ''', (id, id_proceso,))
             
             #Seccion Plantillas
-            cMovil.execute('''SELECT id_plantilla, nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria FROM plantillas WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            cMovil.execute('''SELECT id_plantilla, nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria FROM plantillas WHERE nuevo = 1 AND eliminado = 0''')
             listaCMovil = cMovil.fetchall()
             for row in listaCMovil:
                 id_plantilla = row['id_plantilla']
@@ -152,7 +152,7 @@ class SyncManager(object):
                 cMovil.execute('''UPDATE atributos_plantilla SET id_plantilla = ? WHERE id_plantilla = ? ''', (id, id_plantilla,))
             
             #Seccion Actuaciones
-            cMovil.execute('''SELECT id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            cMovil.execute('''SELECT id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE nuevo = 1 AND eliminado = 0''')
             for row in cMovil:
                 id_proceso = row['id_proceso']
                 id_juzgado = row['id_juzgado']
@@ -163,7 +163,7 @@ class SyncManager(object):
                 cLocal.execute('''INSERT INTO actuaciones(id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid) VALUES(?,?,?,?,?,?)''', (id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid,))
 
             #Seccion Atributos por Proceso
-            cMovil.execute('''SELECT id_atributo, id_proceso, valor FROM atributos_proceso WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            cMovil.execute('''SELECT id_atributo, id_proceso, valor FROM atributos_proceso WHERE nuevo = 1 AND eliminado = 0''')
             for row in cMovil:
                 id_atributo = row['id_atributo']
                 id_proceso = row['id_proceso']
@@ -171,7 +171,7 @@ class SyncManager(object):
                 cLocal.execute('''INSERT INTO atributos_proceso(id_atributo, id_proceso, valor) VALUES (?,?,?)''', (id_atributo, id_proceso, valor,))
                 
             #Seccion Atributos por plantilla
-            cMovil.execute('''SELECT id_atributo, id_plantilla, valor FROM atributos_plantilla WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            cMovil.execute('''SELECT id_atributo, id_plantilla, valor FROM atributos_plantilla WHERE nuevo = 1 AND eliminado = 0''')
             for row in cMovil:
                 id_atributo = row['id_atributo']
                 id_plantilla = row['id_plantilla']
@@ -189,149 +189,7 @@ class SyncManager(object):
             cMovil.execute('''UPDATE actuaciones SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')   
             cMovil.execute('''UPDATE atributos_proceso SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')   
             cMovil.execute('''UPDATE atributos_plantilla SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
-            
-            #Agregar +nm y -e
-            #Seccion demandantes
-            cMovil.execute('''SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')
-            listaCMovil = cMovil.fetchall()
-            for row in listaCMovil:
-                id_demandante = row['id_demandante']
-                cedula = row['cedula']
-                nombre = row['nombre']
-                telefono = row['telefono']
-                direccion = row['direccion']
-                correo = row['correo']
-                notas = row['notas']
-                cLocal.execute('''INSERT INTO demandantes(cedula, nombre, telefono, direccion, correo, notas) VALUES(?,?,?,?,?,?)''', (cedula, nombre, telefono, direccion, correo, notas,))
-                id = cLocal.lastrowid
-                cMovil.execute('''UPDATE procesos SET id_demandante = ? WHERE id_demandante = ? ''', (id, id_demandante,))
-                cMovil.execute('''UPDATE plantillas SET id_demandante = ? WHERE id_demandante = ? ''', (id, id_demandante,))
-            
-            #Seccion demandados
-            cMovil.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')
-            listaCMovil = cMovil.fetchall()
-            for row in listaCMovil:
-                id_demandado = row['id_demandado']
-                cedula = row['cedula']
-                nombre = row['nombre']
-                telefono = row['telefono']
-                direccion = row['direccion']
-                correo = row['correo']
-                notas = row['notas']
-                cLocal.execute('''INSERT INTO demandados(cedula, nombre, telefono, direccion, correo, notas) VALUES(?,?,?,?,?,?)''', (cedula, nombre, telefono, direccion, correo, notas,))
-                id = cLocal.lastrowid
-                cMovil.execute('''UPDATE procesos SET id_demandado = ? WHERE id_demandado = ? ''', (id, id_demandado,))
-                cMovil.execute('''UPDATE plantillas SET id_demandado = ? WHERE id_demandado = ? ''', (id, id_demandado,))            
-            
-            #Seccion Juzgados
-            cMovil.execute('''SELECT id_juzgado, nombre, ciudad, telefono, direccion, tipo FROM juzgados WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')
-            listaCMovil = cMovil.fetchall()
-            for row in listaCMovil:
-                id_juzgado = row['id_juzgado']
-                nombre = row['nombre']
-                ciudad = row['ciudad']
-                telefono = row['telefono']
-                direccion = row['direccion'] 
-                tipo = row['tipo']
-                cLocal.execute('''INSERT INTO juzgados(nombre, ciudad, telefono, direccion, tipo) VALUES(?,?,?,?,?)''', (nombre, ciudad, telefono, direccion, tipo,))
-                id = cLocal.lastrowid
-                cMovil.execute('''UPDATE procesos SET id_juzgado = ? WHERE id_juzgado = ? ''', (id, id_juzgado,))
-                cMovil.execute('''UPDATE plantillas SET id_juzgado = ? WHERE id_juzgado = ? ''', (id, id_juzgado,))
-                cMovil.execute('''UPDATE actuaciones SET id_juzgado = ? WHERE id_juzgado = ? ''', (id, id_juzgado,))
-            
-            #Seccion categorias
-            cMovil.execute('''SELECT id_categoria, descripcion FROM categorias WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')
-            listaCMovil = cMovil.fetchall()
-            for row in listaCMovil:
-                id_categoria = row['id_categoria']
-                descripcion = row['descripcion']
-                cLocal.execute('''INSERT INTO categorias(descripcion) VALUES(?)''', (descripcion,))
-                id = cLocal.lastrowid
-                cMovil.execute('''UPDATE procesos SET id_categoria = ? WHERE id_categoria = ? ''', (id, id_categoria,))
-                cMovil.execute('''UPDATE plantillas SET id_categoria = ? WHERE id_categoria = ? ''', (id, id_categoria,))
-            
-            #Seccion Atributos
-            cMovil.execute('''SELECT id_atributo, nombre, obligatorio, longitud_max, longitud_min FROM atributos WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')
-            listaCMovil = cMovil.fetchall()
-            for row in listaCMovil:
-                id_atributo = row['id_atributo']
-                nombre = row['nombre']
-                obligatorio = row['obligatorio']
-                longitud_max = row['longitud_max']
-                longitud_min = row['longitud_min']
-                cLocal.execute('''INSERT INTO atributos(nombre, obligatorio, longitud_max, longitud_min) VALUES(?,?,?,?)''', (nombre, obligatorio, longitud_max, longitud_min,))
-                id = cLocal.lastrowid
-                cMovil.execute('''UPDATE atributos_proceso SET id_atributo = ? WHERE id_atributo = ? ''', (id, id_atributo,))
-                cMovil.execute('''UPDATE atributos_plantilla SET id_atributo = ? WHERE id_atributo = ? ''', (id, id_atributo,))
-            
-            #Seccion Procesos
-            cMovil.execute('''SELECT id_proceso, id_demandante, id_demandado, fecha_creacion as "fecha_creacion [timestamp]", radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria FROM procesos WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')
-            listaCMovil = cMovil.fetchall()
-            for row in listaCMovil:
-                id_proceso = row['id_proceso']
-                id_demandante = row['id_demandante']
-                id_demandado = row['id_demandado']
-                fecha_creacion = row['fecha_creacion']
-                radicado = row['radicado']
-                radicado_unico = row['radicado_unico']
-                estado = row['estado']
-                tipo = row['tipo']
-                notas = row['notas']
-                prioridad = row['prioridad']
-                id_juzgado = row['id_juzgado']
-                id_categoria = row['id_categoria']
-                cLocal.execute('''INSERT INTO procesos(id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria) VALUES (?,?,?,?,?,?,?,?,?,?,?)''', (id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria,))
-                id = cLocal.lastrowid
-                cMovil.execute('''UPDATE atributos_proceso SET id_proceso = ? WHERE id_proceso = ? ''', (id, id_proceso,))
-                cMovil.execute('''UPDATE actuaciones SET id_proceso = ? WHERE id_proceso = ? ''', (id, id_proceso,))
-            
-            #Seccion Plantillas
-            cMovil.execute('''SELECT id_plantilla, nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria FROM plantillas WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')
-            listaCMovil = cMovil.fetchall()
-            for row in listaCMovil:
-                id_plantilla = row['id_plantilla']
-                nombre = row['nombre']
-                id_demandante = row['id_demandante']
-                id_demandado = row['id_demandado']
-                radicado = row['radicado']
-                radicado_unico = row['radicado_unico']
-                estado = row['estado']
-                tipo = row['tipo']
-                notas = row['notas']
-                prioridad = row['prioridad']
-                id_juzgado = row['id_juzgado']
-                id_categoria = row['id_categoria']
-                cLocal.execute('''INSERT INTO plantillas(nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria) VALUES (?,?,?,?,?,?,?,?,?,?,?)''', (nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria,))
-                id = cLocal.lastrowid
-                cMovil.execute('''UPDATE atributos_plantilla SET id_plantilla = ? WHERE id_plantilla = ? ''', (id, id_plantilla,))
-            
-            #Seccion Actuaciones
-            cMovil.execute('''SELECT id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')
-            for row in cMovil:
-                id_proceso = row['id_proceso']
-                id_juzgado = row['id_juzgado']
-                fecha_creacion = row['fecha_creacion']
-                fecha_proxima = row['fecha_proxima']
-                descripcion = row['descripcion']
-                uid = row['uid']
-                cLocal.execute('''INSERT INTO actuaciones(id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid) VALUES(?,?,?,?,?,?)''', (id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid,))
-
-            #Seccion Atributos por Proceso
-            cMovil.execute('''SELECT id_atributo, id_proceso, valor FROM atributos_proceso WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')
-            for row in cMovil:
-                id_atributo = row['id_atributo']
-                id_proceso = row['id_proceso']
-                valor = row['valor']
-                cLocal.execute('''INSERT INTO atributos_proceso(id_atributo, id_proceso, valor) VALUES (?,?,?)''', (id_atributo, id_proceso, valor,))
-                
-            #Seccion Atributos por plantilla
-            cMovil.execute('''SELECT id_atributo, id_plantilla, valor FROM atributos_plantilla WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')
-            for row in cMovil:
-                id_atributo = row['id_atributo']
-                id_plantilla = row['id_plantilla']
-                valor = row['valor']
-                cLocal.execute('''INSERT INTO atributos_plantilla(id_atributo, id_plantilla, valor) VALUES (?,?,?)''', (id_atributo, id_plantilla, valor,))
-            
+              
             #Bajar Flag +nm -e
             cMovil.execute('''UPDATE demandantes SET nuevo = 0, modificado = 0 WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')     
             cMovil.execute('''UPDATE demandados SET nuevo = 0, modificado = 0 WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')   
@@ -710,8 +568,4 @@ class SyncManager(object):
             connLocal.commit()
             connLocal.close()
             connMovil.close()
-            
-       
-sync = SyncManager()
-sync.sincronizar('./databaseTriggerDevice.ehm')
         
