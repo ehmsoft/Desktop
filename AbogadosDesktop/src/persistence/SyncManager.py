@@ -703,23 +703,37 @@ class SyncManager(object):
                 id_plantilla = row['id_plantilla']
                 valor = row['valor']
                 cMovil.execute('''INSERT INTO atributos_plantilla(id_atributo_plantilla, id_atributo, id_plantilla, valor, nuevo) VALUES (?,?,?,?,0)''', (id_atributo_plantilla, id_atributo, id_plantilla, valor,))
+            #Borrar eliminados en la base de datos de escritorio
+            cLocal.execute('''DELETE FROM demandantes WHERE eliminado = 1''')
+            cLocal.execute('''DELETE FROM demandados WHERE eliminado = 1''')
+            cLocal.execute('''DELETE FROM juzgados WHERE eliminado = 1''')
+            cLocal.execute('''DELETE FROM categorias WHERE eliminado = 1''')
+            cLocal.execute('''DELETE FROM actuaciones WHERE eliminado = 1''')
+            cLocal.execute('''DELETE FROM atributos WHERE eliminado = 1''')
+            cLocal.execute('''DELETE FROM procesos WHERE eliminado = 1''')
+            cLocal.execute('''DELETE FROM plantillas WHERE eliminado = 1''')
+            cLocal.execute('''DELETE FROM atributos_proceso WHERE  eliminado = 1''')
+            cLocal.execute('''DELETE FROM atributos_plantilla WHERE  eliminado = 1''')
+            
             #Bajar Flags de la base de datos de escritorio
-            cMovil.execute('''UPDATE demandantes SET nuevo = 0, modificado = 0''')     
-            cMovil.execute('''UPDATE demandados SET nuevo = 0, modificado = 0''')   
-            cMovil.execute('''UPDATE juzgados SET nuevo = 0, modificado = 0''')   
-            cMovil.execute('''UPDATE categorias SET nuevo = 0, modificado = 0''')
-            cMovil.execute('''UPDATE atributos SET nuevo = 0, modificado = 0''')
-            cMovil.execute('''UPDATE procesos SET nuevo = 0, modificado = 0''') 
-            cMovil.execute('''UPDATE plantillas SET nuevo = 0, modificado = 0''')           
-            cMovil.execute('''UPDATE actuaciones SET nuevo = 0, modificado = 0''')   
-            cMovil.execute('''UPDATE atributos_proceso SET nuevo = 0, modificado = 0''')   
-            cMovil.execute('''UPDATE atributos_plantilla SET nuevo = 0, modificado = 0''')
+            cLocal.execute('''UPDATE demandantes SET nuevo = 0, modificado = 0''')     
+            cLocal.execute('''UPDATE demandados SET nuevo = 0, modificado = 0''')   
+            cLocal.execute('''UPDATE juzgados SET nuevo = 0, modificado = 0''')   
+            cLocal.execute('''UPDATE categorias SET nuevo = 0, modificado = 0''')
+            cLocal.execute('''UPDATE atributos SET nuevo = 0, modificado = 0''')
+            cLocal.execute('''UPDATE procesos SET nuevo = 0, modificado = 0''') 
+            cLocal.execute('''UPDATE plantillas SET nuevo = 0, modificado = 0''')           
+            cLocal.execute('''UPDATE actuaciones SET nuevo = 0, modificado = 0''')   
+            cLocal.execute('''UPDATE atributos_proceso SET nuevo = 0, modificado = 0''')   
+            cLocal.execute('''UPDATE atributos_plantilla SET nuevo = 0, modificado = 0''')
+            
             
             #Insertar preferencia de sincronizacion
             cMovil.execute(''' INSERT OR IGNORE INTO preferencias(id_preferencia, valor) VALUES(997, datetime('now', 'localtime'))''')
             cMovil.execute(''' UPDATE preferencias SET valor = datetime('now', 'localtime') WHERE id_preferencia = 997''' )
             cLocal.execute(''' INSERT OR IGNORE INTO preferencias(id_preferencia, valor) VALUES(997, datetime('now', 'localtime'))''')
             cLocal.execute(''' UPDATE preferencias SET valor = datetime('now', 'localtime') WHERE id_preferencia = 997''' )
+            
             print 'Archivo Movil actualizado'         
         except Exception as e:
             raise e
