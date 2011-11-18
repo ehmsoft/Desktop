@@ -598,8 +598,21 @@ class SyncManager(object):
                 direccion = row['direccion']
                 correo = row['correo']
                 notas = row['notas']
-                cMovil.execute('''INSERT INTO demandantes(id_demandante, cedula, nombre, telefono, direccion, correo, notas, nuevo) VALUES(?,?,?,?,?,?,?, 0)''', (id_demandante, cedula, nombre, telefono, direccion, correo, notas,))
-
+                cMovil.execute('''INSERT INTO demandantes(id_demandante, cedula, nombre, telefono, direccion, correo, notas, nuevo) VALUES(?,?,?,?,?,?,?,0)''', (id_demandante, cedula, nombre, telefono, direccion, correo, notas,))
+            
+            #Copiar demandados
+            cLocal.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE id_demandado <> 1''')
+            for row in cLocal:
+                id_demandado = row['id_demandado']
+                cedula = row['cedula']
+                nombre = row['nombre']
+                telefono = row['telefono']
+                direccion = row['direccion']
+                correo = row['correo']
+                notas = row['notas']
+                cMovil.execute('''INSERT INTO demandados(id_demandado, cedula, nombre, telefono, direccion, correo, notas, nuevo) VALUES(?,?,?,?,?,?,?,0)''', (id_demandado, cedula, nombre, telefono, direccion, correo, notas,))
+                     
+            
 
             print 'Archivo Movil actualizado'         
         except Exception as e:
