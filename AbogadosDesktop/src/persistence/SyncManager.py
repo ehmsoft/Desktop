@@ -471,7 +471,7 @@ class SyncManager(object):
                         else:
                             raise Exception('Conflicto de sincronizacion, el movil es mas antiguo que el local')
                     else:
-                        cLocal.execute('''UPDATE plantillas SET nombre = ? id_demandante = ?, id_demandado = ?, radicado = ?, radicado_unico = ?, estado = ?, tipo = ?, notas = ?, prioridad = ?, id_juzgado = ?, id_categoria = ?  WHERE id_plantilla = ?''', (nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, id_plantilla,))
+                        cLocal.execute('''UPDATE plantillas SET nombre = ?, id_demandante = ?, id_demandado = ?, radicado = ?, radicado_unico = ?, estado = ?, tipo = ?, notas = ?, prioridad = ?, id_juzgado = ?, id_categoria = ?  WHERE id_plantilla = ?''', (nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, id_plantilla,))
                 else:
                     raise Exception('registro No encontrado')
 
@@ -557,12 +557,13 @@ class SyncManager(object):
             cMovil.execute('''UPDATE actuaciones SET modificado = 0 WHERE modificado = 1''')   
             cMovil.execute('''UPDATE atributos_proceso SET modificado = 0 WHERE modificado = 1''')   
             cMovil.execute('''UPDATE atributos_plantilla SET modificado = 0 WHERE modificado = 1''')
+            connMovil.commit()
+            connLocal.commit()
             print 'sincronizacion terminada'         
         except Exception as e:
             raise e
         finally:
-            connMovil.commit()
-            connLocal.commit()
+            
             connLocal.close()
             connMovil.close()
         
@@ -733,12 +734,11 @@ class SyncManager(object):
             cMovil.execute(''' UPDATE preferencias SET valor = datetime('now', 'localtime') WHERE id_preferencia = 997''' )
             cLocal.execute(''' INSERT OR IGNORE INTO preferencias(id_preferencia, valor) VALUES(997, datetime('now', 'localtime'))''')
             cLocal.execute(''' UPDATE preferencias SET valor = datetime('now', 'localtime') WHERE id_preferencia = 997''' )
-            
+            connMovil.commit()
+            connLocal.commit()
             print 'Archivo Movil actualizado'         
         except Exception as e:
             raise e
         finally:
-            connMovil.commit()
-            connLocal.commit()
             connLocal.close()
             connMovil.close()
