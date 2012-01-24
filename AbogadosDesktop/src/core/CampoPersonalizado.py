@@ -105,3 +105,6 @@ class CampoPersonalizado(object):
             self.__id_atributo = id_atributo
         else:
             raise TypeError('Tipo de dato no admitido')
+        
+    def __str__(self):
+        return self.getNombre()
