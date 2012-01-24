@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from PySide.QtGui import QDialog, QMessageBox
+from PySide.QtGui import *
+from PySide.QtCore import *
 from NuevaPersonaScreen import Ui_NuevaPersona
 from core.Persona import Persona
 from persistence.Persistence import Persistence
@@ -9,7 +10,10 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
     def __init__(self,persona=None,tipo = None,parent=None):
         super(NuevaPersona, self).__init__(parent)
         self.__persona = persona
+        self.__campos = persona.getCampos()
+        self.ensayis = []
         self.setupUi(self)
+        self.connect(self.btnAdd,SIGNAL("clicked()"),self.add)
         
         if self.__persona is not None:
             self.__tipo = persona.getTipo()
@@ -21,7 +25,24 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
             self.txtNotas.setText(self.__persona.getNotas())
         else:
             self.__tipo = tipo
-
+            
+        if self.__campos is not None and self.__campos != []:
+            for campo in self.__campos:
+                index = 0
+                label = QLabel()
+                label.setText(campo.getNombre())
+                txtBox = QLineEdit()
+                txtBox.setText(campo.getValor())
+                if index == 0:
+                    self.ensayis.append(txtBox)
+                    self.ensayis.append(label)
+                    index = 1
+                txtBox.setContextMenuPolicy(Qt.ActionsContextMenu)
+                action = self.createAction('Eliminar', self.borrarElemento)
+                action.setData(txtBox)
+                txtBox.addAction(action)
+                self.formLayout.addRow(label,txtBox)       
+            
             
     def getPersona(self):
         return self.__persona
@@ -75,3 +96,50 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
                 self.txtTelefono.setFocus()            
         else:
             self.guardar()
+    
+    def borrarElemento(self):
+        index = self.formLayout.getWidgetPosition(self.sender().data())[0]
+        label = self.formLayout.itemAt(index, QFormLayout.LabelRole)
+        item = self.formLayout.itemAt(index, QFormLayout.FieldRole)
+        label.widget().deleteLater()
+        item.widget().deleteLater()
+        self.__campos[index - 6] = None
+    
+    def createAction(self, text, slot= None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
+        action = QAction(text, self)
+        if icon is not None:
+            action.setIcon(QIcon("./images/%s.png" % icon))
+        if shortcut is not None:
+            action.setShortcut(shortcut)
+        if tip is not None:
+            action.setToolTip(tip)
+            action.setStatusTip(tip)
+        if slot is not None:
+            self.connect(action, SIGNAL(signal), slot)
+        if checkable:
+            action.setCheckable(True)
+        return action
+    
+    def add(self):
+        pass
+    
+
+import sys
+from PySide.QtGui import QApplication
+from core.CampoPersonalizado import CampoPersonalizado
+from core.Persona import Persona
+
+campo1 = CampoPersonalizado("Cumpleaños", "11/11/11", True, 8, 0, None, None)
+campo2 = CampoPersonalizado("Nombre juez", "11/11/12", False, 0, 0, None, None)
+campo3 = CampoPersonalizado("Campo 1", "11/11/13", True, 0, 0, None, None)
+campo4 = CampoPersonalizado("Campo 2", "11/11/14", False, 0, 0, None, None)
+campo5 = CampoPersonalizado("Campo 3", "11/11/15", True, 0, 5, None, None)
+
+campos = [campo1,campo2,campo3,campo4,campo5]
+
+persona = Persona(1, "1093219325", "Harold", "3117001033", "Calle 30 # 14 - 32", "sancospi@gmail.com", "Ninguna", None, campos)
+
+app = QApplication(sys.argv)
+dialog = NuevaPersona(persona)
+dialog.show()
+app.exec_()
