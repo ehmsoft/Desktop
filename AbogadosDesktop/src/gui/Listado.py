@@ -24,14 +24,6 @@ class Listado(QListWidget):
         else:
             raise TypeError('Tipo de dato no admitido')
         
-        
-        
-    def prueba(self,item):
-        self.remove()
-        
-    def click(self,item):
-        return item.getObjeto()
-        
     def add(self,objeto):
         self.addItem(ItemListas(objeto))
         
@@ -43,6 +35,9 @@ class Listado(QListWidget):
     def replace(self,new):
         item = self.currentItem()
         item.setObjeto(new)
+        
+    def getSelectedItem(self):
+        return self.currentItem().getObjeto()
         
 
 
