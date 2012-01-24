@@ -2,31 +2,31 @@
 
 # Form implementation generated from reading ui file 'nuevaPersona.ui'
 #
-# Created: Fri Jan 20 14:25:26 2012
+# Created: Mon Jan 23 21:10:26 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
 
 from PySide import QtCore, QtGui
 
-class Ui_nuevaPersona(object):
-    def setupUi(self, nuevaPersona):
-        nuevaPersona.setObjectName("nuevaPersona")
-        nuevaPersona.resize(370, 234)
+class Ui_NuevaPersona(object):
+    def setupUi(self, NuevaPersona):
+        NuevaPersona.setObjectName("NuevaPersona")
+        NuevaPersona.resize(370, 234)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(nuevaPersona.sizePolicy().hasHeightForWidth())
-        nuevaPersona.setSizePolicy(sizePolicy)
-        nuevaPersona.setMaximumSize(QtCore.QSize(16777215, 250))
-        self.gridLayout = QtGui.QGridLayout(nuevaPersona)
+        sizePolicy.setHeightForWidth(NuevaPersona.sizePolicy().hasHeightForWidth())
+        NuevaPersona.setSizePolicy(sizePolicy)
+        NuevaPersona.setMaximumSize(QtCore.QSize(16777215, 250))
+        self.gridLayout = QtGui.QGridLayout(NuevaPersona)
         self.gridLayout.setObjectName("gridLayout")
-        self.buttonBox = QtGui.QDialogButtonBox(nuevaPersona)
+        self.buttonBox = QtGui.QDialogButtonBox(NuevaPersona)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.gridLayout.addWidget(self.buttonBox, 3, 0, 1, 1)
-        self.groupBox = QtGui.QGroupBox(nuevaPersona)
+        self.groupBox = QtGui.QGroupBox(NuevaPersona)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -76,7 +76,7 @@ class Ui_nuevaPersona(object):
         self.formLayout.setWidget(5, QtGui.QFormLayout.FieldRole, self.txtNotas)
         self.gridLayout_2.addLayout(self.formLayout, 0, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
-        self.line = QtGui.QFrame(nuevaPersona)
+        self.line = QtGui.QFrame(NuevaPersona)
         self.line.setFrameShape(QtGui.QFrame.HLine)
         self.line.setFrameShadow(QtGui.QFrame.Sunken)
         self.line.setObjectName("line")
@@ -88,18 +88,18 @@ class Ui_nuevaPersona(object):
         self.lblCorreo.setBuddy(self.txtCorreo)
         self.lblNotas.setBuddy(self.txtNotas)
 
-        self.retranslateUi(nuevaPersona)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("accepted()"), nuevaPersona.accept)
-        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("rejected()"), nuevaPersona.reject)
-        QtCore.QMetaObject.connectSlotsByName(nuevaPersona)
+        self.retranslateUi(NuevaPersona)
+        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("accepted()"), NuevaPersona.accept)
+        QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("rejected()"), NuevaPersona.reject)
+        QtCore.QMetaObject.connectSlotsByName(NuevaPersona)
 
-    def retranslateUi(self, nuevaPersona):
-        nuevaPersona.setWindowTitle(QtGui.QApplication.translate("nuevaPersona", "Nueva persona", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox.setTitle(QtGui.QApplication.translate("nuevaPersona", "Ingrese la información de la nueva persona:", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblNombre.setText(QtGui.QApplication.translate("nuevaPersona", "Nombre:", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblCedula.setText(QtGui.QApplication.translate("nuevaPersona", "Cédula:", None, QtGui.QApplication.UnicodeUTF8))
-        self.lbltelefono.setText(QtGui.QApplication.translate("nuevaPersona", "Teléfono:", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblDireccion.setText(QtGui.QApplication.translate("nuevaPersona", "Dirección:", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblCorreo.setText(QtGui.QApplication.translate("nuevaPersona", "Correo:", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblNotas.setText(QtGui.QApplication.translate("nuevaPersona", "Notas:", None, QtGui.QApplication.UnicodeUTF8))
+    def retranslateUi(self, NuevaPersona):
+        NuevaPersona.setWindowTitle(QtGui.QApplication.translate("NuevaPersona", "Nueva persona", None, QtGui.QApplication.UnicodeUTF8))
+        self.groupBox.setTitle(QtGui.QApplication.translate("NuevaPersona", "Ingrese la información de la nueva persona:", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblNombre.setText(QtGui.QApplication.translate("NuevaPersona", "Nombre:", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblCedula.setText(QtGui.QApplication.translate("NuevaPersona", "Cédula:", None, QtGui.QApplication.UnicodeUTF8))
+        self.lbltelefono.setText(QtGui.QApplication.translate("NuevaPersona", "Teléfono:", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblDireccion.setText(QtGui.QApplication.translate("NuevaPersona", "Dirección:", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblCorreo.setText(QtGui.QApplication.translate("NuevaPersona", "Correo:", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblNotas.setText(QtGui.QApplication.translate("NuevaPersona", "Notas:", None, QtGui.QApplication.UnicodeUTF8))
 
