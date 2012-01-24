@@ -196,3 +196,5 @@ class Plantilla(object):
             self.__id_plantilla = id_plantilla
         else:
             raise TypeError('Tipo de dato no admitido')    
+    def __str__(self):
+        return self.getNombre()
