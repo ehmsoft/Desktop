@@ -1,11 +1,11 @@
-import sys
-from PySide.QtGui import *
-from PySide.QtCore import *
-import nuevaPersonaScreen
+# -*- coding: utf-8 -*-
+
+from PySide.QtGui import QDialog, QMessageBox
+from NuevaPersonaScreen import Ui_NuevaPersona
 from core.Persona import Persona
 from persistence.Persistence import Persistence
 
-class NuevaPersona(QDialog, nuevaPersonaScreen.Ui_nuevaPersona):
+class NuevaPersona(QDialog, Ui_NuevaPersona):
     def __init__(self,persona=None,tipo = None,parent=None):
         super(NuevaPersona, self).__init__(parent)
         self.__persona = persona
@@ -25,8 +25,8 @@ class NuevaPersona(QDialog, nuevaPersonaScreen.Ui_nuevaPersona):
             
     def getPersona(self):
         return self.__persona
-            
-    def accept(self, *args, **kwargs):
+    
+    def guardar(self):
         try:
             p = Persistence()
             if self.__persona is None:
@@ -49,19 +49,29 @@ class NuevaPersona(QDialog, nuevaPersonaScreen.Ui_nuevaPersona):
                 self.__persona.setCorreo(self.txtCorreo.text())
                 self.__persona.setNotas(self.txtNotas.text())
                 p.actualizarPersona(self.__persona)
-                
+                    
         except Exception, e:
-            print e           
-                
-        return QDialog.accept(self, *args, **kwargs)
-    
-    def reject(self, *args, **kwargs):
-        return QDialog.reject(self, *args, **kwargs)
-
-#persona = Persona(1, nombre = "Harold", telefono = "3117001033",
-                #direccion = "Calle 30 # 14 - 32", correo = "sancospi@gmail.com", notas = "Ninguna", id = "1093219325")
-        
-app = QApplication(sys.argv)
-form = NuevaPersona(tipo = 1)
-form.show()
-app.exec_()
+            print e
+        finally:
+            return QDialog.accept(self)
+            
+    def accept(self):
+        if self.txtNombre.text().__len__() == 0 or self.txtNombre.text() == " ":
+            message = QMessageBox()
+            message.setIcon(QMessageBox.Warning)
+            message.setText("El nombre se considera obligatorio")
+            message.exec_()
+            self.txtNombre.setFocus()
+        elif self.txtTelefono.text().__len__() == 0 or self.txtTelefono.text() == " ":
+            message = QMessageBox()
+            message.setIcon(QMessageBox.Question)
+            message.setStandardButtons(QMessageBox.Yes|QMessageBox.No)
+            message.setDefaultButton(QMessageBox.No)
+            message.setText(unicode("¿Desea guardar sin agregar un teléfono?"))
+            ret = message.exec_()
+            if ret == QMessageBox.Yes:
+                self.guardar()
+            else:
+                self.txtTelefono.setFocus()            
+        else:
+            self.guardar()
