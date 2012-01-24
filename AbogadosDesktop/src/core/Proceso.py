@@ -218,3 +218,6 @@ class Proceso(object):
             self.__id_proceso = id_proceso
         else:
             raise TypeError('Tipo de dato no admitido')
+        
+    def __str__(self):
+        return 'Radicado:{0}\n  Demandante:{1}\n  Demandado:{2}'.format(self.getRadicado(), self.getDemandante(), self.getDemandado())
