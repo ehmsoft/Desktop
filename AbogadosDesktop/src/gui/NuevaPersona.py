@@ -1,15 +1,20 @@
 # -*- coding: utf-8 -*-
 
-from PySide.QtGui import QDialog, QMessageBox
+from PySide.QtGui import *
+from PySide.QtCore import *
 from NuevaPersonaScreen import Ui_NuevaPersona
 from core.Persona import Persona
 from persistence.Persistence import Persistence
+from copy import deepcopy
+from Listado import Listado
 
 class NuevaPersona(QDialog, Ui_NuevaPersona):
     def __init__(self,persona=None,tipo = None,parent=None):
         super(NuevaPersona, self).__init__(parent)
         self.__persona = persona
+        self.__campos = deepcopy(persona.getCampos())
         self.setupUi(self)
+        self.connect(self.btnAdd,SIGNAL("clicked()"),self.addCampo)
         
         if self.__persona is not None:
             self.__tipo = persona.getTipo()
@@ -21,7 +26,12 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
             self.txtNotas.setText(self.__persona.getNotas())
         else:
             self.__tipo = tipo
-
+            
+        if self.__campos is not None and self.__campos != []:
+            for campo in self.__campos:
+                self.addCampo(campo)
+  
+            
             
     def getPersona(self):
         return self.__persona
@@ -56,6 +66,10 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
             return QDialog.accept(self)
             
     def accept(self):
+        if self.__campos != self.__persona.getCampos():
+            func = lambda x: x is not None and 1 or 0
+            self.__campos = filter(func,self.__campos)
+            self.__persona.setCampos(self.__campos)
         if self.txtNombre.text().__len__() == 0 or self.txtNombre.text() == " ":
             message = QMessageBox()
             message.setIcon(QMessageBox.Warning)
@@ -75,3 +89,60 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
                 self.txtTelefono.setFocus()            
         else:
             self.guardar()
+    
+    def borrarElemento(self):
+        index = self.formLayout.getWidgetPosition(self.sender().data())[0]
+        label = self.formLayout.itemAt(index, QFormLayout.LabelRole)
+        item = self.formLayout.itemAt(index, QFormLayout.FieldRole)
+        label.widget().deleteLater()
+        item.widget().deleteLater()
+        self.__campos[index - 6] = None
+    
+    def createAction(self, text, slot= None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
+        action = QAction(text, self)
+        if icon is not None:
+            action.setIcon(QIcon("./images/%s.png" % icon))
+        if shortcut is not None:
+            action.setShortcut(shortcut)
+        if tip is not None:
+            action.setToolTip(tip)
+            action.setStatusTip(tip)
+        if slot is not None:
+            self.connect(action, SIGNAL(signal), slot)
+        if checkable:
+            action.setCheckable(True)
+        return action
+    
+    def addCampo(self,campo = None):
+        if campo is not None:
+            label = QLabel()
+            label.setText(campo.getNombre())
+            txtBox = QLineEdit()
+            txtBox.setText(campo.getValor())
+            txtBox.setContextMenuPolicy(Qt.ActionsContextMenu)
+            action = self.createAction('Eliminar', self.borrarElemento)
+            action.setData(txtBox)
+            txtBox.addAction(action)
+            self.formLayout.addRow(label,txtBox)
+        else:
+            pass
+            
+                      
+    
+
+import sys
+from PySide.QtGui import QApplication
+from core.CampoPersonalizado import CampoPersonalizado
+from core.Persona import Persona
+
+persona = None
+try:
+    p = Persistence()
+    persona = p.consultarPersona("2", 1)
+
+    app = QApplication(sys.argv)
+    dialog = NuevaPersona(persona)
+    dialog.show()
+    app.exec_()
+except Exception, e:
+    print e

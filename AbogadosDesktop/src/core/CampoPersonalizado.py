@@ -108,3 +108,6 @@ class CampoPersonalizado(object):
         
     def __str__(self):
         return self.getNombre()
+    
+    def __repr__(self):
+        return self.getNombre()
