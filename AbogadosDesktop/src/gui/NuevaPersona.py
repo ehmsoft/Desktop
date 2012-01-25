@@ -5,15 +5,15 @@ from PySide.QtCore import *
 from NuevaPersonaScreen import Ui_NuevaPersona
 from core.Persona import Persona
 from persistence.Persistence import Persistence
+from copy import deepcopy
 
 class NuevaPersona(QDialog, Ui_NuevaPersona):
     def __init__(self,persona=None,tipo = None,parent=None):
         super(NuevaPersona, self).__init__(parent)
         self.__persona = persona
-        self.__campos = persona.getCampos()
-        self.ensayis = []
+        self.__campos = deepcopy(persona.getCampos())
         self.setupUi(self)
-        self.connect(self.btnAdd,SIGNAL("clicked()"),self.add)
+        self.connect(self.btnAdd,SIGNAL("clicked()"),self.addCampo)
         
         if self.__persona is not None:
             self.__tipo = persona.getTipo()
@@ -28,20 +28,8 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
             
         if self.__campos is not None and self.__campos != []:
             for campo in self.__campos:
-                index = 0
-                label = QLabel()
-                label.setText(campo.getNombre())
-                txtBox = QLineEdit()
-                txtBox.setText(campo.getValor())
-                if index == 0:
-                    self.ensayis.append(txtBox)
-                    self.ensayis.append(label)
-                    index = 1
-                txtBox.setContextMenuPolicy(Qt.ActionsContextMenu)
-                action = self.createAction('Eliminar', self.borrarElemento)
-                action.setData(txtBox)
-                txtBox.addAction(action)
-                self.formLayout.addRow(label,txtBox)       
+                self.addCampo(campo)
+  
             
             
     def getPersona(self):
@@ -77,6 +65,10 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
             return QDialog.accept(self)
             
     def accept(self):
+        if self.__campos != self.__persona.getCampos():
+            func = lambda x: x is not None and 1 or 0
+            self.__campos = filter(func,self.__campos)
+            self.__persona.setCampos(self.__campos)
         if self.txtNombre.text().__len__() == 0 or self.txtNombre.text() == " ":
             message = QMessageBox()
             message.setIcon(QMessageBox.Warning)
@@ -120,8 +112,16 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
             action.setCheckable(True)
         return action
     
-    def add(self):
-        pass
+    def addCampo(self,campo):
+        label = QLabel()
+        label.setText(campo.getNombre())
+        txtBox = QLineEdit()
+        txtBox.setText(campo.getValor())
+        txtBox.setContextMenuPolicy(Qt.ActionsContextMenu)
+        action = self.createAction('Eliminar', self.borrarElemento)
+        action.setData(txtBox)
+        txtBox.addAction(action)
+        self.formLayout.addRow(label,txtBox)     
     
 
 import sys
@@ -129,17 +129,14 @@ from PySide.QtGui import QApplication
 from core.CampoPersonalizado import CampoPersonalizado
 from core.Persona import Persona
 
-campo1 = CampoPersonalizado("Cumpleaños", "11/11/11", True, 8, 0, None, None)
-campo2 = CampoPersonalizado("Nombre juez", "11/11/12", False, 0, 0, None, None)
-campo3 = CampoPersonalizado("Campo 1", "11/11/13", True, 0, 0, None, None)
-campo4 = CampoPersonalizado("Campo 2", "11/11/14", False, 0, 0, None, None)
-campo5 = CampoPersonalizado("Campo 3", "11/11/15", True, 0, 5, None, None)
+persona = None
+try:
+    p = Persistence()
+    persona = p.consultarPersona("2", 1)
 
-campos = [campo1,campo2,campo3,campo4,campo5]
-
-persona = Persona(1, "1093219325", "Harold", "3117001033", "Calle 30 # 14 - 32", "sancospi@gmail.com", "Ninguna", None, campos)
-
-app = QApplication(sys.argv)
-dialog = NuevaPersona(persona)
-dialog.show()
-app.exec_()
+    app = QApplication(sys.argv)
+    dialog = NuevaPersona(persona)
+    dialog.show()
+    app.exec_()
+except Exception, e:
+    print e

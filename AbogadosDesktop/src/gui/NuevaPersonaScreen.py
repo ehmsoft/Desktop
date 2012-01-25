@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'nuevaPersona.ui'
 #
-# Created: Tue Jan 24 17:10:31 2012
+# Created: Tue Jan 24 19:43:48 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.0.8
 #
 # WARNING! All changes made in this file will be lost!
@@ -21,6 +21,11 @@ class Ui_NuevaPersona(object):
         NuevaPersona.setMaximumSize(QtCore.QSize(16777215, 250))
         self.gridLayout = QtGui.QGridLayout(NuevaPersona)
         self.gridLayout.setObjectName("gridLayout")
+        self.buttonBox = QtGui.QDialogButtonBox(NuevaPersona)
+        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
+        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setObjectName("buttonBox")
+        self.gridLayout.addWidget(self.buttonBox, 3, 0, 1, 1)
         self.line = QtGui.QFrame(NuevaPersona)
         self.line.setFrameShape(QtGui.QFrame.HLine)
         self.line.setFrameShadow(QtGui.QFrame.Sunken)
@@ -76,14 +81,15 @@ class Ui_NuevaPersona(object):
         self.formLayout.setWidget(5, QtGui.QFormLayout.FieldRole, self.txtNotas)
         self.gridLayout_2.addLayout(self.formLayout, 0, 0, 1, 1)
         self.btnAdd = QtGui.QPushButton(self.groupBox)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.btnAdd.sizePolicy().hasHeightForWidth())
+        self.btnAdd.setSizePolicy(sizePolicy)
+        self.btnAdd.setLayoutDirection(QtCore.Qt.RightToLeft)
         self.btnAdd.setObjectName("btnAdd")
         self.gridLayout_2.addWidget(self.btnAdd, 1, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
-        self.buttonBox = QtGui.QDialogButtonBox(NuevaPersona)
-        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
-        self.buttonBox.setObjectName("buttonBox")
-        self.gridLayout.addWidget(self.buttonBox, 3, 0, 1, 1)
         self.lblNombre.setBuddy(self.txtNombre)
         self.lblCedula.setBuddy(self.txtCedula)
         self.lbltelefono.setBuddy(self.txtTelefono)
@@ -105,5 +111,5 @@ class Ui_NuevaPersona(object):
         self.lblDireccion.setText(QtGui.QApplication.translate("NuevaPersona", "Dirección:", None, QtGui.QApplication.UnicodeUTF8))
         self.lblCorreo.setText(QtGui.QApplication.translate("NuevaPersona", "Correo:", None, QtGui.QApplication.UnicodeUTF8))
         self.lblNotas.setText(QtGui.QApplication.translate("NuevaPersona", "Notas:", None, QtGui.QApplication.UnicodeUTF8))
-        self.btnAdd.setText(QtGui.QApplication.translate("NuevaPersona", "Agregar campo personalizado", None, QtGui.QApplication.UnicodeUTF8))
+        self.btnAdd.setText(QtGui.QApplication.translate("NuevaPersona", "+", None, QtGui.QApplication.UnicodeUTF8))
 
