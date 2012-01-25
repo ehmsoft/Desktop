@@ -6,15 +6,15 @@ from NuevaPersonaScreen import Ui_NuevaPersona
 from core.Persona import Persona
 from persistence.Persistence import Persistence
 from copy import deepcopy
-from Listado import Listado
 
 class NuevaPersona(QDialog, Ui_NuevaPersona):
     def __init__(self,persona=None,tipo = None,parent=None):
         super(NuevaPersona, self).__init__(parent)
         self.__persona = persona
-        self.__campos = deepcopy(persona.getCampos())
         self.setupUi(self)
         self.connect(self.btnAdd,SIGNAL("clicked()"),self.addCampo)
+        
+        self.__campos = deepcopy(persona.getCampos())
         
         if self.__persona is not None:
             self.__tipo = persona.getTipo()
@@ -35,6 +35,35 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
             
     def getPersona(self):
         return self.__persona
+    
+    def organizarCampos(self):
+        func = lambda x: x is not None and 1 or 0
+        self.__campos = filter(func,self.__campos)
+        self.__persona.setCampos(self.__campos)
+        
+        camposPersona = self.__persona.getCampos()
+        
+        for campoNuevo in self.__campos:
+            if campoNuevo not in camposPersona:
+                try:
+                    p = Persistence()
+                    if self.__tipo is 1:
+                        p.guardarCampoDemandante(campoNuevo, self.__persona.getId())
+                    else:
+                        p.guardarCampoDemandado(campoNuevo, self.__persona.getId())
+                except Exception, e:
+                    print e
+        for campoViejo in camposPersona:
+            if campoViejo not in self.__campos:
+                try:
+                    p = Persistence()
+                    if self.__tipo is 1:
+                        p.borrarCampoDemandante(campoViejo)
+                    else:
+                        p.borrarCampoDemandado(campoViejo)
+                except Exception, e:
+                    print e
+        self.__persona.setCampos(self.__campos)
     
     def guardar(self):
         try:
@@ -67,9 +96,7 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
             
     def accept(self):
         if self.__campos != self.__persona.getCampos():
-            func = lambda x: x is not None and 1 or 0
-            self.__campos = filter(func,self.__campos)
-            self.__persona.setCampos(self.__campos)
+            self.organizarCampos()
         if self.txtNombre.text().__len__() == 0 or self.txtNombre.text() == " ":
             message = QMessageBox()
             message.setIcon(QMessageBox.Warning)
@@ -124,25 +151,6 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
             action.setData(txtBox)
             txtBox.addAction(action)
             self.formLayout.addRow(label,txtBox)
+            self.__campos.append(campo)
         else:
             pass
-            
-                      
-    
-
-import sys
-from PySide.QtGui import QApplication
-from core.CampoPersonalizado import CampoPersonalizado
-from core.Persona import Persona
-
-persona = None
-try:
-    p = Persistence()
-    persona = p.consultarPersona("2", 1)
-
-    app = QApplication(sys.argv)
-    dialog = NuevaPersona(persona)
-    dialog.show()
-    app.exec_()
-except Exception, e:
-    print e

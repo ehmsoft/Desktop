@@ -50,13 +50,7 @@ class NuevaCategoria(QDialog, Ui_NuevaCategoria):
         else:
             self.guardar()
             
-import sys
-from PySide.QtGui import QApplication
 
-app = QApplication(sys.argv)
-dialog= NuevaCategoria()
-dialog.show()
-app.exec_()
     
     
     
