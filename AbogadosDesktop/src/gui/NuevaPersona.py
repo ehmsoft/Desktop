@@ -6,6 +6,7 @@ from NuevaPersonaScreen import Ui_NuevaPersona
 from core.Persona import Persona
 from persistence.Persistence import Persistence
 from copy import deepcopy
+from Listado import Listado
 
 class NuevaPersona(QDialog, Ui_NuevaPersona):
     def __init__(self,persona=None,tipo = None,parent=None):
@@ -112,16 +113,21 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
             action.setCheckable(True)
         return action
     
-    def addCampo(self,campo):
-        label = QLabel()
-        label.setText(campo.getNombre())
-        txtBox = QLineEdit()
-        txtBox.setText(campo.getValor())
-        txtBox.setContextMenuPolicy(Qt.ActionsContextMenu)
-        action = self.createAction('Eliminar', self.borrarElemento)
-        action.setData(txtBox)
-        txtBox.addAction(action)
-        self.formLayout.addRow(label,txtBox)     
+    def addCampo(self,campo = None):
+        if campo is not None:
+            label = QLabel()
+            label.setText(campo.getNombre())
+            txtBox = QLineEdit()
+            txtBox.setText(campo.getValor())
+            txtBox.setContextMenuPolicy(Qt.ActionsContextMenu)
+            action = self.createAction('Eliminar', self.borrarElemento)
+            action.setData(txtBox)
+            txtBox.addAction(action)
+            self.formLayout.addRow(label,txtBox)
+        else:
+            pass
+            
+                      
     
 
 import sys
