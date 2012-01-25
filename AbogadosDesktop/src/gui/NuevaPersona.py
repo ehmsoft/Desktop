@@ -143,7 +143,7 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
     def addCampo(self,campo = None):
         if campo is not None:
             label = QLabel()
-            label.setText(campo.getNombre())
+            label.setText("%s:" % campo.getNombre())
             txtBox = QLineEdit()
             txtBox.setText(campo.getValor())
             txtBox.setContextMenuPolicy(Qt.ActionsContextMenu)
@@ -151,6 +151,5 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
             action.setData(txtBox)
             txtBox.addAction(action)
             self.formLayout.addRow(label,txtBox)
-            self.__campos.append(campo)
         else:
             pass
