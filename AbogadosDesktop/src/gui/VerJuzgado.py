@@ -22,7 +22,7 @@ class VerJuzgado(QWidget, Ui_VerJuzgado):
             self.lblTipo.setText(self.__juzgado.getTipo())
             for campo in self.__juzgado.getCampos():
                 label = QLabel()
-                label.setText(campo.getNombre())
+                label.setText('%s:' % campo.getNombre())
                 lblBox = QLabel()
                 lblBox.setText(campo.getValor())
                 self.formLayout.addRow(label,lblBox)
