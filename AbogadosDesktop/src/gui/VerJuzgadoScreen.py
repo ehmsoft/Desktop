@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'verJuzgado.ui'
 #
-# Created: Wed Jan 25 10:55:20 2012
+# Created: Thu Jan 26 07:39:24 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.0.7
 #
 # WARNING! All changes made in this file will be lost!
@@ -98,18 +98,18 @@ class Ui_VerJuzgado(object):
     def retranslateUi(self, VerJuzgado):
         VerJuzgado.setWindowTitle(QtGui.QApplication.translate("VerJuzgado", "Ver Juzgado", None, QtGui.QApplication.UnicodeUTF8))
         self.lbl1.setText(QtGui.QApplication.translate("VerJuzgado", "Nombre:", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblNombre.setToolTip(QtGui.QApplication.translate("VerJuzgado", "El nombre de la persona", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblNombre.setStatusTip(QtGui.QApplication.translate("VerJuzgado", "El nombre de la persona", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblNombre.setToolTip(QtGui.QApplication.translate("VerJuzgado", "El nombre del juzgado", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblNombre.setStatusTip(QtGui.QApplication.translate("VerJuzgado", "El nombre del juzgado", None, QtGui.QApplication.UnicodeUTF8))
         self.lbl2.setText(QtGui.QApplication.translate("VerJuzgado", "Ciudad", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblCiudad.setToolTip(QtGui.QApplication.translate("VerJuzgado", "La cédula de la persona", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblCiudad.setStatusTip(QtGui.QApplication.translate("VerJuzgado", "La cédula de la persona", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblCiudad.setToolTip(QtGui.QApplication.translate("VerJuzgado", "La ciudad del juzgado", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblCiudad.setStatusTip(QtGui.QApplication.translate("VerJuzgado", "La ciudad del juzgado", None, QtGui.QApplication.UnicodeUTF8))
         self.lbl3.setText(QtGui.QApplication.translate("VerJuzgado", "Teléfono:", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblTelefono.setToolTip(QtGui.QApplication.translate("VerJuzgado", "El teléfono de la persona", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblTelefono.setStatusTip(QtGui.QApplication.translate("VerJuzgado", "El teléfono de la persona", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblTelefono.setToolTip(QtGui.QApplication.translate("VerJuzgado", "El teléfono del juzgado", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblTelefono.setStatusTip(QtGui.QApplication.translate("VerJuzgado", "El teléfono del juzgado", None, QtGui.QApplication.UnicodeUTF8))
         self.lbl4.setText(QtGui.QApplication.translate("VerJuzgado", "Dirección:", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblDireccion.setToolTip(QtGui.QApplication.translate("VerJuzgado", "La dirección de la persona", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblDireccion.setStatusTip(QtGui.QApplication.translate("VerJuzgado", "La dirección de la persona", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblDireccion.setToolTip(QtGui.QApplication.translate("VerJuzgado", "La dirección del juzgado", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblDireccion.setStatusTip(QtGui.QApplication.translate("VerJuzgado", "La dirección del juzgado", None, QtGui.QApplication.UnicodeUTF8))
         self.lbl5.setText(QtGui.QApplication.translate("VerJuzgado", "Tipo:", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblTipo.setToolTip(QtGui.QApplication.translate("VerJuzgado", "El correo de la persona", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblTipo.setStatusTip(QtGui.QApplication.translate("VerJuzgado", "El correo de la persona", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblTipo.setToolTip(QtGui.QApplication.translate("VerJuzgado", "El tipo de juzgado", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblTipo.setStatusTip(QtGui.QApplication.translate("VerJuzgado", "El tipo de juzgado", None, QtGui.QApplication.UnicodeUTF8))
 

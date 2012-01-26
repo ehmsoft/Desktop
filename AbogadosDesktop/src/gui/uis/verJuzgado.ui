@@ -50,10 +50,10 @@
         <item row="0" column="1">
          <widget class="QLabel" name="lblNombre">
           <property name="toolTip">
-           <string>El nombre de la persona</string>
+           <string>El nombre del juzgado</string>
           </property>
           <property name="statusTip">
-           <string>El nombre de la persona</string>
+           <string>El nombre del juzgado</string>
           </property>
           <property name="text">
            <string/>
@@ -76,10 +76,10 @@
         <item row="1" column="1">
          <widget class="QLabel" name="lblCiudad">
           <property name="toolTip">
-           <string>La cédula de la persona</string>
+           <string>La ciudad del juzgado</string>
           </property>
           <property name="statusTip">
-           <string>La cédula de la persona</string>
+           <string>La ciudad del juzgado</string>
           </property>
           <property name="text">
            <string/>
@@ -102,10 +102,10 @@
         <item row="2" column="1">
          <widget class="QLabel" name="lblTelefono">
           <property name="toolTip">
-           <string>El teléfono de la persona</string>
+           <string>El teléfono del juzgado</string>
           </property>
           <property name="statusTip">
-           <string>El teléfono de la persona</string>
+           <string>El teléfono del juzgado</string>
           </property>
           <property name="text">
            <string/>
@@ -128,10 +128,10 @@
         <item row="3" column="1">
          <widget class="QLabel" name="lblDireccion">
           <property name="toolTip">
-           <string>La dirección de la persona</string>
+           <string>La dirección del juzgado</string>
           </property>
           <property name="statusTip">
-           <string>La dirección de la persona</string>
+           <string>La dirección del juzgado</string>
           </property>
           <property name="text">
            <string/>
@@ -154,10 +154,10 @@
         <item row="4" column="1">
          <widget class="QLabel" name="lblTipo">
           <property name="toolTip">
-           <string>El correo de la persona</string>
+           <string>El tipo de juzgado</string>
           </property>
           <property name="statusTip">
-           <string>El correo de la persona</string>
+           <string>El tipo de juzgado</string>
           </property>
           <property name="text">
            <string/>
