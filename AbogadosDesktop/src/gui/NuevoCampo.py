@@ -9,7 +9,6 @@ from PySide.QtGui import *
 from PySide.QtCore import *
 from core.CampoPersonalizado import CampoPersonalizado
 from persistence.Persistence import Persistence
-from copy import deepcopy
 from NuevoCampoScreen import Ui_NuevoCampo
 
 class NuevoCampo(QDialog, Ui_NuevoCampo):
@@ -33,24 +32,18 @@ class NuevoCampo(QDialog, Ui_NuevoCampo):
             self.txtLongMax.setText(self.__campo.getLongitudMax())
             self.txtLongMin.setText(self.__campo.getLongitudMin())
             self.cbObligatorio.setChecked(self.__campo.isObligatorio())
-        self.sbLongMax.valueChanged[int].connect(self.validarLongitudes)
-        self.sbLongMin.valueChanged[int].connect(self.validarLongitudes)       
+        self.sbLongMax.valueChanged[int].connect(self.validarLongitudMax)
+        self.sbLongMin.valueChanged[int].connect(self.validarLongitudMin)       
         
-    def validarLongitudes(self):
-        lmax = self.sbLongMax.value()
+    def validarLongitudMax(self,lmax):
         lmin = self.sbLongMin.value()
         if lmin is not 0 and lmax < lmin:
-            message = QMessageBox()
-            message.setIcon(QMessageBox.Warning)
-            message.setText("La longitud máxima no puede ser menor a la mínima")
-            message.exec_()
-            self.sbLongMin.setValue(lmin-1)
-        elif lmax is not 0 and lmin > lmax:
-            message = QMessageBox()
-            message.setIcon(QMessageBox.Warning)
-            message.setText("La longitud mínima no puede superar la máima")
-            message.exec_()
             self.sbLongMax.setValue(lmax+1)
+            
+    def validarLongitudMin(self,lmin):
+        lmax = self.sbLongMax.value()
+        if lmax is not 0 and lmin > lmax:
+            self.sbLongMin.setValue(lmin-1)          
             
     def getCampo(self):
         return self.__campo
@@ -100,11 +93,4 @@ class NuevoCampo(QDialog, Ui_NuevoCampo):
             message.exec_()
             self.txtNombre.setFocus()        
         else:
-            self.guardar()
-            
-import sys
-
-app = QApplication(sys.argv)
-form = NuevoCampo(NuevoCampo.proceso)
-form.show()
-app.exec_()        
+            self.guardar()     
