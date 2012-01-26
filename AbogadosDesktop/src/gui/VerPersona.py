@@ -23,7 +23,7 @@ class VerPersona(QWidget, Ui_VerPersona):
             self.lblNotas.setText(self.__persona.getNotas())
             for campo in self.__persona.getCampos():
                 label = QLabel()
-                label.setText(campo.getNombre())
+                label.setText('%s:' % campo.getNombre())
                 lblBox = QLabel()
                 lblBox.setText(campo.getValor())
                 self.formLayout.addRow(label,lblBox)
