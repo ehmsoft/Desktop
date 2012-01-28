@@ -56,3 +56,16 @@ class Categoria(object):
             return True
         else:
             return False
+
+    def __ne__(self, other):
+        if other is None:
+            return True
+        if isinstance(other, Categoria):
+            if self.__descripcion is None:
+                if other.getDescripcion() != None:
+                    return True
+            elif self.__descripcion != other.getDescripcion():
+                return True
+            return False
+        else:
+            return True

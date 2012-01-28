@@ -130,6 +130,26 @@ class CampoPersonalizado(object):
             elif self.__valor != other.getValor():
                 return False
             return True
-                
         else:
             return False
+
+    def __ne__(self, other):
+        if other is None:
+            return True
+        if isinstance(other, CampoPersonalizado):
+            if self.__longitudMax != other.getLongitudMax():
+                return True
+            if self.__longitudMin != other.getLongitudMin():
+                return True
+            if self.__obligatorio != other.isObligatorio():
+                return True
+            if self.__nombre != other.getNombre():
+                return True
+            if self.__valor is None:
+                if other.getValor() is not None:
+                    return True
+            elif self.__valor != other.getValor():
+                return True
+            return False
+        else:
+            return True

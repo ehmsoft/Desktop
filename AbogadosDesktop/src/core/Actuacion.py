@@ -132,6 +132,38 @@ class Actuacion(object):
                 return False
             if self.__descripcion != other.getDescripcion():
                 return False
+            if len(self.__campos) != len(other.getCampos()):
+                return False
+            else:
+                camposOther = other.getCampos()
+                campos = self.__campos
+                for i in range(len(campos)):
+                    if campos[i] != camposOther[i]:
+                        return False
             return True
         else:
             return False
+
+    def __ne__(self, other):
+        if other is None:
+            return True
+        if isinstance(other, Actuacion):
+            if self.__juzgado != other.getJuzgado():
+                return True
+            if self.__fecha != other.getFecha():
+                return True
+            if self.__fechaProxima != other.getFechaProxima():
+                return True
+            if self.__descripcion != other.getDescripcion():
+                return True
+            if len(self.__campos) != len(other.getCampos()):
+                return True
+            else:
+                camposOther = other.getCampos()
+                campos = self.__campos
+                for i in range(len(campos)):
+                    if campos[i] != camposOther[i]:
+                        return True
+            return False
+        else:
+            return True
