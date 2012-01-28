@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on 26/01/2012
 
@@ -6,6 +7,7 @@ Created on 26/01/2012
 from PySide.QtGui import *
 from PySide.QtCore import *
 from gui.VerProcesoScreen import Ui_VerProceso
+from VerActuacion import VerActuacion
 
 class VerProceso(QWidget, Ui_VerProceso):
     def __init__(self, proceso = None, parent = None):
@@ -36,12 +38,17 @@ class VerProceso(QWidget, Ui_VerProceso):
             if len(actuaciones) is not 0:
                 grpboxActuaciones = QGroupBox(self.groupBox)
                 grpboxActuaciones.setTitle('Actuaciones:')
+                vbox = QVBoxLayout()
                 for actuacion in actuaciones:
-                    #grpboxActuaciones.addWidget(QLabel(str(actuacion), grpboxActuaciones))
-                    QLabel(str(actuacion), grpboxActuaciones)
-                    QtGui.
-
-
+                    vbox.addWidget(VerActuacion(actuacion))
+                    #vbox.addWidget(QLabel(QApplication.translate( "VerProceso", "{0}\nFecha: {1}  Fecha Próxima: {2}".format(str(actuacion), str(actuacion.getFecha()), str(actuacion.getFechaProxima())), None, QApplication.UnicodeUTF8)))
+                    
+                grpboxActuaciones.setLayout(vbox)
+                scroll = QScrollArea()
+                scroll.setWidget(grpboxActuaciones)
+                #self.gridLayout.addWidget(grpboxActuaciones)
+                self.gridLayout.addWidget(scroll)
+                
 import sys
 from core.Proceso import Proceso
 from core.Persona import Persona
@@ -67,7 +74,7 @@ campos = [campo1, campo2, campo3]
 actuacion1 = Actuacion(juzgado, fecha, fecha2, 'Actuacion1')
 actuacion2 = Actuacion(juzgado, fecha, fecha2, 'Actuacion2')
 actuacion3 = Actuacion(juzgado, fecha, fecha2, 'Actuacion3')
-plantilla = Proceso(demandante, demandado, fecha, juzgado, '1234567', '1324566765', [actuacion1], 'Nuevo', categoria, 'Alimentos', 'Esta es una nota', 1,campos)
+plantilla = Proceso(demandante, demandado, fecha, juzgado, '1234567', '1324566765', [actuacion1, actuacion2, actuacion3], 'Nuevo', categoria, 'Alimentos', 'Esta es una nota', 1,campos)
 form1 = VerProceso(plantilla)
 form1.show()
 app.exec_()
