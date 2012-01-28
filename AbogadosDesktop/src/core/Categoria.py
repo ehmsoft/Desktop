@@ -43,3 +43,16 @@ class Categoria(object):
         
     def __str__(self):
         return self.getDescripcion()
+    
+    def __eq__(self, other):
+        if other is None:
+            return False
+        if isinstance(other, Categoria):
+            if self.__descripcion is None:
+                if other.getDescripcion() != None:
+                    return False
+            elif self.__descripcion != other.getDescripcion():
+                return False
+            return True
+        else:
+            return False
