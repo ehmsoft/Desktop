@@ -119,3 +119,19 @@ class Actuacion(object):
     
     def __str__(self):
         return self.getDescripcion()
+    
+    def __eq__(self, other):
+        if other is None:
+            return False
+        if isinstance(other, Actuacion):
+            if self.__juzgado != other.getJuzgado():
+                return False
+            if self.__fecha != other.getFecha():
+                return False
+            if self.__fechaProxima != other.getFechaProxima():
+                return False
+            if self.__descripcion != other.getDescripcion():
+                return False
+            return True
+        else:
+            return False
