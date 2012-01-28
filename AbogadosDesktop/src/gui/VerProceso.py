@@ -36,45 +36,13 @@ class VerProceso(QWidget, Ui_VerProceso):
                 self.formLayout.addRow(label,lblBox)
             actuaciones = self.__proceso.getActuaciones()
             if len(actuaciones) is not 0:
-                grpboxActuaciones = QGroupBox(self.groupBox)
-                grpboxActuaciones.setTitle('Actuaciones:')
                 vbox = QVBoxLayout()
                 for actuacion in actuaciones:
                     vbox.addWidget(VerActuacion(actuacion))
-                    #vbox.addWidget(QLabel(QApplication.translate( "VerProceso", "{0}\nFecha: {1}  Fecha Próxima: {2}".format(str(actuacion), str(actuacion.getFecha()), str(actuacion.getFechaProxima())), None, QApplication.UnicodeUTF8)))
                     
-                grpboxActuaciones.setLayout(vbox)
+                vbox2 = QVBoxLayout()
                 scroll = QScrollArea()
-                scroll.setWidget(grpboxActuaciones)
-                #self.gridLayout.addWidget(grpboxActuaciones)
-                self.gridLayout.addWidget(scroll)
-                
-import sys
-from core.Proceso import Proceso
-from core.Persona import Persona
-from core.Actuacion import Actuacion
-from core.Categoria import Categoria
-from core.Juzgado import Juzgado
-from core.CampoPersonalizado import CampoPersonalizado 
-from datetime import datetime
-app = QApplication(sys.argv)
-demandante = Persona(1, '123', 'Andres', '3366858')
-demandado =  Persona(2, '123', 'Harold', '3366858', notas= 'hello')
-juzgado = Juzgado('Juzgado 1', telefono = '3433123')
-juzgado2 = Juzgado('Juzgado 2', telefono = 'Nuevo juzgado')
-categoria = Categoria('Categoria 1')
-categoria2 = Categoria('Categoria 2')
-fecha = datetime.today()
-fecha2 = datetime(2010,12,31,5,36)
-campo1 = CampoPersonalizado('Campo 1', '10', True, 0, 0)
-campo2 = CampoPersonalizado('Campo 2', '5', True, 0,0)
-campo3 = CampoPersonalizado('Campo 3', '15', True, 0,0)
-campo4 = CampoPersonalizado('Campo 4', '20', True, 0,0)
-campos = [campo1, campo2, campo3]
-actuacion1 = Actuacion(juzgado, fecha, fecha2, 'Actuacion1')
-actuacion2 = Actuacion(juzgado, fecha, fecha2, 'Actuacion2')
-actuacion3 = Actuacion(juzgado, fecha, fecha2, 'Actuacion3')
-plantilla = Proceso(demandante, demandado, fecha, juzgado, '1234567', '1324566765', [actuacion1, actuacion2, actuacion3], 'Nuevo', categoria, 'Alimentos', 'Esta es una nota', 1,campos)
-form1 = VerProceso(plantilla)
-form1.show()
-app.exec_()
+                widgetActuaciones = QWidget()
+                widgetActuaciones.setLayout(vbox)
+                scroll.setWidget(widgetActuaciones)
+                self.tabWidget.addTab(scroll, "Actuaciones")
