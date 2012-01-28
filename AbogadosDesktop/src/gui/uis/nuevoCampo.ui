@@ -83,20 +83,31 @@
         <item row="2" column="0">
          <widget class="QLabel" name="lblLongMin">
           <property name="text">
-           <string>Longitud minima:</string>
+           <string>Longitud mínima:</string>
           </property>
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QSpinBox" name="sbLongMax"/>
+         <widget class="QSpinBox" name="sbLongMax">
+          <property name="toolTip">
+           <string>El valor 0 se usa si no se quiere limiar con este parámetro</string>
+          </property>
+         </widget>
         </item>
         <item row="2" column="1">
-         <widget class="QSpinBox" name="sbLongMin"/>
+         <widget class="QSpinBox" name="sbLongMin">
+          <property name="toolTip">
+           <string>El valor 0 se usa si no se quiere limiar con este parámetro</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
       <item row="1" column="0">
        <widget class="QCheckBox" name="cbObligatorio">
+        <property name="toolTip">
+         <string>Si el campo al ser agregado a algún elemento debe tener siempre o no un valor</string>
+        </property>
         <property name="text">
          <string>Obligatorio</string>
         </property>

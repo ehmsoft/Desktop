@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'nuevoCampo.ui'
 #
-# Created: Thu Jan 26 12:31:02 2012
-#      by: pyside-uic 0.2.13 running on PySide 1.1.0
+# Created: Thu Jan 26 15:18:03 2012
+#      by: pyside-uic 0.2.13 running on PySide 1.0.8
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -78,6 +78,9 @@ class Ui_NuevoCampo(object):
         self.groupBox.setTitle(QtGui.QApplication.translate("NuevoCampo", "Ingrese la información del nuevo campo personalizado:", None, QtGui.QApplication.UnicodeUTF8))
         self.lblNombre.setText(QtGui.QApplication.translate("NuevoCampo", "Nombre:", None, QtGui.QApplication.UnicodeUTF8))
         self.lblLongMax.setText(QtGui.QApplication.translate("NuevoCampo", "Longitud máxima:", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblLongMin.setText(QtGui.QApplication.translate("NuevoCampo", "Longitud minima:", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblLongMin.setText(QtGui.QApplication.translate("NuevoCampo", "Longitud mínima:", None, QtGui.QApplication.UnicodeUTF8))
+        self.sbLongMax.setToolTip(QtGui.QApplication.translate("NuevoCampo", "El valor 0 se usa si no se quiere limiar con este parámetro", None, QtGui.QApplication.UnicodeUTF8))
+        self.sbLongMin.setToolTip(QtGui.QApplication.translate("NuevoCampo", "El valor 0 se usa si no se quiere limiar con este parámetro", None, QtGui.QApplication.UnicodeUTF8))
+        self.cbObligatorio.setToolTip(QtGui.QApplication.translate("NuevoCampo", "Si el campo al ser agregado a algún elemento debe tener siempre o no un valor", None, QtGui.QApplication.UnicodeUTF8))
         self.cbObligatorio.setText(QtGui.QApplication.translate("NuevoCampo", "Obligatorio", None, QtGui.QApplication.UnicodeUTF8))
 
