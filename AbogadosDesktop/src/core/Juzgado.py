@@ -115,3 +115,36 @@ class Juzgado(object):
     
     def __str__(self):
         return self.getNombre()
+    
+    def __eq__(self, other):
+        if other is None:
+            return False
+        if isinstance(other, Juzgado):
+            if self.__nombre  is None:
+                if other.getNombre() != None:
+                    return False
+            elif self.__nombre != other.getNombre():
+                return False
+            if self.__direccion is None:
+                if other.getDireccion() != None:
+                    return False
+            elif self.__direccion != other.getDireccion():
+                return False
+            if self.__telefono is None:
+                if other.getTelefono() != None:
+                    return False
+            elif self.__telefono != other.getTelefono():
+                return False
+            if self.__ciudad is None:
+                if other.getCiudad() != None:
+                    return False
+            elif self.__ciudad != other.getCiudad():
+                return False
+            if self.__tipo is None:
+                if other.getTipo() != None:
+                    return False
+            elif self.__tipo != other.getTipo():
+                return False
+            return True
+        else:
+            return False
