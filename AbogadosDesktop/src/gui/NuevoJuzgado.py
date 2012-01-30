@@ -1,31 +1,42 @@
 # -*- coding: utf-8 -*-
 
+'''
+Created on 25/01/2012
+
+@author: harold
+'''
+
 from PySide.QtGui import *
 from PySide.QtCore import *
-from NuevaPersonaScreen import Ui_NuevaPersona
-from core.Persona import Persona
+from NuevoJuzgadoScreen import Ui_NuevoJuzgado
+from core.Juzgado import Juzgado
 from persistence.Persistence import Persistence
 from copy import deepcopy
+from core.CampoPersonalizado import CampoPersonalizado
 
-class NuevaPersona(QDialog, Ui_NuevaPersona):
-    def __init__(self,persona=None,tipo = None,parent=None):
-        super(NuevaPersona, self).__init__(parent)
-        self.__persona = persona
+class NuevoJuzgado(QDialog, Ui_NuevoJuzgado):
+    '''
+    classdocs
+    '''
+    
+    def __init__(self, juzgado = None, parent = None):
+        '''
+        Constructor
+        '''
+        super(NuevoJuzgado, self).__init__(parent)
+        self.__juzgado = juzgado
         self.setupUi(self)
         self.connect(self.btnAdd,SIGNAL("clicked()"),self.addCampo)
         
-        self.__campos = deepcopy(persona.getCampos())
-        
-        if self.__persona is not None:
-            self.__tipo = persona.getTipo()
-            self.txtNombre.setText(self.__persona.getNombre())
-            self.txtCedula.setText(self.__persona.getId())
-            self.txtTelefono.setText(self.__persona.getTelefono())
-            self.txtDireccion.setText(self.__persona.getDireccion())
-            self.txtCorreo.setText(self.__persona.getCorreo())
-            self.txtNotas.setText(self.__persona.getNotas())
-        else:
-            self.__tipo = tipo
+        self.__campos = []
+                
+        if self.__juzgado is not None:
+            self.__campos = deepcopy(juzgado.getCampos())
+            self.txtNombre.setText(self.__juzgado.getNombre())
+            self.txtDireccion.setText(self.__juzgado.getDireccion())
+            self.txtCiudad.setText(self.__juzgado.getCiudad())
+            self.txtTelefono.setText(self.__juzgado.getTelefono())
+            self.txtTipo.setText(self.__juzgado.getTipo())
             
         if self.__campos is not None and self.__campos != []:
             for campo in self.__campos:
@@ -33,61 +44,52 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
   
             
             
-    def getPersona(self):
-        return self.__persona
+    def getJuzgado(self):
+        return self.__juzgado
     
     def organizarCampos(self):
         func = lambda x: x is not None and 1 or 0
         self.__campos = filter(func,self.__campos)
-        self.__persona.setCampos(self.__campos)
+        self.__juzgado.setCampos(self.__campos)
         
-        camposPersona = self.__persona.getCampos()
+        camposJuzgado = self.__juzgado.getCampos()
         
         for campoNuevo in self.__campos:
-            if campoNuevo not in camposPersona:
+            if campoNuevo not in camposJuzgado:
                 try:
                     p = Persistence()
-                    if self.__tipo is 1:
-                        p.guardarCampoDemandante(campoNuevo, self.__persona.getId())
-                    else:
-                        p.guardarCampoDemandado(campoNuevo, self.__persona.getId())
+                    p.guardarCampoJuzgado(campoNuevo, self.__juzgado.getId())
                 except Exception, e:
                     print e
-        for campoViejo in camposPersona:
+        for campoViejo in camposJuzgado:
             if campoViejo not in self.__campos:
                 try:
                     p = Persistence()
-                    if self.__tipo is 1:
-                        p.borrarCampoDemandante(campoViejo)
-                    else:
-                        p.borrarCampoDemandado(campoViejo)
+                    p.borrarCampoJuzgado(campoViejo)
                 except Exception, e:
                     print e
-        self.__persona.setCampos(self.__campos)
+        self.__juzgado.setCampos(self.__campos)
     
     def guardar(self):
         try:
             p = Persistence()
-            if self.__persona is None:
-                persona = Persona(self.__tipo)
-                persona.setNombre(self.txtNombre.text())
-                persona.setId(self.txtCedula.text())
-                persona.setTelefono(self.txtTelefono.text())
-                persona.setDireccion(self.txtDireccion.text())
-                persona.setCorreo(self.txtCorreo.text())
-                persona.setNotas(self.txtNotas.text())
+            if self.__juzgado is None:
+                juzgado = Juzgado()
+                juzgado.setNombre(self.txtNombre.text())
+                juzgado.setDireccion(self.txtDireccion.text())
+                juzgado.setCiudad(self.txtCiudad.text())
+                juzgado.setTelefono(self.txtTelefono.text())
+                juzgado.setTipo(self.txtTipo.text())
                 
-                p.guardarPersona(persona)
-                self.__persona = persona
+                p.guardarJuzgado(juzgado)
+                self.__juzgado = juzgado
             else:
-                self.__persona = Persona(self.__tipo)
-                self.__persona.setNombre(self.txtNombre.text())
-                self.__persona.setId(self.txtCedula.text())
-                self.__persona.setTelefono(self.txtTelefono.text())
-                self.__persona.setDireccion(self.txtDireccion.text())
-                self.__persona.setCorreo(self.txtCorreo.text())
-                self.__persona.setNotas(self.txtNotas.text())
-                p.actualizarPersona(self.__persona)
+                self.__juzgado.setNombre(self.txtNombre.text())
+                self.__juzgado.setDireccion(self.txtDireccion.text())
+                self.__juzgado.setCiudad(self.txtCiudad.text())
+                self.__juzgado.setTelefono(self.txtTelefono.text())
+                self.__juzgado.setTipo(self.txtTipo.text())
+                p.actualizarJuzgado(self.__juzgado)
                     
         except Exception, e:
             print e
@@ -95,7 +97,7 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
             return QDialog.accept(self)
             
     def accept(self):
-        if self.__campos != self.__persona.getCampos():
+        if self.__campos != self.__juzgado.getCampos():
             self.organizarCampos()
         if self.txtNombre.text().__len__() == 0 or self.txtNombre.text() == " ":
             message = QMessageBox()
@@ -123,7 +125,7 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
         item = self.formLayout.itemAt(index, QFormLayout.FieldRole)
         label.widget().deleteLater()
         item.widget().deleteLater()
-        self.__campos[index - 6] = None
+        self.__campos[index - 5] = None
     
     def createAction(self, text, slot= None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
         action = QAction(text, self)
@@ -153,3 +155,21 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
             self.formLayout.addRow(label,txtBox)
         else:
             pass
+        
+import sys
+
+campo1 = CampoPersonalizado("Campo1", "Valor1", True, 0, 0, None, None)
+campo2 = CampoPersonalizado("Campo2", "Valor2", True, 0, 0, None, None)
+campo3 = CampoPersonalizado("Campo3", "Valor3", True, 0, 0, None, None)
+campo4 = CampoPersonalizado("Campo4", "Valor4", True, 0, 0, None, None)
+
+campos = [campo1,campo2,campo3,campo4]
+
+juzgado = Juzgado("Juzgado", "Pereira", "Cerca a pereira", "333333", "Chinche", None, campos)
+
+app = QApplication(sys.argv)
+dialog = NuevoJuzgado(juzgado)
+dialog.show()
+app.exec_()
+
+        

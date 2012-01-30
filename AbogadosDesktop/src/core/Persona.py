@@ -143,3 +143,99 @@ class Persona(object):
     
     def __str__(self):
         return self.getNombre()
+    
+    def __eq__(self, other):
+        if other is None:
+            return False
+        if isinstance(other, Persona):
+            if self.__tipo != other.getTipo():
+                return False
+            if self.__correo is None:
+                if other.getCorreo() != None:
+                    return False
+            elif self.__correo != other.getCorreo():
+                return False
+            if self.__direccion is None:
+                if other.getDireccion() != None:
+                    return False
+            elif self.__direccion != other.getDireccion():
+                return False
+            if self.__id is None:
+                if other.getId() != None:
+                    return False
+            elif self.__id != other.getId():
+                return False
+            if self.__nombre  is None:
+                if other.getNombre() != None:
+                    return False
+            elif self.__nombre != other.getNombre():
+                return False
+            if self.__notas is None:
+                if other.getNotas() != None:
+                    return False
+            elif self.__notas != other.getNotas():
+                return False
+            if self.__telefono is None:
+                if other.getTelefono() != None:
+                    return False
+            elif self.__telefono != other.getTelefono():
+                return False
+            if len(self.__campos) != len(other.getCampos()):
+                return False
+            else:
+                camposOther = other.getCampos()
+                campos = self.__campos
+                for i in range(len(campos)):
+                    if campos[i] != camposOther[i]:
+                        return False
+            return True
+        else:
+            return False
+        
+    def __ne__(self, other):
+        if other is None:
+            return True
+        if isinstance(other, Persona):
+            if self.__tipo != other.getTipo():
+                return True
+            if self.__correo is None:
+                if other.getCorreo() != None:
+                    return True
+            elif self.__correo != other.getCorreo():
+                return True
+            if self.__direccion is None:
+                if other.getDireccion() != None:
+                    return True
+            elif self.__direccion != other.getDireccion():
+                return True
+            if self.__id is None:
+                if other.getId() != None:
+                    return True
+            elif self.__id != other.getId():
+                return True
+            if self.__nombre  is None:
+                if other.getNombre() != None:
+                    return True
+            elif self.__nombre != other.getNombre():
+                return True
+            if self.__notas is None:
+                if other.getNotas() != None:
+                    return True
+            elif self.__notas != other.getNotas():
+                return True
+            if self.__telefono is None:
+                if other.getTelefono() != None:
+                    return True
+            elif self.__telefono != other.getTelefono():
+                return True
+            if len(self.__campos) != len(other.getCampos()):
+                return True
+            else:
+                camposOther = other.getCampos()
+                campos = self.__campos
+                for i in range(len(campos)):
+                    if campos[i] != camposOther[i]:
+                        return True
+            return False
+        else:
+            return True

@@ -115,3 +115,85 @@ class Juzgado(object):
     
     def __str__(self):
         return self.getNombre()
+    
+    def __eq__(self, other):
+        if other is None:
+            return False
+        if isinstance(other, Juzgado):
+            if self.__nombre  is None:
+                if other.getNombre() != None:
+                    return False
+            elif self.__nombre != other.getNombre():
+                return False
+            if self.__direccion is None:
+                if other.getDireccion() != None:
+                    return False
+            elif self.__direccion != other.getDireccion():
+                return False
+            if self.__telefono is None:
+                if other.getTelefono() != None:
+                    return False
+            elif self.__telefono != other.getTelefono():
+                return False
+            if self.__ciudad is None:
+                if other.getCiudad() != None:
+                    return False
+            elif self.__ciudad != other.getCiudad():
+                return False
+            if self.__tipo is None:
+                if other.getTipo() != None:
+                    return False
+            elif self.__tipo != other.getTipo():
+                return False
+            if len(self.__campos) != len(other.getCampos()):
+                return False
+            else:
+                camposOther = other.getCampos()
+                campos = self.__campos
+                for i in range(len(campos)):
+                    if campos[i] != camposOther[i]:
+                        return False
+            return True
+        else:
+            return False
+
+    def __ne__(self, other):
+        if other is None:
+            return True
+        if isinstance(other, Juzgado):
+            if self.__nombre  is None:
+                if other.getNombre() != None:
+                    return True
+            elif self.__nombre != other.getNombre():
+                return True
+            if self.__direccion is None:
+                if other.getDireccion() != None:
+                    return True
+            elif self.__direccion != other.getDireccion():
+                return True
+            if self.__telefono is None:
+                if other.getTelefono() != None:
+                    return True
+            elif self.__telefono != other.getTelefono():
+                return True
+            if self.__ciudad is None:
+                if other.getCiudad() != None:
+                    return True
+            elif self.__ciudad != other.getCiudad():
+                return True
+            if self.__tipo is None:
+                if other.getTipo() != None:
+                    return True
+            elif self.__tipo != other.getTipo():
+                return True
+            if len(self.__campos) != len(other.getCampos()):
+                return True
+            else:
+                camposOther = other.getCampos()
+                campos = self.__campos
+                for i in range(len(campos)):
+                    if campos[i] != camposOther[i]:
+                        return True
+            return False
+        else:
+            return True
