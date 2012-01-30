@@ -97,7 +97,7 @@ class NuevoJuzgado(QDialog, Ui_NuevoJuzgado):
             return QDialog.accept(self)
             
     def accept(self):
-        if self.__campos != self.__juzgado.getCampos():
+        if self.__juzgado is not None and self.__campos != self.__juzgado.getCampos():
             self.organizarCampos()
         if self.txtNombre.text().__len__() == 0 or self.txtNombre.text() == " ":
             message = QMessageBox()
