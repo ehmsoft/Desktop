@@ -20,7 +20,7 @@ class Listado(QListWidget):
             for objeto in listaObjetos:
                 item = ItemListas(objeto)
                 self.addItem(item)
-            self.itemClicked.connect(self.prueba)
+                
         else:
             raise TypeError('Tipo de dato no admitido')
         
