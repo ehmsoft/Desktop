@@ -14,9 +14,10 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
         self.setupUi(self)
         self.connect(self.btnAdd,SIGNAL("clicked()"),self.addCampo)
         
-        self.__campos = deepcopy(persona.getCampos())
+        self.__campos = []
         
         if self.__persona is not None:
+            self.__campos = deepcopy(persona.getCampos())
             self.__tipo = persona.getTipo()
             self.txtNombre.setText(self.__persona.getNombre())
             self.txtCedula.setText(self.__persona.getId())
