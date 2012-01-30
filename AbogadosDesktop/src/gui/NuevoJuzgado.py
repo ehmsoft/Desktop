@@ -154,22 +154,4 @@ class NuevoJuzgado(QDialog, Ui_NuevoJuzgado):
             txtBox.addAction(action)
             self.formLayout.addRow(label,txtBox)
         else:
-            pass
-        
-import sys
-
-campo1 = CampoPersonalizado("Campo1", "Valor1", True, 0, 0, None, None)
-campo2 = CampoPersonalizado("Campo2", "Valor2", True, 0, 0, None, None)
-campo3 = CampoPersonalizado("Campo3", "Valor3", True, 0, 0, None, None)
-campo4 = CampoPersonalizado("Campo4", "Valor4", True, 0, 0, None, None)
-
-campos = [campo1,campo2,campo3,campo4]
-
-juzgado = Juzgado("Juzgado", "Pereira", "Cerca a pereira", "333333", "Chinche", None, campos)
-
-app = QApplication(sys.argv)
-dialog = NuevoJuzgado(juzgado)
-dialog.show()
-app.exec_()
-
-        
+            pass     
