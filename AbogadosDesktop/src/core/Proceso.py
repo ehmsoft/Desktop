@@ -221,3 +221,97 @@ class Proceso(object):
         
     def __str__(self):
         return 'Radicado:{0}\n  Demandante:{1}\n  Demandado:{2}'.format(self.getRadicado(), self.getDemandante(), self.getDemandado())
+    
+    def __eq__(self, other):
+        if other is None:
+            return False
+        if isinstance(other, Proceso):
+            if self.__demandado != other.getDemandado():
+                return False
+            if self.__demandante != other.getDemandante():
+                return False
+            if self.__juzgado != other.getJuzgado():
+                return False
+            if self.__fecha != other.getFecha():
+                return False
+            if self.__radicado != other.getRadicado():
+                return False
+            if self.__radicadoUnico != other.getRadicadoUnico():
+                return False
+            if self.__tipo != other.getTipo():
+                return False
+            if self.__estado != other.getEstado():
+                return False
+            if self.__categoria != other.getCategoria():
+                return False
+            if self.__notas != other.getNotas():
+                return False
+            if self.__prioridad != other.getPrioridad():
+                return False
+            if len(self.__campos) != len(other.getCampos()):
+                return False
+            else:
+                camposOther = other.getCampos()
+                campos = self.__campos
+                for i in range(len(campos)):
+                    if campos[i] != camposOther[i]:
+                        return False
+                    
+            if len(self.__actuaciones) != len(other.getActuaciones()):
+                return False
+            else:
+                actuacionesOther = other.getActuaciones()
+                actuaciones = self.__actuaciones
+                for i in range(len(actuaciones)):
+                    if actuaciones[i] != actuacionesOther[i]:
+                        return False
+            return True         
+        else:
+            return False
+        
+    def __ne__(self, other):
+        if other is None:
+            return True
+        if isinstance(other, Proceso):
+            if self.__demandado != other.getDemandado():
+                return True
+            if self.__demandante != other.getDemandante():
+                return True
+            if self.__juzgado != other.getJuzgado():
+                return True
+            if self.__fecha != other.getFecha():
+                return True
+            if self.__radicado != other.getRadicado():
+                return True
+            if self.__radicadoUnico != other.getRadicadoUnico():
+                return True
+            if self.__tipo != other.getTipo():
+                return True
+            if self.__estado != other.getEstado():
+                return True
+            if self.__categoria != other.getCategoria():
+                return True
+            if self.__notas != other.getNotas():
+                return True
+            if self.__prioridad != other.getPrioridad():
+                return True
+            if len(self.__campos) != len(other.getCampos()):
+                return True
+            else:
+                camposOther = other.getCampos()
+                campos = self.__campos
+                for i in range(len(campos)):
+                    if campos[i] != camposOther[i]:
+                        return True
+                    
+            if len(self.__actuaciones) != len(other.getActuaciones()):
+                return True
+            else:
+                actuacionesOther = other.getActuaciones()
+                actuaciones = self.__actuaciones
+                for i in range(len(actuaciones)):
+                    if actuaciones[i] != actuacionesOther[i]:
+                        return True
+            return False
+        else:
+            return True

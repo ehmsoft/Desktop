@@ -111,3 +111,45 @@ class CampoPersonalizado(object):
     
     def __repr__(self):
         return self.getNombre()
+    
+    def __eq__(self, other):
+        if other is None:
+            return False
+        if isinstance(other, CampoPersonalizado):
+            if self.__longitudMax != other.getLongitudMax():
+                return False
+            if self.__longitudMin != other.getLongitudMin():
+                return False
+            if self.__obligatorio != other.isObligatorio():
+                return False
+            if self.__nombre != other.getNombre():
+                return False
+            if self.__valor is None:
+                if other.getValor() is not None:
+                    return False
+            elif self.__valor != other.getValor():
+                return False
+            return True
+        else:
+            return False
+
+    def __ne__(self, other):
+        if other is None:
+            return True
+        if isinstance(other, CampoPersonalizado):
+            if self.__longitudMax != other.getLongitudMax():
+                return True
+            if self.__longitudMin != other.getLongitudMin():
+                return True
+            if self.__obligatorio != other.isObligatorio():
+                return True
+            if self.__nombre != other.getNombre():
+                return True
+            if self.__valor is None:
+                if other.getValor() is not None:
+                    return True
+            elif self.__valor != other.getValor():
+                return True
+            return False
+        else:
+            return True
