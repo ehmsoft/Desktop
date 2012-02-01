@@ -24,7 +24,7 @@ class ColumnaWidget(QWidget):
         
     def setCentralWidget(self, widget):
         self.__centralWidget = widget
-    
+                
     def getCentralWidget(self):
         return self.__centralWidget
         
