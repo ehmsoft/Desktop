@@ -35,7 +35,7 @@ class MainApp(QMainWindow, Ui_mainApp):
         self.listaIzquierda = QListWidget()
         #self.listaIzquierda.setStyleSheet('background-color: transparent;')
         self.connect(self.listaIzquierda, SIGNAL('itemClicked(QListWidgetItem*)'), self.elementClicked)
-        
+        self.connect(self.listaIzquierda, SIGNAL('itemSelectionChanged()'), self.elementChanged)
         for row in self.lista:
             item = QListWidgetItem(row)
             fuente = item.font()
@@ -45,6 +45,9 @@ class MainApp(QMainWindow, Ui_mainApp):
             item.setSizeHint(QSize(fm.width(row), fm.height() +20))
             self.listaIzquierda.addItem(item)
         self.centralSplitter.addWidget(self.listaIzquierda)
+        
+    def elementChanged(self):
+        self.elementClicked(self.listaIzquierda.currentItem())
         
     def elementClicked(self, item):
         if item.text() == 'Procesos':
@@ -62,10 +65,11 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
             else:
                 p = Persistence()
-                lista = p.consultarProcesos()
+                listado = Listado(p.consultarProcesos())
                 self.columna1.hide()
                 #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
@@ -75,12 +79,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-                if len(lista) != 0:
-                    listado = Listado(lista)
-                    self.columna1 = ColumnaWidget(listado)
-                    self.centralSplitter.addWidget(self.columna1)
-                    self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
+                    
+                self.columna1 = ColumnaWidget(listado)
+                self.centralSplitter.addWidget(self.columna1)
+                self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
         elif item.text() == 'Plantillas':
             if self.centralSplitter.count() == 1:
@@ -93,12 +97,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-                if len(lista) != 0:
-                    listado = Listado(lista)
-                    self.columna1 = ColumnaWidget(listado)
-                    self.centralSplitter.addWidget(self.columna1)
-                    self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                    self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
+                listado = Listado(lista)
+                self.columna1 = ColumnaWidget(listado)
+                self.centralSplitter.addWidget(self.columna1)
+                self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
             else:
                 p = Persistence()
@@ -112,12 +116,13 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-                if len(lista) != 0:
-                    listado = Listado(lista)
-                    self.columna1 = ColumnaWidget(listado)
-                    self.centralSplitter.addWidget(self.columna1)
-                    self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                    self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
+
+                listado = Listado(lista)
+                self.columna1 = ColumnaWidget(listado)
+                self.centralSplitter.addWidget(self.columna1)
+                self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
                 
         elif item.text() == 'Demandantes':
@@ -135,10 +140,11 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
             else:
                 p = Persistence()
-                lista = p.consultarDemandantes()
+                listado = Listado(p.consultarDemandantes())
                 self.columna1.hide()
                 #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
@@ -148,12 +154,11 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-                if len(lista) != 0:
-                    listado = Listado(lista)
-                    self.columna1 = ColumnaWidget(listado)
-                    self.centralSplitter.addWidget(self.columna1)
-                    self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                    self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
+                self.columna1 = ColumnaWidget(listado)
+                self.centralSplitter.addWidget(self.columna1)
+                self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
         elif item.text() == 'Demandados':
             if self.centralSplitter.count() == 1:
@@ -170,10 +175,11 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
             else:
                 p = Persistence()
-                lista = p.consultarDemandados()
+                listado = Listado(p.consultarDemandados())
                 self.columna1.hide()
                 #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
@@ -183,12 +189,11 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-                if len(lista) != 0:
-                    listado = Listado(lista)
-                    self.columna1 = ColumnaWidget(listado)
-                    self.centralSplitter.addWidget(self.columna1)
-                    self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                    self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
+                self.columna1 = ColumnaWidget(listado)
+                self.centralSplitter.addWidget(self.columna1)
+                self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
         elif item.text() == 'Juzgados':
             if self.centralSplitter.count() == 1:
@@ -205,10 +210,11 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
             else:
                 p = Persistence()
-                lista = p.consultarJuzgados()
+                listado = Listado(p.consultarJuzgados())
                 self.columna1.hide()
                 #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
@@ -218,12 +224,11 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-                if len(lista) != 0:
-                    listado = Listado(lista)
-                    self.columna1 = ColumnaWidget(listado)
-                    self.centralSplitter.addWidget(self.columna1)
-                    self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                    self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
+                self.columna1 = ColumnaWidget(listado)
+                self.centralSplitter.addWidget(self.columna1)
+                self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
         elif item.text() == 'Categorias':
             if self.centralSplitter.count() == 1:
@@ -240,10 +245,11 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
             else:
                 p = Persistence()
-                lista = p.consultarCategorias()
+                listado = Listado(p.consultarCategorias())
                 self.columna1.hide()
                 #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
@@ -253,16 +259,18 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-                if len(lista) != 0:
-                    listado = Listado(lista)
-                    self.columna1 = ColumnaWidget(listado)
-                    self.centralSplitter.addWidget(self.columna1)
-                    self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                    self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
+                self.columna1 = ColumnaWidget(listado)
+                self.centralSplitter.addWidget(self.columna1)
+                self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
         
     def columna1AgregarClicked(self):
         pass
+    
+    def columna1ElementChanged(self):
+        self.columna1ElementClicked(self.columna1.getCentralWidget().currentItem())
     
     def columna1ElementClicked(self, item):
         if isinstance(item.getObjeto(), Proceso):
