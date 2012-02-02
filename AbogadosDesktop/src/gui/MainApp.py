@@ -9,6 +9,16 @@ from MainAppScreen import Ui_mainApp
 from gui.Listado import Listado
 from gui.Columna import ColumnaWidget
 from persistence.Persistence import Persistence
+from core.Proceso import Proceso
+from gui.VerProceso import VerProceso
+from core.Plantilla import Plantilla
+from gui.VerPlantilla import VerPlantilla
+from gui.VerPersona import VerPersona
+from core.Persona import Persona
+from core.Juzgado import Juzgado
+from gui.VerJuzgado import VerJuzgado
+from core.Categoria import Categoria
+from gui.VerCategoria import VerCategoria
 
 class MainApp(QMainWindow, Ui_mainApp):
     def __init__(self, parent = None):
@@ -41,6 +51,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 listado = Listado(p.consultarProcesos())
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
+                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid.hide()
+                elementoGrid.deleteLater()
+                self.label = QLabel() 
+                self.label.setPixmap(QPixmap.fromImage(self.image))
+                self.gridLayout.addWidget(self.label, 0,1,1,1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 p = None
@@ -49,6 +65,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 lista = p.consultarProcesos()
                 self.columna1.hide()
                 self.columna1.deleteLater()
+                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid.hide()
+                elementoGrid.deleteLater()
+                self.label = QLabel() 
+                self.label.setPixmap(QPixmap.fromImage(self.image))
+                self.gridLayout.addWidget(self.label, 0,1,1,1)
                 if len(lista) != 0:
                     listado = Listado(lista)
                     self.columna1 = ColumnaWidget(listado)
@@ -62,6 +84,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 listado = Listado(p.consultarPlantillas())
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
+                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid.hide()
+                elementoGrid.deleteLater()
+                self.label = QLabel() 
+                self.label.setPixmap(QPixmap.fromImage(self.image))
+                self.gridLayout.addWidget(self.label, 0,1,1,1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 p = None
@@ -70,6 +98,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 lista = p.consultarPlantillas()
                 self.columna1.hide()
                 self.columna1.deleteLater()
+                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid.hide()
+                elementoGrid.deleteLater()
+                self.label = QLabel() 
+                self.label.setPixmap(QPixmap.fromImage(self.image))
+                self.gridLayout.addWidget(self.label, 0,1,1,1)
                 if len(lista) != 0:
                     listado = Listado(lista)
                     self.columna1 = ColumnaWidget(listado)
@@ -84,6 +118,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 listado = Listado(p.consultarDemandantes())
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
+                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid.hide()
+                elementoGrid.deleteLater()
+                self.label = QLabel() 
+                self.label.setPixmap(QPixmap.fromImage(self.image))
+                self.gridLayout.addWidget(self.label, 0,1,1,1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 p = None
@@ -92,6 +132,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 lista = p.consultarDemandantes()
                 self.columna1.hide()
                 self.columna1.deleteLater()
+                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid.hide()
+                elementoGrid.deleteLater()
+                self.label = QLabel() 
+                self.label.setPixmap(QPixmap.fromImage(self.image))
+                self.gridLayout.addWidget(self.label, 0,1,1,1)
                 if len(lista) != 0:
                     listado = Listado(lista)
                     self.columna1 = ColumnaWidget(listado)
@@ -105,6 +151,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 listado = Listado(p.consultarDemandados())
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
+                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid.hide()
+                elementoGrid.deleteLater()
+                self.label = QLabel() 
+                self.label.setPixmap(QPixmap.fromImage(self.image))
+                self.gridLayout.addWidget(self.label, 0,1,1,1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 p = None
@@ -113,6 +165,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 lista = p.consultarDemandados()
                 self.columna1.hide()
                 self.columna1.deleteLater()
+                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid.hide()
+                elementoGrid.deleteLater()
+                self.label = QLabel() 
+                self.label.setPixmap(QPixmap.fromImage(self.image))
+                self.gridLayout.addWidget(self.label, 0,1,1,1)
                 if len(lista) != 0:
                     listado = Listado(lista)
                     self.columna1 = ColumnaWidget(listado)
@@ -126,6 +184,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 listado = Listado(p.consultarJuzgados())
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
+                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid.hide()
+                elementoGrid.deleteLater()
+                self.label = QLabel() 
+                self.label.setPixmap(QPixmap.fromImage(self.image))
+                self.gridLayout.addWidget(self.label, 0,1,1,1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 p = None
@@ -134,6 +198,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 lista = p.consultarJuzgados()
                 self.columna1.hide()
                 self.columna1.deleteLater()
+                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid.hide()
+                elementoGrid.deleteLater()
+                self.label = QLabel() 
+                self.label.setPixmap(QPixmap.fromImage(self.image))
+                self.gridLayout.addWidget(self.label, 0,1,1,1)
                 if len(lista) != 0:
                     listado = Listado(lista)
                     self.columna1 = ColumnaWidget(listado)
@@ -147,6 +217,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 listado = Listado(p.consultarCategorias())
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
+                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid.hide()
+                elementoGrid.deleteLater()
+                self.label = QLabel() 
+                self.label.setPixmap(QPixmap.fromImage(self.image))
+                self.gridLayout.addWidget(self.label, 0,1,1,1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 p = None
@@ -167,8 +243,46 @@ class MainApp(QMainWindow, Ui_mainApp):
         pass
     
     def columna1ElementClicked(self, item):
-        print item.text()
-
+        if isinstance(item.getObjeto(), Proceso):
+            elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+            elementoGrid.hide()
+            elementoGrid.deleteLater()
+            nuevoElemento = VerProceso(item.getObjeto())
+            nuevoElemento.setMaximumWidth(310)
+            nuevoElemento.setMinimumWidth(310)
+            self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
+        if isinstance(item.getObjeto(), Plantilla):
+            elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+            elementoGrid.hide()
+            elementoGrid.deleteLater()
+            nuevoElemento = VerPlantilla(item.getObjeto())
+            nuevoElemento.setMaximumWidth(310)
+            nuevoElemento.setMinimumWidth(310)
+            self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
+        if isinstance(item.getObjeto(), Persona):
+            elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+            elementoGrid.hide()
+            elementoGrid.deleteLater()
+            nuevoElemento = VerPersona(item.getObjeto())
+            nuevoElemento.setMaximumWidth(310)
+            self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
+        if isinstance(item.getObjeto(), Juzgado):
+            elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+            elementoGrid.hide()
+            elementoGrid.deleteLater()
+            nuevoElemento = VerJuzgado(item.getObjeto())
+            nuevoElemento.setMaximumWidth(310)
+            nuevoElemento.setMinimumWidth(310)
+            self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)    
+        if isinstance(item.getObjeto(), Categoria):
+            elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+            elementoGrid.hide()
+            elementoGrid.deleteLater()
+            nuevoElemento = VerCategoria(item.getObjeto())
+            nuevoElemento.setMaximumWidth(310)
+            nuevoElemento.setMinimumWidth(310)
+            self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
+        
 import sys
 app = QApplication(sys.argv)
 theapp = MainApp()
