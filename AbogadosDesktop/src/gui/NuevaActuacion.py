@@ -26,7 +26,8 @@ class NuevaActuacion(QDialog, Ui_NuevaActuacion):
         self.__actuacion = actuacion
         self.__idProceso = id_proceso
         self.__juzgado = None
-        
+        self.lblJuzgado.setFocusPolicy(Qt.FocusPolicy.ClickFocus)
+                
         if actuacion is not None:
             self.__juzgado = actuacion.getJuzgado()
             self.txtDescripcion.setText(unicode(actuacion.getDescripcion()))
@@ -34,40 +35,85 @@ class NuevaActuacion(QDialog, Ui_NuevaActuacion):
             self.dteFecha.setDateTime(actuacion.getFecha())
             self.dteFechaProxima.setDateTime(actuacion.getFechaProxima())
         
-        horizontal = self.horizontal  
-        slf = self
+        self.clickJuzgado()
+        self.clickFecha()
+        self.clickFechaProxima()
+        
+    def clickJuzgado(self):
+        container = self.horizontal  
+        widget = self
         lblJuzgado = self.lblJuzgado
-        dteFecha = self.dteFecha
-        dteFechaProxima = self.dteFechaProxima   
-            
+                    
         def mousePressEvent(self):
-            if self.sender() is dteFecha:
-                print "sender"
             if Qt.MouseButton.LeftButton is self.button():
-                if horizontal.count() is 2:
-                    horizontal.removeItem(horizontal.itemAt(1))
-                juzgado = Juzgado("nombre", "ciudad", "direccion", "telefono", "tipo", None, [])
-                vista = VerJuzgado(juzgado, slf)
-                horizontal.addWidget(vista)
+                if container.itemAt(1) is None:
+                    if widget.__juzgado.getId_juzgado is not "1":
+                        vista = VerJuzgado(widget.__juzgado, widget)
+                        container.addWidget(vista)
+                #elif isinstance(container.itemAt(1).widget(), VerJuzgado):
+                    #pass
+                else:
+                    container.itemAt(1).widget().deleteLater()
+                    if widget.__juzgado.getId_juzgado is not "1":
+                        vista = VerJuzgado(widget.__juzgado, widget)
+                        container.addWidget(vista)
             else:
                 return QLabel.mousePressEvent(lblJuzgado,self)
+            
         self.lblJuzgado.mousePressEvent = mousePressEvent
-                    
-        def mousePressEvent1(self):
-            print "Entro"
-            if Qt.MouseButton.LeftButton is self.button():
-                if horizontal.count() is 2:
-                    horizontal.removeItem(horizontal.itemAt(1))
-                calendar = QCalendarWidget()
-                calendar.setMinimumDate(dteFecha.dateTime())
-                horizontal.addWidget(calendar)
-            else:
-                return QCalendarWidget.mousePressEvent(dteFecha,self)
-        self.dteFecha.mousePressEvent = mousePressEvent
+    
+    def clickFecha(self):
+        container = self.horizontal  
+        dteFecha = self.dteFecha
         
-                    
-    def click(self):
-        print "hola"
+        def focusInEvent(self):
+            if container.itemAt(1) is None:
+                calendar = QCalendarWidget()
+                calendar.setSelectedDate(dteFecha.dateTime().date())
+                container.addWidget(calendar)
+            elif isinstance(container.itemAt(1).widget(), QCalendarWidget):
+                calendar = container.itemAt(1).widget()
+                calendar.setSelectedDate(dteFecha.dateTime().date())
+            else:
+                container.itemAt(1).widget().deleteLater()
+                calendar = QCalendarWidget()
+                calendar.setSelectedDate(dteFecha.dateTime().date())
+                container.addWidget(calendar)                
+            return QDateTimeEdit.focusInEvent(dteFecha,self)
+        
+        def dateChanged():
+            calendar = container.itemAt(1).widget()
+            calendar.setSelectedDate(dteFecha.dateTime().date())        
+            
+        dteFecha.focusInEvent = focusInEvent
+        dteFecha.dateChanged.connect(dateChanged)
+        
+    
+    def clickFechaProxima(self):
+        container = self.horizontal  
+        dteFecha = self.dteFechaProxima
+        
+        def focusInEvent(self):
+            if container.itemAt(1) is None:
+                calendar = QCalendarWidget()
+                calendar.setSelectedDate(dteFecha.dateTime().date())
+                container.addWidget(calendar)
+            elif isinstance(container.itemAt(1).widget(), QCalendarWidget):
+                calendar = container.itemAt(1).widget()
+                calendar.setSelectedDate(dteFecha.dateTime().date())
+            else:
+                container.itemAt(1).widget().deleteLater()
+                calendar = QCalendarWidget()
+                calendar.setSelectedDate(dteFecha.dateTime().date())
+                container.addWidget(calendar)                
+            return QDateTimeEdit.focusInEvent(dteFecha,self)
+        
+        def dateChanged():
+            calendar = container.itemAt(1).widget()
+            calendar.setSelectedDate(dteFecha.dateTime().date())    
+            
+        dteFecha.focusInEvent = focusInEvent
+        dteFecha.dateChanged.connect(dateChanged)
 
 import sys 
 
