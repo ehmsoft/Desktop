@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'verJuzgado.ui'
 #
-# Created: Thu Jan 26 07:39:24 2012
+# Created: Thu Feb  2 15:43:50 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.0.7
 #
 # WARNING! All changes made in this file will be lost!
@@ -100,7 +100,7 @@ class Ui_VerJuzgado(object):
         self.lbl1.setText(QtGui.QApplication.translate("VerJuzgado", "Nombre:", None, QtGui.QApplication.UnicodeUTF8))
         self.lblNombre.setToolTip(QtGui.QApplication.translate("VerJuzgado", "El nombre del juzgado", None, QtGui.QApplication.UnicodeUTF8))
         self.lblNombre.setStatusTip(QtGui.QApplication.translate("VerJuzgado", "El nombre del juzgado", None, QtGui.QApplication.UnicodeUTF8))
-        self.lbl2.setText(QtGui.QApplication.translate("VerJuzgado", "Ciudad", None, QtGui.QApplication.UnicodeUTF8))
+        self.lbl2.setText(QtGui.QApplication.translate("VerJuzgado", "Ciudad:", None, QtGui.QApplication.UnicodeUTF8))
         self.lblCiudad.setToolTip(QtGui.QApplication.translate("VerJuzgado", "La ciudad del juzgado", None, QtGui.QApplication.UnicodeUTF8))
         self.lblCiudad.setStatusTip(QtGui.QApplication.translate("VerJuzgado", "La ciudad del juzgado", None, QtGui.QApplication.UnicodeUTF8))
         self.lbl3.setText(QtGui.QApplication.translate("VerJuzgado", "Teléfono:", None, QtGui.QApplication.UnicodeUTF8))
