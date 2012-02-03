@@ -78,13 +78,11 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
             if persona.getTipo() == 1:
-                # c.execute('''DELETE FROM demandantes WHERE id_demandante = ?''',(persona.getId_persona(),))
                 c.execute('''UPDATE demandantes SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_demandante = ?''',(persona.getId_persona(),))
                 c.execute('''UPDATE procesos SET id_demandante = 1 WHERE id_demandante = ?''',(persona.getId_persona(),))
                 c.execute('''UPDATE plantillas SET id_demandante = 1 WHERE id_demandante = ?''',(persona.getId_persona(),))
 
             elif persona.getTipo() == 2:
-                #c.execute('''DELETE FROM demandados WHERE id_demandado = ?''',(persona.getId_persona(),))
                 c.execute('''UPDATE demandados SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_demandado = ?''',(persona.getId_persona(),))
                 c.execute('''UPDATE procesos SET id_demandado = 1 WHERE id_demandado = ?''',(persona.getId_persona(),))
                 c.execute('''UPDATE plantillas SET id_demandado = 1 WHERE id_demandado = ?''',(persona.getId_persona(),))
@@ -129,8 +127,6 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            
-            #c.execute('''DELETE FROM juzgados WHERE id_juzgado = ?''',(juzgado.getId_juzgado(),))
             c.execute('''UPDATE juzgados SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_juzgado = ?''',(juzgado.getId_juzgado(),))
             c.execute('''UPDATE procesos SET id_juzgado = 1 WHERE id_juzgado = ?''',(juzgado.getId_juzgado(),))
             c.execute('''UPDATE actuaciones SET id_juzgado = 1 WHERE id_juzgado = ?''',(juzgado.getId_juzgado(),))
@@ -174,7 +170,6 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            #c.execute('''DELETE FROM actuaciones WHERE id_actuacion = ?''',(actuacion.getId_actuacion(),))
             c.execute('''UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''',(actuacion.getId_actuacion(),))
             conn.commit()            
         except Exception as e:
@@ -210,7 +205,6 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            #c.execute('''DELETE FROM atributos_proceso WHERE id_atributo_proceso = ?''',(campoPersonalizado.getId_campo(),))
             c.execute('''UPDATE atributos_proceso SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getId_campo(),))
             conn.commit()            
         except Exception as e:
@@ -255,8 +249,6 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            #c.execute('''DELETE FROM atributos WHERE id_atributo = ?''',( campoPersonalizado.getId_atributo(),))                
-            #c.execute('''DELETE FROM atributos_proceso WHERE id_atributo = ?''',( campoPersonalizado.getId_atributo(),))                
             c.execute('''UPDATE atributos SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
             c.execute('''UPDATE atributos_proceso SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
             c.execute('''UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
@@ -320,9 +312,6 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            #c.execute('''DELETE FROM procesos WHERE id_proceso = ?''',(proceso.getId_proceso(),))                                                         
-            #c.execute('''DELETE FROM actuaciones WHERE id_proceso = ?''',(proceso.getId_proceso(),))
-            #c.execute('''DELETE FROM atributos_proceso WHERE id_proceso = ?''',(proceso.getId_proceso(),))
             c.execute('''UPDATE procesos SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''',(proceso.getId_proceso(),))
             c.execute('''UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''',(proceso.getId_proceso(),))
             c.execute('''UPDATE atributos_proceso SET eliminado = 1,fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''',(proceso.getId_proceso(),))
@@ -363,7 +352,6 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            #c.execute('''DELETE FROM categorias WHERE id_categoria = ?''',(categoria.getId_categoria(),))        
             c.execute('''UPDATE categorias SET eliminado = 1,fecha_mod = datetime('now','localtime') WHERE id_categoria = ?''',(categoria.getId_categoria(),))        
             c.execute('''UPDATE procesos SET id_categoria = 1 WHERE id_categoria = ?''',(categoria.getId_categoria(),))        
             c.execute('''UPDATE plantillas SET id_categoria = 1 WHERE id_categoria = ?''',(categoria.getId_categoria(),))        
@@ -478,12 +466,6 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-                    
-            #la fuente como se pone???
-            #c.execute('''UPDATE preferencias SET valor=? WHERE id_preferencia = 10001''',(Font.getDefault().getFontFamily().getName()))
-            #c.execute('''UPDATE preferencias SET valor=? WHERE id_preferencia = 10002''',(Font.getDefault().getHeight()))
-            #c.execute('''UPDATE preferencias SET valor=? WHERE id_preferencia = 10003''',(Integer.toString(Font.getDefault().getStyle())))
-            #este si esta bien
             c.execute('''UPDATE preferencias SET valor=20001 WHERE id_preferencia = 10101''')
             c.execute('''UPDATE preferencias SET valor=1 WHERE id_preferencia = 10102''')
             c.execute('''UPDATE preferencias SET valor=0 WHERE id_preferencia =10201''')
