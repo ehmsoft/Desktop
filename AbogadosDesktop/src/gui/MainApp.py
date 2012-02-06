@@ -45,6 +45,8 @@ class MainApp(QMainWindow, Ui_mainApp):
             item.setSizeHint(QSize(fm.width(row), fm.height() +20))
             self.listaIzquierda.addItem(item)
         self.centralSplitter.addWidget(self.listaIzquierda)
+        self.setWindowIcon(QIcon('./images/icono.png'))
+        
         
     def elementChanged(self):
         self.elementClicked(self.listaIzquierda.currentItem())
@@ -484,6 +486,10 @@ class MainApp(QMainWindow, Ui_mainApp):
                 
 import sys
 app = QApplication(sys.argv)
+app.setOrganizationName("ehmSoftware")
+app.setOrganizationDomain("ehmsoft.com")
+app.setApplicationName("Procesos Judiciales")
+app.setWindowIcon(QIcon("./images/icono.png"))
 theapp = MainApp()
 theapp.show()
 app.exec_()
