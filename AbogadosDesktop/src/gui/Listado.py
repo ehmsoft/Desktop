@@ -17,9 +17,9 @@ class Listado(QListWidget):
         super(Listado,self).__init__(parent)
         
     
-        if listaObjetos is None:
+        if listaObjetos is None or len(listaObjetos) is 0:
                 listaObjetos = [] 
-             
+              
         elif isinstance(listaObjetos[0], Persona):
             
             try:
