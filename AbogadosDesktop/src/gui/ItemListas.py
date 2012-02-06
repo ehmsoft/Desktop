@@ -20,4 +20,4 @@ class ItemListas(QListWidgetItem):
 
     def setObjeto(self, objeto):
         self.__objeto = objeto
-        super.setText(str(self.__objeto))
+        self.setText(str(self.__objeto))
