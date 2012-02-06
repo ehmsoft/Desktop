@@ -303,10 +303,16 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = None
         elif item.text() == 'Campos Personalizados':
             if self.centralSplitter.count() == 1:
-                p = Persistence()
                 lista = ['Procesos', 'Plantillas', 'Demandantes', 'Demandados', 'Juzgados', 'Actuaciones']
                 listado = QListWidget()
-                listado.addItems(lista)
+                for row in lista:
+                    item = QListWidgetItem(row)
+                    fuente = item.font()
+                    fuente.setPointSize(16)
+                    fm = QFontMetrics(fuente)
+                    item.setFont(fuente)
+                    item.setSizeHint(QSize(fm.width(row), fm.height() +20))
+                    listado.addItem(item)
                 splitter = QSplitter()
                 splitter.addWidget(listado)
                 self.columna1 = splitter
@@ -322,10 +328,16 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
             else:
-                p = Persistence()
                 lista = ['Procesos', 'Plantillas', 'Demandantes', 'Demandados', 'Juzgados', 'Actuaciones']
                 listado = QListWidget()
-                listado.addItems(lista)
+                for row in lista:
+                    item = QListWidgetItem(row)
+                    fuente = item.font()
+                    fuente.setPointSize(16)
+                    fm = QFontMetrics(fuente)
+                    item.setFont(fuente)
+                    item.setSizeHint(QSize(fm.width(row), fm.height() +20))
+                    listado.addItem(item)
                 self.columna1.hide()
                 #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
@@ -461,7 +473,14 @@ class MainApp(QMainWindow, Ui_mainApp):
             if self.columna1.count() > 1:
                 item = self.columna1.widget(1).currentItem()
                 if hasattr(item, 'getObjeto'):
-                    print str(item.getObjeto())
+                    elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                    elementoGrid.hide()
+                    elementoGrid.deleteLater()
+                    nuevoElemento = VerCampoPersonalizado(item.getObjeto())
+                    nuevoElemento.setMaximumWidth(310)
+                    nuevoElemento.setMinimumWidth(310)
+                    self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
+                    
                 
 import sys
 app = QApplication(sys.argv)
