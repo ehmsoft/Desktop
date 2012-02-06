@@ -146,9 +146,7 @@ class ListadoDialogo (QDialog):
         return action       
     
     def eliminar(self):
-        
-        self.lista.remove()
-        
+                     
         if self.tipo is self.__class__.demandante:
             self.p.borrarPersona(self.lista.currentItem().getObjeto())                    
         elif self.tipo is self.__class__.demandado:
@@ -167,6 +165,7 @@ class ListadoDialogo (QDialog):
             self.p.borrarCampoPersonalizado(self.lista.currentItem().getObjeto())
         elif self.tipo is self.__class__.campoJuzgado:
             self.p.borrarCampoJuzgado(self.lista.currentItem().getObjeto())
+        self.lista.remove()
             
         
     def editar(self):
@@ -228,3 +227,4 @@ class ListadoDialogo (QDialog):
                 campoJuzgado = nuevoCampoJuzgado.getCategoria()
                 self.p.actualizarCampoJuzgado(campoJuzgado)
                 self.lista.replace(campoJuzgado)
+                

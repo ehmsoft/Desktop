@@ -527,7 +527,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_demandante SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
+            c.execute('''UPDATE atributos_demandante SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_demandante = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
             conn.commit()            
         except Exception as e:
             raise e
@@ -550,7 +550,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_demandante SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributos_demandante SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_demandante = ?''',(campoPersonalizado.getId_campo(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -563,7 +563,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_demandado SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
+            c.execute('''UPDATE atributos_demandado SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_demandado = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
             conn.commit()            
         except Exception as e:
             raise e
@@ -586,7 +586,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_demandado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributos_demandado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_demandado = ?''',(campoPersonalizado.getId_campo(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -644,7 +644,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_juzgado SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
+            c.execute('''UPDATE atributos_juzgado SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_juzgado = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
             conn.commit()            
         except Exception as e:
             raise e
@@ -668,7 +668,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_juzgado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributos_juzgado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_juzgado = ?''',(campoPersonalizado.getId_campo(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -726,7 +726,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_actuacion SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
+            c.execute('''UPDATE atributos_actuacion SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_actuacion = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
             conn.commit()            
         except Exception as e:
             raise e
@@ -749,7 +749,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_actuacion SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributos_actuacion SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_actuacion = ?''',(campoPersonalizado.getId_campo(),))
             conn.commit()            
         except Exception as e:
             raise e
