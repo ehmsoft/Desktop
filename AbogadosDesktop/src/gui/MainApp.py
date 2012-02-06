@@ -416,8 +416,10 @@ class MainApp(QMainWindow, Ui_mainApp):
                 if self.columna1.count() > 1:
                     self.columna1.widget(1).hide()
                     self.columna1.widget(1).deleteLater()
-                self.columna1.addWidget(listado)
+                columna = ColumnaWidget(listado)
+                self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
+                self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
             elif self.columna1.widget(0).currentItem().text() == 'Plantillas':
                 p = Persistence()
@@ -426,8 +428,10 @@ class MainApp(QMainWindow, Ui_mainApp):
                 if self.columna1.count() > 1:
                     self.columna1.widget(1).hide()
                     self.columna1.widget(1).deleteLater()
-                self.columna1.addWidget(listado)
+                columna = ColumnaWidget(listado)
+                self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
+                self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
             elif self.columna1.widget(0).currentItem().text() == 'Demandantes':
                 p = Persistence()
@@ -436,8 +440,10 @@ class MainApp(QMainWindow, Ui_mainApp):
                 if self.columna1.count() > 1:
                     self.columna1.widget(1).hide()
                     self.columna1.widget(1).deleteLater()
-                self.columna1.addWidget(listado)
+                columna = ColumnaWidget(listado)
+                self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
+                self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
             elif self.columna1.widget(0).currentItem().text() == 'Demandados':
                 p = Persistence()
@@ -446,8 +452,10 @@ class MainApp(QMainWindow, Ui_mainApp):
                 if self.columna1.count() > 1:
                     self.columna1.widget(1).hide()
                     self.columna1.widget(1).deleteLater()
-                self.columna1.addWidget(listado)
+                columna = ColumnaWidget(listado)
+                self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
+                self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
             elif self.columna1.widget(0).currentItem().text() == 'Juzgados':
                 p = Persistence()
@@ -456,8 +464,10 @@ class MainApp(QMainWindow, Ui_mainApp):
                 if self.columna1.count() > 1:
                     self.columna1.widget(1).hide()
                     self.columna1.widget(1).deleteLater()
-                self.columna1.addWidget(listado)
+                columna = ColumnaWidget(listado)
+                self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
+                self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
             elif self.columna1.widget(0).currentItem().text() == 'Actuaciones':
                 p = Persistence()
@@ -466,14 +476,16 @@ class MainApp(QMainWindow, Ui_mainApp):
                 if self.columna1.count() > 1:
                     self.columna1.widget(1).hide()
                     self.columna1.widget(1).deleteLater()
-                self.columna1.addWidget(listado)
+                columna = ColumnaWidget(listado)
+                self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
+                self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None       
 
     def columnaCamposElementChanged(self):
         if hasattr(self.columna1, 'count'):
             if self.columna1.count() > 1:
-                item = self.columna1.widget(1).currentItem()
+                item = self.columna1.widget(1).getCentralWidget().currentItem()
                 if hasattr(item, 'getObjeto'):
                     elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
                     elementoGrid.hide()
@@ -482,8 +494,10 @@ class MainApp(QMainWindow, Ui_mainApp):
                     nuevoElemento.setMaximumWidth(310)
                     nuevoElemento.setMinimumWidth(310)
                     self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
-                    
-                
+    
+    def columnaCamposAgregarClicked(self):
+        print '+'
+            
 import sys
 app = QApplication(sys.argv)
 app.setOrganizationName("ehmSoftware")
