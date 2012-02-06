@@ -69,7 +69,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Ciudad</string>
+           <string>Ciudad:</string>
           </property>
          </widget>
         </item>

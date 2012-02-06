@@ -39,10 +39,12 @@ class VerProceso(QWidget, Ui_VerProceso):
                 vbox = QVBoxLayout()
                 for actuacion in actuaciones:
                     vbox.addWidget(VerActuacion(actuacion))
-                    
-                vbox2 = QVBoxLayout()
+                
+                vbox.setContentsMargins(1,1,1,1)
+                vbox.setSpacing(1)
                 scroll = QScrollArea()
                 widgetActuaciones = QWidget()
                 widgetActuaciones.setLayout(vbox)
+                widgetActuaciones.setContentsMargins(0,0,0,0)
                 scroll.setWidget(widgetActuaciones)
                 self.tabWidget.addTab(scroll, "Actuaciones")
