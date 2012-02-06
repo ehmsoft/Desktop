@@ -15,7 +15,6 @@ class VerCampoPersonalizado(QWidget, Ui_VerCampoPersonalizado):
         self.setupUi(self)
         if self.__campo:
             self.lblNombre.setText(self.__campo.getNombre())
-            self.lblValor.setText(self.__campo.getValor())
             self.lblLongitudMax.setNum(self.__campo.getLongitudMax())
             self.lblLongitudMin.setNum(self.__campo.getLongitudMin())
             self.chkObligatorio.setChecked(self.__campo.isObligatorio())
