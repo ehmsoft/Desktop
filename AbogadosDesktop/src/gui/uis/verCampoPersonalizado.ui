@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>381</width>
-    <height>190</height>
+    <width>370</width>
+    <height>157</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -61,32 +61,6 @@
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QLabel" name="lbl2">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Valor:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLabel" name="lblValor">
-          <property name="toolTip">
-           <string>El valor que tiene el campo</string>
-          </property>
-          <property name="statusTip">
-           <string>El valor que tiene el campo</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
          <widget class="QLabel" name="lbl3">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -99,59 +73,7 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="lbl4">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Longitud Máx:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLabel" name="lblLongitudMax">
-          <property name="toolTip">
-           <string>Longitud Máxima de caracteres. 0 es ilimitado</string>
-          </property>
-          <property name="statusTip">
-           <string>Longitud Máxima de caracteres. 0 es ilimitado</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="lbl5">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Longitud Mín:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QLabel" name="lblLongitudMin">
-          <property name="toolTip">
-           <string>Longitud Mínima de caracteres. 0 es ilimitado</string>
-          </property>
-          <property name="statusTip">
-           <string>Longitud Mínima de caracteres. 0 es ilimitado</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
+        <item row="1" column="1">
          <widget class="QCheckBox" name="chkObligatorio">
           <property name="enabled">
            <bool>false</bool>
@@ -173,6 +95,58 @@
           </property>
           <property name="checked">
            <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="lbl4">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Longitud Máx:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLabel" name="lblLongitudMax">
+          <property name="toolTip">
+           <string>Longitud Máxima de caracteres. 0 es ilimitado</string>
+          </property>
+          <property name="statusTip">
+           <string>Longitud Máxima de caracteres. 0 es ilimitado</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="lbl5">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Longitud Mín:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLabel" name="lblLongitudMin">
+          <property name="toolTip">
+           <string>Longitud Mínima de caracteres. 0 es ilimitado</string>
+          </property>
+          <property name="statusTip">
+           <string>Longitud Mínima de caracteres. 0 es ilimitado</string>
+          </property>
+          <property name="text">
+           <string/>
           </property>
          </widget>
         </item>

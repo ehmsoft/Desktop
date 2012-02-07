@@ -1,18 +1,24 @@
 # -*- coding: utf-8 -*-
 
-from PySide.QtGui import *
-from PySide.QtCore import *
+from PySide import QtGui, QtCore
 from NuevaPersonaScreen import Ui_NuevaPersona
 from core.Persona import Persona
 from persistence.Persistence import Persistence
 from copy import deepcopy
+from gui.NuevoCampo import NuevoCampo
+from gui.ListadoDialogo import ListadoDialogo
 
-class NuevaPersona(QDialog, Ui_NuevaPersona):
-    def __init__(self,persona=None,tipo = None,parent=None):
+class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
+    def __init__(self, persona = None, tipo = None, parent = None):
         super(NuevaPersona, self).__init__(parent)
+        
+        if(persona is None and tipo is None):
+            raise TypeError("Para crear una nueva persona debe pasar el argumento tipo")
+        if persona is not None and not isinstance(persona, Persona):
+            raise TypeError("El objeto persona debe ser de la clase Persona")
         self.__persona = persona
         self.setupUi(self)
-        self.connect(self.btnAdd,SIGNAL("clicked()"),self.addCampo)
+        self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.addCampo)
         
         self.__campos = []
         
@@ -28,6 +34,22 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
         else:
             self.__tipo = tipo
             
+        if self.__tipo is 1:
+            if persona is None:
+                self.setWindowTitle("Nuevo demandante")
+                self.groupBox.setTitle("Ingrese los datos del nuevo demandante:")
+            else:
+                self.setWindowTitle("Editar demandante")
+                self.groupBox.setTitle("Ingrese los datos del demandante:")
+        elif self.__tipo is 2:
+            if persona is None:
+                self.setWindowTitle("Nuevo demandado")
+                self.groupBox.setTitle("Ingrese los datos del nuevo demandado:")
+            else:
+                self.setWindowTitle("Editar demandado")
+                self.groupBox.setTitle("Ingrese los datos del demandado:")
+            
+            
         if self.__campos is not None and self.__campos != []:
             for campo in self.__campos:
                 self.addCampo(campo)
@@ -38,37 +60,67 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
         return self.__persona
     
     def organizarCampos(self):
+        count = 6
+        for campo in self.__campos:
+            if campo is not None:
+                item = self.formLayout.itemAt(count, QtGui.QFormLayout.FieldRole).widget()
+                
+                message = QtGui.QMessageBox()
+                message.setIcon(QtGui.QMessageBox.Warning)
+                
+                if campo.isObligatorio() and len(item.text()) is 0:
+                    message.setText("El campo %s es obligatorio" % campo.getNombre())
+                    message.exec_()
+                    return False
+                elif campo.getLongitudMax() is not 0 and len(item.text()) > campo.getLongitudMax():
+                    message.setText(unicode("La longitud máxima del campo %s es de %i caracteres" % (campo.getNombre(), campo.getLongitudMax())))
+                    message.exec_()
+                    return False
+                elif campo.getLongitudMin() is not 0 and len(item.text()) < campo.getLongitudMin():
+                    message.setText(unicode("La longitud mínima del campo %s es de %i caracteres" % (campo.getNombre(), campo.getLongitudMin())))
+                    message.exec_()
+                    return False
+                count += 1
+                    
+        count = 6
+        for campo in self.__campos:
+            if campo is not None:
+                item = self.formLayout.itemAt(count, QtGui.QFormLayout.FieldRole).widget()
+                campo.setValor(item.text())
+            count += 1
+                        
         func = lambda x: x is not None and 1 or 0
-        self.__campos = filter(func,self.__campos)
-        self.__persona.setCampos(self.__campos)
+        self.__campos = filter(func, self.__campos)
         
-        camposPersona = self.__persona.getCampos()
-        
-        for campoNuevo in self.__campos:
-            if campoNuevo not in camposPersona:
-                try:
-                    p = Persistence()
-                    if self.__tipo is 1:
-                        p.guardarCampoDemandante(campoNuevo, self.__persona.getId())
-                    else:
-                        p.guardarCampoDemandado(campoNuevo, self.__persona.getId())
-                except Exception, e:
-                    print e
-        for campoViejo in camposPersona:
-            if campoViejo not in self.__campos:
-                try:
-                    p = Persistence()
-                    if self.__tipo is 1:
-                        p.borrarCampoDemandante(campoViejo)
-                    else:
-                        p.borrarCampoDemandado(campoViejo)
-                except Exception, e:
-                    print e
-        self.__persona.setCampos(self.__campos)
+        if self.__persona is not None:        
+            camposObjeto = self.__persona.getCampos()
+            
+            for campoNuevo in self.__campos:
+                if campoNuevo not in camposObjeto:
+                    try:
+                        p = Persistence()
+                        if self.__tipo is 1:
+                            p.guardarCampoDemandante(campoNuevo, self.__persona.getId_persona())
+                        else:
+                            p.guardarCampoDemandado(campoNuevo, self.__persona.getId_persona())
+                    except Exception, e:
+                        print e
+            for campoViejo in camposObjeto:
+                if campoViejo not in self.__campos:
+                    try:
+                        p = Persistence()
+                        if self.__tipo is 1:
+                            p.borrarCampoDemandante(campoViejo)
+                        else:
+                            p.borrarCampoDemandado(campoViejo)
+                    except Exception, e:
+                        print e
+            self.__persona.setCampos(self.__campos)
+        return True
     
     def guardar(self):
         try:
-            p = Persistence()
+            p = None
             if self.__persona is None:
                 persona = Persona(self.__tipo)
                 persona.setNombre(self.txtNombre.text())
@@ -77,80 +129,103 @@ class NuevaPersona(QDialog, Ui_NuevaPersona):
                 persona.setDireccion(self.txtDireccion.text())
                 persona.setCorreo(self.txtCorreo.text())
                 persona.setNotas(self.txtNotas.text())
+                persona.setCampos(self.__campos)
+                
+                print self.__campos
                 
                 p.guardarPersona(persona)
                 self.__persona = persona
             else:
-                self.__persona = Persona(self.__tipo)
                 self.__persona.setNombre(self.txtNombre.text())
                 self.__persona.setId(self.txtCedula.text())
                 self.__persona.setTelefono(self.txtTelefono.text())
                 self.__persona.setDireccion(self.txtDireccion.text())
                 self.__persona.setCorreo(self.txtCorreo.text())
                 self.__persona.setNotas(self.txtNotas.text())
+                self.__persona.setCampos(self.__campos)
                 p.actualizarPersona(self.__persona)
                     
         except Exception, e:
             print e
         finally:
-            return QDialog.accept(self)
+            return QtGui.QDialog.accept(self)
             
     def accept(self):
-        if self.__persona is not None and self.__campos != self.__persona.getCampos():
-            self.organizarCampos()
         if self.txtNombre.text().__len__() == 0 or self.txtNombre.text() == " ":
-            message = QMessageBox()
-            message.setIcon(QMessageBox.Warning)
+            message = QtGui.QMessageBox()
+            message.setIcon(QtGui.QMessageBox.Warning)
             message.setText("El nombre se considera obligatorio")
             message.exec_()
             self.txtNombre.setFocus()
         elif self.txtTelefono.text().__len__() == 0 or self.txtTelefono.text() == " ":
-            message = QMessageBox()
-            message.setIcon(QMessageBox.Question)
-            message.setStandardButtons(QMessageBox.Yes|QMessageBox.No)
-            message.setDefaultButton(QMessageBox.No)
+            message = QtGui.QMessageBox()
+            message.setIcon(QtGui.QMessageBox.Question)
+            message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+            message.setDefaultButton(QtGui.QMessageBox.No)
             message.setText(unicode("¿Desea guardar sin agregar un teléfono?"))
             ret = message.exec_()
-            if ret == QMessageBox.Yes:
+            if ret == QtGui.QMessageBox.Yes:
                 self.guardar()
             else:
                 self.txtTelefono.setFocus()            
-        else:
+        elif self.organizarCampos():
             self.guardar()
     
     def borrarElemento(self):
         index = self.formLayout.getWidgetPosition(self.sender().data())[0]
-        label = self.formLayout.itemAt(index, QFormLayout.LabelRole)
-        item = self.formLayout.itemAt(index, QFormLayout.FieldRole)
+        label = self.formLayout.itemAt(index, QtGui.QFormLayout.LabelRole)
+        item = self.formLayout.itemAt(index, QtGui.QFormLayout.FieldRole)
         label.widget().deleteLater()
         item.widget().deleteLater()
         self.__campos[index - 6] = None
+        
+    def editarElemento(self):
+        index = self.formLayout.getWidgetPosition(self.sender().data())[0]
+        label = self.formLayout.itemAt(index, QtGui.QFormLayout.LabelRole).widget()
+        txtBox = self.formLayout.itemAt(index, QtGui.QFormLayout.FieldRole).widget()
+        campo = self.__campos[index - 6]
+        dialogo = NuevoCampo(NuevoCampo.persona, campo, self)
+        if dialogo.exec_():
+            label.setText(unicode("%s:" % campo.getNombre()))
+            if campo.getLongitudMax() is not 0:
+                txtBox.setMaxLength(campo.getLongitudMax())
     
-    def createAction(self, text, slot= None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
-        action = QAction(text, self)
-        if icon is not None:
-            action.setIcon(QIcon("./images/%s.png" % icon))
-        if shortcut is not None:
-            action.setShortcut(shortcut)
-        if tip is not None:
-            action.setToolTip(tip)
-            action.setStatusTip(tip)
+    def createAction(self, text, slot = None):
+        action = QtGui.QAction(text, self)
         if slot is not None:
-            self.connect(action, SIGNAL(signal), slot)
-        if checkable:
-            action.setCheckable(True)
+            self.connect(action, QtCore.SIGNAL("triggered()"), slot)
         return action
     
-    def addCampo(self,campo = None):
+    def addCampo(self, campo = None):
         if campo is not None:
-            label = QLabel()
-            label.setText("%s:" % campo.getNombre())
-            txtBox = QLineEdit()
-            txtBox.setText(campo.getValor())
-            txtBox.setContextMenuPolicy(Qt.ActionsContextMenu)
-            action = self.createAction('Eliminar', self.borrarElemento)
-            action.setData(txtBox)
-            txtBox.addAction(action)
-            self.formLayout.addRow(label,txtBox)
+            if campo in self.__campos:
+                message = QtGui.QMessageBox()
+                message.setIcon(QtGui.QMessageBox.Warning)
+                message.setText("El campo ya se encuentra")
+                message.exec_()
+            else:
+                label = QtGui.QLabel()
+                label.setText("%s:" % campo.getNombre())
+                txtBox = QtGui.QLineEdit()
+                txtBox.setText(campo.getValor())
+                if campo.getLongitudMax() is not 0:
+                    txtBox.setMaxLength(campo.getLongitudMax())
+                
+                txtBox.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+                
+                eliminar = self.createAction('Eliminar', self.borrarElemento)
+                eliminar.setData(txtBox)
+                editar = self.createAction("Editar", self.editarElemento)
+                editar.setData(txtBox)
+                
+                txtBox.addActions([eliminar, editar])
+                self.formLayout.addRow(label, txtBox)
+                self.__campos.append(campo)
         else:
-            pass
+            if self.__tipo is 1:
+                dialogo = ListadoDialogo(ListadoDialogo.campoDemandante, self)
+            else:
+                dialogo = ListadoDialogo(ListadoDialogo.campoDemandado, self)                
+            if dialogo.exec_():
+                campo = dialogo.getSelected()
+                self.addCampo(campo)

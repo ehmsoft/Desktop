@@ -4,13 +4,11 @@ Created on 19/01/2012
 @author: esteban
 
 '''
-from PySide.QtCore import *
-from PySide.QtGui import *
-import sys
+from PySide.QtGui import QListWidgetItem
 
 class ItemListas(QListWidgetItem):
     def __init__(self, objeto, parent = None):
-        super(ItemListas, self).__init__(str(objeto), parent)
+        super(ItemListas, self).__init__(unicode(objeto), parent)
         self.__objeto = objeto
         
 
@@ -20,4 +18,4 @@ class ItemListas(QListWidgetItem):
 
     def setObjeto(self, objeto):
         self.__objeto = objeto
-        self.setText(str(self.__objeto))
+        self.setText(unicode(self.__objeto))
