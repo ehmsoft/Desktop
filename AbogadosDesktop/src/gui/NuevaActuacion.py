@@ -8,19 +8,17 @@ Created on 26/01/2012
 from PySide import QtGui, QtCore
 from gui.NuevaActuacionScreen import Ui_NuevaActuacion
 from persistence.Persistence import Persistence
-from core.Juzgado import Juzgado
 from core.Actuacion import Actuacion
-from datetime import datetime
 from gui.VerJuzgado import VerJuzgado
 from gui.ListadoDialogo import ListadoDialogo
 from gui.NuevoCampo import NuevoCampo
+from datetime import datetime
+from gui.NuevoJuzgado import NuevoJuzgado
 
 class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
     '''
     classdocs
     '''
-
-
     def __init__(self, actuacion = None, id_proceso = None, parent = None):
         super(NuevaActuacion, self).__init__(parent)
         
@@ -43,6 +41,12 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             self.lblJuzgado.setText(unicode(self.__juzgado.getNombre()))
             self.dteFecha.setDateTime(actuacion.getFecha())
             self.dteFechaProxima.setDateTime(actuacion.getFechaProxima())
+        else:
+            self.setWindowTitle(unicode("Editar actuación"))
+            self.groupBox.setTitle(unicode("Editar los datos de la actuación:"))
+            self.dteFecha.setDateTime(datetime.today())
+            self.dteFechaProxima.setDateTime(datetime.today())
+            self.lblJuzgado.setText(unicode("vacío"))
             
         if self.__campos is not None and self.__campos != []:
             for campo in self.__campos:
@@ -51,6 +55,67 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         self.clickJuzgado()
         self.clickFecha()
         self.clickFechaProxima()
+        self.btnAdd.clicked.connect(self.addCampo)
+        
+        cambiar = self.createAction("Cambiar", self.cambiarJuzgado)
+        cambiar.setData(self.lblJuzgado)
+        editar = self.createAction("Editar", self.editarJuzgado)
+        editar.setData(self.lblJuzgado)
+        
+        self.lblJuzgado.addActions([cambiar,editar])
+        
+    def cambiarJuzgado(self):
+        listado = ListadoDialogo(ListadoDialogo.juzgado, self)
+        if listado.exec_():
+            self.__juzgado = listado.getSelected()
+            self.lblJuzgado.setText(self.__juzgado.getNombre())
+    
+    def editarJuzgado(self):
+        if self.__juzgado is not None and self.__juzgado.getId_juzgado() is not "1":
+            dialogo = NuevoJuzgado(self.__juzgado, self)
+            if dialogo.exec_():
+                self.lblJuzgado.setText(self.__juzgado.getNombre())
+                if isinstance(self.horizontal.itemAt(1).widget(), VerJuzgado):
+                    self.horizontal.itemAt(1).widget().deleteLater()
+                    vista = VerJuzgado(self.__juzgado, self)
+                    self.horizontal.addWidget(vista)
+        
+    def accept(self):
+        if len(self.txtDescripcion.text()) is 0:
+            message = QtGui.QMessageBox()
+            message.setIcon(QtGui.QMessageBox.Warning)
+            message.setText("La descripción se considera obligatoria")
+            message.exec_()
+            self.txtDescripcion.setFocus()
+        elif self.__juzgado.getId_juzgado() is "1":
+            message = QtGui.QMessageBox()
+            message.setIcon(QtGui.QMessageBox.Warning)
+            message.setText("El juzgado no se permite vacío")
+            message.exec_()
+            self.txtDescripcion.setFocus()
+        elif self.organizarCampos():
+            self.guardar()
+            
+    def guardar(self):
+        try:
+            p = Persistence()
+            fecha = self.dteFecha.dateTime()
+            fechaProxima = self.dteFechaProxima.dateTime()
+            descripcion = self.txtDescripcion.text()
+            if self.__actuacion is None:
+                self.__actuacion = Actuacion(juzgado = self.__juzgado, fecha = fecha, 
+                                             fechaProxima = fechaProxima, descripcion = descripcion, 
+                                             campos = self.__campos)
+                p.guardarActuacion(self.__actuacion)
+            else:
+                self.__actuacion.setDescripcion(descripcion)
+                self.__actuacion.setFecha(fecha)
+                self.__actuacion.setFechaProxima(fechaProxima)
+                self.__actuacion.setCampos(self.__campos)
+                p.actualizarActuacion(self.__actuacion)
+        except Exception, e:
+            print e
+        return QtGui.QDialog.accept(self)
         
     def clickJuzgado(self):
         container = self.horizontal  
@@ -59,11 +124,14 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
                     
         def mousePressEvent(self):
             if QtCore.Qt.MouseButton.LeftButton is self.button():
-                if container.itemAt(1) is not None:
-                    container.itemAt(1).widget().deleteLater()
-                if widget.__juzgado.getId_juzgado is not "1":
-                    vista = VerJuzgado(widget.__juzgado, widget)
-                    container.addWidget(vista)
+                if widget.__juzgado is not None and widget.__juzgado.getId_juzgado() is not "1":
+                    if container.itemAt(1) is not None:
+                        container.itemAt(1).widget().deleteLater()
+                    if widget.__juzgado is not None and widget.__juzgado.getId_juzgado is not "1":
+                        vista = VerJuzgado(widget.__juzgado, widget)
+                        container.addWidget(vista)
+                else:
+                    widget.cambiarJuzgado()
             return QtGui.QLabel.mousePressEvent(lblJuzgado,self)
             
         self.lblJuzgado.mousePressEvent = mousePressEvent
@@ -223,17 +291,3 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             if dialogo.exec_():
                 campo = dialogo.getSelected()
                 self.addCampo(campo)
-
-import sys 
-
-fecha = datetime(2012, 1, 1, 14, 15, 16, 0, None)
-fechaProxima = datetime(2011, 2, 2, 15, 16, 17, 0, None)
-
-juzgado = Juzgado(nombre = "Juzgado", ciudad = "Pereira", direccion = "calle", telefono = "3333333",tipo = "De familia")
-actuacion = Actuacion(juzgado = juzgado,fecha = fecha,fechaProxima = fechaProxima,descripcion = "Actuación")
-           
-app = QtGui.QApplication(sys.argv)
-form = NuevaActuacion(actuacion)
-form.show()
-app.exec_()
-        
