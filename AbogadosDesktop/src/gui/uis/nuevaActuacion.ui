@@ -7,44 +7,89 @@
     <x>0</x>
     <y>0</y>
     <width>302</width>
-    <height>180</height>
+    <height>205</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Actuación</string>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
-  <layout class="QGridLayout" name="gridLayout_4">
-   <item row="0" column="0">
-    <layout class="QGridLayout" name="gridLayout_3">
-     <item row="0" column="0">
-      <layout class="QHBoxLayout" name="horizontal">
-       <item>
+  <property name="windowTitle">
+   <string>Nueva actuación</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout_3">
+   <item>
+    <layout class="QHBoxLayout" name="horizontal">
+     <item>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="2" column="0">
+        <widget class="QDialogButtonBox" name="buttonBox">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="standardButtons">
+          <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="Line" name="line">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
         <widget class="QGroupBox" name="groupBox">
          <property name="title">
-          <string/>
+          <string>Ingrese los datos de la nueva actuación</string>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="0" column="0">
-           <layout class="QFormLayout" name="formLayout_2">
+           <layout class="QFormLayout" name="formLayout">
+            <property name="fieldGrowthPolicy">
+             <enum>QFormLayout::ExpandingFieldsGrow</enum>
+            </property>
             <item row="0" column="0">
-             <widget class="QLabel" name="label">
+             <widget class="QLabel" name="lblDescripcion">
               <property name="text">
-               <string>Descripción:</string>
+               <string>Descripción</string>
               </property>
               <property name="buddy">
                <cstring>txtDescripcion</cstring>
               </property>
              </widget>
             </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="txtDescripcion"/>
+            </item>
             <item row="1" column="0">
-             <widget class="QLabel" name="label_2">
+             <widget class="QLabel" name="lblJuzgado_2">
               <property name="text">
                <string>Juzgado:</string>
               </property>
              </widget>
             </item>
+            <item row="1" column="1">
+             <widget class="QLabel" name="lblJuzgado">
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::StrongFocus</enum>
+              </property>
+              <property name="contextMenuPolicy">
+               <enum>Qt::ActionsContextMenu</enum>
+              </property>
+              <property name="text">
+               <string>TextLabel</string>
+              </property>
+             </widget>
+            </item>
             <item row="2" column="0">
-             <widget class="QLabel" name="label_3">
+             <widget class="QLabel" name="lblFecha">
               <property name="text">
                <string>Fecha:</string>
               </property>
@@ -53,8 +98,11 @@
               </property>
              </widget>
             </item>
+            <item row="2" column="1">
+             <widget class="QDateTimeEdit" name="dteFecha"/>
+            </item>
             <item row="3" column="0">
-             <widget class="QLabel" name="label_4">
+             <widget class="QLabel" name="lblFechaProxima">
               <property name="text">
                <string>Fecha próxima:</string>
               </property>
@@ -63,46 +111,28 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="txtDescripcion"/>
-            </item>
-            <item row="1" column="1">
-             <widget class="QLabel" name="lblJuzgado">
-              <property name="text">
-               <string>Ninguno</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="1">
-             <widget class="QDateTimeEdit" name="dteFecha"/>
-            </item>
             <item row="3" column="1">
              <widget class="QDateTimeEdit" name="dteFechaProxima"/>
             </item>
            </layout>
           </item>
+          <item row="1" column="0">
+           <widget class="QPushButton" name="btnAdd">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="layoutDirection">
+             <enum>Qt::RightToLeft</enum>
+            </property>
+            <property name="text">
+             <string>+</string>
+            </property>
+           </widget>
+          </item>
          </layout>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="1" column="0">
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="Line" name="line">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QDialogButtonBox" name="buttonBox">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="standardButtons">
-          <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-         </property>
         </widget>
        </item>
       </layout>
@@ -120,12 +150,12 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
+     <x>224</x>
+     <y>161</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
-     <y>274</y>
+     <y>177</y>
     </hint>
    </hints>
   </connection>
@@ -136,12 +166,12 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
+     <x>292</x>
+     <y>167</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
-     <y>274</y>
+     <y>177</y>
     </hint>
    </hints>
   </connection>
