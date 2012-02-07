@@ -53,6 +53,9 @@ class Listado(QListWidget):
         objeto = self.currentItem()
         if QMessageBox.question(self,"Eliminar","Desea eliminar "+objeto.text()+" ?",QMessageBox.Yes|QMessageBox.No) == QMessageBox.Yes:
             self.takeItem(self.currentRow())
+            return True
+        else:
+            return False
             
     def replace(self,new):
         item = self.currentItem()
