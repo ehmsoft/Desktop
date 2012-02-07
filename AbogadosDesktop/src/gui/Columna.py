@@ -44,7 +44,9 @@ class ColumnaDerecha(QWidget):
         btnLayout.addWidget(self.btnEditar)
         btnLayout.addWidget(self.btnEliminar)
         if self.__titulo:
-            layout.addWidget(QLabel(self.__centralWidget.windowTitle()))
+            label = QLabel(self.__centralWidget.windowTitle())
+            label.setAlignment(Qt.AlignCenter)
+            layout.addWidget(label)
         layout.addWidget(self.__centralWidget)
         layout.addStretch()
         layout.addLayout(btnLayout)
