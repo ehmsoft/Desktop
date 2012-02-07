@@ -5,9 +5,11 @@ from NuevaPersonaScreen import Ui_NuevaPersona
 from core.Persona import Persona
 from persistence.Persistence import Persistence
 from copy import deepcopy
+from gui.NuevoCampo import NuevoCampo
+from gui.ListadoDialogo import ListadoDialogo
 
 class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
-    def __init__(self,persona=None,tipo = None,parent=None):
+    def __init__(self, persona = None, tipo = None, parent = None):
         super(NuevaPersona, self).__init__(parent)
         
         if(persona is None and tipo is None):
@@ -16,7 +18,7 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
             raise TypeError("El objeto persona debe ser de la clase Persona")
         self.__persona = persona
         self.setupUi(self)
-        self.connect(self.btnAdd,QtCore.SIGNAL("clicked()"),self.addCampo)
+        self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.addCampo)
         
         self.__campos = []
         
@@ -61,14 +63,13 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
         count = 6
         for campo in self.__campos:
             if campo is not None:
-                label = self.formLayout.itemAt(count, QtGui.QFormLayout.LabelRole).widget()
                 item = self.formLayout.itemAt(count, QtGui.QFormLayout.FieldRole).widget()
                 
                 message = QtGui.QMessageBox()
                 message.setIcon(QtGui.QMessageBox.Warning)
                 
                 if campo.isObligatorio() and len(item.text()) is 0:
-                    message.setText("%s es obligatorio" % label.text())
+                    message.setText("El campo %s es obligatorio" % campo.getNombre())
                     message.exec_()
                     return False
                 elif campo.getLongitudMax() is not 0 and len(item.text()) > campo.getLongitudMax():
@@ -79,15 +80,17 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
                     message.setText(unicode("La longitud mínima del campo %s es de %i caracteres" % (campo.getNombre(), campo.getLongitudMin())))
                     message.exec_()
                     return False
+                count += 1
                     
         count = 6
         for campo in self.__campos:
             if campo is not None:
                 item = self.formLayout.itemAt(count, QtGui.QFormLayout.FieldRole).widget()
                 campo.setValor(item.text())
+            count += 1
                         
         func = lambda x: x is not None and 1 or 0
-        self.__campos = filter(func,self.__campos)
+        self.__campos = filter(func, self.__campos)
         
         if self.__persona is not None:        
             camposObjeto = self.__persona.getCampos()
@@ -117,7 +120,7 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
     
     def guardar(self):
         try:
-            p = Persistence()
+            p = None
             if self.__persona is None:
                 persona = Persona(self.__tipo)
                 persona.setNombre(self.txtNombre.text())
@@ -127,6 +130,8 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
                 persona.setCorreo(self.txtCorreo.text())
                 persona.setNotas(self.txtNotas.text())
                 persona.setCampos(self.__campos)
+                
+                print self.__campos
                 
                 p.guardarPersona(persona)
                 self.__persona = persona
@@ -155,7 +160,7 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
         elif self.txtTelefono.text().__len__() == 0 or self.txtTelefono.text() == " ":
             message = QtGui.QMessageBox()
             message.setIcon(QtGui.QMessageBox.Question)
-            message.setStandardButtons(QtGui.QMessageBox.Yes|QtGui.QMessageBox.No)
+            message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
             message.setDefaultButton(QtGui.QMessageBox.No)
             message.setText(unicode("¿Desea guardar sin agregar un teléfono?"))
             ret = message.exec_()
@@ -173,23 +178,52 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
         label.widget().deleteLater()
         item.widget().deleteLater()
         self.__campos[index - 6] = None
+        
+    def editarElemento(self):
+        index = self.formLayout.getWidgetPosition(self.sender().data())[0]
+        label = self.formLayout.itemAt(index, QtGui.QFormLayout.LabelRole).widget()
+        txtBox = self.formLayout.itemAt(index, QtGui.QFormLayout.FieldRole).widget()
+        campo = self.__campos[index - 6]
+        dialogo = NuevoCampo(NuevoCampo.persona, campo, self)
+        if dialogo.exec_():
+            label.setText(unicode("%s:" % campo.getNombre()))
+            txtBox.setMaxLength(campo.getLongitudMax())
     
-    def createAction(self, text, slot= None):
+    def createAction(self, text, slot = None):
         action = QtGui.QAction(text, self)
         if slot is not None:
             self.connect(action, QtCore.SIGNAL("triggered()"), slot)
         return action
     
-    def addCampo(self,campo = None):
+    def addCampo(self, campo = None):
         if campo is not None:
             label = QtGui.QLabel()
             label.setText("%s:" % campo.getNombre())
             txtBox = QtGui.QLineEdit()
             txtBox.setText(campo.getValor())
+            txtBox.setMaxLength(campo.getLongitudMax())
+            
             txtBox.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-            action = self.createAction('Eliminar', self.borrarElemento)
-            action.setData(txtBox)
-            txtBox.addAction(action)
-            self.formLayout.addRow(label,txtBox)
+            
+            eliminar = self.createAction('Eliminar', self.borrarElemento)
+            eliminar.setData(txtBox)
+            editar = self.createAction("Editar", self.editarElemento)
+            editar.setData(txtBox)
+            
+            txtBox.addActions([eliminar, editar])
+            self.formLayout.addRow(label, txtBox)
+            self.__campos.append(campo)
         else:
-            pass
+            if self.__tipo is 1:
+                dialogo = ListadoDialogo(ListadoDialogo.campoDemandante, self)
+            else:
+                dialogo = ListadoDialogo(ListadoDialogo.campoDemandado, self)                
+            if dialogo.exec_():
+                campo = dialogo.getSelected()
+                self.addCampo(campo)
+                
+import sys
+app = QtGui.QApplication(sys.argv)
+form = NuevaPersona(None, 1, None)
+form.show()
+app.exec_()
