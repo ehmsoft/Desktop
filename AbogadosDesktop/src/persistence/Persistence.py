@@ -31,9 +31,9 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
             if persona.getTipo() == 1:
-                c.execute('''UPDATE demandantes SET cedula = ?,'''+ ''' nombre = ?,'''+ ''' telefono = ?, direccion = ?,'''+ '''correo= ?,'''+ '''notas = ?, fecha_mod = datetime('now','localtime'), modificado =1 WHERE id_demandante = ?''',(persona.getId(),persona.getNombre(),persona.getTelefono(),persona.getDireccion(),persona.getCorreo(),persona.getNotas(),persona.getId_persona(),))
+                c.execute('''UPDATE demandantes SET cedula = ?,'''+ ''' nombre = ?,'''+ ''' telefono = ?, direccion = ?,'''+ '''correo= ?,'''+ '''notas = ?,'''+''' fecha_mod = datetime('now','localtime'), modificado =1 WHERE id_demandante = ?''',(persona.getId(),persona.getNombre(),persona.getTelefono(),persona.getDireccion(),persona.getCorreo(),persona.getNotas(),persona.getId_persona(),))
             elif persona.getTipo() == 2:
-                c.execute('''UPDATE demandados SET cedula = ?,'''+ ''' nombre = ?,''' + ''' telefono = ?,'''+ ''' direccion = ?,''' + '''correo= ?,'''+ ''' notas = ?, fecha_mod = datetime('now','localtime'), modificado =1 WHERE id_demandado = ?''',(persona.getId(),persona.getNombre(),persona.getTelefono(),persona.getDireccion(),persona.getCorreo(),persona.getNotas(),persona.getId_persona(),))
+                c.execute('''UPDATE demandados SET cedula = ?,'''+ ''' nombre = ?,''' + ''' telefono = ?,'''+ ''' direccion = ?,''' + '''correo= ?,'''+ ''' notas = ?,'''+''' fecha_mod = datetime('now','localtime'), modificado =1 WHERE id_demandado = ?''',(persona.getId(),persona.getNombre(),persona.getTelefono(),persona.getDireccion(),persona.getCorreo(),persona.getNotas(),persona.getId_persona(),))
             else:
                 print( "eso no es asi")  
             conn.commit()            
@@ -100,7 +100,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE juzgados SET nombre = ?,'''+ ''' ciudad = ?,''' + ''' telefono = ?,''' + ''' direccion= ?,''' + ''' tipo = ?, modificado =1, fecha_mod = datetime('now','localtime') WHERE id_juzgado = ?''',(juzgado.getNombre(),juzgado.getCiudad(),juzgado.getTelefono(),juzgado.getDireccion(),juzgado.getTipo(),juzgado.getId_juzgado()))
+            c.execute('''UPDATE juzgados SET nombre = ?,'''+ ''' ciudad = ?,''' + ''' telefono = ?,''' + ''' direccion= ?,''' + ''' tipo = ?,'''+''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_juzgado = ?''',(juzgado.getNombre(),juzgado.getCiudad(),juzgado.getTelefono(),juzgado.getDireccion(),juzgado.getTipo(),juzgado.getId_juzgado()))
             conn.commit()            
         except Exception as e:
             raise e
@@ -142,7 +142,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE actuaciones SET id_juzgado = ?,'''+ ''' fecha_creacion = datetime(?),'''+ ''' fecha_proxima = datetime(?),'''+ ''' descripcion = (?),'''+ ''' uid = ?, modificado =1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''',(actuacion.getJuzgado().getId_juzgado(),actuacion.getFecha(),actuacion.getFechaProxima(), actuacion.getDescripcion(),actuacion.getUid(),actuacion.getId_actuacion()))
+            c.execute('''UPDATE actuaciones SET id_juzgado = ?,'''+ ''' fecha_creacion = datetime(?),'''+ ''' fecha_proxima = datetime(?),'''+ ''' descripcion = (?),'''+ ''' uid = ?,'''+''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''',(actuacion.getJuzgado().getId_juzgado(),actuacion.getFecha(),actuacion.getFechaProxima(), actuacion.getDescripcion(),actuacion.getUid(),actuacion.getId_actuacion()))
             conn.commit()            
         except Exception as e:
             raise e
@@ -220,7 +220,7 @@ class Persistence(object):
             obligatorio = 0
             if(campoPersonalizado.isObligatorio()):
                 obligatorio = 1                   
-            c.execute('''UPDATE atributos SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,'''+ ''' longitud_min = ?, modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin(),campoPersonalizado.getId_campo()))                
+            c.execute('''UPDATE atributos SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,'''+ ''' longitud_min = ?,'''+''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin(),campoPersonalizado.getId_campo()))                
             conn.commit()            
         except Exception as e:
             raise e
@@ -273,7 +273,7 @@ class Persistence(object):
             if juzgado != None:
                 proceso.getJuzgado().getId_juzgado()
                 
-            c.execute('''UPDATE procesos SET id_demandante = ?,'''+ ''' id_demandado = ?,'''+ ''' fecha_creacion = datetime(?),''' + ''' radicado = ?,''' + ''' radicado_unico = ?,'''+ ''' estado = ?,''' + ''' tipo = ?,''' + ''' notas = ?,'''+ ''' prioridad = ?,''' + ''' id_juzgado = ?,'''+ ''' id_categoria = ?, modificado =1, fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''',(demandante,demandado,proceso.getFecha(),proceso.getRadicado(), proceso.getRadicadoUnico(),proceso.getEstado(),proceso.getTipo(),proceso.getNotas(),proceso.getPrioridad(),juzgado,proceso.getCategoria().getId_categoria(),proceso.getId_proceso()))                                                         
+            c.execute('''UPDATE procesos SET id_demandante = ?,'''+ ''' id_demandado = ?,'''+ ''' fecha_creacion = datetime(?),''' + ''' radicado = ?,''' + ''' radicado_unico = ?,'''+ ''' estado = ?,''' + ''' tipo = ?,''' + ''' notas = ?,'''+ ''' prioridad = ?,''' + ''' id_juzgado = ?,'''+ ''' id_categoria = ?,'''+''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''',(demandante,demandado,proceso.getFecha(),proceso.getRadicado(), proceso.getRadicadoUnico(),proceso.getEstado(),proceso.getTipo(),proceso.getNotas(),proceso.getPrioridad(),juzgado,proceso.getCategoria().getId_categoria(),proceso.getId_proceso()))                                                         
             conn.commit()
                       
         except Exception as e:
@@ -377,7 +377,7 @@ class Persistence(object):
             if juzgado != None:
                 plantilla.getJuzgado().getId_juzgado()
                 
-            c.execute('''UPDATE plantillas SET nombre=?,'''+'''id_demandante = ?,'''+ ''' id_demandado = ?,'''+ ''' fecha_creacion = datetime(?),''' + ''' radicado = ?,''' + ''' radicado_unico = ?,'''+ ''' estado = ?,''' + ''' tipo = ?,''' + ''' notas = ?,'''+ ''' prioridad = ?,''' + ''' id_juzgado = ?,'''+ ''' id_categoria = ?, modificado =1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''',(plantilla.getNombre(),demandante,demandado,plantilla.getFecha(),plantilla.getRadicado(), plantilla.getRadicadoUnico(),plantilla.getEstado(),plantilla.getTipo(),plantilla.getNotas(),plantilla.getPrioridad(),juzgado,plantilla.getCategoria().getId_categoria(),plantilla.getId_plantilla()))                                                         
+            c.execute('''UPDATE plantillas SET nombre=?,'''+'''id_demandante = ?,'''+ ''' id_demandado = ?,'''+ ''' fecha_creacion = datetime(?),''' + ''' radicado = ?,''' + ''' radicado_unico = ?,'''+ ''' estado = ?,''' + ''' tipo = ?,''' + ''' notas = ?,'''+ ''' prioridad = ?,''' + ''' id_juzgado = ?,'''+ ''' id_categoria = ?,'''+''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''',(plantilla.getNombre(),demandante,demandado,plantilla.getFecha(),plantilla.getRadicado(), plantilla.getRadicadoUnico(),plantilla.getEstado(),plantilla.getTipo(),plantilla.getNotas(),plantilla.getPrioridad(),juzgado,plantilla.getCategoria().getId_categoria(),plantilla.getId_plantilla()))                                                         
             conn.commit()
                       
         except Exception as e:
@@ -425,7 +425,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_plantilla SET valor = ?, modificado =1fecha_mod = datetime('now','localtime'),  WHERE id_atributo_plantilla = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
+            c.execute('''UPDATE atributos_plantilla SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime'),  WHERE id_atributo_plantilla = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
             conn.commit()            
         except Exception as e:
             raise e
@@ -486,7 +486,7 @@ class Persistence(object):
             obligatorio = 0
             if(campoPersonalizado.isObligatorio()):
                 obligatorio = 1                   
-            c.execute('''UPDATE atributosPersona SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,'''+ ''' longitud_min = ?, modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin(),campoPersonalizado.getId_campo()))                
+            c.execute('''UPDATE atributosPersona SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,'''+ ''' longitud_min = ?,'''+''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin(),campoPersonalizado.getId_campo()))                
             conn.commit()            
         except Exception as e:
             raise e
@@ -513,8 +513,9 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributosPersona SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_campo(),))
-            c.execute('''UPDATE atributos_persona SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributosPersona SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
+            c.execute('''UPDATE atributos_demandante SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
+            c.execute('''UPDATE atributos_demandado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
             
             conn.commit()            
         except Exception as e:
@@ -602,7 +603,7 @@ class Persistence(object):
             obligatorio = 0
             if(campoPersonalizado.isObligatorio()):
                 obligatorio = 1                   
-            c.execute('''UPDATE atributosJuzgado SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,'''+ ''' longitud_min = ?, modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin(),campoPersonalizado.getId_campo()))                
+            c.execute('''UPDATE atributosJuzgado SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,'''+ ''' longitud_min = ?,'''+''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin(),campoPersonalizado.getId_campo()))                
             conn.commit()            
         except Exception as e:
             raise e
@@ -684,7 +685,7 @@ class Persistence(object):
             obligatorio = 0
             if(campoPersonalizado.isObligatorio()):
                 obligatorio = 1                   
-            c.execute('''UPDATE atributosActuacion SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,'''+ ''' longitud_min = ?, modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin(),campoPersonalizado.getId_campo()))                
+            c.execute('''UPDATE atributosActuacion SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,'''+ ''' longitud_min = ?'''+''', modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin(),campoPersonalizado.getId_campo()))                
             conn.commit()            
         except Exception as e:
             raise e
@@ -762,7 +763,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE archivos_proceso SET id_proceso = ?,ruta = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_archivo_proceso = ?''',(archivo.getId_proceso(),archivo.getRuta(),archivo.getId_archivo_proceso(),))
+            c.execute('''UPDATE archivos_proceso SET id_proceso = ?,'''+'''ruta = ?,'''+''' modificado =1,fecha_mod = datetime('now','localtime') WHERE id_archivo_proceso = ?''',(archivo.getId_proceso(),archivo.getRuta(),archivo.getId_archivo_proceso(),))
             conn.commit()            
         except Exception as e:
             raise e
