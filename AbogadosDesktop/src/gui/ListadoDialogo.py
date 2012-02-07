@@ -125,8 +125,8 @@ class ListadoDialogo (QDialog):
                 self.lista.add(campoPP)
         elif self.tipo is self.__class__.campoJuzgado:
             nuevoCampoJuzgado = NuevoCampo(tipo =  NuevoCampo.juzgado, parent = self)
-            if nuevoCampoActuacion.exec_():
-                campoJuzgado = nuevoCampoJuzgado.getCategoria()
+            if nuevoCampoJuzgado.exec_():
+                campoJuzgado = nuevoCampoJuzgado.getCampo()
                 self.lista.add(campoJuzgado)
     
     
