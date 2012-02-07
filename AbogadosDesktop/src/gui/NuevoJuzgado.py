@@ -44,9 +44,7 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
             
         if self.__campos is not None and self.__campos != []:
             for campo in self.__campos:
-                self.addCampo(campo)
-  
-            
+                self.addCampo(campo)            
             
     def getJuzgado(self):
         return self.__juzgado
@@ -206,10 +204,3 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
             if dialogo.exec_():
                 campo = dialogo.getSelected()
                 self.addCampo(campo)
-                
-import sys
-
-app = QtGui.QApplication(sys.argv)
-form = NuevoJuzgado(None, None)
-form.show()
-app.exec_()
