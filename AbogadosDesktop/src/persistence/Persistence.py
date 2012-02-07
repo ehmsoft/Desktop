@@ -425,7 +425,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_plantilla SET valor = ?, modificado =1fecha_mod = datetime('now','localtime'),  WHERE id_atributo_plantilla = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
+            c.execute('''UPDATE atributos_plantilla SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime'),  WHERE id_atributo_plantilla = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
             conn.commit()            
         except Exception as e:
             raise e
@@ -486,7 +486,7 @@ class Persistence(object):
             obligatorio = 0
             if(campoPersonalizado.isObligatorio()):
                 obligatorio = 1                   
-            c.execute('''UPDATE atributosPersona SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,'''+ ''' longitud_min = ?, modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin(),campoPersonalizado.getId_campo()))                
+            c.execute('''UPDATE atributosPersona SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,'''+ ''' longitud_min = ?,'''+''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin(),campoPersonalizado.getId_campo()))                
             conn.commit()            
         except Exception as e:
             raise e
@@ -513,8 +513,9 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributosPersona SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_campo(),))
-            c.execute('''UPDATE atributos_persona SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributosPersona SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
+            c.execute('''UPDATE atributos_demandante SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
+            c.execute('''UPDATE atributos_demandado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
             
             conn.commit()            
         except Exception as e:
