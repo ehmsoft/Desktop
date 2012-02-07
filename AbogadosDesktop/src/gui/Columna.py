@@ -33,7 +33,7 @@ class ColumnaWidget(QWidget):
         
 class ColumnaDerecha(QWidget):
     def __init__(self, titulo,centralWidget,parent=None):
-        super(ColumnaWidget, self).__init__(parent)
+        super(ColumnaDerecha, self).__init__(parent)
         self.__centralWidget = centralWidget
         self.__titulo = titulo
         layout = QVBoxLayout()
