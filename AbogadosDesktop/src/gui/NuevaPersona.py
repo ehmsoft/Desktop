@@ -198,23 +198,29 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
     
     def addCampo(self, campo = None):
         if campo is not None:
-            label = QtGui.QLabel()
-            label.setText("%s:" % campo.getNombre())
-            txtBox = QtGui.QLineEdit()
-            txtBox.setText(campo.getValor())
-            if campo.getLongitudMax() is not 0:
-                txtBox.setMaxLength(campo.getLongitudMax())
-            
-            txtBox.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-            
-            eliminar = self.createAction('Eliminar', self.borrarElemento)
-            eliminar.setData(txtBox)
-            editar = self.createAction("Editar", self.editarElemento)
-            editar.setData(txtBox)
-            
-            txtBox.addActions([eliminar, editar])
-            self.formLayout.addRow(label, txtBox)
-            self.__campos.append(campo)
+            if campo in self.__campos:
+                message = QtGui.QMessageBox()
+                message.setIcon(QtGui.QMessageBox.Warning)
+                message.setText("El campo ya se encuentra")
+                message.exec_()
+            else:
+                label = QtGui.QLabel()
+                label.setText("%s:" % campo.getNombre())
+                txtBox = QtGui.QLineEdit()
+                txtBox.setText(campo.getValor())
+                if campo.getLongitudMax() is not 0:
+                    txtBox.setMaxLength(campo.getLongitudMax())
+                
+                txtBox.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+                
+                eliminar = self.createAction('Eliminar', self.borrarElemento)
+                eliminar.setData(txtBox)
+                editar = self.createAction("Editar", self.editarElemento)
+                editar.setData(txtBox)
+                
+                txtBox.addActions([eliminar, editar])
+                self.formLayout.addRow(label, txtBox)
+                self.__campos.append(campo)
         else:
             if self.__tipo is 1:
                 dialogo = ListadoDialogo(ListadoDialogo.campoDemandante, self)
