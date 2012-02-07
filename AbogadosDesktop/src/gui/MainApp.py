@@ -8,6 +8,7 @@ from PySide.QtCore import *
 from MainAppScreen import Ui_mainApp
 from gui.Listado import Listado
 from gui.Columna import ColumnaWidget
+from gui.Columna import ColumnaDerecha
 from persistence.Persistence import Persistence
 from core.Proceso import Proceso
 from gui.VerProceso import VerProceso
@@ -59,7 +60,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado)):
+                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
@@ -75,7 +76,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1.hide()
                 #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado)):
+                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
@@ -93,7 +94,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = Persistence()
                 lista = p.consultarPlantillas()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado)):
+                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
@@ -112,7 +113,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1.hide()
                 #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado)):
+                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
@@ -134,7 +135,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado)):
+                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
@@ -150,7 +151,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1.hide()
                 #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado)):
+                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
@@ -169,7 +170,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado)):
+                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
@@ -185,7 +186,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1.hide()
                 #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado)):
+                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
@@ -204,7 +205,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado)):
+                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
@@ -220,7 +221,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1.hide()
                 #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado)):
+                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
@@ -239,7 +240,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado)):
+                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
@@ -255,7 +256,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1.hide()
                 #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado)):
+                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
@@ -274,7 +275,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado)):
+                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
@@ -290,7 +291,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1.hide()
                 #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado)):
+                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
@@ -320,7 +321,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1 = splitter
                 self.centralSplitter.addWidget(self.columna1)
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado)):
+                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
@@ -343,7 +344,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1.hide()
                 #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado)):
+                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
@@ -371,43 +372,58 @@ class MainApp(QMainWindow, Ui_mainApp):
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
-                nuevoElemento = VerProceso(item.getObjeto())
+                proceso = VerProceso(item.getObjeto())
+                nuevoElemento = ColumnaDerecha(titulo=False, centralWidget=proceso)
                 if self.listaIzquierda.currentItem().text() == 'Actuaciones':
-                    nuevoElemento.tabWidget.setCurrentIndex(1)
+                    nuevoElemento.getCentralWidget().tabWidget.setCurrentIndex(1)
                 nuevoElemento.setMaximumWidth(310)
                 nuevoElemento.setMinimumWidth(310)
                 self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
+                self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.procesoEditarClicked)
+                self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.procesoEliminarClicked)
             if isinstance(item.getObjeto(), Plantilla):
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
-                nuevoElemento = VerPlantilla(item.getObjeto())
+                plantilla = VerPlantilla(item.getObjeto())
+                nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=plantilla )
                 nuevoElemento.setMaximumWidth(310)
                 nuevoElemento.setMinimumWidth(310)
                 self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
+                self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.plantillaEditarClicked)
+                self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.plantillaEliminarClicked)
             if isinstance(item.getObjeto(), Persona):
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
-                nuevoElemento = VerPersona(item.getObjeto())
+                persona = VerPersona(item.getObjeto())
+                nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=persona)
                 nuevoElemento.setMaximumWidth(310)
                 self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
+                self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.personaEditarClicked)
+                self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.personaEliminarClicked)
             if isinstance(item.getObjeto(), Juzgado):
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
-                nuevoElemento = VerJuzgado(item.getObjeto())
+                juzgado = VerJuzgado(item.getObjeto())
+                nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=juzgado)
                 nuevoElemento.setMaximumWidth(310)
                 nuevoElemento.setMinimumWidth(310)
-                self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)    
+                self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
+                self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.juzgadoEditarClicked)
+                self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.juzgadoEliminarClicked)
             if isinstance(item.getObjeto(), Categoria):
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
-                nuevoElemento = VerCategoria(item.getObjeto())
+                categoria = VerCategoria(item.getObjeto())
+                nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=categoria)
                 nuevoElemento.setMaximumWidth(310)
                 nuevoElemento.setMinimumWidth(310)
                 self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
+                self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.categoriaEditarClicked)
+                self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.categoriaEliminarClicked)
         else:
             if self.columna1.widget(0).currentItem().text() == 'Procesos':
                 p = Persistence()
@@ -490,14 +506,52 @@ class MainApp(QMainWindow, Ui_mainApp):
                     elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
-                    nuevoElemento = VerCampoPersonalizado(item.getObjeto())
+                    campo = VerCampoPersonalizado(item.getObjeto())
+                    nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=campo)
                     nuevoElemento.setMaximumWidth(310)
                     nuevoElemento.setMinimumWidth(310)
                     self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
+                    self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.campoEditarClicked)
+                    self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.campoEliminarClicked)
     
     def columnaCamposAgregarClicked(self):
         print '+'
-            
+    
+    def procesoEditarClicked(self):
+        print 'clicked'
+        
+    def procesoEliminarClicked(self):
+        print 'clicked'
+    
+    def personaEditarClicked(self):
+        pass
+    
+    def personaEliminarClicked(self):
+        pass
+    
+    def juzgadoEditarClicked(self):
+        pass
+    
+    def juzgadoEliminarClicked(self):
+        pass
+    
+    def plantillaEditarClicked(self):
+        pass
+    
+    def plantillaEliminarClicked(self):
+        pass
+    
+    def categoriaEditarClicked(self):
+        pass
+    
+    def categoriaEliminarClicked(self):
+        pass
+    
+    def campoEditarClicked(self):
+        pass
+    
+    def campoEliminarClicked(self):
+        pass
 import sys
 app = QApplication(sys.argv)
 app.setOrganizationName("ehmSoftware")
