@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 '''
 Created on 30/01/2012
 
@@ -424,7 +426,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
                 self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.categoriaEditarClicked)
                 self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.categoriaEliminarClicked)
-        else:
+        elif hasattr(self.columna1, 'widget'):
             if self.columna1.widget(0).currentItem().text() == 'Procesos':
                 p = Persistence()
                 lista = p.consultarAtributos()
@@ -521,37 +523,168 @@ class MainApp(QMainWindow, Ui_mainApp):
         print 'clicked'
         
     def procesoEliminarClicked(self):
-        print 'clicked'
+        proceso = self.columna1.getCentralWidget().getSelectedItem()
+        if self.columna1.getCentralWidget().remove():
+            p = Persistence()
+            p.borrarProceso(proceso)
+            p=None
+            elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+            if self.columna1.getCentralWidget().count() == 0:
+                elementoGrid.hide()
+                elementoGrid.deleteLater()
+                self.label = QLabel() 
+                self.label.setPixmap(QPixmap.fromImage(self.image))
+                self.gridLayout.addWidget(self.label, 0,1,1,1)
+            
     
     def personaEditarClicked(self):
         pass
     
     def personaEliminarClicked(self):
-        pass
+        persona = self.columna1.getCentralWidget().getSelectedItem()
+        if self.columna1.getCentralWidget().remove():
+            p = Persistence()
+            p.borrarPersona(persona)
+            p=None
+            elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+            if self.columna1.getCentralWidget().count() == 0:
+                elementoGrid.hide()
+                elementoGrid.deleteLater()
+                self.label = QLabel() 
+                self.label.setPixmap(QPixmap.fromImage(self.image))
+                self.gridLayout.addWidget(self.label, 0,1,1,1)
     
     def juzgadoEditarClicked(self):
         pass
     
     def juzgadoEliminarClicked(self):
-        pass
+        juzgado = self.columna1.getCentralWidget().getSelectedItem()
+        if self.columna1.getCentralWidget().remove():
+            p = Persistence()
+            p.borrarJuzgado(juzgado)
+            p=None
+            elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+            if self.columna1.getCentralWidget().count() == 0:
+                elementoGrid.hide()
+                elementoGrid.deleteLater()
+                self.label = QLabel() 
+                self.label.setPixmap(QPixmap.fromImage(self.image))
+                self.gridLayout.addWidget(self.label, 0,1,1,1)
     
     def plantillaEditarClicked(self):
         pass
     
     def plantillaEliminarClicked(self):
-        pass
+        plantilla = self.columna1.getCentralWidget().getSelectedItem()
+        if self.columna1.getCentralWidget().remove():
+            p = Persistence()
+            p.borrarPlantilla(plantilla)
+            p=None
+            elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+            if self.columna1.getCentralWidget().count() == 0:
+                elementoGrid.hide()
+                elementoGrid.deleteLater()
+                self.label = QLabel() 
+                self.label.setPixmap(QPixmap.fromImage(self.image))
+                self.gridLayout.addWidget(self.label, 0,1,1,1)
     
     def categoriaEditarClicked(self):
         pass
     
     def categoriaEliminarClicked(self):
-        pass
+        categoria = self.columna1.getCentralWidget().getSelectedItem()
+        if categoria.getId_categoria() == '1':
+            QMessageBox.warning(self, 'No se puede borrar',unicode('La categoría Ninguna es por defecto y no se puede eliminar'))
+        elif self.columna1.getCentralWidget().remove():
+            p = Persistence()
+            p.borrarCategoria(categoria)
+            p=None
+            elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+            if self.columna1.getCentralWidget().count() == 0:
+                elementoGrid.hide()
+                elementoGrid.deleteLater()
+                self.label = QLabel() 
+                self.label.setPixmap(QPixmap.fromImage(self.image))
+                self.gridLayout.addWidget(self.label, 0,1,1,1)
     
     def campoEditarClicked(self):
         pass
     
     def campoEliminarClicked(self):
-        pass
+        campo = self.columna1.widget(1).getCentralWidget().getSelectedItem()
+        if self.columna1.widget(0).currentItem().text() == 'Procesos':
+            if self.columna1.widget(1).getCentralWidget().remove():
+                p = Persistence()
+                p.borrarAtributo(campo)
+                p = None
+                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                if self.columna1.widget(1).getCentralWidget().count() == 0:
+                    elementoGrid.hide()
+                    elementoGrid.deleteLater()
+                    self.label = QLabel() 
+                    self.label.setPixmap(QPixmap.fromImage(self.image))
+                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+        elif self.columna1.widget(0).currentItem().text() == 'Plantillas':
+            if self.columna1.widget(1).getCentralWidget().remove():
+                p = Persistence()
+                p.borrarAtributo(campo)
+                p = None
+                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                if self.columna1.widget(1).getCentralWidget().count() == 0:
+                    elementoGrid.hide()
+                    elementoGrid.deleteLater()
+                    self.label = QLabel() 
+                    self.label.setPixmap(QPixmap.fromImage(self.image))
+                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+        elif self.columna1.widget(0).currentItem().text() == 'Demandantes':
+            if self.columna1.widget(1).getCentralWidget().remove():
+                p = Persistence()
+                p.borrarAtributoPersona(campo)
+                p = None
+                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                if self.columna1.widget(1).getCentralWidget().count() == 0:
+                    elementoGrid.hide()
+                    elementoGrid.deleteLater()
+                    self.label = QLabel() 
+                    self.label.setPixmap(QPixmap.fromImage(self.image))
+                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+        elif self.columna1.widget(0).currentItem().text() == 'Demandados':
+            if self.columna1.widget(1).getCentralWidget().remove():
+                p = Persistence()
+                p.borrarAtributoPersona(campo)
+                p = None
+                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                if self.columna1.widget(1).getCentralWidget().count() == 0:
+                    elementoGrid.hide()
+                    elementoGrid.deleteLater()
+                    self.label = QLabel() 
+                    self.label.setPixmap(QPixmap.fromImage(self.image))
+                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+        elif self.columna1.widget(0).currentItem().text() == 'Juzgados':
+            if self.columna1.widget(1).getCentralWidget().remove():
+                p = Persistence()
+                p.borrarAtributoJuzgado(campo)
+                p = None
+                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                if self.columna1.widget(1).getCentralWidget().count() == 0:
+                    elementoGrid.hide()
+                    elementoGrid.deleteLater()
+                    self.label = QLabel() 
+                    self.label.setPixmap(QPixmap.fromImage(self.image))
+                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+            p = None
+        elif self.columna1.widget(0).currentItem().text() == 'Actuaciones':
+            if self.columna1.widget(1).getCentralWidget().remove():
+                p = Persistence()
+                p.borrarAtributoActuacion(campo)
+                p = None
+                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                if self.columna1.widget(1).getCentralWidget().count() == 0:
+                    elementoGrid.hide()
+                    elementoGrid.deleteLater()
+                    self.label = QLabel() 
+                    self.label.setPixmap(QPixmap.fromImage(self.image))
+                    self.gridLayout.addWidget(self.label, 0,1,1,1)
 import sys
 app = QApplication(sys.argv)
 app.setOrganizationName("ehmSoftware")
