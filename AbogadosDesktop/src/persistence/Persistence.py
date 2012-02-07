@@ -806,12 +806,12 @@ class Persistence(object):
             demandantes = []
             for row in c:
                 id_demandante = str(row['id_demandante'])
-                cedula = str(row['cedula'])
-                nombre = str(row['nombre'])
-                telefono = str(row['telefono'])
-                direccion = str(row['direccion'])            
-                correo = str(row['correo'])
-                notas = str(row['notas'])
+                cedula = row['cedula']
+                nombre = row['nombre']
+                telefono = row['telefono']
+                direccion = row['direccion']            
+                correo = row['correo']
+                notas = row['notas']
                 demandante = Persona(1, cedula, nombre, telefono, direccion, correo, notas, id_demandante)
                 demandantes.append(demandante)
         except Exception as e:
@@ -833,12 +833,12 @@ class Persistence(object):
             c.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE eliminado = 0 ORDER BY nombre''')
             for row in c:
                 id_demandado = str(row['id_demandado'])
-                cedula = str(row['cedula'])
-                nombre = str(row['nombre'])
-                telefono = str(row['telefono'])
-                direccion = str(row['direccion'])            
-                correo = str(row['correo'])
-                notas = str(row['notas'])
+                cedula = row['cedula']
+                nombre = row['nombre']
+                telefono = row['telefono']
+                direccion = row['direccion']            
+                correo = row['correo']
+                notas = row['notas']
                 demandado = Persona(2, cedula, nombre, telefono, direccion, correo, notas, id_demandado)
                 demandados.append(demandado)
         except Exception as e:
@@ -859,23 +859,23 @@ class Persistence(object):
             c.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE eliminado = 0 ORDER BY nombre''')
             for row in c:
                 id_demandado = str(row['id_demandado'])
-                cedula = str(row['cedula'])
-                nombre = str(row['nombre'])
-                telefono = str(row['telefono'])
-                direccion = str(row['direccion'])            
-                correo = str(row['correo'])
-                notas = str(row['notas'])
+                cedula = row['cedula']
+                nombre = row['nombre']
+                telefono = row['telefono']
+                direccion = row['direccion']            
+                correo = row['correo']
+                notas = row['notas']
                 demandado = Persona(2, cedula, nombre, telefono, direccion, correo, notas, id_demandado)
                 personas.append(demandado)
             c.execute('''SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes WHERE eliminado = 0 ORDER BY nombre''')
             for row in c:
                 id_demandante = str(row['id_demandante'])
-                cedula = str(row['cedula'])
-                nombre = str(row['nombre'])
-                telefono = str(row['telefono'])
-                direccion = str(row['direccion'])            
-                correo = str(row['correo'])
-                notas = str(row['notas'])
+                cedula = row['cedula']
+                nombre = row['nombre']
+                telefono = row['telefono']
+                direccion = row['direccion']            
+                correo = row['correo']
+                notas = row['notas']
                 demandante = Persona(1, cedula, nombre, telefono, direccion, correo, notas, id_demandante)
                 personas.append(demandante)
         except Exception as e:
@@ -901,24 +901,24 @@ class Persistence(object):
                 row = c.fetchone()
                 if row:
                     id_demandante = str(row['id_demandante'])
-                    cedula = str(row['cedula'])
-                    nombre = str(row['nombre'])
-                    telefono = str(row['telefono'])
-                    direccion = str(row['direccion'])            
-                    correo = str(row['correo'])
-                    notas = str(row['notas'])
+                    cedula = row['cedula']
+                    nombre = row['nombre']
+                    telefono = row['telefono']
+                    direccion = row['direccion']            
+                    correo = row['correo']
+                    notas = row['notas']
                     persona = Persona(1, cedula, nombre, telefono, direccion, correo, notas, id_demandante)
             elif tipo == 2:
                 c.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE id_demandado = ?''', (id_persona,))
                 row = c.fetchone()
                 if row:
                     id_demandado = str(row['id_demandado'])
-                    cedula = str(row['cedula'])
-                    nombre = str(row['nombre'])
-                    telefono = str(row['telefono'])
-                    direccion = str(row['direccion'])            
-                    correo = str(row['correo'])
-                    notas = str(row['notas'])
+                    cedula = row['cedula']
+                    nombre = row['nombre']
+                    telefono = row['telefono']
+                    direccion = row['direccion']            
+                    correo = row['correo']
+                    notas = row['notas']
                     persona = Persona(2, cedula, nombre, telefono, direccion, correo, notas, id_demandado)
             else:
                 raise ValueError('El tipo de persona no es correcto')
@@ -946,11 +946,11 @@ class Persistence(object):
                 id_demandante = str(row['id_demandante'])
                 id_demandado = str(row['id_demandado'])
                 fecha_creacion = row['fecha_creacion']
-                radicado = str(row['radicado'])
-                radicado_unico = str(row['radicado_unico'])
-                estado = str(row['estado'])
-                tipo = str(row['tipo'])
-                notas = str(row['notas'])
+                radicado = row['radicado']
+                radicado_unico = row['radicado_unico']
+                estado = row['estado']
+                tipo = row['tipo']
+                notas = row['notas']
                 prioridad = int(row['prioridad'])
                 id_juzgado = str(row['id_juzgado'])
                 id_categoria = str(row['id_categoria'])
@@ -987,11 +987,11 @@ class Persistence(object):
                 id_demandante = str(row['id_demandante'])
                 id_demandado = str(row['id_demandado'])
                 fecha_creacion = row['fecha_creacion']
-                radicado = str(row['radicado'])
-                radicado_unico = str(row['radicado_unico'])
-                estado = str(row['estado'])
-                tipo = str(row['tipo'])
-                notas = str(row['notas'])
+                radicado = row['radicado']
+                radicado_unico = row['radicado_unico']
+                estado = row['estado']
+                tipo = row['tipo']
+                notas = row['notas']
                 prioridad = int(row['prioridad'])
                 id_juzgado = str(row['id_juzgado'])
                 id_categoria = str(row['id_categoria'])
@@ -1025,8 +1025,8 @@ class Persistence(object):
                 id_juzgado = str(row['id_juzgado'])
                 fecha_creacion = row['fecha_creacion']
                 fecha_proxima = row['fecha_proxima']
-                descripcion = str(row['descripcion'])
-                uid = str(row['uid'])
+                descripcion = row['descripcion']
+                uid = row['uid']
                 juzgado = Juzgado(id_juzgado=id_juzgado)
                 actuacion = Actuacion(juzgado, fecha_creacion, fecha_proxima, descripcion, id_actuacion, uid)
                 actuaciones.append(actuacion)
@@ -1053,8 +1053,8 @@ class Persistence(object):
                 id_juzgado = str(row['id_juzgado'])
                 fecha_creacion = row['fecha_creacion']
                 fecha_proxima = row['fecha_proxima']
-                descripcion = str(row['descripcion'])
-                uid = str(row['uid'])
+                descripcion = row['descripcion']
+                uid = row['uid']
                 juzgado = Juzgado(id_juzgado=id_juzgado)
                 actuacion = Actuacion(juzgado, fecha_creacion, fecha_proxima, descripcion, id_actuacion, uid)  
         except Exception as e:
@@ -1077,8 +1077,8 @@ class Persistence(object):
                 id_juzgado = str(row['id_juzgado'])
                 fecha_creacion = row['fecha_creacion']
                 fecha_proxima = row['fecha_proxima']
-                descripcion = str(row['descripcion'])
-                uid = str(row['uid'])
+                descripcion = row['descripcion']
+                uid = row['uid']
                 juzgado = Juzgado(id_juzgado=id_juzgado)
                 actuacion = Actuacion(juzgado, fecha_creacion, fecha_proxima, descripcion, id_actuacion, uid)
                 actuaciones.append(actuacion)
@@ -1101,11 +1101,11 @@ class Persistence(object):
             c.execute('''SELECT id_juzgado, nombre, ciudad, telefono, direccion, tipo FROM juzgados WHERE eliminado = 0 ORDER BY nombre''')
             for row in c:
                 id_juzgado = str(row['id_juzgado'])
-                nombre = str(row['nombre'])
-                ciudad = str(row['ciudad'])
-                telefono = str(row['telefono'])
-                direccion = str(row['direccion'])
-                tipo = str(row['tipo'])
+                nombre = row['nombre']
+                ciudad = row['ciudad']
+                telefono = row['telefono']
+                direccion = row['direccion']
+                tipo = row['tipo']
                 juzgado = Juzgado(nombre, ciudad, direccion, telefono, tipo, id_juzgado)
                 juzgados.append(juzgado)
         except Exception as e:
@@ -1127,11 +1127,11 @@ class Persistence(object):
             row = c.fetchone()
             if row:
                 id_juzgado = str(row['id_juzgado'])
-                nombre = str(row['nombre'])
-                ciudad = str(row['ciudad'])
-                telefono = str(row['telefono'])
-                direccion = str(row['direccion'])
-                tipo = str(row['tipo'])
+                nombre = row['nombre']
+                ciudad = row['ciudad']
+                telefono = row['telefono']
+                direccion = row['direccion']
+                tipo = row['tipo']
                 juzgado = Juzgado(nombre, ciudad, direccion, telefono, tipo, id_juzgado)            
         except Exception as e:
             raise e
@@ -1151,7 +1151,7 @@ class Persistence(object):
             row = c.fetchone()
             if row:
                 id_categoria = str(row['id_categoria'])
-                descripcion = str(row['descripcion'])
+                descripcion = row['descripcion']
                 categoria = Categoria(descripcion, id_categoria)
         except Exception as e:
             raise e
@@ -1169,7 +1169,7 @@ class Persistence(object):
             c.execute('''SELECT id_categoria, descripcion FROM categorias WHERE eliminado = 0 ORDER BY descripcion''')
             for row in c:
                 id_categoria = str(row['id_categoria'])
-                descripcion = str(row['descripcion'])
+                descripcion = row['descripcion']
                 categoria = Categoria(descripcion, id_categoria)
                 categorias.append(categoria)
         except Exception as e:
@@ -1189,8 +1189,8 @@ class Persistence(object):
             for row in c:
                 id_atributo_proceso = str(row['id_atributo_proceso'])
                 id_atributo = str(row['id_atributo'])
-                valor = str(row['valor'])
-                nombre = str(row['nombre'])
+                valor = row['valor']
+                nombre = row['nombre']
                 ob = row['obligatorio']
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
@@ -1219,8 +1219,8 @@ class Persistence(object):
             if row:
                 id_atributo_proceso = str(row['id_atributo_proceso'])
                 id_atributo = str(row['id_atributo'])
-                valor = str(row['valor'])
-                nombre = str(row['nombre'])
+                valor = row['valor']
+                nombre = row['nombre']
                 ob = row['obligatorio']
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
@@ -1246,7 +1246,7 @@ class Persistence(object):
             c.execute('''SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributos WHERE eliminado = 0''')
             for row in c:
                 id_atributo = str(row['id_atributo'])
-                nombre = str(row['nombre'])
+                nombre = row['nombre']
                 ob = row['obligatorio']
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
@@ -1275,15 +1275,15 @@ class Persistence(object):
                 id_plantilla = str(row['id_plantilla'])
                 id_demandante = str(row['id_demandante'])
                 id_demandado = str(row['id_demandado'])
-                radicado = str(row['radicado'])
-                radicado_unico = str(row['radicado_unico'])
-                estado = str(row['estado'])
-                tipo = str(row['tipo'])
-                notas = str(row['notas'])
+                radicado = row['radicado']
+                radicado_unico = row['radicado_unico']
+                estado = row['estado']
+                tipo = row['tipo']
+                notas = row['notas']
                 prioridad = int(row['prioridad'])
                 id_juzgado = str(row['id_juzgado'])
                 id_categoria = str(row['id_categoria'])
-                nombre = str(row['nombre'])
+                nombre = row['nombre']
                 demandante = Persona(1, id_persona=id_demandante)
                 demandado = Persona(2, id_persona=id_demandado)
                 juzgado = Juzgado(id_juzgado=id_juzgado)
@@ -1315,15 +1315,15 @@ class Persistence(object):
                 id_plantilla = str(row['id_plantilla'])
                 id_demandante = str(row['id_demandante'])
                 id_demandado = str(row['id_demandado'])
-                radicado = str(row['radicado'])
-                radicado_unico = str(row['radicado_unico'])
-                estado = str(row['estado'])
-                tipo = str(row['tipo'])
-                notas = str(row['notas'])
+                radicado = row['radicado']
+                radicado_unico = row['radicado_unico']
+                estado = row['estado']
+                tipo = row['tipo']
+                notas = row['notas']
                 prioridad = int(row['prioridad'])
                 id_juzgado = str(row['id_juzgado'])
                 id_categoria = str(row['id_categoria'])
-                nombre = str(row['nombre'])
+                nombre = row['nombre']
                 demandante = Persona(1, id_persona=id_demandante)
                 demandado = Persona(2, id_persona=id_demandado)
                 juzgado = Juzgado(id_juzgado=id_juzgado)
@@ -1351,8 +1351,8 @@ class Persistence(object):
             for row in c:
                 id_atributo_plantilla = str(row['id_atributo_plantilla'])
                 id_atributo = str(row['id_atributo'])
-                valor = str(row['valor'])
-                nombre = str(row['nombre'])
+                valor = row['valor']
+                nombre = row['nombre']
                 ob = row['obligatorio']
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
@@ -1381,8 +1381,8 @@ class Persistence(object):
             if row:
                 id_atributo_plantilla = str(row['id_atributo_plantilla'])
                 id_atributo = str(row['id_atributo'])
-                valor = str(row['valor'])
-                nombre = str(row['nombre'])
+                valor = row['valor']
+                nombre = row['nombre']
                 ob = row['obligatorio']
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
@@ -1426,7 +1426,7 @@ class Persistence(object):
             c.execute('''SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributosPersona WHERE eliminado = 0''')
             for row in c:
                 id_atributo = str(row['id_atributo'])
-                nombre = str(row['nombre'])
+                nombre = row['nombre']
                 ob = row['obligatorio']
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
@@ -1455,8 +1455,8 @@ class Persistence(object):
             for row in c:
                 id_atributo_demandante = str(row['id_atributo_demandante'])
                 id_atributo = str(row['id_atributo'])
-                valor = str(row['valor'])
-                nombre = str(row['nombre'])
+                valor = row['valor']
+                nombre = row['nombre']
                 ob = row['obligatorio']
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
@@ -1486,8 +1486,8 @@ class Persistence(object):
             if row:
                 id_atributo_demandante = str(row['id_atributo_demandante'])
                 id_atributo = str(row['id_atributo'])
-                valor = str(row['valor'])
-                nombre = str(row['nombre'])
+                valor = row['valor']
+                nombre = row['nombre']
                 ob = row['obligatorio']
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
@@ -1515,8 +1515,8 @@ class Persistence(object):
             for row in c:
                 id_atributo_demandado = str(row['id_atributo_demandado'])
                 id_atributo = str(row['id_atributo'])
-                valor = str(row['valor'])
-                nombre = str(row['nombre'])
+                valor = row['valor']
+                nombre = row['nombre']
                 ob = row['obligatorio']
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
@@ -1546,8 +1546,8 @@ class Persistence(object):
             if row:
                 id_atributo_demandado = str(row['id_atributo_demandado'])
                 id_atributo = str(row['id_atributo'])
-                valor = str(row['valor'])
-                nombre = str(row['nombre'])
+                valor = row['valor']
+                nombre = row['nombre']
                 ob = row['obligatorio']
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
@@ -1573,7 +1573,7 @@ class Persistence(object):
             c.execute('''SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributosJuzgado WHERE eliminado = 0''')
             for row in c:
                 id_atributo = str(row['id_atributo'])
-                nombre = str(row['nombre'])
+                nombre = row['nombre']
                 ob = row['obligatorio']
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
@@ -1602,8 +1602,8 @@ class Persistence(object):
             for row in c:
                 id_atributo_juzgado = str(row['id_atributo_juzgado'])
                 id_atributo = str(row['id_atributo'])
-                valor = str(row['valor'])
-                nombre = str(row['nombre'])
+                valor = row['valor']
+                nombre = row['nombre']
                 ob = row['obligatorio']
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
@@ -1633,8 +1633,8 @@ class Persistence(object):
             if row:
                 id_atributo_juzgado = str(row['id_atributo_juzgado'])
                 id_atributo = str(row['id_atributo'])
-                valor = str(row['valor'])
-                nombre = str(row['nombre'])
+                valor = row['valor']
+                nombre = row['nombre']
                 ob = row['obligatorio']
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
@@ -1660,7 +1660,7 @@ class Persistence(object):
             c.execute('''SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributosActuacion WHERE eliminado = 0''')
             for row in c:
                 id_atributo = str(row['id_atributo'])
-                nombre = str(row['nombre'])
+                nombre = row['nombre']
                 ob = row['obligatorio']
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
@@ -1689,8 +1689,8 @@ class Persistence(object):
             for row in c:
                 id_atributo_actuacion = str(row['id_atributo_actuacion'])
                 id_atributo = str(row['id_atributo'])
-                valor = str(row['valor'])
-                nombre = str(row['nombre'])
+                valor = row['valor']
+                nombre = row['nombre']
                 ob = row['obligatorio']
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
@@ -1720,8 +1720,8 @@ class Persistence(object):
             if row:
                 id_atributo_actuacion = str(row['id_atributo_actuacion'])
                 id_atributo = str(row['id_atributo'])
-                valor = str(row['valor'])
-                nombre = str(row['nombre'])
+                valor = row['valor']
+                nombre = row['nombre']
                 ob = row['obligatorio']
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
@@ -1747,7 +1747,7 @@ class Persistence(object):
             c.execute('''SELECT id_archivo_proceso, ruta FROM archivos_proceso WHERE id_proceso = ? AND eliminado = 0''', (proceso.getId_proceso(),))
             for row in c:
                 id_archivo_proceso = str(row['id_archivo_proceso'])
-                ruta_proceso = str(row['ruta'])
+                ruta_proceso = row['ruta']
                 archivo = Archivo(ruta = ruta_proceso, id_archivo = id_archivo_proceso)
                 archivos.append(archivo)
         except Exception as e:
@@ -1767,7 +1767,7 @@ class Persistence(object):
             row = c.fetchone()
             if row:
                 id_archivo_proceso = str(row['id_archivo_proceso'])
-                ruta_proceso = str(row['ruta'])
+                ruta_proceso = row['ruta']
                 archivo = Archivo(ruta = ruta_proceso, id_archivo = id_archivo_proceso)
         except Exception as e:
             raise e
