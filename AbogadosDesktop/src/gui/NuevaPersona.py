@@ -187,7 +187,8 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
         dialogo = NuevoCampo(NuevoCampo.persona, campo, self)
         if dialogo.exec_():
             label.setText(unicode("%s:" % campo.getNombre()))
-            txtBox.setMaxLength(campo.getLongitudMax())
+            if campo.getLongitudMax() is not 0:
+                txtBox.setMaxLength(campo.getLongitudMax())
     
     def createAction(self, text, slot = None):
         action = QtGui.QAction(text, self)
@@ -201,7 +202,8 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
             label.setText("%s:" % campo.getNombre())
             txtBox = QtGui.QLineEdit()
             txtBox.setText(campo.getValor())
-            txtBox.setMaxLength(campo.getLongitudMax())
+            if campo.getLongitudMax() is not 0:
+                txtBox.setMaxLength(campo.getLongitudMax())
             
             txtBox.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
             
@@ -221,9 +223,3 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
             if dialogo.exec_():
                 campo = dialogo.getSelected()
                 self.addCampo(campo)
-                
-import sys
-app = QtGui.QApplication(sys.argv)
-form = NuevaPersona(None, 1, None)
-form.show()
-app.exec_()
