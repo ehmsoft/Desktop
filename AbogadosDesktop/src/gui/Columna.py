@@ -49,17 +49,9 @@ class ColumnaDerecha(QWidget):
         layout.addStretch()
         layout.addLayout(btnLayout)
         self.setLayout(layout)
-        self.connect(self.btnEditar, SIGNAL('clicked()'), self.editarClicked)
-        self.connect(self.btnEliminar, SIGNAL('clicked()'), self.eliminarClicked)
     
     def setCentralWidget(self, widget):
         self.__centralWidget = widget
                 
     def getCentralWidget(self):
         return self.__centralWidget
-        
-    def editarClicked(self):
-        self.emit(SIGNAL('editarClicked()')) 
-        
-    def eliminarClicked(self):
-        self.emit(SIGNAL('eliminarClicked()')) 
