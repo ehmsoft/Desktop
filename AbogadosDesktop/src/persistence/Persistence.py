@@ -237,7 +237,7 @@ class Persistence(object):
                 obligatorio = 1                   
             c.execute('''INSERT INTO atributos (id_atributo, nombre, obligatorio, longitud_max, longitud_min,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin()))                
             conn.commit()  
-            campoPersonalizado.seId_atributo(str(c.lastrowid))
+            campoPersonalizado.setId_atributo(str(c.lastrowid))
                       
         except Exception as e:
             raise e
