@@ -27,6 +27,8 @@ from gui.VerCampoPersonalizado import VerCampoPersonalizado
 from gui.NuevaPersona import NuevaPersona
 from gui.NuevoJuzgado import NuevoJuzgado
 from gui.NuevaCategoria import NuevaCategoria
+from gui.NuevoCampo import NuevoCampo
+from gui.NuevaActuacion import NuevaActuacion
 
 class MainApp(QMainWindow, Ui_mainApp):
     def __init__(self, parent = None):
@@ -374,24 +376,39 @@ class MainApp(QMainWindow, Ui_mainApp):
             if personaVentana.exec_():
                 persona = personaVentana.getPersona()
                 self.columna1.getCentralWidget().add(persona)
+            personaVentana = None
         elif item.text() == 'Demandados':
             personaVentana = NuevaPersona(tipo = 2)
             if personaVentana.exec_():
                 persona = personaVentana.getPersona()
                 self.columna1.getCentralWidget().add(persona)
+            personaVentana = None
         elif item.text() == 'Juzgados':
             juzgadoVentana = NuevoJuzgado()
             if juzgadoVentana.exec_():
                 juzgado = juzgadoVentana.getJuzgado()
                 self.columna1.getCentralWidget().add(juzgado)
+            juzgadoVentana = None
         elif item.text() == 'Categorias':
             categoriaVentana = NuevaCategoria()
             if categoriaVentana.exec_():
                 categoria = categoriaVentana.getCategoria()
                 self.columna1.getCentralWidget().add(categoria)
+            categoriaVentana = None
         elif item.text() == 'Actuaciones':
-            pass
-    
+            if hasattr(item, 'getObjeto'):
+                proceso = self.columna1.getCentralWidget().getSelectedItem()
+                actuacionVentana = NuevaActuacion(id_proceso=proceso.getId_proceso())
+                if actuacionVentana.exec_():
+                    p = Persistence()
+                    proceso = p.consultarProceso(proceso.getId_proceso())
+                    self.columna1.getCentralWidget().replace(proceso)
+                    p = None
+                    self.columna1ElementChanged()
+                actuacionVentana = None
+            else:
+                QMessageBox.warning(self, 'Advertencia', unicode('Debe seleccionar un proceso para poder agregar una actuación'))
+                
     def columna1ElementChanged(self):
         if hasattr(self.columna1, 'getCentralWidget'):
             self.columna1ElementClicked(self.columna1.getCentralWidget().currentItem())
@@ -547,7 +564,42 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.campoEliminarClicked)
     
     def columnaCamposAgregarClicked(self):
-        print '+'
+        if self.columna1.widget(0).currentItem().text() == 'Procesos':
+            campoVentana = NuevoCampo(NuevoCampo.PROCESO)
+            if campoVentana.exec_():
+                campo = campoVentana.getCampo()
+                self.columna1.widget(1).getCentralWidget().add(campo)
+            campoVentana = None
+        elif self.columna1.widget(0).currentItem().text() == 'Plantillas':
+            campoVentana = NuevoCampo(NuevoCampo.PROCESO)
+            if campoVentana.exec_():
+                campo = campoVentana.getCampo()
+                self.columna1.widget(1).getCentralWidget().add(campo)
+            campoVentana = None
+        elif self.columna1.widget(0).currentItem().text() == 'Demandantes':
+            campoVentana = NuevoCampo(NuevoCampo.PERSONA)
+            if campoVentana.exec_():
+                campo = campoVentana.getCampo()
+                self.columna1.widget(1).getCentralWidget().add(campo)
+            campoVentana = None
+        elif self.columna1.widget(0).currentItem().text() == 'Demandados':
+            campoVentana = NuevoCampo(NuevoCampo.PERSONA)
+            if campoVentana.exec_():
+                campo = campoVentana.getCampo()
+                self.columna1.widget(1).getCentralWidget().add(campo)
+            campoVentana = None
+        elif self.columna1.widget(0).currentItem().text() == 'Juzgados':
+            campoVentana = NuevoCampo(NuevoCampo.JUZGADO)
+            if campoVentana.exec_():
+                campo = campoVentana.getCampo()
+                self.columna1.widget(1).getCentralWidget().add(campo)
+            campoVentana = None
+        elif self.columna1.widget(0).currentItem().text() == 'Actuaciones':
+            campoVentana = NuevoCampo(NuevoCampo.ACTUACION)
+            if campoVentana.exec_():
+                campo = campoVentana.getCampo()
+                self.columna1.widget(1).getCentralWidget().add(campo)
+            campoVentana = None
     
     def procesoEditarClicked(self):
         print 'clicked'
