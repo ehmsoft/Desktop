@@ -34,8 +34,10 @@ class MainApp(QMainWindow, Ui_mainApp):
     def __init__(self, parent = None):
         super(MainApp, self).__init__(parent)
         self.setupUi(self)
+        #Crear menu izquierdo
         self.lista = ['Procesos', 'Plantillas', 'Demandantes', 'Demandados', 'Juzgados', 'Actuaciones', unicode('Categorías'), 'Campos Personalizados', 'Sincronizar', 'Ajustes']
         self.centralSplitter = QSplitter(Qt.Horizontal)
+        #El elemento de la izquierda es un splitter para pantallas pequenas
         self.scrollArea.setWidget(self.centralSplitter)
         #self.centralwidget.setStyleSheet('background-image: url(./images/bolita_marcaAgua.png);')
         self.image = QImage('./images/bolita.png')
@@ -45,6 +47,7 @@ class MainApp(QMainWindow, Ui_mainApp):
         #self.connect(self.listaIzquierda, SIGNAL('itemClicked(QListWidgetItem*)'), self.elementClicked)
         self.connect(self.listaIzquierda, SIGNAL('itemSelectionChanged()'), self.elementChanged)
         for row in self.lista:
+            #Recorre cada elemento de la lista izquierda y le establece la fuente por defecto
             item = QListWidgetItem(row)
             fuente = item.font()
             fuente.setPointSize(16)
@@ -60,13 +63,16 @@ class MainApp(QMainWindow, Ui_mainApp):
         self.elementClicked(self.listaIzquierda.currentItem())
         
     def elementClicked(self, item):
+        #Metodo que maneja el click en la lista izquierda
         if item.text() == 'Procesos':
             if self.centralSplitter.count() == 1:
+                #Agregar la segunda columna si no existe
                 p = Persistence()
                 listado = Listado(p.consultarProcesos())
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                #Reestablecer el logo de la bolita
                 if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
@@ -74,33 +80,33 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                #self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
             else:
+                #Borrar la segunda columna y poner una nueva
                 p = Persistence()
                 listado = Listado(p.consultarProcesos())
                 self.columna1.hide()
-                #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                #Reestablecer el logo de la bolita
                 if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-                    
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                #self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
         elif item.text() == 'Plantillas':
             if self.centralSplitter.count() == 1:
+                #Agregar la segunda columna si no existe
                 p = Persistence()
                 lista = p.consultarPlantillas()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                #Reestablecer el logo de la bolita
                 if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
@@ -115,33 +121,34 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
             else:
+                #Borrar la segunda columna y poner una nueva
                 p = Persistence()
                 lista = p.consultarPlantillas()
                 self.columna1.hide()
-                #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                #Reestablecer el logo de la bolita
                 if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-
                 listado = Listado(lista)
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                #self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
                 
         elif item.text() == 'Demandantes':
             if self.centralSplitter.count() == 1:
+                #Agregar la segunda columna si no existe
                 p = Persistence()
                 listado = Listado(p.consultarDemandantes())
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                #Reestablecer el logo de la bolita
                 if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
@@ -149,15 +156,15 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                #self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
             else:
+                #Borrar la segunda columna y poner una nueva
                 p = Persistence()
                 listado = Listado(p.consultarDemandantes())
                 self.columna1.hide()
-                #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                #Reestablecer el logo de la bolita
                 if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
@@ -167,16 +174,17 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                #self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
         elif item.text() == 'Demandados':
             if self.centralSplitter.count() == 1:
+                #Agregar la segunda columna si no existe
                 p = Persistence()
                 listado = Listado(p.consultarDemandados())
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                #Reestablecer el logo de la bolita
                 if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
@@ -184,15 +192,15 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                #self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
             else:
+                #Borrar la segunda columna y poner una nueva
                 p = Persistence()
                 listado = Listado(p.consultarDemandados())
                 self.columna1.hide()
-                #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                #Reestablecer el logo de la bolita
                 if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
@@ -202,16 +210,17 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                #self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
         elif item.text() == 'Juzgados':
             if self.centralSplitter.count() == 1:
+                #Agregar la segunda columna si no existe
                 p = Persistence()
                 listado = Listado(p.consultarJuzgados())
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                #Reestablecer el logo de la bolita
                 if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
@@ -219,15 +228,15 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                #self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
             else:
+                #Borrar la segunda columna y poner una nueva
                 p = Persistence()
                 listado = Listado(p.consultarJuzgados())
                 self.columna1.hide()
-                #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                #Reestablecer el logo de la bolita
                 if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
@@ -237,16 +246,17 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                #self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
         elif item.text() == unicode('Categorías'):
             if self.centralSplitter.count() == 1:
+                #Agregar la segunda columna si no existe
                 p = Persistence()
                 listado = Listado(p.consultarCategorias())
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                #Reestablecer el logo de la bolita
                 if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
@@ -254,15 +264,15 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                #self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
             else:
+                #Borrar la segunda columna y poner una nueva
                 p = Persistence()
                 listado = Listado(p.consultarCategorias())
                 self.columna1.hide()
-                #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                #Reestablecer el logo de la bolita
                 if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
@@ -272,16 +282,17 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                #self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
         elif item.text() == 'Actuaciones':
             if self.centralSplitter.count() == 1:
+                #Agregar la segunda columna si no existe
                 p = Persistence()
                 listado = Listado(p.consultarProcesos())
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                #Reestablecer el logo de la bolita
                 if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
@@ -289,33 +300,33 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                #self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
             else:
+                #Borrar la segunda columna y poner una nueva
                 p = Persistence()
                 listado = Listado(p.consultarProcesos())
                 self.columna1.hide()
-                #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                #Reestablecer el logo de la bolita
                 if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-                    
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
-                #self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
         elif item.text() == 'Campos Personalizados':
             if self.centralSplitter.count() == 1:
+                #Agregar la segunda columna si no existe
                 lista = ['Procesos', 'Plantillas', 'Demandantes', 'Demandados', 'Juzgados', 'Actuaciones']
                 listado = QListWidget()
                 for row in lista:
+                    #Recorrer la lista y cambiar la fuente de los elementos
                     item = QListWidgetItem(row)
                     fuente = item.font()
                     fuente.setPointSize(15)
@@ -323,24 +334,27 @@ class MainApp(QMainWindow, Ui_mainApp):
                     item.setFont(fuente)
                     item.setSizeHint(QSize(fm.width(row), fm.height() +20))
                     listado.addItem(item)
+                #La columna central (columna1) se vuelve un splitter para poder tener una tercera columna
                 splitter = QSplitter()
                 splitter.addWidget(listado)
                 self.columna1 = splitter
                 self.centralSplitter.addWidget(self.columna1)
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                #Reestablecer el logo de la bolita
                 if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-                #self.connect(listado, SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
             else:
+                #Borrar la segunda columna y poner una nueva
                 lista = ['Procesos', 'Plantillas', 'Demandantes', 'Demandados', 'Juzgados', 'Actuaciones']
                 listado = QListWidget()
                 for row in lista:
+                    #Recorrer la lista y cambiar la fuente de los elementos
                     item = QListWidgetItem(row)
                     fuente = item.font()
                     fuente.setPointSize(16)
@@ -349,22 +363,29 @@ class MainApp(QMainWindow, Ui_mainApp):
                     item.setSizeHint(QSize(fm.width(row), fm.height() +20))
                     listado.addItem(item)
                 self.columna1.hide()
-                #self.columna1.deleteLater()
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                #Reestablecer el logo de la bolita
                 if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
+                #La columna central (columna1) se vuelve un splitter para permitir una tercera columna
                 splitter = QSplitter()
                 splitter.addWidget(listado)
                 self.columna1 = splitter
                 self.centralSplitter.addWidget(self.columna1)
-                #self.connect(listado, SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
+        elif item.text() == 'Sincronizar':   
+            #TODO: Acciones para el menu sincronizar
+            pass
+        elif item.text() == 'Ajustes':     
+            #TODO: Acciones para el menu Ajustes
+            pass
     def columna1AgregarClicked(self):
+        #Manejar el evento de agregar un item en la columna1
         item = self.listaIzquierda.currentItem()
         if item.text() == 'Procesos':
             #TODO: Metodo de agregar procesos
