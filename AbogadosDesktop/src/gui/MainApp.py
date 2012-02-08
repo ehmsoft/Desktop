@@ -238,7 +238,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 #self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
-        elif item.text() == 'Categorias':
+        elif item.text() == unicode('Categorías'):
             if self.centralSplitter.count() == 1:
                 p = Persistence()
                 listado = Listado(p.consultarCategorias())
