@@ -14,10 +14,10 @@ class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
     '''
     classdocs
     '''
-    persona = 1
-    juzgado = 2
-    actuacion = 3
-    proceso = 4
+    PERSONA = 1
+    JUZGADO = 2
+    ACTUACION = 3
+    PROCESO = 4
     
     def __init__(self, tipo, campo = None, parent = None):
         super(NuevoCampo, self).__init__(parent)
