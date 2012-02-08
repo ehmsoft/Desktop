@@ -177,54 +177,45 @@ class ListadoDialogo (QDialog):
             nuevaPersona = NuevaPersona(persona = self.lista.currentItem().getObjeto(), tipo = 1 ,parent = self)
             if nuevaPersona.exec_():
                 demandante = nuevaPersona.getPersona()
-                self.p.actualizarPersona(demandante)
                 self.lista.replace(demandante)
         elif self.tipo is self.__class__.demandado:
             nuevaPersona = NuevaPersona(persona = self.lista.currentItem().getObjeto(), tipo = 2, parent = self)
             if nuevaPersona.exec_():
                 demandado =  nuevaPersona.getPersona()
-                self.p.actualizarPersona(demandado)
                 self.lista.replace(demandado)
         elif self.tipo is self.__class__.juzgado:
             nuevoJuzgado = NuevoJuzgado(juzgado = self.lista.currentItem().getObjeto(), parent = self)
             if nuevoJuzgado.exec_():
                 juzgado = nuevoJuzgado.getJuzgado()
-                self.p.actualizarJuzgado(juzgado)
                 self.lista.replace(juzgado)
         elif self.tipo is self.__class__.categoria:
             nuevaCategoria = NuevaCategoria(categoria=self.lista.currentItem().getObjeto(),parent = self)
             if nuevaCategoria.exec_():
                 categoria = nuevaCategoria.getCategoria()
-                self.p.actualizarCategoria(categoria)
                 self.lista.replace(categoria)
         elif self.tipo is self.__class__.campoDemandante:
             nuevoCampoDemandante = NuevoCampo(tipo = NuevoCampo.persona,campo=self.lista.currentItem().getObjeto(), parent = self)
             if nuevoCampoDemandante.exec_():
                 campoPersona = nuevoCampoDemandante.getCampo()
-                self.p.actualizarCampoDemandante(campoPersona)
                 self.lista.replace(campoPersona)
         elif self.tipo is self.__class__.campoDemandado:
             nuevoCampoDemandado = NuevoCampo(tipo = NuevoCampo.persona,campo=self.lista.currentItem().getObjeto(), parent = self)
             if nuevoCampoDemandado.exec_():
                 campoPersona = nuevoCampoDemandado.getCampo()
-                self.p.actualizarCampoDemandado(campoPersona)
                 self.lista.replace(campoPersona)        
         elif self.tipo is self.__class__.campoActuacion:
             nuevoCampoActuacion = NuevoCampo(tipo = NuevoCampo.actuacion,campo=self.lista.currentItem().getObjeto(), parent = self)
             if nuevoCampoActuacion.exec_():
                 campoActuacion = nuevoCampoActuacion.getCampo()
-                self.p.actualizarCampoActuacion(campoActuacion)
                 self.lista.replace(campoActuacion)
         elif self.tipo is self.__class__.campoProcesoPlantilla:
             nuevoCampoPP = NuevoCampo(tipo = NuevoCampo.proceso,campo=self.lista.currentItem().getObjeto(), parent = self)
             if nuevoCampoPP.exec_():
                 campoPP = nuevoCampoPP.getCampo()
-                self.p.actualizarCampoPersonalizado(campoPP)
                 self.lista.replace(campoPP)
         elif self.tipo is self.__class__.campoJuzgado:
             nuevoCampoJuzgado = NuevoCampo(tipo =  NuevoCampo.juzgado,campo=self.lista.currentItem().getObjeto(), parent = self)
             if nuevoCampoActuacion.exec_():
                 campoJuzgado = nuevoCampoJuzgado.getCategoria()
-                self.p.actualizarCampoJuzgado(campoJuzgado)
                 self.lista.replace(campoJuzgado)
                 
