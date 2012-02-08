@@ -120,7 +120,7 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
     
     def guardar(self):
         try:
-            p = None
+            p = Persistence()
             if self.__persona is None:
                 persona = Persona(self.__tipo)
                 persona.setNombre(self.txtNombre.text())
