@@ -24,12 +24,15 @@ from core.Categoria import Categoria
 from gui.VerCategoria import VerCategoria
 from gui.VerActuacion import VerActuacion
 from gui.VerCampoPersonalizado import VerCampoPersonalizado
+from gui.NuevaPersona import NuevaPersona
+from gui.NuevoJuzgado import NuevoJuzgado
+from gui.NuevaCategoria import NuevaCategoria
 
 class MainApp(QMainWindow, Ui_mainApp):
     def __init__(self, parent = None):
         super(MainApp, self).__init__(parent)
         self.setupUi(self)
-        self.lista = ['Procesos', 'Plantillas', 'Demandantes', 'Demandados', 'Juzgados', 'Actuaciones', 'Categorias', 'Campos Personalizados', 'Sincronizar', 'Ajustes']
+        self.lista = ['Procesos', 'Plantillas', 'Demandantes', 'Demandados', 'Juzgados', 'Actuaciones', unicode('Categorías'), 'Campos Personalizados', 'Sincronizar', 'Ajustes']
         self.centralSplitter = QSplitter(Qt.Horizontal)
         self.scrollArea.setWidget(self.centralSplitter)
         #self.centralwidget.setStyleSheet('background-image: url(./images/bolita_marcaAgua.png);')
@@ -360,7 +363,34 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
     def columna1AgregarClicked(self):
-        pass
+        item = self.listaIzquierda.currentItem()
+        if item.text() == 'Procesos':
+            pass
+        elif item.text() == 'Plantillas':
+            pass
+                
+        elif item.text() == 'Demandantes':
+            personaVentana = NuevaPersona(tipo = 1)
+            if personaVentana.exec_():
+                persona = personaVentana.getPersona()
+                self.columna1.getCentralWidget().add(persona)
+        elif item.text() == 'Demandados':
+            personaVentana = NuevaPersona(tipo = 2)
+            if personaVentana.exec_():
+                persona = personaVentana.getPersona()
+                self.columna1.getCentralWidget().add(persona)
+        elif item.text() == 'Juzgados':
+            juzgadoVentana = NuevoJuzgado()
+            if juzgadoVentana.exec_():
+                juzgado = juzgadoVentana.getJuzgado()
+                self.columna1.getCentralWidget().add(juzgado)
+        elif item.text() == 'Categorias':
+            categoriaVentana = NuevaCategoria()
+            if categoriaVentana.exec_():
+                categoria = categoriaVentana.getCategoria()
+                self.columna1.getCentralWidget().add(categoria)
+        elif item.text() == 'Actuaciones':
+            pass
     
     def columna1ElementChanged(self):
         if hasattr(self.columna1, 'getCentralWidget'):
