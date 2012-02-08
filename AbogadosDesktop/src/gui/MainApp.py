@@ -45,7 +45,7 @@ class MainApp(QMainWindow, Ui_mainApp):
         for row in self.lista:
             item = QListWidgetItem(row)
             fuente = item.font()
-            fuente.setPointSize(18)
+            fuente.setPointSize(16)
             fm = QFontMetrics(fuente)
             item.setFont(fuente)
             item.setSizeHint(QSize(fm.width(row), fm.height() +20))
@@ -316,7 +316,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 for row in lista:
                     item = QListWidgetItem(row)
                     fuente = item.font()
-                    fuente.setPointSize(16)
+                    fuente.setPointSize(15)
                     fm = QFontMetrics(fuente)
                     item.setFont(fuente)
                     item.setSizeHint(QSize(fm.width(row), fm.height() +20))
