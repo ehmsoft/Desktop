@@ -12,6 +12,12 @@ from copy import deepcopy
 from gui.ListadoDialogo import ListadoDialogo
 from gui.NuevoCampo import NuevoCampo
 from persistence.Persistence import Persistence
+from gui.VerPersona import VerPersona
+from gui.VerJuzgado import VerJuzgado
+from datetime import datetime
+from gui.NuevaPersona import NuevaPersona
+from gui.NuevoJuzgado import NuevoJuzgado
+from gui.NuevaCategoria import NuevaCategoria
 
 class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     '''
@@ -39,6 +45,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         self.__juzgado = None
         self.__categoria = None
         
+        self.sbPrioridad.setRange(0,10)        
         if self.__proceso is not None:
             self.__demandante = self.__proceso.getDemandante()
             self.__demandado = self.__proceso.getDemandado()
@@ -54,14 +61,194 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             self.txtRadicadoUnico.setText(self.__proceso.getRadicadoUnico())
             self.txtTipo.setText(self.__proceso.getTipo())
             self.txtEstado.setText(self.__proceso.getEstado())
-            self.sbPrioridad.setRange(0,10)
             self.sbPrioridad.setValue(self.__proceso.getPrioridad())
             self.dteFecha.setDateTime(self.__proceso.getFecha())
             self.txtNotas.setText(self.__proceso.getNotas())
+        else:
+            self.dteFecha.setDateTime(datetime.today())
             
         if self.__campos is not None and self.__campos != []:
             for campo in self.__campos:
                 self.addCampo(campo)
+                
+        self.clickDemandante()
+        self.clickDemandado()
+        self.clickJuzgado()
+        self.clickCategoria()
+        self.clickFecha()
+        
+        cambiar = self.createAction("Cambiar", self.cambiarJuzgado)
+        cambiar.setData(self.lblJuzgado)
+        editar = self.createAction("Editar", self.editarJuzgado)
+        editar.setData(self.lblJuzgado)
+        
+        self.lblJuzgado.addActions([cambiar,editar])
+        
+        cambiar = self.createAction("Cambiar", self.cambiarDemandante)
+        cambiar.setData(self.lblDemandante)
+        editar = self.createAction("Editar", self.editarDemandante)
+        editar.setData(self.lblDemandante)
+        
+        self.lblDemandante.addActions([cambiar,editar])
+        
+        cambiar = self.createAction("Cambiar", self.cambiarDemandado)
+        cambiar.setData(self.lblDemandado)
+        editar = self.createAction("Editar", self.editarDemandado)
+        editar.setData(self.lblDemandado)
+        
+        self.lblDemandado.addActions([cambiar,editar])
+        
+        cambiar = self.createAction("Cambiar", self.cambiarCategoria)
+        cambiar.setData(self.lblCategoria)
+        editar = self.createAction("Editar", self.editarCategoria)
+        editar.setData(self.lblCategoria)
+        
+        self.lblCategoria.addActions([cambiar,editar])
+                
+    def clickDemandante(self):
+        container = self.horizontalLayout 
+        widget = self
+        lblDemandante = self.lblDemandante
+                    
+        def mousePressEvent(self):
+            if QtCore.Qt.MouseButton.LeftButton is self.button():
+                if widget.__demandante is not None and widget.__demandante.getId_persona() is not "1":
+                    if container.itemAt(1) is not None:
+                        container.itemAt(1).widget().deleteLater()
+                    vista = VerPersona(widget.__demandante, widget)
+                    container.addWidget(vista)
+                else:
+                    widget.cambiarDemandante()
+            return QtGui.QLabel.mousePressEvent(lblDemandante,self)
+            
+        self.lblDemandante.mousePressEvent = mousePressEvent
+    
+    def clickDemandado(self):
+        container = self.horizontalLayout  
+        widget = self
+        lblDemandado = self.lblDemandado
+                    
+        def mousePressEvent(self):
+            if QtCore.Qt.MouseButton.LeftButton is self.button():
+                if widget.__demandado is not None and widget.__demandado.getId_persona() is not "1":
+                    if container.itemAt(1) is not None:
+                        container.itemAt(1).widget().deleteLater()
+                    vista = VerPersona(widget.__demandado, widget)
+                    container.addWidget(vista)
+                else:
+                    widget.cambiarDemandado()
+            return QtGui.QLabel.mousePressEvent(lblDemandado,self)
+            
+        self.lblDemandado.mousePressEvent = mousePressEvent
+    
+    def clickJuzgado(self):
+        container = self.horizontalLayout  
+        widget = self
+        lblJuzgado = self.lblJuzgado
+                    
+        def mousePressEvent(self):
+            if QtCore.Qt.MouseButton.LeftButton is self.button():
+                if widget.__juzgado is not None and widget.__juzgado.getId_juzgado() is not "1":
+                    if container.itemAt(1) is not None:
+                        container.itemAt(1).widget().deleteLater()
+                    vista = VerJuzgado(widget.__juzgado, widget)
+                    container.addWidget(vista)
+                else:
+                    widget.cambiarJuzgado()
+            return QtGui.QLabel.mousePressEvent(lblJuzgado,self)
+            
+        self.lblJuzgado.mousePressEvent = mousePressEvent
+    
+    def clickCategoria(self):
+        widget = self
+        lblCategoria = self.lblCategoria
+                    
+        def mousePressEvent(self):
+            if QtCore.Qt.MouseButton.LeftButton is self.button():
+                widget.cambiarCategoria()
+            return QtGui.QLabel.mousePressEvent(lblCategoria,self)
+            
+        self.lblCategoria.mousePressEvent = mousePressEvent
+    
+    def clickFecha(self):
+        container = self.horizontalLayout
+        dteFecha = self.dteFecha
+        
+        def focusInEvent(self):
+            if container.itemAt(1) is not None:
+                container.itemAt(1).widget().deleteLater()       
+            calendar = QtGui.QCalendarWidget()
+            calendar.setSelectedDate(dteFecha.dateTime().date())
+            container.addWidget(calendar)  
+            
+            selectionChanged = lambda:dteFecha.setDate(calendar.selectedDate())           
+            calendar.selectionChanged.connect(selectionChanged)
+                  
+            return QtGui.QDateTimeEdit.focusInEvent(dteFecha,self)
+        
+        def dateChanged(date):
+            calendar = container.itemAt(1).widget()
+            calendar.setSelectedDate(date)        
+            
+        dteFecha.focusInEvent = focusInEvent
+        dteFecha.dateChanged.connect(dateChanged)
+    
+    def cambiarDemandante(self):
+        listado = ListadoDialogo(ListadoDialogo.DEMANDANTE, self)
+        if listado.exec_():
+            self.__demandante = listado.getSelected()
+            self.lblDemandante.setText(self.__demandante.getNombre())
+            if (self.horizontalLayout.count() < 2 or 
+                isinstance(self.horizontalLayout.itemAt(1).widget(), VerPersona) or
+                self.lblJuzgado.hasFocus()):
+                if self.horizontalLayout.count() > 1:
+                    self.horizontalLayout.itemAt(1).widget().deleteLater()
+                vista = VerPersona(self.__demandante, self)
+                self.horizontalLayout.addWidget(vista)
+    
+    def cambiarDemandado(self):
+        listado = ListadoDialogo(ListadoDialogo.DEMANDADO, self)
+        if listado.exec_():
+            self.__demandado = listado.getSelected()
+            self.lblDemandado.setText(self.__demandado.getNombre())
+            if (self.horizontalLayout.count() < 2 or 
+                isinstance(self.horizontalLayout.itemAt(1).widget(), VerPersona) or 
+                self.lblDemandado.hasFocus()):
+                if self.horizontalLayout.count() > 1:    
+                    self.horizontalLayout.itemAt(1).widget().deleteLater()
+                vista = VerPersona(self.__demandado, self)
+                self.horizontalLayout.addWidget(vista)
+    
+    def cambiarJuzgado(self):
+        listado = ListadoDialogo(ListadoDialogo.JUZGADO, self)
+        if listado.exec_():
+            self.__juzgado = listado.getSelected()
+            self.lblJuzgado.setText(self.__juzgado.getNombre())
+            if (self.horizontalLayout.count() < 2 or 
+                isinstance(self.horizontalLayout.itemAt(1).widget(), VerJuzgado) or 
+                self.lblJuzgado.hasFocus()):
+                if self.horizontalLayout.count() > 1:
+                    self.horizontalLayout.itemAt(1).widget().deleteLater()
+                vista = VerJuzgado(self.__juzgado, self)
+                self.horizontalLayout.addWidget(vista)
+    
+    def cambiarCategoria(self):
+        listado = ListadoDialogo(ListadoDialogo.CATEGORIA, self)
+        if listado.exec_():
+            self.__categoria = listado.getSelected()
+            self.lblCategoria.setText(unicode(self.__categoria))
+            
+    def editarDemandante(self):
+        pass
+    
+    def editarDemandado(self):
+        pass
+    
+    def editarJuzgado(self):
+        pass
+    
+    def editarCategoria(self):
+        pass
                 
     def accept(self):
         if self.__demandante is None or self.__demandante.getId_persona() is "1":
@@ -198,7 +385,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
                 self.formLayout.addRow(label, txtBox)
                 self.__campos.append(campo)
         else:
-            dialogo = ListadoDialogo(ListadoDialogo.campoProcesoPlantilla, self)                
+            dialogo = ListadoDialogo(ListadoDialogo.CAMPOPROCESOP, self)                
             if dialogo.exec_():
                 campo = dialogo.getSelected()
                 self.addCampo(campo)
