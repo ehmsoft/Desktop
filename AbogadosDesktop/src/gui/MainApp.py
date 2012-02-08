@@ -439,12 +439,16 @@ class MainApp(QMainWindow, Ui_mainApp):
             self.columna1ElementClicked(None)
     
     def columna1ElementClicked(self, item):
+        #Manejar cuando se da click a un elemento en la columna1
         if hasattr(item, 'getObjeto'):
+            #Se va por aqui si columna1 tiene una lista
             if isinstance(item.getObjeto(), Proceso):
+                #Borrar el elemento derecho
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
                 proceso = VerProceso(item.getObjeto())
+                #Agregar elemento derecho y ponerle un tamano maximo
                 nuevoElemento = ColumnaDerecha(titulo=False, centralWidget=proceso)
                 if self.listaIzquierda.currentItem().text() == 'Actuaciones':
                     nuevoElemento.getCentralWidget().tabWidget.setCurrentIndex(1)
@@ -454,10 +458,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.procesoEditarClicked)
                 self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.procesoEliminarClicked)
             if isinstance(item.getObjeto(), Plantilla):
+                #Borrar el elemento derecho
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
                 plantilla = VerPlantilla(item.getObjeto())
+                #Agregar elemento derecho y ponerle un tamano maximo
                 nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=plantilla )
                 nuevoElemento.setMaximumWidth(310)
                 nuevoElemento.setMinimumWidth(310)
@@ -465,20 +471,24 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.plantillaEditarClicked)
                 self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.plantillaEliminarClicked)
             if isinstance(item.getObjeto(), Persona):
+                #Borrar el elemento derecho
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
                 persona = VerPersona(item.getObjeto())
+                #Agregar elemento derecho y ponerle un tamano maximo
                 nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=persona)
                 nuevoElemento.setMaximumWidth(310)
                 self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
                 self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.personaEditarClicked)
                 self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.personaEliminarClicked)
             if isinstance(item.getObjeto(), Juzgado):
+                #Borrar el elemento derecho
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
                 juzgado = VerJuzgado(item.getObjeto())
+                #Agregar elemento derecho y ponerle un tamano maximo
                 nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=juzgado)
                 nuevoElemento.setMaximumWidth(310)
                 nuevoElemento.setMinimumWidth(310)
@@ -486,10 +496,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.juzgadoEditarClicked)
                 self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.juzgadoEliminarClicked)
             if isinstance(item.getObjeto(), Categoria):
+                #Borrar el elemento derecho
                 elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
                 categoria = VerCategoria(item.getObjeto())
+                #Agregar elemento derecho y ponerle un tamano maximo
                 nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=categoria)
                 nuevoElemento.setMaximumWidth(310)
                 nuevoElemento.setMinimumWidth(310)
@@ -497,11 +509,13 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.categoriaEditarClicked)
                 self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.categoriaEliminarClicked)
         elif hasattr(self.columna1, 'widget'):
+            #Se va por aqui si columna1 es un splitter
             if self.columna1.widget(0).currentItem().text() == 'Procesos':
                 p = Persistence()
                 lista = p.consultarAtributos()
                 listado = Listado(lista)
                 if self.columna1.count() > 1:
+                    #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
                     self.columna1.widget(1).deleteLater()
                 columna = ColumnaWidget(listado)
@@ -514,8 +528,10 @@ class MainApp(QMainWindow, Ui_mainApp):
                 lista = p.consultarAtributos()
                 listado = Listado(lista)
                 if self.columna1.count() > 1:
+                    #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
                     self.columna1.widget(1).deleteLater()
+                #Agregar la tercera columna
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
@@ -526,8 +542,10 @@ class MainApp(QMainWindow, Ui_mainApp):
                 lista = p.consultarAtributosPersona()
                 listado = Listado(lista)
                 if self.columna1.count() > 1:
+                    #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
                     self.columna1.widget(1).deleteLater()
+                #Agregar la tercera columna
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
@@ -538,8 +556,10 @@ class MainApp(QMainWindow, Ui_mainApp):
                 lista = p.consultarAtributosPersona()
                 listado = Listado(lista)
                 if self.columna1.count() > 1:
+                    #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
                     self.columna1.widget(1).deleteLater()
+                #Agregar la tercera columna
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
@@ -550,8 +570,10 @@ class MainApp(QMainWindow, Ui_mainApp):
                 lista = p.consultarAtributosJuzgado()
                 listado = Listado(lista)
                 if self.columna1.count() > 1:
+                    #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
                     self.columna1.widget(1).deleteLater()
+                #Agregar la tercera columna
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
@@ -562,8 +584,10 @@ class MainApp(QMainWindow, Ui_mainApp):
                 lista = p.consultarAtributosActuacion()
                 listado = Listado(lista)
                 if self.columna1.count() > 1:
+                    #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
                     self.columna1.widget(1).deleteLater()
+                #Agregar la tercera columna
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
@@ -572,9 +596,11 @@ class MainApp(QMainWindow, Ui_mainApp):
 
     def columnaCamposElementChanged(self):
         if hasattr(self.columna1, 'count'):
+            #Se maneja la seleccion de una campo personalizado en la tercera columna
             if self.columna1.count() > 1:
                 item = self.columna1.widget(1).getCentralWidget().currentItem()
                 if hasattr(item, 'getObjeto'):
+                    # Se filtra que si se haya seleccionado algun campo
                     elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
@@ -587,6 +613,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.campoEliminarClicked)
     
     def columnaCamposAgregarClicked(self):
+        #Manejo del boton agregar en campos personalizados de la tercera columna
         if self.columna1.widget(0).currentItem().text() == 'Procesos':
             campoVentana = NuevoCampo(NuevoCampo.PROCESO)
             if campoVentana.exec_():
