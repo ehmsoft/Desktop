@@ -130,9 +130,7 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
                 persona.setCorreo(self.txtCorreo.text())
                 persona.setNotas(self.txtNotas.text())
                 persona.setCampos(self.__campos)
-                
-                print self.__campos
-                
+                                
                 p.guardarPersona(persona)
                 self.__persona = persona
             else:
