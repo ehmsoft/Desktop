@@ -49,12 +49,7 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
                 self.setWindowTitle("Editar demandado")
                 self.groupBox.setTitle("Ingrese los datos del demandado:")
             
-            
-        if self.__campos is not None and self.__campos != []:
-            for campo in self.__campos:
-                self.addCampo(campo)
-  
-            
+        self.cargarCampos()        
             
     def getPersona(self):
         return self.__persona
@@ -182,7 +177,7 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
         label = self.formLayout.itemAt(index, QtGui.QFormLayout.LabelRole).widget()
         txtBox = self.formLayout.itemAt(index, QtGui.QFormLayout.FieldRole).widget()
         campo = self.__campos[index - 6]
-        dialogo = NuevoCampo(NuevoCampo.persona, campo, self)
+        dialogo = NuevoCampo(NuevoCampo.PERSONA, campo, self)
         if dialogo.exec_():
             label.setText(unicode("%s:" % campo.getNombre()))
             if campo.getLongitudMax() is not 0:
@@ -193,6 +188,26 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
         if slot is not None:
             self.connect(action, QtCore.SIGNAL("triggered()"), slot)
         return action
+    
+    def cargarCampos(self):
+        if len(self.__campos) is not 0:
+            for campo in self.__campos:
+                label = QtGui.QLabel()
+                label.setText("%s:" % campo.getNombre())
+                txtBox = QtGui.QLineEdit()
+                txtBox.setText(campo.getValor())
+                if campo.getLongitudMax() is not 0:
+                    txtBox.setMaxLength(campo.getLongitudMax())
+                
+                txtBox.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+                
+                eliminar = self.createAction('Eliminar', self.borrarElemento)
+                eliminar.setData(txtBox)
+                editar = self.createAction("Editar", self.editarElemento)
+                editar.setData(txtBox)
+                
+                txtBox.addActions([eliminar, editar])
+                self.formLayout.addRow(label, txtBox)       
     
     def addCampo(self, campo = None):
         if campo is not None:
@@ -221,9 +236,9 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
                 self.__campos.append(campo)
         else:
             if self.__tipo is 1:
-                dialogo = ListadoDialogo(ListadoDialogo.campoDemandante, self)
+                dialogo = ListadoDialogo(ListadoDialogo.CAMPODEMANDANTE, self)
             else:
-                dialogo = ListadoDialogo(ListadoDialogo.campoDemandado, self)                
+                dialogo = ListadoDialogo(ListadoDialogo.CAMPODEMANDADO, self)                
             if dialogo.exec_():
                 campo = dialogo.getSelected()
                 self.addCampo(campo)

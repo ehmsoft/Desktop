@@ -42,9 +42,7 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
             self.txtTelefono.setText(self.__juzgado.getTelefono())
             self.txtTipo.setText(self.__juzgado.getTipo())
             
-        if self.__campos is not None and self.__campos != []:
-            for campo in self.__campos:
-                self.addCampo(campo)            
+        self.cargarCampos()         
             
     def getJuzgado(self):
         return self.__juzgado
@@ -173,6 +171,26 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
         if slot is not None:
             self.connect(action, QtCore.SIGNAL("triggered()"), slot)
         return action
+    
+    def cargarCampos(self):
+        if len(self.__campos) is not 0:
+            for campo in self.__campos:
+                label = QtGui.QLabel()
+                label.setText("%s:" % campo.getNombre())
+                txtBox = QtGui.QLineEdit()
+                txtBox.setText(campo.getValor())
+                if campo.getLongitudMax() is not 0:
+                    txtBox.setMaxLength(campo.getLongitudMax())
+                
+                txtBox.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+                
+                eliminar = self.createAction('Eliminar', self.borrarElemento)
+                eliminar.setData(txtBox)
+                editar = self.createAction("Editar", self.editarElemento)
+                editar.setData(txtBox)
+                
+                txtBox.addActions([eliminar, editar])
+                self.formLayout.addRow(label, txtBox)     
     
     def addCampo(self, campo = None):
         if campo is not None:
