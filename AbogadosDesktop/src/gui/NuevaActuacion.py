@@ -125,7 +125,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         def mousePressEvent(self):
             if QtCore.Qt.MouseButton.LeftButton is self.button():
                 if widget.__juzgado is not None and widget.__juzgado.getId_juzgado() is not "1":
-                    if container.itemAt(1) is not None:
+                    if container.count() > 1:
                         container.itemAt(1).widget().deleteLater()
                     if widget.__juzgado is not None and widget.__juzgado.getId_juzgado is not "1":
                         vista = VerJuzgado(widget.__juzgado, widget)
