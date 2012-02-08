@@ -287,7 +287,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
                 self.formLayout.addRow(label, txtBox)
                 self.__campos.append(campo)
         else:
-            dialogo = ListadoDialogo(ListadoDialogo.campoActuacion, self)
+            dialogo = ListadoDialogo(ListadoDialogo.CAMPOACTUACION, self)
             if dialogo.exec_():
                 campo = dialogo.getSelected()
                 self.addCampo(campo)
