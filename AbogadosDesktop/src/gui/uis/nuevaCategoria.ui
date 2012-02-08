@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>408</width>
-    <height>154</height>
+    <width>439</width>
+    <height>162</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -26,7 +26,7 @@
    <string>Nueva categoria</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="5" column="0">
+   <item row="8" column="0">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -36,7 +36,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="6" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -45,39 +45,43 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Ingrese la información de la nueva categoria:</string>
+      <string>Ingrese la información de la nueva cateoría:</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2"/>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0">
+       <layout class="QFormLayout" name="formLayout">
+        <property name="fieldGrowthPolicy">
+         <enum>QFormLayout::ExpandingFieldsGrow</enum>
+        </property>
+        <property name="topMargin">
+         <number>15</number>
+        </property>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lblNotas">
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="txtCategoria"/>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbldescripcion">
+          <property name="text">
+           <string>Descripción:</string>
+          </property>
+          <property name="buddy">
+           <cstring>txtCategoria</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
     </widget>
    </item>
-   <item row="3" column="0">
-    <layout class="QFormLayout" name="formLayout">
-     <property name="fieldGrowthPolicy">
-      <enum>QFormLayout::ExpandingFieldsGrow</enum>
-     </property>
-     <item row="0" column="0">
-      <widget class="QLabel" name="lbldescripcion">
-       <property name="text">
-        <string>Descripcion:</string>
-       </property>
-       <property name="buddy">
-        <cstring>txtCategoria</cstring>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="txtCategoria"/>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="lblNotas">
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="4" column="0">
+   <item row="7" column="0">
     <widget class="Line" name="line">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
