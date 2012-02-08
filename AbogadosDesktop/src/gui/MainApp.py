@@ -367,8 +367,10 @@ class MainApp(QMainWindow, Ui_mainApp):
     def columna1AgregarClicked(self):
         item = self.listaIzquierda.currentItem()
         if item.text() == 'Procesos':
+            #TODO: Metodo de agregar procesos
             pass
         elif item.text() == 'Plantillas':
+            #TODO: Metodo de agregar Plantillas
             pass
                 
         elif item.text() == 'Demandantes':
@@ -396,7 +398,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1.getCentralWidget().add(categoria)
             categoriaVentana = None
         elif item.text() == 'Actuaciones':
-            if hasattr(item, 'getObjeto'):
+            if self.columna1.getCentralWidget().currentItem() is not None:
                 proceso = self.columna1.getCentralWidget().getSelectedItem()
                 actuacionVentana = NuevaActuacion(id_proceso=proceso.getId_proceso())
                 if actuacionVentana.exec_():
