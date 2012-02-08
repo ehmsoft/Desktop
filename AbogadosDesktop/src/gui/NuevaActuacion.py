@@ -65,7 +65,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         self.lblJuzgado.addActions([cambiar,editar])
         
     def cambiarJuzgado(self):
-        listado = ListadoDialogo(ListadoDialogo.juzgado, self)
+        listado = ListadoDialogo(ListadoDialogo.JUZGADO, self)
         if listado.exec_():
             self.__juzgado = listado.getSelected()
             self.lblJuzgado.setText(self.__juzgado.getNombre())
