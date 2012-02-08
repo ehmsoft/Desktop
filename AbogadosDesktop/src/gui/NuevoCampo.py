@@ -65,13 +65,13 @@ class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
                 campo.setLongitudMin(self.sbLongMin.value())
                 campo.setObligatorio(self.cbObligatorio.isChecked())
                 
-                if self.__tipo is self.__class__.persona:
+                if self.__tipo is self.__class__.PERSONA:
                     p.guardarAtributoPersona(campo)
-                elif self.__tipo is self.__class__.juzgado:
+                elif self.__tipo is self.__class__.JUZGADO:
                     p.guardarAtributoJuzgado(campo)
-                elif self.__tipo is self.__class__.actuacion:
+                elif self.__tipo is self.__class__.ACTUACION:
                     p.guardarAtributoActuacion(campo)
-                elif self.__tipo is self.__class__.proceso:
+                elif self.__tipo is self.__class__.PROCESO:
                     p.guardarAtributo(campo)
                 self.__campo = campo
             else:
@@ -79,13 +79,13 @@ class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
                 self.__campo.setLongitudMax(self.sbLongMax.value())
                 self.__campo.setLongitudMin(self.sbLongMin.value())
                 self.__campo.setObligatorio(self.cbObligatorio.isChecked())
-                if self.__tipo is self.__class__.persona:
+                if self.__tipo is self.__class__.PERSONA:
                     p.actualizarAtributoPersona(self.__campo)
-                elif self.__tipo is self.__class__.juzgado:
+                elif self.__tipo is self.__class__.JUZGADO:
                     p.actualizarAtributoJuzgado(self.__campo)
-                elif self.__tipo is self.__class__.actuacion:
+                elif self.__tipo is self.__class__.ACTUACION:
                     p.actualizarAtributoActuacion(self.__campo)
-                elif self.__tipo is self.__class__.proceso:
+                elif self.__tipo is self.__class__.PROCESO:
                     p.actualizarAtributo(self.__campo)
                     
         except Exception, e:
