@@ -141,7 +141,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         dteFecha = self.dteFecha
         
         def focusInEvent(self):
-            if container.itemAt(1) is not None:
+            if container.count() > 1:
                 container.itemAt(1).widget().deleteLater()       
             calendar = QtGui.QCalendarWidget()
             calendar.setSelectedDate(dteFecha.dateTime().date())
@@ -165,7 +165,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         dteFecha = self.dteFechaProxima
         
         def focusInEvent(self):
-            if container.itemAt(1) is not None:
+            if container.count() > 1:
                 container.itemAt(1).widget().deleteLater()       
             calendar = QtGui.QCalendarWidget()
             calendar.setSelectedDate(dteFecha.dateTime().date())
