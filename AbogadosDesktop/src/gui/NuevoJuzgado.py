@@ -30,7 +30,7 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
         
         self.__juzgado = juzgado
         self.setupUi(self)
-        self.connect(self.btnAdd,QtCore.SIGNAL("clicked()"),self.addCampo)
+        self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.addCampo)
         
         self.__campos = []
                 
@@ -136,7 +136,7 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
         elif self.txtTelefono.text().__len__() == 0 or self.txtTelefono.text() == " ":
             message = QtGui.QMessageBox()
             message.setIcon(QtGui.QMessageBox.Question)
-            message.setStandardButtons(QtGui.QMessageBox.Yes|QtGui.QMessageBox.No)
+            message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
             message.setDefaultButton(QtGui.QMessageBox.No)
             message.setText(unicode("¿Desea guardar sin agregar un teléfono?"))
             ret = message.exec_()
@@ -218,7 +218,7 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
                 self.formLayout.addRow(label, txtBox)
                 self.__campos.append(campo)
         else:
-            dialogo = ListadoDialogo(ListadoDialogo.campoJuzgado, self)
+            dialogo = ListadoDialogo(ListadoDialogo.CAMPOJUZGADO, self)
             if dialogo.exec_():
                 campo = dialogo.getSelected()
                 self.addCampo(campo)
