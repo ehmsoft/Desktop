@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from PySide.QtCore import *
 from PySide.QtGui import *
 from persistence.Persistence import Persistence
@@ -15,7 +16,7 @@ class ListadoDialogo (QDialog):
     CAMPODEMANDANTE = 8
     CAMPODEMANDADO = 9
     
-    def __init__(self,tipo, parent=None):
+    def __init__(self, tipo, parent = None):
         super(ListadoDialogo, self).__init__(parent)
         
         self.tipo = tipo
@@ -24,7 +25,7 @@ class ListadoDialogo (QDialog):
         
         if self.tipo is self.__class__.DEMANDANTE:
             
-            objetos= self.p.consultarDemandantes()
+            objetos = self.p.consultarDemandantes()
             self.setWindowTitle('Seleccionar Demandante')
         elif self.tipo is self.__class__.DEMANDADO:
             objetos = self.p.consultarDemandados()
@@ -34,7 +35,7 @@ class ListadoDialogo (QDialog):
             self.setWindowTitle('Seleccionar Juzgado')
         elif self.tipo is self.__class__.CATEGORIA:
             objetos = self.p.consultarCategorias()
-            self.setWindowTitle('Seleccionar categoria')
+            self.setWindowTitle('Seleccionar categoría')
         elif self.tipo is self.__class__.CAMPOPROCESOP:
             objetos = self.p.consultarAtributos()
             self.setWindowTitle('seleccione un campo')
@@ -50,28 +51,32 @@ class ListadoDialogo (QDialog):
         elif self.tipo is self.__class__.CAMPODEMANDADO:
             objetos = self.p.consultarAtributosPersona()
             self.setWindowTitle('seleccione un campo')
-                   
+        
+        groupBox = QGroupBox("Selecciones un elemento")           
         self.lista = Listado(objetos)
         btnAgregar = QPushButton('+')
         layout = QVBoxLayout()
+        layoutBox = QVBoxLayout() 
         buttonlayout = QHBoxLayout()
         buttonlayout.addStretch()
         layout.addWidget(self.lista)
         buttonlayout.addWidget(btnAgregar)
-        layout.addLayout(buttonlayout)
-        self.setLayout(layout)
+        groupBox.setLayout(layout)
+        layoutBox.addWidget(groupBox)
+        layoutBox.addLayout(buttonlayout)
+        self.setLayout(layoutBox)
         self.lista.itemClicked.connect(self.click)
-        self.connect(btnAgregar,SIGNAL("clicked()"),self.button)
+        self.connect(btnAgregar, SIGNAL("clicked()"), self.button)
         self.lista.setContextMenuPolicy(Qt.ActionsContextMenu)
         
         actionEliminar = self.createAction("Eliminar", self.eliminar)
         actionAgregar = self.createAction("Agregar", self.button)
-        actionEditar = self.createAction("Editar",self.editar)
+        actionEditar = self.createAction("Editar", self.editar)
         self.lista.addAction(actionEliminar)
         self.lista.addAction(actionAgregar)
         self.lista.addAction(actionEditar)
         
-    def click(self,item):
+    def click(self, item):
         self.selected = item.getObjeto()
         self.accept()
     
@@ -84,14 +89,14 @@ class ListadoDialogo (QDialog):
         from gui.NuevaCategoria import NuevaCategoria
         from gui.NuevoCampo import NuevoCampo
         if self.tipo is self.__class__.DEMANDANTE:
-            nuevaPersona = NuevaPersona(tipo = 1 ,parent = self)
+            nuevaPersona = NuevaPersona(tipo = 1 , parent = self)
             if nuevaPersona.exec_():
                 demandante = nuevaPersona.getPersona()
                 self.lista.add(demandante)
         elif self.tipo is self.__class__.DEMANDADO:
             nuevaPersona = NuevaPersona(tipo = 2, parent = self)
             if nuevaPersona.exec_():
-                demandado =  nuevaPersona.getPersona()
+                demandado = nuevaPersona.getPersona()
                 self.lista.add(demandado)
         elif self.tipo is self.__class__.JUZGADO:
             nuevoJuzgado = NuevoJuzgado(parent = self)
@@ -104,33 +109,33 @@ class ListadoDialogo (QDialog):
                 categoria = nuevaCategoria.getCategoria()
                 self.lista.add(categoria)
         elif self.tipo is self.__class__.CAMPODEMANDANTE:
-            nuevoCampoDemandante = NuevoCampo(tipo = NuevoCampo.persona, parent = self)
+            nuevoCampoDemandante = NuevoCampo(tipo = NuevoCampo.PERSONA, parent = self)
             if nuevoCampoDemandante.exec_():
                 campoPersona = nuevoCampoDemandante.getCampo()
                 self.lista.add(campoPersona)
         elif self.tipo is self.__class__.CAMPODEMANDADO:
-            nuevoCampoDemandado = NuevoCampo(tipo = NuevoCampo.persona, parent = self)
+            nuevoCampoDemandado = NuevoCampo(tipo = NuevoCampo.PERSONA, parent = self)
             if nuevoCampoDemandado.exec_():
                 campoPersona = nuevoCampoDemandado.getCampo()
                 self.lista.add(campoPersona)        
         elif self.tipo is self.__class__.CAMPOACTUACION:
-            nuevoCampoActuacion = NuevoCampo(tipo = NuevoCampo.actuacion, parent = self)
+            nuevoCampoActuacion = NuevoCampo(tipo = NuevoCampo.ACTUACION, parent = self)
             if nuevoCampoActuacion.exec_():
                 campoActuacion = nuevoCampoActuacion.getCampo()
                 self.lista.add(campoActuacion)
         elif self.tipo is self.__class__.CAMPOPROCESOP:
-            nuevoCampoPP = NuevoCampo(tipo = NuevoCampo.proceso, parent = self)
+            nuevoCampoPP = NuevoCampo(tipo = NuevoCampo.PROCESO, parent = self)
             if nuevoCampoPP.exec_():
                 campoPP = nuevoCampoPP.getCampo()
                 self.lista.add(campoPP)
         elif self.tipo is self.__class__.CAMPOJUZGADO:
-            nuevoCampoJuzgado = NuevoCampo(tipo =  NuevoCampo.juzgado, parent = self)
+            nuevoCampoJuzgado = NuevoCampo(tipo = NuevoCampo.JUZGADO, parent = self)
             if nuevoCampoJuzgado.exec_():
                 campoJuzgado = nuevoCampoJuzgado.getCampo()
                 self.lista.add(campoJuzgado)
     
     
-    def createAction(self, text, slot= None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
+    def createAction(self, text, slot = None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
         action = QAction(text, self)
         if icon is not None:
             action.setIcon(QIcon("./images/%s.png" % icon))
@@ -174,14 +179,14 @@ class ListadoDialogo (QDialog):
         from gui.NuevaCategoria import NuevaCategoria
         from gui.NuevoCampo import NuevoCampo
         if self.tipo is self.__class__.DEMANDANTE:
-            nuevaPersona = NuevaPersona(persona = self.lista.currentItem().getObjeto(), tipo = 1 ,parent = self)
+            nuevaPersona = NuevaPersona(persona = self.lista.currentItem().getObjeto(), tipo = 1 , parent = self)
             if nuevaPersona.exec_():
                 demandante = nuevaPersona.getPersona()
                 self.lista.replace(demandante)
         elif self.tipo is self.__class__.DEMANDADO:
             nuevaPersona = NuevaPersona(persona = self.lista.currentItem().getObjeto(), tipo = 2, parent = self)
             if nuevaPersona.exec_():
-                demandado =  nuevaPersona.getPersona()
+                demandado = nuevaPersona.getPersona()
                 self.lista.replace(demandado)
         elif self.tipo is self.__class__.JUZGADO:
             nuevoJuzgado = NuevoJuzgado(juzgado = self.lista.currentItem().getObjeto(), parent = self)
@@ -189,33 +194,33 @@ class ListadoDialogo (QDialog):
                 juzgado = nuevoJuzgado.getJuzgado()
                 self.lista.replace(juzgado)
         elif self.tipo is self.__class__.CATEGORIA:
-            nuevaCategoria = NuevaCategoria(categoria=self.lista.currentItem().getObjeto(),parent = self)
+            nuevaCategoria = NuevaCategoria(categoria = self.lista.currentItem().getObjeto(), parent = self)
             if nuevaCategoria.exec_():
                 categoria = nuevaCategoria.getCategoria()
                 self.lista.replace(categoria)
         elif self.tipo is self.__class__.CAMPODEMANDANTE:
-            nuevoCampoDemandante = NuevoCampo(tipo = NuevoCampo.persona,campo=self.lista.currentItem().getObjeto(), parent = self)
+            nuevoCampoDemandante = NuevoCampo(tipo = NuevoCampo.PERSONA, campo = self.lista.currentItem().getObjeto(), parent = self)
             if nuevoCampoDemandante.exec_():
                 campoPersona = nuevoCampoDemandante.getCampo()
                 self.lista.replace(campoPersona)
         elif self.tipo is self.__class__.CAMPODEMANDADO:
-            nuevoCampoDemandado = NuevoCampo(tipo = NuevoCampo.persona,campo=self.lista.currentItem().getObjeto(), parent = self)
+            nuevoCampoDemandado = NuevoCampo(tipo = NuevoCampo.PERSONA, campo = self.lista.currentItem().getObjeto(), parent = self)
             if nuevoCampoDemandado.exec_():
                 campoPersona = nuevoCampoDemandado.getCampo()
                 self.lista.replace(campoPersona)        
         elif self.tipo is self.__class__.CAMPOACTUACION:
-            nuevoCampoActuacion = NuevoCampo(tipo = NuevoCampo.actuacion,campo=self.lista.currentItem().getObjeto(), parent = self)
+            nuevoCampoActuacion = NuevoCampo(tipo = NuevoCampo.ACTUACION, campo = self.lista.currentItem().getObjeto(), parent = self)
             if nuevoCampoActuacion.exec_():
                 campoActuacion = nuevoCampoActuacion.getCampo()
                 self.lista.replace(campoActuacion)
         elif self.tipo is self.__class__.CAMPOPROCESOP:
-            nuevoCampoPP = NuevoCampo(tipo = NuevoCampo.proceso,campo=self.lista.currentItem().getObjeto(), parent = self)
+            nuevoCampoPP = NuevoCampo(tipo = NuevoCampo.PROCESO, campo = self.lista.currentItem().getObjeto(), parent = self)
             if nuevoCampoPP.exec_():
                 campoPP = nuevoCampoPP.getCampo()
                 self.lista.replace(campoPP)
         elif self.tipo is self.__class__.CAMPOJUZGADO:
-            nuevoCampoJuzgado = NuevoCampo(tipo =  NuevoCampo.juzgado,campo=self.lista.currentItem().getObjeto(), parent = self)
-            if nuevoCampoActuacion.exec_():
-                campoJuzgado = nuevoCampoJuzgado.getCategoria()
+            nuevoCampoJuzgado = NuevoCampo(tipo = NuevoCampo.JUZGADO, campo = self.lista.currentItem().getObjeto(), parent = self)
+            if nuevoCampoJuzgado.exec_():
+                campoJuzgado = nuevoCampoJuzgado.getCampo()
                 self.lista.replace(campoJuzgado)
-                
+

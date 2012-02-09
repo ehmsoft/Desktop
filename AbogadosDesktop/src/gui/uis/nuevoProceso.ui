@@ -107,10 +107,16 @@
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::StrongFocus</enum>
+             <enum>Qt::ClickFocus</enum>
             </property>
             <property name="contextMenuPolicy">
              <enum>Qt::ActionsContextMenu</enum>
+            </property>
+            <property name="toolTip">
+             <string>Click derecho para más opciones</string>
+            </property>
+            <property name="statusTip">
+             <string/>
             </property>
             <property name="text">
              <string>vacío</string>
@@ -123,10 +129,13 @@
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::StrongFocus</enum>
+             <enum>Qt::ClickFocus</enum>
             </property>
             <property name="contextMenuPolicy">
              <enum>Qt::ActionsContextMenu</enum>
+            </property>
+            <property name="toolTip">
+             <string>Click derecho para más opciones</string>
             </property>
             <property name="text">
              <string>vacío</string>
@@ -139,10 +148,13 @@
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::StrongFocus</enum>
+             <enum>Qt::ClickFocus</enum>
             </property>
             <property name="contextMenuPolicy">
              <enum>Qt::ActionsContextMenu</enum>
+            </property>
+            <property name="toolTip">
+             <string>Click derecho para más opciones</string>
             </property>
             <property name="text">
              <string>vacío</string>
@@ -167,10 +179,13 @@
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="focusPolicy">
-             <enum>Qt::StrongFocus</enum>
+             <enum>Qt::ClickFocus</enum>
             </property>
             <property name="contextMenuPolicy">
              <enum>Qt::ActionsContextMenu</enum>
+            </property>
+            <property name="toolTip">
+             <string>Click derecho para más opciones</string>
             </property>
             <property name="text">
              <string>Ninguna</string>
@@ -184,7 +199,7 @@
            <widget class="QDateTimeEdit" name="dteFecha"/>
           </item>
           <item row="10" column="1">
-           <widget class="QLineEdit" name="txtNotas"/>
+           <widget class="QTextEdit" name="txtNotas"/>
           </item>
          </layout>
         </item>
@@ -195,6 +210,9 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Agregar un campo personalizado</string>
           </property>
           <property name="layoutDirection">
            <enum>Qt::RightToLeft</enum>

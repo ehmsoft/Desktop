@@ -22,8 +22,6 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
     def __init__(self, actuacion = None, id_proceso = None, parent = None):
         super(NuevaActuacion, self).__init__(parent)
         
-        if actuacion is None and id_proceso is None:
-            raise TypeError("Para crear una actuación debe pasar el argumento id_proceso")
         if actuacion is not None and not isinstance(actuacion, Actuacion):
             raise TypeError("El objeto actuacion debe ser de la clase Actuacion")
         
@@ -48,9 +46,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             self.dteFechaProxima.setDateTime(datetime.today())
             self.lblJuzgado.setText(unicode("vacío"))
             
-        if self.__campos is not None and self.__campos != []:
-            for campo in self.__campos:
-                self.addCampo(campo)
+        self.cargarCampos()
         
         self.clickJuzgado()
         self.clickFecha()
@@ -64,6 +60,9 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         
         self.lblJuzgado.addActions([cambiar,editar])
         
+    def getActuacion(self):
+        return self.__actuacion
+    
     def cambiarJuzgado(self):
         listado = ListadoDialogo(ListadoDialogo.JUZGADO, self)
         if listado.exec_():
@@ -99,14 +98,15 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
     def guardar(self):
         try:
             p = Persistence()
-            fecha = self.dteFecha.dateTime()
-            fechaProxima = self.dteFechaProxima.dateTime()
+            fecha = self.dteFecha.dateTime().toPython()
+            fechaProxima = self.dteFechaProxima.dateTime().toPython()
             descripcion = self.txtDescripcion.text()
             if self.__actuacion is None:
                 self.__actuacion = Actuacion(juzgado = self.__juzgado, fecha = fecha, 
                                              fechaProxima = fechaProxima, descripcion = descripcion, 
                                              campos = self.__campos)
-                p.guardarActuacion(self.__actuacion)
+                if self.__idProceso is not None:
+                    p.guardarActuacion(self.__actuacion)
             else:
                 self.__actuacion.setDescripcion(descripcion)
                 self.__actuacion.setFecha(fecha)
@@ -260,6 +260,26 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         if slot is not None:
             self.connect(action, QtCore.SIGNAL("triggered()"), slot)
         return action
+    
+    def cargarCampos(self):
+        if len(self.__campos) is not 0:
+            for campo in self.__campos:
+                label = QtGui.QLabel()
+                label.setText("%s:" % campo.getNombre())
+                txtBox = QtGui.QLineEdit()
+                txtBox.setText(campo.getValor())
+                if campo.getLongitudMax() is not 0:
+                    txtBox.setMaxLength(campo.getLongitudMax())
+                
+                txtBox.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+                
+                eliminar = self.createAction('Eliminar', self.borrarElemento)
+                eliminar.setData(txtBox)
+                editar = self.createAction("Editar", self.editarElemento)
+                editar.setData(txtBox)
+                
+                txtBox.addActions([eliminar, editar])
+                self.formLayout.addRow(label, txtBox)     
         
     def addCampo(self, campo = None):
         if campo is not None:

@@ -30,7 +30,7 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
         
         self.__juzgado = juzgado
         self.setupUi(self)
-        self.connect(self.btnAdd,QtCore.SIGNAL("clicked()"),self.addCampo)
+        self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.addCampo)
         
         self.__campos = []
                 
@@ -42,9 +42,7 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
             self.txtTelefono.setText(self.__juzgado.getTelefono())
             self.txtTipo.setText(self.__juzgado.getTipo())
             
-        if self.__campos is not None and self.__campos != []:
-            for campo in self.__campos:
-                self.addCampo(campo)            
+        self.cargarCampos()         
             
     def getJuzgado(self):
         return self.__juzgado
@@ -138,7 +136,7 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
         elif self.txtTelefono.text().__len__() == 0 or self.txtTelefono.text() == " ":
             message = QtGui.QMessageBox()
             message.setIcon(QtGui.QMessageBox.Question)
-            message.setStandardButtons(QtGui.QMessageBox.Yes|QtGui.QMessageBox.No)
+            message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
             message.setDefaultButton(QtGui.QMessageBox.No)
             message.setText(unicode("¿Desea guardar sin agregar un teléfono?"))
             ret = message.exec_()
@@ -174,6 +172,26 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
             self.connect(action, QtCore.SIGNAL("triggered()"), slot)
         return action
     
+    def cargarCampos(self):
+        if len(self.__campos) is not 0:
+            for campo in self.__campos:
+                label = QtGui.QLabel()
+                label.setText("%s:" % campo.getNombre())
+                txtBox = QtGui.QLineEdit()
+                txtBox.setText(campo.getValor())
+                if campo.getLongitudMax() is not 0:
+                    txtBox.setMaxLength(campo.getLongitudMax())
+                
+                txtBox.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+                
+                eliminar = self.createAction('Eliminar', self.borrarElemento)
+                eliminar.setData(txtBox)
+                editar = self.createAction("Editar", self.editarElemento)
+                editar.setData(txtBox)
+                
+                txtBox.addActions([eliminar, editar])
+                self.formLayout.addRow(label, txtBox)     
+    
     def addCampo(self, campo = None):
         if campo is not None:
             if campo in self.__campos:
@@ -200,7 +218,7 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
                 self.formLayout.addRow(label, txtBox)
                 self.__campos.append(campo)
         else:
-            dialogo = ListadoDialogo(ListadoDialogo.campoJuzgado, self)
+            dialogo = ListadoDialogo(ListadoDialogo.CAMPOJUZGADO, self)
             if dialogo.exec_():
                 campo = dialogo.getSelected()
                 self.addCampo(campo)
