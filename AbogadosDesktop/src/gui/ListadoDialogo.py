@@ -61,12 +61,10 @@ class ListadoDialogo (QDialog):
         buttonlayout.addStretch()
         layout.addWidget(self.lista)
         buttonlayout.addWidget(btnAgregar)
-        layout.addLayout(buttonlayout)
         groupBox.setLayout(layout)
         layoutBox.addWidget(groupBox)
+        layoutBox.addLayout(buttonlayout)
         self.setLayout(layoutBox)
-        
-
         self.lista.itemClicked.connect(self.click)
         self.connect(btnAgregar, SIGNAL("clicked()"), self.button)
         self.lista.setContextMenuPolicy(Qt.ActionsContextMenu)
