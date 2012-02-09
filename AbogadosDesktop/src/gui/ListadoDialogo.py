@@ -216,7 +216,7 @@ class ListadoDialogo (QDialog):
                 self.lista.replace(campoPP)
         elif self.tipo is self.__class__.CAMPOJUZGADO:
             nuevoCampoJuzgado = NuevoCampo(tipo = NuevoCampo.JUZGADO, campo = self.lista.currentItem().getObjeto(), parent = self)
-            if nuevoCampoActuacion.exec_():
-                campoJuzgado = nuevoCampoJuzgado.getCategoria()
+            if nuevoCampoJuzgado.exec_():
+                campoJuzgado = nuevoCampoJuzgado.getCampo()
                 self.lista.replace(campoJuzgado)
                 
