@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'nuevoProceso.ui'
 #
-# Created: Tue Feb  7 16:21:17 2012
+# Created: Thu Feb  9 10:42:18 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -58,19 +58,20 @@ class Ui_NuevoProceso(object):
         self.formLayout.setWidget(10, QtGui.QFormLayout.LabelRole, self.label_11)
         self.lblDemandante = QtGui.QLabel(self.groupBox)
         self.lblDemandante.setCursor(QtCore.Qt.PointingHandCursor)
-        self.lblDemandante.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.lblDemandante.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.lblDemandante.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+        self.lblDemandante.setStatusTip("")
         self.lblDemandante.setObjectName("lblDemandante")
         self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.lblDemandante)
         self.lblDemandado = QtGui.QLabel(self.groupBox)
         self.lblDemandado.setCursor(QtCore.Qt.PointingHandCursor)
-        self.lblDemandado.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.lblDemandado.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.lblDemandado.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
         self.lblDemandado.setObjectName("lblDemandado")
         self.formLayout.setWidget(1, QtGui.QFormLayout.FieldRole, self.lblDemandado)
         self.lblJuzgado = QtGui.QLabel(self.groupBox)
         self.lblJuzgado.setCursor(QtCore.Qt.PointingHandCursor)
-        self.lblJuzgado.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.lblJuzgado.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.lblJuzgado.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
         self.lblJuzgado.setObjectName("lblJuzgado")
         self.formLayout.setWidget(2, QtGui.QFormLayout.FieldRole, self.lblJuzgado)
@@ -88,7 +89,7 @@ class Ui_NuevoProceso(object):
         self.formLayout.setWidget(6, QtGui.QFormLayout.FieldRole, self.txtEstado)
         self.lblCategoria = QtGui.QLabel(self.groupBox)
         self.lblCategoria.setCursor(QtCore.Qt.PointingHandCursor)
-        self.lblCategoria.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.lblCategoria.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.lblCategoria.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
         self.lblCategoria.setObjectName("lblCategoria")
         self.formLayout.setWidget(7, QtGui.QFormLayout.FieldRole, self.lblCategoria)
@@ -98,7 +99,7 @@ class Ui_NuevoProceso(object):
         self.dteFecha = QtGui.QDateTimeEdit(self.groupBox)
         self.dteFecha.setObjectName("dteFecha")
         self.formLayout.setWidget(9, QtGui.QFormLayout.FieldRole, self.dteFecha)
-        self.txtNotas = QtGui.QLineEdit(self.groupBox)
+        self.txtNotas = QtGui.QTextEdit(self.groupBox)
         self.txtNotas.setObjectName("txtNotas")
         self.formLayout.setWidget(10, QtGui.QFormLayout.FieldRole, self.txtNotas)
         self.gridLayout.addLayout(self.formLayout, 0, 0, 1, 1)
@@ -143,9 +144,14 @@ class Ui_NuevoProceso(object):
         self.label_9.setText(QtGui.QApplication.translate("NuevoProceso", "Prioridad:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_10.setText(QtGui.QApplication.translate("NuevoProceso", "Fecha de creación:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_11.setText(QtGui.QApplication.translate("NuevoProceso", "Notas:", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblDemandante.setToolTip(QtGui.QApplication.translate("NuevoProceso", "Click derecho para más opciones", None, QtGui.QApplication.UnicodeUTF8))
         self.lblDemandante.setText(QtGui.QApplication.translate("NuevoProceso", "vacío", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblDemandado.setToolTip(QtGui.QApplication.translate("NuevoProceso", "Click derecho para más opciones", None, QtGui.QApplication.UnicodeUTF8))
         self.lblDemandado.setText(QtGui.QApplication.translate("NuevoProceso", "vacío", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblJuzgado.setToolTip(QtGui.QApplication.translate("NuevoProceso", "Click derecho para más opciones", None, QtGui.QApplication.UnicodeUTF8))
         self.lblJuzgado.setText(QtGui.QApplication.translate("NuevoProceso", "vacío", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblCategoria.setToolTip(QtGui.QApplication.translate("NuevoProceso", "Click derecho para más opciones", None, QtGui.QApplication.UnicodeUTF8))
         self.lblCategoria.setText(QtGui.QApplication.translate("NuevoProceso", "Ninguna", None, QtGui.QApplication.UnicodeUTF8))
+        self.btnAdd.setToolTip(QtGui.QApplication.translate("NuevoProceso", "Agregar un campo personalizado", None, QtGui.QApplication.UnicodeUTF8))
         self.btnAdd.setText(QtGui.QApplication.translate("NuevoProceso", "+", None, QtGui.QApplication.UnicodeUTF8))
 

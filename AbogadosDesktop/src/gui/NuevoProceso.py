@@ -45,7 +45,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         self.__juzgado = None
         self.__categoria = None
         
-        self.sbPrioridad.setRange(0,10)        
+        self.sbPrioridad.setRange(0, 10)        
         if self.__proceso is not None:
             self.__demandante = self.__proceso.getDemandante()
             self.__demandado = self.__proceso.getDemandado()
@@ -82,28 +82,28 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         editar = self.createAction("Editar", self.editarJuzgado)
         editar.setData(self.lblJuzgado)
         
-        self.lblJuzgado.addActions([cambiar,editar])
+        self.lblJuzgado.addActions([cambiar, editar])
         
         cambiar = self.createAction("Cambiar", self.cambiarDemandante)
         cambiar.setData(self.lblDemandante)
         editar = self.createAction("Editar", self.editarDemandante)
         editar.setData(self.lblDemandante)
         
-        self.lblDemandante.addActions([cambiar,editar])
+        self.lblDemandante.addActions([cambiar, editar])
         
         cambiar = self.createAction("Cambiar", self.cambiarDemandado)
         cambiar.setData(self.lblDemandado)
         editar = self.createAction("Editar", self.editarDemandado)
         editar.setData(self.lblDemandado)
         
-        self.lblDemandado.addActions([cambiar,editar])
+        self.lblDemandado.addActions([cambiar, editar])
         
         cambiar = self.createAction("Cambiar", self.cambiarCategoria)
         cambiar.setData(self.lblCategoria)
         editar = self.createAction("Editar", self.editarCategoria)
         editar.setData(self.lblCategoria)
         
-        self.lblCategoria.addActions([cambiar,editar])
+        self.lblCategoria.addActions([cambiar, editar])
                 
     def clickDemandante(self):
         container = self.horizontalLayout 
@@ -119,7 +119,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
                     container.addWidget(vista)
                 else:
                     widget.cambiarDemandante()
-            return QtGui.QLabel.mousePressEvent(lblDemandante,self)
+            return QtGui.QLabel.mousePressEvent(lblDemandante, self)
             
         self.lblDemandante.mousePressEvent = mousePressEvent
     
@@ -137,7 +137,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
                     container.addWidget(vista)
                 else:
                     widget.cambiarDemandado()
-            return QtGui.QLabel.mousePressEvent(lblDemandado,self)
+            return QtGui.QLabel.mousePressEvent(lblDemandado, self)
             
         self.lblDemandado.mousePressEvent = mousePressEvent
     
@@ -155,7 +155,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
                     container.addWidget(vista)
                 else:
                     widget.cambiarJuzgado()
-            return QtGui.QLabel.mousePressEvent(lblJuzgado,self)
+            return QtGui.QLabel.mousePressEvent(lblJuzgado, self)
             
         self.lblJuzgado.mousePressEvent = mousePressEvent
     
@@ -166,7 +166,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         def mousePressEvent(self):
             if QtCore.Qt.MouseButton.LeftButton is self.button():
                 widget.cambiarCategoria()
-            return QtGui.QLabel.mousePressEvent(lblCategoria,self)
+            return QtGui.QLabel.mousePressEvent(lblCategoria, self)
             
         self.lblCategoria.mousePressEvent = mousePressEvent
     
@@ -184,7 +184,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             selectionChanged = lambda:dteFecha.setDate(calendar.selectedDate())           
             calendar.selectionChanged.connect(selectionChanged)
                   
-            return QtGui.QDateTimeEdit.focusInEvent(dteFecha,self)
+            return QtGui.QDateTimeEdit.focusInEvent(dteFecha, self)
         
         def dateChanged(date):
             calendar = container.itemAt(1).widget()
@@ -239,16 +239,43 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             self.lblCategoria.setText(unicode(self.__categoria))
             
     def editarDemandante(self):
-        pass
+        if self.__demandante is not None and self.__demandante.getId_persona() is not "1":
+            dialogo = NuevaPersona(persona = self.__demandante, parent = self)
+            if dialogo.exec_():
+                self.lblDemandante.setText(self.__demandante.getNombre())
+                if (self.horizontalLayout.count() > 1 and 
+                isinstance(self.horizontalLayout.itemAt(1).widget(), VerPersona)):
+                    self.horizontalLayout.itemAt(1).widget().deleteLater()
+                    vista = VerPersona(self.__demandante, self)
+                    self.horizontalLayout.addWidget(vista)
     
     def editarDemandado(self):
-        pass
+        if self.__demandado is not None and self.__demandado.getId_persona() is not "1":
+            dialogo = NuevaPersona(persona = self.__demandado, parent = self)
+            if dialogo.exec_():
+                self.lblDemandado.setText(self.__demandado.getNombre())
+                if (self.horizontalLayout.count() > 1 and 
+                isinstance(self.horizontalLayout.itemAt(1).widget(), VerPersona)):
+                    self.horizontalLayout.itemAt(1).widget().deleteLater()
+                    vista = VerPersona(self.__demandado, self)
+                    self.horizontalLayout.addWidget(vista)
     
     def editarJuzgado(self):
-        pass
+        if self.__juzgado is not None and self.__juzgado.getId_juzgado() is not "1":
+            dialogo = NuevoJuzgado(juzgado = self.__juzgado, parent = self)
+            if dialogo.exec_():
+                self.lblJuzgado.setText(self.__juzgado.getNombre())
+                if (self.horizontalLayout.count() > 1 and 
+                isinstance(self.horizontalLayout.itemAt(1).widget(), VerJuzgado)):
+                    self.horizontalLayout.itemAt(1).widget().deleteLater()
+                    vista = VerJuzgado(self.__juzgado, self)
+                    self.horizontalLayout.addWidget(vista)
     
     def editarCategoria(self):
-        pass
+        if self.__categoria is not None and self.__categoria.getId_categoria() is not "1":
+            dialogo = NuevaCategoria(self.__categoria, self)
+            if dialogo.exec_():
+                self.lblCategoria.setText(self.__categoria.getNombre())
                 
     def accept(self):
         if self.__demandante is None or self.__demandante.getId_persona() is "1":
@@ -276,7 +303,29 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             self.guardar()
     
     def guardar(self):
-        pass
+        try:
+            p = Persistence()
+            if self.__proceso is None:
+                demandante = self.__demandante
+                demandado = self.__demandado
+                fecha = self.dteFecha.dateTime()
+                juzgado = self.__juzgado
+                radicado = self.txtRadicado.text()
+                radicadoUnico = self.txtRadicadoUnico.text()
+                actuaciones = None #TODO: Realizar implementación de las actuaciones
+                estado = self.txtEstado.text()
+                categoria = self.__categoria
+                tipo = self.txtTipo.text()
+                #TODO: El restante de atributos po sacar de la pantalla
+                notas = None
+                prioridad = None
+                campos = None
+                proceso = Proceso(demandante = demandante, demandado = demandado, fecha = fecha, juzgado = juzgado,
+                                  radicado = radicado, radicadoUnico = radicadoUnico, actuaciones = actuaciones,
+                                  estado = estado, categoria = categoria, tipo = tipo, notas = notas,
+                                  prioridad = prioridad, campos = campos)
+        except Exception, e:
+            print "Guardar proceso -> %s" % e
                 
     def getProceso(self):
         return self.__proceso
@@ -347,7 +396,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         label = self.formLayout.itemAt(index, QtGui.QFormLayout.LabelRole).widget()
         txtBox = self.formLayout.itemAt(index, QtGui.QFormLayout.FieldRole).widget()
         campo = self.__campos[index - 11]
-        dialogo = NuevoCampo(NuevoCampo.proceso, campo, self)
+        dialogo = NuevoCampo(NuevoCampo.PROCESO, campo, self)
         if dialogo.exec_():
             label.setText(unicode("%s:" % campo.getNombre()))
             if campo.getLongitudMax() is not 0:
