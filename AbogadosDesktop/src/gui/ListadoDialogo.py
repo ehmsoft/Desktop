@@ -51,16 +51,22 @@ class ListadoDialogo (QDialog):
         elif self.tipo is self.__class__.CAMPODEMANDADO:
             objetos = self.p.consultarAtributosPersona()
             self.setWindowTitle('seleccione un campo')
-                   
+        
+        groupBox = QGroupBox("Selecciones un elemento")           
         self.lista = Listado(objetos)
         btnAgregar = QPushButton('+')
         layout = QVBoxLayout()
+        layoutBox = QVBoxLayout() 
         buttonlayout = QHBoxLayout()
         buttonlayout.addStretch()
         layout.addWidget(self.lista)
         buttonlayout.addWidget(btnAgregar)
         layout.addLayout(buttonlayout)
-        self.setLayout(layout)
+        groupBox.setLayout(layout)
+        layoutBox.addWidget(groupBox)
+        self.setLayout(layoutBox)
+        
+
         self.lista.itemClicked.connect(self.click)
         self.connect(btnAgregar, SIGNAL("clicked()"), self.button)
         self.lista.setContextMenuPolicy(Qt.ActionsContextMenu)
@@ -219,4 +225,9 @@ class ListadoDialogo (QDialog):
             if nuevoCampoJuzgado.exec_():
                 campoJuzgado = nuevoCampoJuzgado.getCampo()
                 self.lista.replace(campoJuzgado)
-                
+
+import sys  
+app = QApplication(sys.argv)  
+form = ListadoDialogo(ListadoDialogo.DEMANDANTE)
+form.show()
+app.exec_()
