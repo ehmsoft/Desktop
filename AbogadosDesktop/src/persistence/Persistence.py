@@ -31,11 +31,11 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
             if persona.getTipo() == 1:
-                c.execute('''UPDATE demandantes SET cedula = ?,'''+ ''' nombre = ?,'''+ ''' telefono = ?, direccion = ?,'''+ '''correo= ?,'''+ '''notas = ?,'''+''' fecha_mod = datetime('now','localtime'), modificado =1 WHERE id_demandante = ?''',(persona.getId(),persona.getNombre(),persona.getTelefono(),persona.getDireccion(),persona.getCorreo(),persona.getNotas(),persona.getId_persona(),))
+                c.execute('''UPDATE demandantes SET cedula = ?,''' + ''' nombre = ?,''' + ''' telefono = ?, direccion = ?,''' + '''correo= ?,''' + '''notas = ?,''' + ''' fecha_mod = datetime('now','localtime'), modificado =1 WHERE id_demandante = ?''', (persona.getId(), persona.getNombre(), persona.getTelefono(), persona.getDireccion(), persona.getCorreo(), persona.getNotas(), persona.getId_persona(),))
             elif persona.getTipo() == 2:
-                c.execute('''UPDATE demandados SET cedula = ?,'''+ ''' nombre = ?,''' + ''' telefono = ?,'''+ ''' direccion = ?,''' + '''correo= ?,'''+ ''' notas = ?,'''+''' fecha_mod = datetime('now','localtime'), modificado =1 WHERE id_demandado = ?''',(persona.getId(),persona.getNombre(),persona.getTelefono(),persona.getDireccion(),persona.getCorreo(),persona.getNotas(),persona.getId_persona(),))
+                c.execute('''UPDATE demandados SET cedula = ?,''' + ''' nombre = ?,''' + ''' telefono = ?,''' + ''' direccion = ?,''' + '''correo= ?,''' + ''' notas = ?,''' + ''' fecha_mod = datetime('now','localtime'), modificado =1 WHERE id_demandado = ?''', (persona.getId(), persona.getNombre(), persona.getTelefono(), persona.getDireccion(), persona.getCorreo(), persona.getNotas(), persona.getId_persona(),))
             else:
-                print( "eso no es asi")  
+                print("eso no es asi")  
             conn.commit()            
         except Exception as e:
             raise e
@@ -47,11 +47,11 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
             if persona.getTipo() == 1:
-                c.execute('''INSERT INTO demandantes (id_demandante,cedula,nombre,telefono,direccion,correo,notas,nuevo,fecha_mod) VALUES(NULL,?,?,?,?,?,?,1,datetime('now','localtime'))''',(persona.getId(),persona.getNombre(),persona.getTelefono(),persona.getDireccion(),persona.getCorreo(),persona.getNotas()))
+                c.execute('''INSERT INTO demandantes (id_demandante,cedula,nombre,telefono,direccion,correo,notas,nuevo,fecha_mod) VALUES(NULL,?,?,?,?,?,?,1,datetime('now','localtime'))''', (persona.getId(), persona.getNombre(), persona.getTelefono(), persona.getDireccion(), persona.getCorreo(), persona.getNotas()))
             elif persona.getTipo() == 2:
-                c.execute('''INSERT INTO demandados (id_demandado,cedula,nombre,telefono,direccion,correo,notas,nuevo,fecha_mod) VALUES(NULL,?,?,?,?,?,?,1,datetime('now','localtime'))''',(persona.getId(),persona.getNombre(),persona.getTelefono(),persona.getDireccion(),persona.getCorreo(),persona.getNotas()))
+                c.execute('''INSERT INTO demandados (id_demandado,cedula,nombre,telefono,direccion,correo,notas,nuevo,fecha_mod) VALUES(NULL,?,?,?,?,?,?,1,datetime('now','localtime'))''', (persona.getId(), persona.getNombre(), persona.getTelefono(), persona.getDireccion(), persona.getCorreo(), persona.getNotas()))
             else:
-                print( "eso no es asi")
+                print("eso no es asi")
             conn.commit() 
             persona.setId_persona(str(c.lastrowid))  
                      
@@ -63,13 +63,13 @@ class Persistence(object):
         if persona.getTipo() == 1:
             campos = persona.getCampos()
             for campo in campos:
-                self.guardarCampoDemandante(campo,persona.getId_persona())
+                self.guardarCampoDemandante(campo, persona.getId_persona())
         elif persona.getTipo() == 2:
             campos = persona.getCampos()
             for campo in campos:
-                self.guardarCampoDemandado(campo,persona.getId_persona())
+                self.guardarCampoDemandado(campo, persona.getId_persona())
         else:
-            print( "eso no es asi")
+            print("eso no es asi")
          
         
     def borrarPersona(self, persona):
@@ -78,17 +78,17 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
             if persona.getTipo() == 1:
-                c.execute('''UPDATE demandantes SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_demandante = ?''',(persona.getId_persona(),))
-                c.execute('''UPDATE procesos SET id_demandante = 1 WHERE id_demandante = ?''',(persona.getId_persona(),))
-                c.execute('''UPDATE plantillas SET id_demandante = 1 WHERE id_demandante = ?''',(persona.getId_persona(),))
+                c.execute('''UPDATE demandantes SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_demandante = ?''', (persona.getId_persona(),))
+                c.execute('''UPDATE procesos SET id_demandante = 1 WHERE id_demandante = ?''', (persona.getId_persona(),))
+                c.execute('''UPDATE plantillas SET id_demandante = 1 WHERE id_demandante = ?''', (persona.getId_persona(),))
 
             elif persona.getTipo() == 2:
-                c.execute('''UPDATE demandados SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_demandado = ?''',(persona.getId_persona(),))
-                c.execute('''UPDATE procesos SET id_demandado = 1 WHERE id_demandado = ?''',(persona.getId_persona(),))
-                c.execute('''UPDATE plantillas SET id_demandado = 1 WHERE id_demandado = ?''',(persona.getId_persona(),))
+                c.execute('''UPDATE demandados SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_demandado = ?''', (persona.getId_persona(),))
+                c.execute('''UPDATE procesos SET id_demandado = 1 WHERE id_demandado = ?''', (persona.getId_persona(),))
+                c.execute('''UPDATE plantillas SET id_demandado = 1 WHERE id_demandado = ?''', (persona.getId_persona(),))
 
             else:
-                print( "eso no es asi") 
+                print("eso no es asi") 
             conn.commit()            
         except Exception as e:
             raise e
@@ -100,7 +100,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE juzgados SET nombre = ?,'''+ ''' ciudad = ?,''' + ''' telefono = ?,''' + ''' direccion= ?,''' + ''' tipo = ?,'''+''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_juzgado = ?''',(juzgado.getNombre(),juzgado.getCiudad(),juzgado.getTelefono(),juzgado.getDireccion(),juzgado.getTipo(),juzgado.getId_juzgado()))
+            c.execute('''UPDATE juzgados SET nombre = ?,''' + ''' ciudad = ?,''' + ''' telefono = ?,''' + ''' direccion= ?,''' + ''' tipo = ?,''' + ''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_juzgado = ?''', (juzgado.getNombre(), juzgado.getCiudad(), juzgado.getTelefono(), juzgado.getDireccion(), juzgado.getTipo(), juzgado.getId_juzgado()))
             conn.commit()            
         except Exception as e:
             raise e
@@ -111,7 +111,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''INSERT INTO juzgados (id_juzgado,nombre,ciudad,telefono,direccion,tipo,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,?,1,datetime('now','localtime'))''',(juzgado.getNombre(),juzgado.getCiudad(),juzgado.getTelefono(),juzgado.getDireccion(),juzgado.getTipo()))
+            c.execute('''INSERT INTO juzgados (id_juzgado,nombre,ciudad,telefono,direccion,tipo,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,?,1,datetime('now','localtime'))''', (juzgado.getNombre(), juzgado.getCiudad(), juzgado.getTelefono(), juzgado.getDireccion(), juzgado.getTipo()))
             conn.commit()  
             juzgado.setId_juzgado(str(c.lastrowid))
                       
@@ -121,16 +121,16 @@ class Persistence(object):
             conn.close()
         campos = juzgado.getCampos()
         for campo in campos:
-            self.guardarCampoJuzgado(campo,juzgado.getId_juzgado())
+            self.guardarCampoJuzgado(campo, juzgado.getId_juzgado())
     def borrarJuzgado(self, juzgado):
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE juzgados SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_juzgado = ?''',(juzgado.getId_juzgado(),))
-            c.execute('''UPDATE procesos SET id_juzgado = 1 WHERE id_juzgado = ?''',(juzgado.getId_juzgado(),))
-            c.execute('''UPDATE actuaciones SET id_juzgado = 1 WHERE id_juzgado = ?''',(juzgado.getId_juzgado(),))
-            c.execute('''UPDATE plantillas SET id_juzgado = 1 WHERE id_juzgado = ?''',(juzgado.getId_juzgado(),))
+            c.execute('''UPDATE juzgados SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_juzgado = ?''', (juzgado.getId_juzgado(),))
+            c.execute('''UPDATE procesos SET id_juzgado = 1 WHERE id_juzgado = ?''', (juzgado.getId_juzgado(),))
+            c.execute('''UPDATE actuaciones SET id_juzgado = 1 WHERE id_juzgado = ?''', (juzgado.getId_juzgado(),))
+            c.execute('''UPDATE plantillas SET id_juzgado = 1 WHERE id_juzgado = ?''', (juzgado.getId_juzgado(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -142,7 +142,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE actuaciones SET id_juzgado = ?,'''+ ''' fecha_creacion = datetime(?),'''+ ''' fecha_proxima = datetime(?),'''+ ''' descripcion = (?),'''+ ''' uid = ?,'''+''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''',(actuacion.getJuzgado().getId_juzgado(),actuacion.getFecha(),actuacion.getFechaProxima(), actuacion.getDescripcion(),actuacion.getUid(),actuacion.getId_actuacion()))
+            c.execute('''UPDATE actuaciones SET id_juzgado = ?,''' + ''' fecha_creacion = datetime(?),''' + ''' fecha_proxima = datetime(?),''' + ''' descripcion = (?),''' + ''' uid = ?,''' + ''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''', (actuacion.getJuzgado().getId_juzgado(), actuacion.getFecha(), actuacion.getFechaProxima(), actuacion.getDescripcion(), actuacion.getUid(), actuacion.getId_actuacion()))
             conn.commit()            
         except Exception as e:
             raise e
@@ -153,7 +153,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''INSERT INTO actuaciones (id_actuacion,id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid, nuevo, fecha_mod) VALUES( NULL,?,?,datetime(?),datetime(?),?,?,1,datetime('now','localtime'))''',(id_proceso,actuacion.getJuzgado().getId_juzgado(),actuacion.getFecha(),actuacion.getFechaProxima(), actuacion.getDescripcion(),actuacion.getUid()))
+            c.execute('''INSERT INTO actuaciones (id_actuacion,id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid, nuevo, fecha_mod) VALUES( NULL,?,?,datetime(?),datetime(?),?,?,1,datetime('now','localtime'))''', (id_proceso, actuacion.getJuzgado().getId_juzgado(), actuacion.getFecha(), actuacion.getFechaProxima(), actuacion.getDescripcion(), actuacion.getUid()))
             conn.commit()
             actuacion.setId_actuacion(str(c.lastrowid))
                         
@@ -164,13 +164,13 @@ class Persistence(object):
             
         campos = actuacion.getCampos()
         for campo in campos:
-            self.guardarCampoActuacion(campo,actuacion.getId_actuacion())
+            self.guardarCampoActuacion(campo, actuacion.getId_actuacion())
     def borrarActuacion(self, actuacion):
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''',(actuacion.getId_actuacion(),))
+            c.execute('''UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''', (actuacion.getId_actuacion(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -182,7 +182,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_proceso SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
+            c.execute('''UPDATE atributos_proceso SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''', (campoPersonalizado.getValor(), campoPersonalizado.getId_campo()))
             conn.commit()            
         except Exception as e:
             raise e
@@ -193,7 +193,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''INSERT INTO atributos_proceso (id_atributo_proceso, id_atributo, id_proceso, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getId_atributo(),id_proceso,campoPersonalizado.getValor()))
+            c.execute('''INSERT INTO atributos_proceso (id_atributo_proceso, id_atributo, id_proceso, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime('now','localtime'))''', (campoPersonalizado.getId_atributo(), id_proceso, campoPersonalizado.getValor()))
             conn.commit()
             campoPersonalizado.setId_campo(str(c.lastrowid))
         except Exception as e:
@@ -205,7 +205,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_proceso SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''',(campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributos_proceso SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_proceso = ?''', (campoPersonalizado.getId_campo(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -220,7 +220,7 @@ class Persistence(object):
             obligatorio = 0
             if(campoPersonalizado.isObligatorio()):
                 obligatorio = 1                   
-            c.execute('''UPDATE atributos SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,'''+ ''' longitud_min = ?,'''+''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin(),campoPersonalizado.getId_campo()))                
+            c.execute('''UPDATE atributos SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,''' + ''' longitud_min = ?,''' + ''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''', (campoPersonalizado.getNombre(), obligatorio, campoPersonalizado.getLongitudMax(), campoPersonalizado.getLongitudMin(), campoPersonalizado.getId_atributo()))                
             conn.commit()            
         except Exception as e:
             raise e
@@ -235,7 +235,7 @@ class Persistence(object):
             obligatorio = 0
             if(campoPersonalizado.isObligatorio()):
                 obligatorio = 1                   
-            c.execute('''INSERT INTO atributos (id_atributo, nombre, obligatorio, longitud_max, longitud_min,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin()))                
+            c.execute('''INSERT INTO atributos (id_atributo, nombre, obligatorio, longitud_max, longitud_min,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,1,datetime('now','localtime'))''', (campoPersonalizado.getNombre(), obligatorio, campoPersonalizado.getLongitudMax(), campoPersonalizado.getLongitudMin()))                
             conn.commit()  
             campoPersonalizado.setId_atributo(str(c.lastrowid))
                       
@@ -249,9 +249,9 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
-            c.execute('''UPDATE atributos_proceso SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
-            c.execute('''UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
+            c.execute('''UPDATE atributos SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''', (campoPersonalizado.getId_atributo(),))
+            c.execute('''UPDATE atributos_proceso SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''', (campoPersonalizado.getId_atributo(),))
+            c.execute('''UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''', (campoPersonalizado.getId_atributo(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -265,7 +265,7 @@ class Persistence(object):
             c = conn.cursor()
             demandante = "1"
             if demandante != None:
-                demandante= proceso.getDemandante().getId_persona()
+                demandante = proceso.getDemandante().getId_persona()
             demandado = "1"
             if demandado != None:
                 proceso.getDemandado().getId_persona()
@@ -273,7 +273,7 @@ class Persistence(object):
             if juzgado != None:
                 proceso.getJuzgado().getId_juzgado()
                 
-            c.execute('''UPDATE procesos SET id_demandante = ?,'''+ ''' id_demandado = ?,'''+ ''' fecha_creacion = datetime(?),''' + ''' radicado = ?,''' + ''' radicado_unico = ?,'''+ ''' estado = ?,''' + ''' tipo = ?,''' + ''' notas = ?,'''+ ''' prioridad = ?,''' + ''' id_juzgado = ?,'''+ ''' id_categoria = ?,'''+''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''',(demandante,demandado,proceso.getFecha(),proceso.getRadicado(), proceso.getRadicadoUnico(),proceso.getEstado(),proceso.getTipo(),proceso.getNotas(),proceso.getPrioridad(),juzgado,proceso.getCategoria().getId_categoria(),proceso.getId_proceso()))                                                         
+            c.execute('''UPDATE procesos SET id_demandante = ?,''' + ''' id_demandado = ?,''' + ''' fecha_creacion = datetime(?),''' + ''' radicado = ?,''' + ''' radicado_unico = ?,''' + ''' estado = ?,''' + ''' tipo = ?,''' + ''' notas = ?,''' + ''' prioridad = ?,''' + ''' id_juzgado = ?,''' + ''' id_categoria = ?,''' + ''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''', (demandante, demandado, proceso.getFecha(), proceso.getRadicado(), proceso.getRadicadoUnico(), proceso.getEstado(), proceso.getTipo(), proceso.getNotas(), proceso.getPrioridad(), juzgado, proceso.getCategoria().getId_categoria(), proceso.getId_proceso()))                                                         
             conn.commit()
                       
         except Exception as e:
@@ -282,14 +282,14 @@ class Persistence(object):
             conn.close()
         campos = proceso.getCampos()
         for campo in campos:
-            self.guardarCampoPersonalizado(campo,proceso.getId_proceso())
+            self.guardarCampoPersonalizado(campo, proceso.getId_proceso())
             
     def guardarProceso(self, proceso):
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''INSERT INTO procesos (id_proceso,id_demandante,id_demandado,fecha_creacion,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nuevo,fecha_mod) VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?,?,1,datetime('now','localtime'))''',(proceso.getDemandante().getId_persona(),proceso.getDemandado().getId_persona(),proceso.getFecha(),proceso.getRadicado(), proceso.getRadicadoUnico(),proceso.getEstado(),proceso.getTipo(),proceso.getNotas(),proceso.getPrioridad(),proceso.getJuzgado().getId_juzgado(),proceso.getCategoria().getId_categoria()))                                                         
+            c.execute('''INSERT INTO procesos (id_proceso,id_demandante,id_demandado,fecha_creacion,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nuevo,fecha_mod) VALUES(NULL,?,?,datetime(?),?,?,?,?,?,?,?,?,1,datetime('now','localtime'))''', (proceso.getDemandante().getId_persona(), proceso.getDemandado().getId_persona(), proceso.getFecha(), proceso.getRadicado(), proceso.getRadicadoUnico(), proceso.getEstado(), proceso.getTipo(), proceso.getNotas(), proceso.getPrioridad(), proceso.getJuzgado().getId_juzgado(), proceso.getCategoria().getId_categoria()))                                                         
             conn.commit()
             proceso.setId_proceso(str(c.lastrowid))
             
@@ -301,10 +301,10 @@ class Persistence(object):
         
         campos = proceso.getCampos()
         for campo in campos:
-            self.guardarCampoPersonalizado(campo,proceso.getId_proceso())
+            self.guardarCampoPersonalizado(campo, proceso.getId_proceso())
         actuaciones = proceso.getActuaciones()
         for actuacion in actuaciones:
-            self.guardarActuacion(actuacion,proceso.getId_proceso())   
+            self.guardarActuacion(actuacion, proceso.getId_proceso())   
         
         
     def borrarProceso(self, proceso):
@@ -312,9 +312,9 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE procesos SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''',(proceso.getId_proceso(),))
-            c.execute('''UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''',(proceso.getId_proceso(),))
-            c.execute('''UPDATE atributos_proceso SET eliminado = 1,fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''',(proceso.getId_proceso(),))
+            c.execute('''UPDATE procesos SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''', (proceso.getId_proceso(),))
+            c.execute('''UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''', (proceso.getId_proceso(),))
+            c.execute('''UPDATE atributos_proceso SET eliminado = 1,fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''', (proceso.getId_proceso(),))
             proceso.setId_proceso = str(c.lastrowid)
             conn.commit()
                 
@@ -328,7 +328,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE categorias SET descripcion = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_categoria = ?''',(categoria.getDescripcion(),categoria.getId_categoria()))        
+            c.execute('''UPDATE categorias SET descripcion = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_categoria = ?''', (categoria.getDescripcion(), categoria.getId_categoria()))        
             conn.commit()            
         except Exception as e:
             raise e
@@ -339,7 +339,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''INSERT INTO categorias (id_categoria,descripcion,nuevo,fecha_mod) VALUES( NULL,?,1,datetime('now','localtime'))''',(categoria.getDescripcion(),))        
+            c.execute('''INSERT INTO categorias (id_categoria,descripcion,nuevo,fecha_mod) VALUES( NULL,?,1,datetime('now','localtime'))''', (categoria.getDescripcion(),))        
             conn.commit()
             categoria.setId_categoria(str(c.lastrowid))
                         
@@ -352,9 +352,9 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE categorias SET eliminado = 1,fecha_mod = datetime('now','localtime') WHERE id_categoria = ?''',(categoria.getId_categoria(),))        
-            c.execute('''UPDATE procesos SET id_categoria = 1 WHERE id_categoria = ?''',(categoria.getId_categoria(),))        
-            c.execute('''UPDATE plantillas SET id_categoria = 1 WHERE id_categoria = ?''',(categoria.getId_categoria(),))        
+            c.execute('''UPDATE categorias SET eliminado = 1,fecha_mod = datetime('now','localtime') WHERE id_categoria = ?''', (categoria.getId_categoria(),))        
+            c.execute('''UPDATE procesos SET id_categoria = 1 WHERE id_categoria = ?''', (categoria.getId_categoria(),))        
+            c.execute('''UPDATE plantillas SET id_categoria = 1 WHERE id_categoria = ?''', (categoria.getId_categoria(),))        
 
             conn.commit()            
         except Exception as e:
@@ -369,7 +369,7 @@ class Persistence(object):
             c = conn.cursor()
             demandante = "1"
             if demandante != None:
-                demandante= plantilla.getDemandante().getId_persona()
+                demandante = plantilla.getDemandante().getId_persona()
             demandado = "1"
             if demandado != None:
                 plantilla.getDemandado().getId_persona()
@@ -377,7 +377,7 @@ class Persistence(object):
             if juzgado != None:
                 plantilla.getJuzgado().getId_juzgado()
                 
-            c.execute('''UPDATE plantillas SET nombre=?,'''+'''id_demandante = ?,'''+ ''' id_demandado = ?,'''+ ''' fecha_creacion = datetime(?),''' + ''' radicado = ?,''' + ''' radicado_unico = ?,'''+ ''' estado = ?,''' + ''' tipo = ?,''' + ''' notas = ?,'''+ ''' prioridad = ?,''' + ''' id_juzgado = ?,'''+ ''' id_categoria = ?,'''+''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''',(plantilla.getNombre(),demandante,demandado,plantilla.getFecha(),plantilla.getRadicado(), plantilla.getRadicadoUnico(),plantilla.getEstado(),plantilla.getTipo(),plantilla.getNotas(),plantilla.getPrioridad(),juzgado,plantilla.getCategoria().getId_categoria(),plantilla.getId_plantilla()))                                                         
+            c.execute('''UPDATE plantillas SET nombre=?,''' + '''id_demandante = ?,''' + ''' id_demandado = ?,''' + ''' fecha_creacion = datetime(?),''' + ''' radicado = ?,''' + ''' radicado_unico = ?,''' + ''' estado = ?,''' + ''' tipo = ?,''' + ''' notas = ?,''' + ''' prioridad = ?,''' + ''' id_juzgado = ?,''' + ''' id_categoria = ?,''' + ''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''', (plantilla.getNombre(), demandante, demandado, plantilla.getFecha(), plantilla.getRadicado(), plantilla.getRadicadoUnico(), plantilla.getEstado(), plantilla.getTipo(), plantilla.getNotas(), plantilla.getPrioridad(), juzgado, plantilla.getCategoria().getId_categoria(), plantilla.getId_plantilla()))                                                         
             conn.commit()
                       
         except Exception as e:
@@ -386,14 +386,14 @@ class Persistence(object):
             conn.close()
         campos = plantilla.getCampos()
         for campo in campos:
-            self.guardarCampoPersonalizado(campo,plantilla.getId_proceso())
+            self.guardarCampoPersonalizado(campo, plantilla.getId_proceso())
 
     def guardarPlantilla(self, plantilla):
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''INSERT INTO plantillas (id_plantilla,nombre,id_demandante,id_demandado,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nuevo, fecha_mod) VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,1,datetime('now','localtime'))''',(plantilla.getNombre(),plantilla.getDemandante().getId_persona(),plantilla.getDemandado().getId_persona(),plantilla.getRadicado(), plantilla.getRadicadoUnico(),plantilla.getEstado(),plantilla.getTipo(),plantilla.getNotas(),plantilla.getPrioridad(),plantilla.getJuzgado().getId_juzgado(),plantilla.getCategoria().getId_categoria()))                                                         
+            c.execute('''INSERT INTO plantillas (id_plantilla,nombre,id_demandante,id_demandado,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nuevo, fecha_mod) VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,1,datetime('now','localtime'))''', (plantilla.getNombre(), plantilla.getDemandante().getId_persona(), plantilla.getDemandado().getId_persona(), plantilla.getRadicado(), plantilla.getRadicadoUnico(), plantilla.getEstado(), plantilla.getTipo(), plantilla.getNotas(), plantilla.getPrioridad(), plantilla.getJuzgado().getId_juzgado(), plantilla.getCategoria().getId_categoria()))                                                         
             conn.commit()
             plantilla.setId_plantilla(str(c.lastrowid))
         except Exception as e:
@@ -401,17 +401,17 @@ class Persistence(object):
         finally:
             conn.close()
         
-        campos =plantilla.getCampos()
+        campos = plantilla.getCampos()
         for campo in campos:
-            self.guardarCampoPlantilla(campo,plantilla.getId_plantilla())
+            self.guardarCampoPlantilla(campo, plantilla.getId_plantilla())
         
     def borrarPlantilla(self, plantilla):
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE plantillas SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''',(plantilla.getId_proceso(),))
-            c.execute('''UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''',(plantilla.getId_proceso(),))
+            c.execute('''UPDATE plantillas SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''', (plantilla.getId_proceso(),))
+            c.execute('''UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''', (plantilla.getId_proceso(),))
             
             conn.commit()
                 
@@ -425,7 +425,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_plantilla SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime'),  WHERE id_atributo_plantilla = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
+            c.execute('''UPDATE atributos_plantilla SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime'),  WHERE id_atributo_plantilla = ?''', (campoPersonalizado.getValor(), campoPersonalizado.getId_campo()))
             conn.commit()            
         except Exception as e:
             raise e
@@ -436,7 +436,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''INSERT INTO atributos_plantilla (id_atributo_plantilla, id_atributo, id_plantilla, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getId_atributo(),id_plantilla,campoPersonalizado.getValor()))
+            c.execute('''INSERT INTO atributos_plantilla (id_atributo_plantilla, id_atributo, id_plantilla, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime('now','localtime'))''', (campoPersonalizado.getId_atributo(), id_plantilla, campoPersonalizado.getValor()))
             conn.commit()
             campoPersonalizado.setId_campo(str(c.lastrowid))
                         
@@ -449,7 +449,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_plantilla = ?''',(campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_plantilla = ?''', (campoPersonalizado.getId_campo(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -486,7 +486,7 @@ class Persistence(object):
             obligatorio = 0
             if(campoPersonalizado.isObligatorio()):
                 obligatorio = 1                   
-            c.execute('''UPDATE atributosPersona SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,'''+ ''' longitud_min = ?,'''+''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin(),campoPersonalizado.getId_campo()))                
+            c.execute('''UPDATE atributosPersona SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,''' + ''' longitud_min = ?,''' + ''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''', (campoPersonalizado.getNombre(), obligatorio, campoPersonalizado.getLongitudMax(), campoPersonalizado.getLongitudMin(), campoPersonalizado.getId_atributo()))                
             conn.commit()            
         except Exception as e:
             raise e
@@ -500,7 +500,7 @@ class Persistence(object):
             obligatorio = 0
             if(campoPersonalizado.isObligatorio()):
                 obligatorio = 1                   
-            c.execute('''INSERT INTO atributosPersona (id_atributo, nombre, obligatorio, longitud_max, longitud_min,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin()))                
+            c.execute('''INSERT INTO atributosPersona (id_atributo, nombre, obligatorio, longitud_max, longitud_min,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,1,datetime('now','localtime'))''', (campoPersonalizado.getNombre(), obligatorio, campoPersonalizado.getLongitudMax(), campoPersonalizado.getLongitudMin()))                
             conn.commit()     
             campoPersonalizado.setId_atributo(str(c.lastrowid))
             
@@ -513,9 +513,9 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributosPersona SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
-            c.execute('''UPDATE atributos_demandante SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
-            c.execute('''UPDATE atributos_demandado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_atributo(),))
+            c.execute('''UPDATE atributosPersona SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''', (campoPersonalizado.getId_atributo(),))
+            c.execute('''UPDATE atributos_demandante SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''', (campoPersonalizado.getId_atributo(),))
+            c.execute('''UPDATE atributos_demandado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''', (campoPersonalizado.getId_atributo(),))
             
             conn.commit()            
         except Exception as e:
@@ -528,7 +528,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_demandante SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_demandante = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
+            c.execute('''UPDATE atributos_demandante SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_demandante = ?''', (campoPersonalizado.getValor(), campoPersonalizado.getId_campo()))
             conn.commit()            
         except Exception as e:
             raise e
@@ -539,19 +539,19 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''INSERT INTO atributos_demandante (id_atributo_demandante, id_atributo, id_demandante, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getId_atributo(),id_demandante,campoPersonalizado.getValor()))
+            c.execute('''INSERT INTO atributos_demandante (id_atributo_demandante, id_atributo, id_demandante, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime('now','localtime'))''', (campoPersonalizado.getId_atributo(), id_demandante, campoPersonalizado.getValor()))
             conn.commit()
             campoPersonalizado.setId_campo(str(c.lastrowid))
         except Exception as e:
             raise e
         finally:
             conn.close()
-    def borrarCampoDemandante(self,campoPersonalizado):
+    def borrarCampoDemandante(self, campoPersonalizado):
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_demandante SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_demandante = ?''',(campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributos_demandante SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_demandante = ?''', (campoPersonalizado.getId_campo(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -564,7 +564,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_demandado SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_demandado = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
+            c.execute('''UPDATE atributos_demandado SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_demandado = ?''', (campoPersonalizado.getValor(), campoPersonalizado.getId_campo()))
             conn.commit()            
         except Exception as e:
             raise e
@@ -575,19 +575,19 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''INSERT INTO atributos_demandado (id_atributo_demandado, id_atributo, id_demandado, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getId_atributo(),id_demandado,campoPersonalizado.getValor()))
+            c.execute('''INSERT INTO atributos_demandado (id_atributo_demandado, id_atributo, id_demandado, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime('now','localtime'))''', (campoPersonalizado.getId_atributo(), id_demandado, campoPersonalizado.getValor()))
             conn.commit()     
             campoPersonalizado.setId_campo(str(c.lastrowid))
         except Exception as e:
             raise e
         finally:
             conn.close()
-    def borrarCampoDemandado(self,campoPersonalizado):
+    def borrarCampoDemandado(self, campoPersonalizado):
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_demandado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_demandado = ?''',(campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributos_demandado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_demandado = ?''', (campoPersonalizado.getId_campo(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -595,7 +595,7 @@ class Persistence(object):
             conn.close()
     
     
-    def actualizarAtributoJuzgado(self,campoPersonalizado):
+    def actualizarAtributoJuzgado(self, campoPersonalizado):
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
@@ -603,7 +603,7 @@ class Persistence(object):
             obligatorio = 0
             if(campoPersonalizado.isObligatorio()):
                 obligatorio = 1                   
-            c.execute('''UPDATE atributosJuzgado SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,'''+ ''' longitud_min = ?,'''+''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin(),campoPersonalizado.getId_campo()))                
+            c.execute('''UPDATE atributosJuzgado SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,''' + ''' longitud_min = ?,''' + ''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''', (campoPersonalizado.getNombre(), obligatorio, campoPersonalizado.getLongitudMax(), campoPersonalizado.getLongitudMin(), campoPersonalizado.getId_atributo()))                
             conn.commit()            
         except Exception as e:
             raise e
@@ -617,7 +617,7 @@ class Persistence(object):
             obligatorio = 0
             if(campoPersonalizado.isObligatorio()):
                 obligatorio = 1                   
-            c.execute('''INSERT INTO atributosJuzgado (id_atributo, nombre, obligatorio, longitud_max, longitud_min,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin()))                
+            c.execute('''INSERT INTO atributosJuzgado (id_atributo, nombre, obligatorio, longitud_max, longitud_min,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,1,datetime('now','localtime'))''', (campoPersonalizado.getNombre(), obligatorio, campoPersonalizado.getLongitudMax(), campoPersonalizado.getLongitudMin()))                
             conn.commit()
             campoPersonalizado.setId_atributo(str(c.lastrowid))
                         
@@ -630,8 +630,8 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributosJuzgado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_campo(),))
-            c.execute('''UPDATE atributos_juzgado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributosJuzgado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''', (campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributos_juzgado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''', (campoPersonalizado.getId_campo(),))
             
             conn.commit()            
         except Exception as e:
@@ -640,12 +640,12 @@ class Persistence(object):
             conn.close()
     
     
-    def actualizarCampoJuzgado(self,campoPersonalizado):
+    def actualizarCampoJuzgado(self, campoPersonalizado):
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_juzgado SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_juzgado = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
+            c.execute('''UPDATE atributos_juzgado SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_juzgado = ?''', (campoPersonalizado.getValor(), campoPersonalizado.getId_campo()))
             conn.commit()            
         except Exception as e:
             raise e
@@ -656,7 +656,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''INSERT INTO atributos_juzgado (id_atributo_juzgado, id_atributo, id_juzgado, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getId_atributo(),id_juzgado,campoPersonalizado.getValor()))
+            c.execute('''INSERT INTO atributos_juzgado (id_atributo_juzgado, id_atributo, id_juzgado, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime('now','localtime'))''', (campoPersonalizado.getId_atributo(), id_juzgado, campoPersonalizado.getValor()))
             conn.commit()
             campoPersonalizado.setId_campo(str(c.lastrowid))
             conn.commit()            
@@ -669,7 +669,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_juzgado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_juzgado = ?''',(campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributos_juzgado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_juzgado = ?''', (campoPersonalizado.getId_campo(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -677,7 +677,7 @@ class Persistence(object):
             conn.close()
     
     
-    def actualizarAtributoActuacion(self,campoPersonalizado):
+    def actualizarAtributoActuacion(self, campoPersonalizado):
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
@@ -685,7 +685,7 @@ class Persistence(object):
             obligatorio = 0
             if(campoPersonalizado.isObligatorio()):
                 obligatorio = 1                   
-            c.execute('''UPDATE atributosActuacion SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,'''+ ''' longitud_min = ?'''+''', modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin(),campoPersonalizado.getId_campo()))                
+            c.execute('''UPDATE atributosActuacion SET nombre = ?,''' + ''' obligatorio = ?,''' + ''' longitud_max = ?,''' + ''' longitud_min = ?''' + ''', modificado =1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''', (campoPersonalizado.getNombre(), obligatorio, campoPersonalizado.getLongitudMax(), campoPersonalizado.getLongitudMin(), campoPersonalizado.getId_atributo()))                
             conn.commit()            
         except Exception as e:
             raise e
@@ -699,7 +699,7 @@ class Persistence(object):
             obligatorio = 0
             if(campoPersonalizado.isObligatorio()):
                 obligatorio = 1                   
-            c.execute('''INSERT INTO atributosActuacion (id_atributo, nombre, obligatorio, longitud_max, longitud_min,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getNombre(),obligatorio, campoPersonalizado.getLongitudMax(),campoPersonalizado.getLongitudMin()))                
+            c.execute('''INSERT INTO atributosActuacion (id_atributo, nombre, obligatorio, longitud_max, longitud_min,nuevo, fecha_mod) VALUES( NULL,?,?,?,?,1,datetime('now','localtime'))''', (campoPersonalizado.getNombre(), obligatorio, campoPersonalizado.getLongitudMax(), campoPersonalizado.getLongitudMin()))                
             conn.commit()
             campoPersonalizado.setId_atributo(str(c.lastrowid))
           
@@ -712,8 +712,8 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributosActuacion SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_campo(),))
-            c.execute('''UPDATE atributos_actuacion SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''',(campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributosActuacion SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''', (campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributos_actuacion SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo = ?''', (campoPersonalizado.getId_campo(),))
             
             conn.commit()            
         except Exception as e:
@@ -722,12 +722,12 @@ class Persistence(object):
             conn.close()
     
     
-    def actualizarCampoActuacion(self,campoPersonalizado):
+    def actualizarCampoActuacion(self, campoPersonalizado):
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_actuacion SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_actuacion = ?''',(campoPersonalizado.getValor(),campoPersonalizado.getId_campo()))
+            c.execute('''UPDATE atributos_actuacion SET valor = ?, modificado =1,fecha_mod = datetime('now','localtime') WHERE id_atributo_actuacion = ?''', (campoPersonalizado.getValor(), campoPersonalizado.getId_campo()))
             conn.commit()            
         except Exception as e:
             raise e
@@ -738,7 +738,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''INSERT INTO atributos_actuacion (id_atributo_actuacion, id_atributo, id_actuacion, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime('now','localtime'))''',(campoPersonalizado.getId_atributo(),id_actuacion,campoPersonalizado.getValor()))
+            c.execute('''INSERT INTO atributos_actuacion (id_atributo_actuacion, id_atributo, id_actuacion, valor, nuevo, fecha_mod) VALUES( NULL,?,?,?,1,datetime('now','localtime'))''', (campoPersonalizado.getId_atributo(), id_actuacion, campoPersonalizado.getValor()))
             conn.commit()
             campoPersonalizado.setId_campo(str(c.lastrowid))
         except Exception as e:
@@ -750,7 +750,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_actuacion SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_actuacion = ?''',(campoPersonalizado.getId_campo(),))
+            c.execute('''UPDATE atributos_actuacion SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_actuacion = ?''', (campoPersonalizado.getId_campo(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -763,7 +763,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE archivos_proceso SET id_proceso = ?,'''+'''ruta = ?,'''+''' modificado =1,fecha_mod = datetime('now','localtime') WHERE id_archivo_proceso = ?''',(archivo.getId_proceso(),archivo.getRuta(),archivo.getId_archivo_proceso(),))
+            c.execute('''UPDATE archivos_proceso SET id_proceso = ?,''' + '''ruta = ?,''' + ''' modificado =1,fecha_mod = datetime('now','localtime') WHERE id_archivo_proceso = ?''', (archivo.getId_proceso(), archivo.getRuta(), archivo.getId_archivo_proceso(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -774,7 +774,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()                  
-            c.execute('''INSERT INTO archivos_proceso (id_archivo_proceso, id_proceso, ruta,nuevo, fecha_mod) VALUES( NULL,?,?,1,datetime('now','localtime'))''',(archivo.getId_proceso(),archivo.getRuta()))                
+            c.execute('''INSERT INTO archivos_proceso (id_archivo_proceso, id_proceso, ruta,nuevo, fecha_mod) VALUES( NULL,?,?,1,datetime('now','localtime'))''', (archivo.getId_proceso(), archivo.getRuta()))                
             conn.commit()
             archivo.setId_archivo_proceso(str(c.lastrowid))
          
@@ -787,7 +787,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE archivo_proceso SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_archivo_proceso = ?''',(archivo.getId_archivo_proceso(),))
+            c.execute('''UPDATE archivo_proceso SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_archivo_proceso = ?''', (archivo.getId_archivo_proceso(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -800,7 +800,7 @@ class Persistence(object):
         demandantes = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes WHERE eliminado = 0 ORDER BY nombre''')
@@ -828,7 +828,7 @@ class Persistence(object):
         demandados = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE eliminado = 0 ORDER BY nombre''')
@@ -854,7 +854,7 @@ class Persistence(object):
         personas = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE eliminado = 0 ORDER BY nombre''')
@@ -893,7 +893,7 @@ class Persistence(object):
     def consultarPersona(self, id_persona, tipo):
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             persona = None
@@ -938,7 +938,7 @@ class Persistence(object):
         procesos = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT p.id_proceso, p.id_demandante, p.id_demandado, p.fecha_creacion as "fecha_creacion [timestamp]", p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria FROM procesos p WHERE eliminado = 0''')
@@ -955,11 +955,11 @@ class Persistence(object):
                 prioridad = int(row['prioridad'])
                 id_juzgado = str(row['id_juzgado'])
                 id_categoria = str(row['id_categoria'])
-                demandante = Persona(1, id_persona=id_demandante)
-                demandado = Persona(2, id_persona=id_demandado)
-                juzgado = Juzgado(id_juzgado=id_juzgado)
-                categoria = Categoria(id_categoria=id_categoria)
-                proceso = Proceso(demandante= demandante, demandado = demandado, fecha = fecha_creacion, juzgado= juzgado, radicado = radicado, radicadoUnico=radicado_unico, actuaciones= [], estado=estado, categoria=categoria, tipo=tipo, notas=notas, campos=[], prioridad=prioridad, id_proceso=id_proceso)
+                demandante = Persona(1, id_persona = id_demandante)
+                demandado = Persona(2, id_persona = id_demandado)
+                juzgado = Juzgado(id_juzgado = id_juzgado)
+                categoria = Categoria(id_categoria = id_categoria)
+                proceso = Proceso(demandante = demandante, demandado = demandado, fecha = fecha_creacion, juzgado = juzgado, radicado = radicado, radicadoUnico = radicado_unico, actuaciones = [], estado = estado, categoria = categoria, tipo = tipo, notas = notas, campos = [], prioridad = prioridad, id_proceso = id_proceso)
                 procesos.append(proceso)
         except Exception as e:
             raise e
@@ -978,7 +978,7 @@ class Persistence(object):
         proceso = None
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT p.id_proceso, p.id_demandante, p.id_demandado, p.fecha_creacion as "fecha_creacion [timestamp]", p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria FROM procesos p WHERE p.id_proceso = ?''', (id_proceso,))
@@ -996,10 +996,10 @@ class Persistence(object):
                 prioridad = int(row['prioridad'])
                 id_juzgado = str(row['id_juzgado'])
                 id_categoria = str(row['id_categoria'])
-                demandante = Persona(1, id_persona=id_demandante)
-                demandado = Persona(2, id_persona=id_demandado)
-                juzgado = Juzgado(id_juzgado=id_juzgado)
-                categoria = Categoria(id_categoria=id_categoria)
+                demandante = Persona(1, id_persona = id_demandante)
+                demandado = Persona(2, id_persona = id_demandado)
+                juzgado = Juzgado(id_juzgado = id_juzgado)
+                categoria = Categoria(id_categoria = id_categoria)
                 proceso = Proceso(demandante, demandado, fecha_creacion, juzgado, radicado, radicado_unico, [], estado, categoria, tipo, notas, [], prioridad, id_proceso)
         except Exception as e:
             raise e
@@ -1017,7 +1017,7 @@ class Persistence(object):
         actuaciones = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE id_proceso = ? AND eliminado = 0 ORDER BY fecha_creacion, fecha_proxima''', (proceso.getId_proceso(),))
@@ -1028,7 +1028,7 @@ class Persistence(object):
                 fecha_proxima = row['fecha_proxima']
                 descripcion = row['descripcion']
                 uid = row['uid']
-                juzgado = Juzgado(id_juzgado=id_juzgado)
+                juzgado = Juzgado(id_juzgado = id_juzgado)
                 actuacion = Actuacion(juzgado, fecha_creacion, fecha_proxima, descripcion, id_actuacion, uid)
                 actuaciones.append(actuacion)
         except Exception as e:
@@ -1044,7 +1044,7 @@ class Persistence(object):
         actuacion = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE id_actuacion = ?''', (id_actuacion,))
@@ -1056,7 +1056,7 @@ class Persistence(object):
                 fecha_proxima = row['fecha_proxima']
                 descripcion = row['descripcion']
                 uid = row['uid']
-                juzgado = Juzgado(id_juzgado=id_juzgado)
+                juzgado = Juzgado(id_juzgado = id_juzgado)
                 actuacion = Actuacion(juzgado, fecha_creacion, fecha_proxima, descripcion, id_actuacion, uid)  
         except Exception as e:
             raise e
@@ -1069,7 +1069,7 @@ class Persistence(object):
         actuaciones = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE fecha_proxima >= date() AND eliminado = 0 ORDER BY fecha_proxima LIMIT ?''', (cantidad,))
@@ -1080,7 +1080,7 @@ class Persistence(object):
                 fecha_proxima = row['fecha_proxima']
                 descripcion = row['descripcion']
                 uid = row['uid']
-                juzgado = Juzgado(id_juzgado=id_juzgado)
+                juzgado = Juzgado(id_juzgado = id_juzgado)
                 actuacion = Actuacion(juzgado, fecha_creacion, fecha_proxima, descripcion, id_actuacion, uid)
                 actuaciones.append(actuacion)
         except Exception as e:
@@ -1096,7 +1096,7 @@ class Persistence(object):
         juzgados = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT id_juzgado, nombre, ciudad, telefono, direccion, tipo FROM juzgados WHERE eliminado = 0 ORDER BY nombre''')
@@ -1121,7 +1121,7 @@ class Persistence(object):
         juzgado = None
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT id_juzgado, nombre, ciudad, telefono, direccion, tipo FROM juzgados WHERE id_juzgado = ?''', (id_juzgado,))
@@ -1145,7 +1145,7 @@ class Persistence(object):
         categoria = None
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT id_categoria, descripcion FROM categorias WHERE id_categoria = ?''', (id_categoria,))
@@ -1164,7 +1164,7 @@ class Persistence(object):
         categorias = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT id_categoria, descripcion FROM categorias WHERE eliminado = 0 ORDER BY descripcion''')
@@ -1183,7 +1183,7 @@ class Persistence(object):
         campos = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_proceso = ? AND at.eliminado = 0''', (proceso.getId_proceso(),))
@@ -1212,7 +1212,7 @@ class Persistence(object):
         campo = None
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT at.id_atributo_proceso, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_proceso at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_proceso = ?''', (id_campo,))
@@ -1241,7 +1241,7 @@ class Persistence(object):
         atributos = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributos WHERE eliminado = 0''')
@@ -1256,7 +1256,7 @@ class Persistence(object):
                     obligatorio = True
                 else:
                     obligatorio = False 
-                campo = CampoPersonalizado(id_atributo=id_atributo, nombre=nombre, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min)    
+                campo = CampoPersonalizado(id_atributo = id_atributo, nombre = nombre, obligatorio = obligatorio, longitudMax = longitud_max, longitudMin = longitud_min)    
                 atributos.append(campo)
         except Exception as e:
             raise e
@@ -1268,7 +1268,7 @@ class Persistence(object):
         plantillas = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT p.id_plantilla, p.id_demandante, p.id_demandado, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria, p.nombre FROM plantillas p WHERE eliminado = 0''')
@@ -1285,10 +1285,10 @@ class Persistence(object):
                 id_juzgado = str(row['id_juzgado'])
                 id_categoria = str(row['id_categoria'])
                 nombre = row['nombre']
-                demandante = Persona(1, id_persona=id_demandante)
-                demandado = Persona(2, id_persona=id_demandado)
-                juzgado = Juzgado(id_juzgado=id_juzgado)
-                categoria = Categoria(id_categoria=id_categoria)
+                demandante = Persona(1, id_persona = id_demandante)
+                demandado = Persona(2, id_persona = id_demandado)
+                juzgado = Juzgado(id_juzgado = id_juzgado)
+                categoria = Categoria(id_categoria = id_categoria)
                 plantilla = Plantilla(nombre, demandante, demandado, juzgado, radicado, radicado_unico, estado, categoria, tipo, notas, [], prioridad, id_plantilla)
                 plantillas.append(plantilla)
         except Exception as e:
@@ -1307,7 +1307,7 @@ class Persistence(object):
         plantilla = None
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT p.id_plantilla, p.id_demandante, p.id_demandado, p.radicado, p.radicado_unico, p.estado, p.tipo, p.notas, p.prioridad, p.id_juzgado, p.id_categoria, p.nombre FROM plantillas p WHERE p.id_plantilla = ?''', (id_plantilla,))
@@ -1325,10 +1325,10 @@ class Persistence(object):
                 id_juzgado = str(row['id_juzgado'])
                 id_categoria = str(row['id_categoria'])
                 nombre = row['nombre']
-                demandante = Persona(1, id_persona=id_demandante)
-                demandado = Persona(2, id_persona=id_demandado)
-                juzgado = Juzgado(id_juzgado=id_juzgado)
-                categoria = Categoria(id_categoria=id_categoria)
+                demandante = Persona(1, id_persona = id_demandante)
+                demandado = Persona(2, id_persona = id_demandado)
+                juzgado = Juzgado(id_juzgado = id_juzgado)
+                categoria = Categoria(id_categoria = id_categoria)
                 plantilla = Plantilla(nombre, demandante, demandado, juzgado, radicado, radicado_unico, estado, categoria, tipo, notas, [], prioridad, id_plantilla)
         except Exception as e:
             raise e
@@ -1345,7 +1345,7 @@ class Persistence(object):
         campos = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_plantilla = ? AND at.eliminado = 0''', (plantilla.getId_plantilla(),))
@@ -1374,7 +1374,7 @@ class Persistence(object):
         campo = None
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT at.id_atributo_plantilla, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_plantilla at, atributos a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_plantilla = ?''', (id_campo,))
@@ -1403,7 +1403,7 @@ class Persistence(object):
         valor = 0
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT valor FROM preferencias WHERE id_preferencia = ? ''', (id_preferencia,))
@@ -1421,7 +1421,7 @@ class Persistence(object):
         atributos = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributosPersona WHERE eliminado = 0''')
@@ -1436,7 +1436,7 @@ class Persistence(object):
                     obligatorio = True
                 else:
                     obligatorio = False 
-                campo = CampoPersonalizado(id_atributo=id_atributo, nombre=nombre, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min)    
+                campo = CampoPersonalizado(id_atributo = id_atributo, nombre = nombre, obligatorio = obligatorio, longitudMax = longitud_max, longitudMin = longitud_min)    
                 atributos.append(campo)
         except Exception as e:
             raise e
@@ -1449,7 +1449,7 @@ class Persistence(object):
         campos = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT at.id_atributo_demandante, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_demandante at, atributosPersona a WHERE at.id_atributo = a.id_atributo AND at.id_demandante = ? AND at.eliminado = 0''', (demandante.getId_persona(),))
@@ -1479,7 +1479,7 @@ class Persistence(object):
         campo = None
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT at.id_atributo_demandante, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_demandante at, atributosPersona a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_demandante = ?''', (id_campo,))
@@ -1509,7 +1509,7 @@ class Persistence(object):
         campos = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT at.id_atributo_demandado, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_demandado at, atributosPersona a WHERE at.id_atributo = a.id_atributo AND at.id_demandado = ? AND at.eliminado = 0''', (demandado.getId_persona(),))
@@ -1539,7 +1539,7 @@ class Persistence(object):
         campo = None
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT at.id_atributo_demandado, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_demandado at, atributosPersona a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_demandado = ?''', (id_campo,))
@@ -1568,7 +1568,7 @@ class Persistence(object):
         atributos = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributosJuzgado WHERE eliminado = 0''')
@@ -1583,7 +1583,7 @@ class Persistence(object):
                     obligatorio = True
                 else:
                     obligatorio = False 
-                campo = CampoPersonalizado(id_atributo=id_atributo, nombre=nombre, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min)    
+                campo = CampoPersonalizado(id_atributo = id_atributo, nombre = nombre, obligatorio = obligatorio, longitudMax = longitud_max, longitudMin = longitud_min)    
                 atributos.append(campo)
         except Exception as e:
             raise e
@@ -1596,7 +1596,7 @@ class Persistence(object):
         campos = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT at.id_atributo_juzgado, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_juzgado at, atributosJuzgado a WHERE at.id_atributo = a.id_atributo AND at.id_juzgado = ? AND at.eliminado = 0''', (juzgado.getId_juzgado(),))
@@ -1626,7 +1626,7 @@ class Persistence(object):
         campo = None
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT at.id_atributo_juzgado, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_juzgado at, atributosJuzgado a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_juzgado = ?''', (id_campo,))
@@ -1655,7 +1655,7 @@ class Persistence(object):
         atributos = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT id_atributo, nombre,obligatorio,longitud_max, longitud_min FROM  atributosActuacion WHERE eliminado = 0''')
@@ -1670,7 +1670,7 @@ class Persistence(object):
                     obligatorio = True
                 else:
                     obligatorio = False 
-                campo = CampoPersonalizado(id_atributo=id_atributo, nombre=nombre, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min)    
+                campo = CampoPersonalizado(id_atributo = id_atributo, nombre = nombre, obligatorio = obligatorio, longitudMax = longitud_max, longitudMin = longitud_min)    
                 atributos.append(campo)
         except Exception as e:
             raise e
@@ -1683,7 +1683,7 @@ class Persistence(object):
         campos = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT at.id_atributo_actuacion, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_actuacion at, atributosActuacion a WHERE at.id_atributo = a.id_atributo AND at.id_actuacion = ? AND at.eliminado = 0''', (actuacion.getId_actuacion(),))
@@ -1713,7 +1713,7 @@ class Persistence(object):
         campo = None
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT at.id_atributo_actuacion, at.id_atributo, at.valor, a.nombre,a.obligatorio,a.longitud_max, a.longitud_min FROM atributos_actuacion at, atributosActuacion a WHERE at.id_atributo = a.id_atributo AND at.id_atributo_actuacion = ?''', (id_campo,))
@@ -1742,7 +1742,7 @@ class Persistence(object):
         archivos = []
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT id_archivo_proceso, ruta FROM archivos_proceso WHERE id_proceso = ? AND eliminado = 0''', (proceso.getId_proceso(),))
@@ -1761,7 +1761,7 @@ class Persistence(object):
         archivo = None
         try:
             self.__conMgr.prepararBD()
-            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT id_archivo_proceso, ruta FROM archivos_proceso WHERE id_archivo_proceso = ? AND eliminado = 0''', (id_archivo_proceso,))
