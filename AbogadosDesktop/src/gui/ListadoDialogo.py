@@ -226,8 +226,3 @@ class ListadoDialogo (QDialog):
                 campoJuzgado = nuevoCampoJuzgado.getCampo()
                 self.lista.replace(campoJuzgado)
 
-import sys  
-app = QApplication(sys.argv)  
-form = ListadoDialogo(ListadoDialogo.DEMANDANTE)
-form.show()
-app.exec_()
