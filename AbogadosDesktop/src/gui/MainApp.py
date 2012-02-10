@@ -452,7 +452,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 nuevoElemento = ColumnaDerecha(titulo=False, centralWidget=proceso)
                 if self.listaIzquierda.currentItem().text() == 'Actuaciones':
                     nuevoElemento.getCentralWidget().tabWidget.setCurrentIndex(1)
-                nuevoElemento.setMaximumWidth(310)
+                nuevoElemento.setMaximumWidth(340)
                 nuevoElemento.setMinimumWidth(310)
                 self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
                 self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.procesoEditarClicked)

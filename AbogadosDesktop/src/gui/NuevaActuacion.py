@@ -22,8 +22,6 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
     def __init__(self, actuacion = None, id_proceso = None, parent = None):
         super(NuevaActuacion, self).__init__(parent)
         
-        if actuacion is None and id_proceso is None:
-            raise TypeError("Para crear una actuación debe pasar el argumento id_proceso")
         if actuacion is not None and not isinstance(actuacion, Actuacion):
             raise TypeError("El objeto actuacion debe ser de la clase Actuacion")
         
@@ -60,8 +58,11 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         editar = self.createAction("Editar", self.editarJuzgado)
         editar.setData(self.lblJuzgado)
         
-        self.lblJuzgado.addActions([cambiar,editar])
+        self.lblJuzgado.addActions([cambiar, editar])
         
+    def getActuacion(self):
+        return self.__actuacion
+    
     def cambiarJuzgado(self):
         listado = ListadoDialogo(ListadoDialogo.JUZGADO, self)
         if listado.exec_():
@@ -97,14 +98,15 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
     def guardar(self):
         try:
             p = Persistence()
-            fecha = self.dteFecha.dateTime()
-            fechaProxima = self.dteFechaProxima.dateTime()
+            fecha = self.dteFecha.dateTime().toPython()
+            fechaProxima = self.dteFechaProxima.dateTime().toPython()
             descripcion = self.txtDescripcion.text()
             if self.__actuacion is None:
-                self.__actuacion = Actuacion(juzgado = self.__juzgado, fecha = fecha, 
-                                             fechaProxima = fechaProxima, descripcion = descripcion, 
+                self.__actuacion = Actuacion(juzgado = self.__juzgado, fecha = fecha,
+                                             fechaProxima = fechaProxima, descripcion = descripcion,
                                              campos = self.__campos)
-                p.guardarActuacion(self.__actuacion)
+                if self.__idProceso is not None:
+                    p.guardarActuacion(actuacion = self.__actuacion, id_proceso = self.__idProceso)
             else:
                 self.__actuacion.setDescripcion(descripcion)
                 self.__actuacion.setFecha(fecha)
@@ -130,7 +132,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
                         container.addWidget(vista)
                 else:
                     widget.cambiarJuzgado()
-            return QtGui.QLabel.mousePressEvent(lblJuzgado,self)
+            return QtGui.QLabel.mousePressEvent(lblJuzgado, self)
             
         self.lblJuzgado.mousePressEvent = mousePressEvent
     
@@ -148,7 +150,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             selectionChanged = lambda:dteFecha.setDate(calendar.selectedDate())           
             calendar.selectionChanged.connect(selectionChanged)
                   
-            return QtGui.QDateTimeEdit.focusInEvent(dteFecha,self)
+            return QtGui.QDateTimeEdit.focusInEvent(dteFecha, self)
         
         def dateChanged(date):
             calendar = container.itemAt(1).widget()
@@ -172,7 +174,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             selectionChanged = lambda:dteFecha.setDate(calendar.selectedDate())           
             calendar.selectionChanged.connect(selectionChanged)
                  
-            return QtGui.QDateTimeEdit.focusInEvent(dteFecha,self)
+            return QtGui.QDateTimeEdit.focusInEvent(dteFecha, self)
         
         def dateChanged(date):
             calendar = container.itemAt(1).widget()
