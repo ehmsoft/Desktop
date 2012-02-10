@@ -21,8 +21,9 @@ class ListadoDialogo (QDialog):
         
         self.tipo = tipo
         self.p = Persistence()
-        
-        
+        self.editado = []
+        self.eliminado = []
+        self.agregado = []
         if self.tipo is self.__class__.DEMANDANTE:
             
             objetos = self.p.consultarDemandantes()
@@ -79,6 +80,7 @@ class ListadoDialogo (QDialog):
     def click(self, item):
         self.selected = item.getObjeto()
         self.accept()
+        
     
     def getSelected(self):
         return self.selected
@@ -93,46 +95,55 @@ class ListadoDialogo (QDialog):
             if nuevaPersona.exec_():
                 demandante = nuevaPersona.getPersona()
                 self.lista.add(demandante)
+                self.agregado.append(demandante)
         elif self.tipo is self.__class__.DEMANDADO:
             nuevaPersona = NuevaPersona(tipo = 2, parent = self)
             if nuevaPersona.exec_():
                 demandado = nuevaPersona.getPersona()
                 self.lista.add(demandado)
+                self.agregado.append(demandado)
         elif self.tipo is self.__class__.JUZGADO:
             nuevoJuzgado = NuevoJuzgado(parent = self)
             if nuevoJuzgado.exec_():
                 juzgado = nuevoJuzgado.getJuzgado()
                 self.lista.add(juzgado)
+                self.agregado.append(juzgado)
         elif self.tipo is self.__class__.CATEGORIA:
             nuevaCategoria = NuevaCategoria(parent = self)
             if nuevaCategoria.exec_():
                 categoria = nuevaCategoria.getCategoria()
                 self.lista.add(categoria)
+                self.agregado.append(categoria)
         elif self.tipo is self.__class__.CAMPODEMANDANTE:
             nuevoCampoDemandante = NuevoCampo(tipo = NuevoCampo.PERSONA, parent = self)
             if nuevoCampoDemandante.exec_():
                 campoPersona = nuevoCampoDemandante.getCampo()
                 self.lista.add(campoPersona)
+                self.agregado.append(campoPersona)
         elif self.tipo is self.__class__.CAMPODEMANDADO:
             nuevoCampoDemandado = NuevoCampo(tipo = NuevoCampo.PERSONA, parent = self)
             if nuevoCampoDemandado.exec_():
                 campoPersona = nuevoCampoDemandado.getCampo()
-                self.lista.add(campoPersona)        
+                self.lista.add(campoPersona)
+                self.agregado.append(campoPersona)        
         elif self.tipo is self.__class__.CAMPOACTUACION:
             nuevoCampoActuacion = NuevoCampo(tipo = NuevoCampo.ACTUACION, parent = self)
             if nuevoCampoActuacion.exec_():
                 campoActuacion = nuevoCampoActuacion.getCampo()
                 self.lista.add(campoActuacion)
+                self.agregado.append(campoActuacion)
         elif self.tipo is self.__class__.CAMPOPROCESOP:
             nuevoCampoPP = NuevoCampo(tipo = NuevoCampo.PROCESO, parent = self)
             if nuevoCampoPP.exec_():
                 campoPP = nuevoCampoPP.getCampo()
                 self.lista.add(campoPP)
+                self.agregado.append(campoPP)
         elif self.tipo is self.__class__.CAMPOJUZGADO:
             nuevoCampoJuzgado = NuevoCampo(tipo = NuevoCampo.JUZGADO, parent = self)
             if nuevoCampoJuzgado.exec_():
                 campoJuzgado = nuevoCampoJuzgado.getCampo()
                 self.lista.add(campoJuzgado)
+                self.agregado.append(campoJuzgado)
     
     
     def createAction(self, text, slot = None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
@@ -151,25 +162,34 @@ class ListadoDialogo (QDialog):
         return action       
     
     def eliminar(self):
-                     
+        objeto = self.lista.currentItem().getObjeto()
         if self.tipo is self.__class__.DEMANDANTE:
-            self.p.borrarPersona(self.lista.currentItem().getObjeto())                    
+            self.p.borrarPersona(objeto)
+            self.eliminado.append(objeto)                    
         elif self.tipo is self.__class__.DEMANDADO:
-            self.p.borrarPersona(self.lista.currentItem().getObjeto())            
+            self.p.borrarPersona(objeto)
+            self.eliminado.append(objeto)             
         elif self.tipo is self.__class__.JUZGADO:
-            self.p.borrarJuzgado(self.lista.currentItem().getObjeto())            
+            self.p.borrarJuzgado(objeto)
+            self.eliminado.append(objeto)             
         elif self.tipo is self.__class__.CATEGORIA:
-            self.p.borrarCategoria(self.lista.currentItem().getObjeto())            
+            self.p.borrarCategoria(objeto)
+            self.eliminado.append(objeto)             
         elif self.tipo is self.__class__.CAMPODEMANDANTE:
-            self.p.borrarCampoDemandante(self.lista.currentItem().getObjeto())   
+            self.p.borrarCampoDemandante(objeto)
+            self.eliminado.append(objeto)    
         elif self.tipo is self.__class__.CAMPODEMANDADO:
-            self.p.borrarCampoDemandado(self.lista.currentItem().getObjeto())
+            self.p.borrarCampoDemandado(objeto)
+            self.eliminado.append(objeto) 
         elif self.tipo is self.__class__.CAMPOACTUACION:
-            self.p.borrarCampoActuacion(self.lista.currentItem().getObjeto())
+            self.p.borrarCampoActuacion(objeto)
+            self.eliminado.append(objeto) 
         elif self.tipo is self.__class__.CAMPOPROCESOP:
-            self.p.borrarCampoPersonalizado(self.lista.currentItem().getObjeto())
+            self.p.borrarCampoPersonalizado(objeto)
+            self.eliminado.append(objeto) 
         elif self.tipo is self.__class__.CAMPOJUZGADO:
-            self.p.borrarCampoJuzgado(self.lista.currentItem().getObjeto())
+            self.p.borrarCampoJuzgado(objeto)
+            self.eliminado.append(objeto) 
         self.lista.remove()
             
         
@@ -183,44 +203,59 @@ class ListadoDialogo (QDialog):
             if nuevaPersona.exec_():
                 demandante = nuevaPersona.getPersona()
                 self.lista.replace(demandante)
+                self.editado.append(demandante)
         elif self.tipo is self.__class__.DEMANDADO:
             nuevaPersona = NuevaPersona(persona = self.lista.currentItem().getObjeto(), tipo = 2, parent = self)
             if nuevaPersona.exec_():
                 demandado = nuevaPersona.getPersona()
                 self.lista.replace(demandado)
+                self.editado.append(demandado)
         elif self.tipo is self.__class__.JUZGADO:
             nuevoJuzgado = NuevoJuzgado(juzgado = self.lista.currentItem().getObjeto(), parent = self)
             if nuevoJuzgado.exec_():
                 juzgado = nuevoJuzgado.getJuzgado()
                 self.lista.replace(juzgado)
+                self.editado.append(juzgado)
         elif self.tipo is self.__class__.CATEGORIA:
             nuevaCategoria = NuevaCategoria(categoria = self.lista.currentItem().getObjeto(), parent = self)
             if nuevaCategoria.exec_():
                 categoria = nuevaCategoria.getCategoria()
                 self.lista.replace(categoria)
+                self.editado.append(categoria)
         elif self.tipo is self.__class__.CAMPODEMANDANTE:
             nuevoCampoDemandante = NuevoCampo(tipo = NuevoCampo.PERSONA, campo = self.lista.currentItem().getObjeto(), parent = self)
             if nuevoCampoDemandante.exec_():
                 campoPersona = nuevoCampoDemandante.getCampo()
                 self.lista.replace(campoPersona)
+                self.editado.append(campoPersona)
         elif self.tipo is self.__class__.CAMPODEMANDADO:
             nuevoCampoDemandado = NuevoCampo(tipo = NuevoCampo.PERSONA, campo = self.lista.currentItem().getObjeto(), parent = self)
             if nuevoCampoDemandado.exec_():
                 campoPersona = nuevoCampoDemandado.getCampo()
-                self.lista.replace(campoPersona)        
+                self.lista.replace(campoPersona)
+                self.editado.append(campoPersona)        
         elif self.tipo is self.__class__.CAMPOACTUACION:
             nuevoCampoActuacion = NuevoCampo(tipo = NuevoCampo.ACTUACION, campo = self.lista.currentItem().getObjeto(), parent = self)
             if nuevoCampoActuacion.exec_():
                 campoActuacion = nuevoCampoActuacion.getCampo()
                 self.lista.replace(campoActuacion)
+                self.editado.append(campoActuacion)
         elif self.tipo is self.__class__.CAMPOPROCESOP:
             nuevoCampoPP = NuevoCampo(tipo = NuevoCampo.PROCESO, campo = self.lista.currentItem().getObjeto(), parent = self)
             if nuevoCampoPP.exec_():
                 campoPP = nuevoCampoPP.getCampo()
                 self.lista.replace(campoPP)
+                self.editado.append(campoPP)
         elif self.tipo is self.__class__.CAMPOJUZGADO:
             nuevoCampoJuzgado = NuevoCampo(tipo = NuevoCampo.JUZGADO, campo = self.lista.currentItem().getObjeto(), parent = self)
             if nuevoCampoJuzgado.exec_():
                 campoJuzgado = nuevoCampoJuzgado.getCampo()
                 self.lista.replace(campoJuzgado)
+                self.editado.append(campoJuzgado)
 
+    def getEditados(self):
+        return self.editado
+    def getEliminados(self):
+        return self.eliminado
+    def getAgregados(self):
+        return self.agregado
