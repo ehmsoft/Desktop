@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'verProceso.ui'
 #
-# Created: Wed Feb  1 12:54:13 2012
+# Created: Thu Feb  9 19:35:31 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.0.7
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_VerProceso(object):
     def setupUi(self, VerProceso):
         VerProceso.setObjectName("VerProceso")
-        VerProceso.resize(328, 515)
+        VerProceso.resize(354, 514)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
