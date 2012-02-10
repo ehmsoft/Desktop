@@ -8,7 +8,7 @@ Created on 7/02/2012
 from PySide import QtGui, QtCore
 from core.Proceso import Proceso
 from gui.NuevoProcesoScreen import Ui_NuevoProceso
-from copy import deepcopy
+from copy import copy
 from gui.ListadoDialogo import ListadoDialogo
 from gui.NuevoCampo import NuevoCampo
 from persistence.Persistence import Persistence
@@ -18,6 +18,8 @@ from datetime import datetime
 from gui.NuevaPersona import NuevaPersona
 from gui.NuevoJuzgado import NuevoJuzgado
 from gui.NuevaCategoria import NuevaCategoria
+from gui.NuevaActuacion import NuevaActuacion
+from gui.VerActuacion import VerActuacion
 
 class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     '''
@@ -39,7 +41,9 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         self.setupUi(self)
         self.__proceso = proceso
         self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.addCampo)
+        self.connect(self.btnAdd_2, QtCore.SIGNAL("clicked()"), self.addActuacion)
         self.__campos = []
+        self.__actuaciones = []
         self.__demandante = None
         self.__demandado = None
         self.__juzgado = None
@@ -51,7 +55,8 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             self.__demandado = self.__proceso.getDemandado()
             self.__juzgado = self.__proceso.getJuzgado()
             self.__categoria = self.__proceso.getCategoria()
-            self.__campos = deepcopy(self.__proceso.getCampos())
+            self.__campos = copy(self.__proceso.getCampos())
+            self.__actuaciones = copy(self.__proceso.getActuaciones())
             
             self.lblDemandante.setText(self.__demandante.getNombre())
             self.lblDemandado.setText(self.__demandado.getNombre())
@@ -67,9 +72,8 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         else:
             self.dteFecha.setDateTime(datetime.today())
             
-        if self.__campos is not None and self.__campos != []:
-            for campo in self.__campos:
-                self.addCampo(campo)
+        self.cargarCampos()
+        self.cargarActuaciones()
                 
         self.clickDemandante()
         self.clickDemandado()
@@ -305,27 +309,49 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     def guardar(self):
         try:
             p = Persistence()
+            demandante = self.__demandante
+            demandado = self.__demandado
+            fecha = self.dteFecha.dateTime().toPython()
+            juzgado = self.__juzgado
+            radicado = self.txtRadicado.text()
+            radicadoUnico = self.txtRadicadoUnico.text()
+            actuaciones = self.__actuaciones
+            estado = self.txtEstado.text()
+            categoria = self.__categoria
+            tipo = self.txtTipo.text()
+            notas = self.txtNotas.toPlainText()
+            prioridad = self.sbPrioridad.value()
+            campos = self.__campos
             if self.__proceso is None:
-                demandante = self.__demandante
-                demandado = self.__demandado
-                fecha = self.dteFecha.dateTime()
-                juzgado = self.__juzgado
-                radicado = self.txtRadicado.text()
-                radicadoUnico = self.txtRadicadoUnico.text()
-                actuaciones = None #TODO: Realizar implementación de las actuaciones
-                estado = self.txtEstado.text()
-                categoria = self.__categoria
-                tipo = self.txtTipo.text()
-                #TODO: El restante de atributos po sacar de la pantalla
-                notas = None
-                prioridad = None
-                campos = None
                 proceso = Proceso(demandante = demandante, demandado = demandado, fecha = fecha, juzgado = juzgado,
                                   radicado = radicado, radicadoUnico = radicadoUnico, actuaciones = actuaciones,
                                   estado = estado, categoria = categoria, tipo = tipo, notas = notas,
                                   prioridad = prioridad, campos = campos)
+                p.guardarProceso(proceso)
+            else:
+                actuacionesNuevas = self.actuacionesNuevas()
+                if len(actuacionesNuevas) is not 0:
+                    for actuacion in actuacionesNuevas:
+                        p.guardarActuacion(actuacion, self.__proceso.getId_proceso())
+                self.__proceso.setDemandante(demandante)
+                self.__proceso.setDemandado(demandado)
+                self.__proceso.setFecha(fecha)
+                self.__proceso.setJuzgado(juzgado)
+                self.__proceso.setRadicado(radicado)
+                self.__proceso.setRadicadoUnico(radicadoUnico)
+                self.__proceso.setActuaciones(actuaciones)
+                self.__proceso.setEstado(estado)
+                self.__proceso.setCategoria(categoria)
+                self.__proceso.setTipo(tipo)
+                self.__proceso.setNotas(notas)
+                self.__proceso.setPrioridad(prioridad)
+                self.__proceso.setCampos(campos)
+                self.__p.actualizarProceso(proceso)
+                p.actualizarProceso(self.__proceso)
         except Exception, e:
             print "Guardar proceso -> %s" % e
+        finally:
+            return QtGui.QDialog.accept(self)
                 
     def getProceso(self):
         return self.__proceso
@@ -406,10 +432,32 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         action = QtGui.QAction(text, self)
         if slot is not None:
             self.connect(action, QtCore.SIGNAL("triggered()"), slot)
-        return action    
+        return action
+    
+    def cargarCampos(self):
+        if len(self.__campos) is not 0:
+            for campo in self.__campos:
+                label = QtGui.QLabel()
+                label.setText("%s:" % campo.getNombre())
+                txtBox = QtGui.QLineEdit()
+                txtBox.setText(campo.getValor())
+                if campo.getLongitudMax() is not 0:
+                    txtBox.setMaxLength(campo.getLongitudMax())
                 
-    def addCampo(self, campo = None):
-        if campo is not None:
+                txtBox.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+                
+                eliminar = self.createAction('Eliminar', self.borrarElemento)
+                eliminar.setData(txtBox)
+                editar = self.createAction("Editar", self.editarElemento)
+                editar.setData(txtBox)
+                
+                txtBox.addActions([eliminar, editar])
+                self.formLayout.addRow(label, txtBox)        
+                
+    def addCampo(self):
+        dialogo = ListadoDialogo(ListadoDialogo.CAMPOPROCESOP, self)                
+        if dialogo.exec_():
+            campo = dialogo.getSelected()
             if campo in self.__campos:
                 message = QtGui.QMessageBox()
                 message.setIcon(QtGui.QMessageBox.Warning)
@@ -433,11 +481,64 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
                 txtBox.addActions([eliminar, editar])
                 self.formLayout.addRow(label, txtBox)
                 self.__campos.append(campo)
-        else:
-            dialogo = ListadoDialogo(ListadoDialogo.CAMPOPROCESOP, self)                
-            if dialogo.exec_():
-                campo = dialogo.getSelected()
-                self.addCampo(campo)
+                
+    def editarActuacion(self):
+        index = self.verticalLayout.indexOf(self.sender().data())
+        dialogo = NuevaActuacion(actuacion = self.__actuaciones[index], parent = self)
+        if dialogo.exec_():
+            vista = self.verticalLayout.itemAt(index).widget()
+            vista.setActuacion(dialogo.getActuacion())
+            
+    
+    def eliminarActuacion(self):
+        index = self.verticalLayout.indexOf(self.sender().data())
+        actuacion = self.__actuaciones[index]
+        message = QtGui.QMessageBox()
+        message.setIcon(QtGui.QMessageBox.Question)
+        message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        message.setDefaultButton(QtGui.QMessageBox.No)
+        message.setText(unicode("¿Desea eliminar la actuación %s?" % unicode(actuacion)))
+        ret = message.exec_()
+        if ret == QtGui.QMessageBox.Yes:
+            item = self.verticalLayout.takeAt(index)
+            item.widget().deleteLater()            
+            del(self.__actuaciones[index])
+            self.verticalLayout.update()                
+                
+    def cargarActuaciones(self):
+        if len(self.__actuaciones) is not 0:
+            for actuacion in self.__actuaciones:
+                vista = VerActuacion(actuacion = actuacion, parent = self)
+                vista.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+                editar = self.createAction("Editar", self.editarActuacion)
+                editar.setData(vista)
+                eliminar = self.createAction("Eliminar", self.eliminarActuacion)
+                eliminar.setData(vista)
+                vista.addActions([editar, eliminar])
+                self.verticalLayout.addWidget(vista)
+                self.__actuaciones.append(actuacion)
+    
+    def addActuacion(self):
+        dialogo = NuevaActuacion(parent = None)
+        if dialogo.exec_():
+            actuacion = dialogo.getActuacion()
+            vista = VerActuacion(actuacion = actuacion, parent = self)
+            vista.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+            editar = self.createAction("Editar", self.editarActuacion)
+            editar.setData(vista)
+            eliminar = self.createAction("Eliminar", self.eliminarActuacion)
+            eliminar.setData(vista)
+            vista.addActions([editar, eliminar])
+            self.verticalLayout.addWidget(vista)
+            self.__actuaciones.append(actuacion)
+            
+    def actuacionesNuevas(self):
+        actuaciones = []
+        if len(self.__actuaciones) is not 0:
+            for actuacion in self.__actuaciones:
+                if actuacion not in self.__proceso.getActuaciones():
+                    actuaciones.append(actuacion)
+        return actuaciones
                 
 import sys
 app = QtGui.QApplication(sys.argv)

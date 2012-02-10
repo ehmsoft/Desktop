@@ -7,7 +7,6 @@ Created on 26/01/2012
 
 from PySide import QtGui, QtCore
 from gui.NuevaActuacionScreen import Ui_NuevaActuacion
-from persistence.Persistence import Persistence
 from core.Actuacion import Actuacion
 from gui.VerJuzgado import VerJuzgado
 from gui.ListadoDialogo import ListadoDialogo
@@ -19,7 +18,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
     '''
     classdocs
     '''
-    def __init__(self, actuacion = None, id_proceso = None, parent = None):
+    def __init__(self, actuacion = None, parent = None):
         super(NuevaActuacion, self).__init__(parent)
         
         if actuacion is not None and not isinstance(actuacion, Actuacion):
@@ -28,7 +27,6 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         
         self.setupUi(self)
         self.__actuacion = actuacion
-        self.__idProceso = id_proceso
         self.__juzgado = None
         self.__campos = []
                 
@@ -86,7 +84,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             message.setText("La descripción se considera obligatoria")
             message.exec_()
             self.txtDescripcion.setFocus()
-        elif self.__juzgado.getId_juzgado() is "1":
+        elif self.__juzgado is None or self.__juzgado.getId_juzgado() is "1":
             message = QtGui.QMessageBox()
             message.setIcon(QtGui.QMessageBox.Warning)
             message.setText("El juzgado no se permite vacío")
@@ -97,7 +95,6 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             
     def guardar(self):
         try:
-            p = Persistence()
             fecha = self.dteFecha.dateTime().toPython()
             fechaProxima = self.dteFechaProxima.dateTime().toPython()
             descripcion = self.txtDescripcion.text()
@@ -105,14 +102,12 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
                 self.__actuacion = Actuacion(juzgado = self.__juzgado, fecha = fecha,
                                              fechaProxima = fechaProxima, descripcion = descripcion,
                                              campos = self.__campos)
-                if self.__idProceso is not None:
-                    p.guardarActuacion(actuacion = self.__actuacion, id_proceso = self.__idProceso)
             else:
                 self.__actuacion.setDescripcion(descripcion)
                 self.__actuacion.setFecha(fecha)
                 self.__actuacion.setFechaProxima(fechaProxima)
                 self.__actuacion.setCampos(self.__campos)
-                p.actualizarActuacion(self.__actuacion)
+                self.__actuacion.setJuzgado(self.__juzgado)
         except Exception, e:
             print e
         return QtGui.QDialog.accept(self)

@@ -13,14 +13,18 @@ class VerActuacion(QWidget, Ui_VerActuacion):
         super(VerActuacion, self).__init__(parent)
         self.__actuacion = actuacion
         self.setupUi(self)
-        if self.__actuacion:
-            self.lblJuzgado.setText(str(self.__actuacion.getJuzgado()))
-            self.lblDescripcion.setText(self.__actuacion.getDescripcion())
-            self.dteFecha.setDateTime(self.__actuacion.getFecha())
-            self.dteFechaProxima.setDateTime(self.__actuacion.getFechaProxima())
-            for campo in self.__actuacion.getCampos():
+        self.setActuacion(self.__actuacion)
+                
+    def setActuacion(self, actuacion):
+        if actuacion:
+            self.lblJuzgado.setText(unicode(actuacion.getJuzgado()))
+            self.lblDescripcion.setText(actuacion.getDescripcion())
+            self.dteFecha.setDateTime(actuacion.getFecha())
+            self.dteFechaProxima.setDateTime(actuacion.getFechaProxima())
+            for campo in actuacion.getCampos():
                 label = QLabel()
                 label.setText('%s:' % campo.getNombre())
                 lblBox = QLabel()
                 lblBox.setText(campo.getValor())
-                self.formLayout.addRow(label,lblBox)
+                self.formLayout.addRow(label, lblBox)
+        
