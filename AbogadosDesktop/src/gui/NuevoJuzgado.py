@@ -10,9 +10,10 @@ from PySide import QtGui, QtCore
 from NuevoJuzgadoScreen import Ui_NuevoJuzgado
 from core.Juzgado import Juzgado
 from persistence.Persistence import Persistence
-from copy import deepcopy
 from gui.ListadoDialogo import ListadoDialogo
 from gui.NuevoCampo import NuevoCampo
+from gui.GestorCampos import GestorCampos
+
 
 class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
     '''
@@ -30,75 +31,23 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
         
         self.__juzgado = juzgado
         self.setupUi(self)
-        self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.addCampo)
         
-        self.__campos = []
+        campos = []
                 
         if self.__juzgado is not None:
-            self.__campos = deepcopy(juzgado.getCampos())
+            campos = juzgado.getCampos()
             self.txtNombre.setText(self.__juzgado.getNombre())
             self.txtDireccion.setText(self.__juzgado.getDireccion())
             self.txtCiudad.setText(self.__juzgado.getCiudad())
             self.txtTelefono.setText(self.__juzgado.getTelefono())
             self.txtTipo.setText(self.__juzgado.getTipo())
             
-        self.cargarCampos()         
+        self.__gestor = GestorCampos(campos = campos, formLayout = self.formLayout, parent = self,
+                                     constante_de_edicion = NuevoCampo.JUZGADO, constante_de_creacion = ListadoDialogo.CAMPOJUZGADO)
+        self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.__gestor.addCampo)  
             
     def getJuzgado(self):
         return self.__juzgado
-    
-    def organizarCampos(self):
-        count = 5
-        for campo in self.__campos:
-            if campo is not None:
-                item = self.formLayout.itemAt(count, QtGui.QFormLayout.FieldRole).widget()
-                
-                message = QtGui.QMessageBox()
-                message.setIcon(QtGui.QMessageBox.Warning)
-                
-                if campo.isObligatorio() and len(item.text()) is 0:
-                    message.setText("El campo %s es obligatorio" % campo.getNombre())
-                    message.exec_()
-                    return False
-                elif campo.getLongitudMax() is not 0 and len(item.text()) > campo.getLongitudMax():
-                    message.setText(unicode("La longitud máxima del campo %s es de %i caracteres" % (campo.getNombre(), campo.getLongitudMax())))
-                    message.exec_()
-                    return False
-                elif campo.getLongitudMin() is not 0 and len(item.text()) < campo.getLongitudMin():
-                    message.setText(unicode("La longitud mínima del campo %s es de %i caracteres" % (campo.getNombre(), campo.getLongitudMin())))
-                    message.exec_()
-                    return False
-                count += 1
-                    
-        count = 5
-        for campo in self.__campos:
-            if campo is not None:
-                item = self.formLayout.itemAt(count, QtGui.QFormLayout.FieldRole).widget()
-                campo.setValor(item.text())
-            count += 1
-                        
-        func = lambda x: x is not None and 1 or 0
-        self.__campos = filter(func, self.__campos)
-        
-        if self.__juzgado is not None:        
-            camposObjeto = self.__juzgado.getCampos()
-            
-            for campoNuevo in self.__campos:
-                if campoNuevo not in camposObjeto:
-                    try:
-                        p = Persistence()
-                        p.guardarCampoJuzgado(campoNuevo, self.__juzgado.getId_juzgado())
-                    except Exception, e:
-                        print e
-            for campoViejo in camposObjeto:
-                if campoViejo not in self.__campos:
-                    try:
-                        p = Persistence()
-                        p.borrarCampoJuzgado(campoViejo)
-                    except Exception, e:
-                        print e
-            self.__juzgado.setCampos(self.__campos)
-        return True
     
     def guardar(self):
         try:
@@ -110,17 +59,24 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
                 juzgado.setCiudad(self.txtCiudad.text())
                 juzgado.setTelefono(self.txtTelefono.text())
                 juzgado.setTipo(self.txtTipo.text())
+                juzgado.setCampos(self.__gestor.getCampos())
                 
                 p.guardarJuzgado(juzgado)
                 self.__juzgado = juzgado
             else:
+                camposNuevos = self.__gestor.getCamposNuevos()
+                camposEliminados = self.__gestor.getCamposEliminados()
+                for campo in camposEliminados:
+                    p.borrarCampoJuzgado(campo)
+                for campo in camposNuevos:
+                    p.guardarCampoJuzgado(campo, self.__juzgado.getId_juzgado())
                 self.__juzgado.setNombre(self.txtNombre.text())
                 self.__juzgado.setDireccion(self.txtDireccion.text())
                 self.__juzgado.setCiudad(self.txtCiudad.text())
                 self.__juzgado.setTelefono(self.txtTelefono.text())
                 self.__juzgado.setTipo(self.txtTipo.text())
-                p.actualizarJuzgado(self.__juzgado)
-                    
+                self.__juzgado.setCampos(self.__gestor.getCampos())
+                p.actualizarJuzgado(self.__juzgado)                    
         except Exception, e:
             print e
         finally:
@@ -144,81 +100,5 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
                 self.guardar()
             else:
                 self.txtTelefono.setFocus()            
-        elif self.organizarCampos():
+        elif self.__gestor.organizarCampos():
             self.guardar()
-    
-    def borrarElemento(self):
-        index = self.formLayout.getWidgetPosition(self.sender().data())[0]
-        label = self.formLayout.itemAt(index, QtGui.QFormLayout.LabelRole)
-        item = self.formLayout.itemAt(index, QtGui.QFormLayout.FieldRole)
-        label.widget().deleteLater()
-        item.widget().deleteLater()
-        self.__campos[index - 5] = None
-        
-    def editarElemento(self):
-        index = self.formLayout.getWidgetPosition(self.sender().data())[0]
-        label = self.formLayout.itemAt(index, QtGui.QFormLayout.LabelRole).widget()
-        txtBox = self.formLayout.itemAt(index, QtGui.QFormLayout.FieldRole).widget()
-        campo = self.__campos[index - 5]
-        dialogo = NuevoCampo(NuevoCampo.juzgado, campo, self)
-        if dialogo.exec_():
-            label.setText(unicode("%s:" % campo.getNombre()))
-            if campo.getLongitudMax() is not 0:
-                txtBox.setMaxLength(campo.getLongitudMax())
-    
-    def createAction(self, text, slot = None):
-        action = QtGui.QAction(text, self)
-        if slot is not None:
-            self.connect(action, QtCore.SIGNAL("triggered()"), slot)
-        return action
-    
-    def cargarCampos(self):
-        if len(self.__campos) is not 0:
-            for campo in self.__campos:
-                label = QtGui.QLabel()
-                label.setText("%s:" % campo.getNombre())
-                txtBox = QtGui.QLineEdit()
-                txtBox.setText(campo.getValor())
-                if campo.getLongitudMax() is not 0:
-                    txtBox.setMaxLength(campo.getLongitudMax())
-                
-                txtBox.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-                
-                eliminar = self.createAction('Eliminar', self.borrarElemento)
-                eliminar.setData(txtBox)
-                editar = self.createAction("Editar", self.editarElemento)
-                editar.setData(txtBox)
-                
-                txtBox.addActions([eliminar, editar])
-                self.formLayout.addRow(label, txtBox)     
-    
-    def addCampo(self, campo = None):
-        if campo is not None:
-            if campo in self.__campos:
-                message = QtGui.QMessageBox()
-                message.setIcon(QtGui.QMessageBox.Warning)
-                message.setText("El campo ya se encuentra")
-                message.exec_()
-            else:
-                label = QtGui.QLabel()
-                label.setText("%s:" % campo.getNombre())
-                txtBox = QtGui.QLineEdit()
-                txtBox.setText(campo.getValor())
-                if campo.getLongitudMax() is not 0:
-                    txtBox.setMaxLength(campo.getLongitudMax())
-                
-                txtBox.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-                
-                eliminar = self.createAction('Eliminar', self.borrarElemento)
-                eliminar.setData(txtBox)
-                editar = self.createAction("Editar", self.editarElemento)
-                editar.setData(txtBox)
-                
-                txtBox.addActions([eliminar, editar])
-                self.formLayout.addRow(label, txtBox)
-                self.__campos.append(campo)
-        else:
-            dialogo = ListadoDialogo(ListadoDialogo.CAMPOJUZGADO, self)
-            if dialogo.exec_():
-                campo = dialogo.getSelected()
-                self.addCampo(campo)
