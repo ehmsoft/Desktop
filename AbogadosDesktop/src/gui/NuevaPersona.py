@@ -116,12 +116,3 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
                 self.txtTelefono.setFocus()            
         elif self.__gestor.organizarCampos():
             self.guardar()
-try:            
-    persona = Persistence().consultarPersona("3", 1)
-except:
-    print "pobemas!!!"
-import sys
-app = QtGui.QApplication(sys.argv)
-form = NuevaPersona(persona = persona)
-form.show()
-app.exec_()
