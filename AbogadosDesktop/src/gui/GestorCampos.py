@@ -106,6 +106,8 @@ class GestorCampos(object):
             label.setText(unicode("%s:" % campo.getNombre()))
             if campo.getLongitudMax() is not 0:
                 txtField.setMaxLength(campo.getLongitudMax())
+            else:
+                txtField.setMaxLength(32767)
     
     def addCampo(self, campo = None):
         if campo is None:
@@ -137,7 +139,7 @@ class GestorCampos(object):
                 self.__formLayout.addRow(label, txtBox)
                 self.__campos.append(campo)
                 
-    def existe(self,campo,lista):
+    def existe(self, campo, lista):
         for c in lista:
             if c is not None:
                 if c.getId_atributo() == campo.getId_atributo():
