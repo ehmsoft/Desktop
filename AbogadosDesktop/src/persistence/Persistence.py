@@ -283,8 +283,10 @@ class Persistence(object):
             conn.close()
         campos = proceso.getCampos()
         for campo in campos:
-            self.guardarCampoPersonalizado(campo, proceso.getId_proceso())
-            
+            self.actualizarCampoPersonalizado(campo, proceso.getId_proceso())
+        actuaciones = proceso.getActuaciones()
+        for actuacion in actuaciones:
+            self.actualizarActuacion(actuacion) 
     def guardarProceso(self, proceso):
         try:
             self.__conMgr.prepararBD()
@@ -387,7 +389,7 @@ class Persistence(object):
             conn.close()
         campos = plantilla.getCampos()
         for campo in campos:
-            self.guardarCampoPersonalizado(campo, plantilla.getId_proceso())
+            self.actualizarCampoPlantilla(campo, plantilla.getId_proceso())
 
     def guardarPlantilla(self, plantilla):
         try:
