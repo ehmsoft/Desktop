@@ -63,6 +63,12 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
     def getActuacion(self):
         return self.__actuacion
     
+    def createAction(self, text, slot = None):
+        action = QtGui.QAction(text, self)
+        if slot is not None:
+            self.connect(action, QtCore.SIGNAL("triggered()"), slot)
+        return action 
+    
     def cambiarJuzgado(self):
         listado = ListadoDialogo(ListadoDialogo.JUZGADO, self)
         if listado.exec_():

@@ -33,13 +33,13 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         Constructor
         '''
         super(NuevoProceso, self).__init__(parent)
+        self.setupUi(self)
         if proceso is not None and not isinstance(proceso, Proceso):
             raise TypeError("El objeto proceso debe pertenecer a la clase Proceso")
         if proceso is not None:
             self.groupBox.setTitle("Datos del proceso:")
             self.setWindowTitle("Editar proceso")
             
-        self.setupUi(self)
         self.__proceso = proceso
         self.connect(self.btnAdd_2, QtCore.SIGNAL("clicked()"), self.addActuacion)
         campos = []
@@ -61,7 +61,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             self.lblDemandante.setText(self.__demandante.getNombre())
             self.lblDemandado.setText(self.__demandado.getNombre())
             self.lblJuzgado.setText(self.__juzgado.getNombre())
-            self.lblCategoria.setText(self.__categoria.getNombre())
+            self.lblCategoria.setText(self.__categoria.getDescripcion())
             self.txtRadicado.setText(self.__proceso.getRadicado())
             self.txtRadicadoUnico.setText(self.__proceso.getRadicadoUnico())
             self.txtTipo.setText(self.__proceso.getTipo())
@@ -110,7 +110,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         
         self.__gestor = GestorCampos(campos = campos, formLayout = self.formLayout, parent = self,
                                      constante_de_edicion = NuevoCampo.PROCESO, constante_de_creacion = ListadoDialogo.CAMPOPROCESOP)
-        self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.addCampo)
+        self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.__gestor.addCampo)
                 
     def clickDemandante(self):
         container = self.horizontalLayout 
@@ -352,10 +352,9 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
                 self.__proceso.setNotas(notas)
                 self.__proceso.setPrioridad(prioridad)
                 self.__proceso.setCampos(campos)
-                self.__p.actualizarProceso(proceso)
                 p.actualizarProceso(self.__proceso)
         except Exception, e:
-            print "Guardar proceso -> %s" % e
+            print "Guardar proceso -> %s con %s" % (e, e.args)
         finally:
             return QtGui.QDialog.accept(self)
                 
@@ -392,8 +391,9 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         index = self.verticalLayout.indexOf(self.sender().data())
         dialogo = NuevaActuacion(actuacion = self.__actuaciones[index], parent = self)
         if dialogo.exec_():
-            vista = self.verticalLayout.itemAt(index).widget()
-            vista.setActuacion(dialogo.getActuacion())
+            self.verticalLayout.itemAt(index).widget().deleteLater()
+            vista = VerActuacion(dialogo.getActuacion(), self)
+            self.verticalLayout.insertWidget(index, vista)
             
     
     def eliminarActuacion(self):
@@ -414,13 +414,21 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     def cargarActuaciones(self):
         if len(self.__actuaciones) is not 0:
             for actuacion in self.__actuaciones:
-                self.addActuacion(actuacion)
+                vista = VerActuacion(actuacion = actuacion, parent = self)
+                vista.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+                editar = self.createAction("Editar", self.editarActuacion)
+                editar.setData(vista)
+                eliminar = self.createAction("Eliminar", self.eliminarActuacion)
+                eliminar.setData(vista)
+                vista.addActions([editar, eliminar])
+                self.verticalLayout.addWidget(vista)
     
     def addActuacion(self, actuacion = None):
         if actuacion is None:
             dialogo = NuevaActuacion(parent = self)
             if dialogo.exec_():
                 actuacion = dialogo.getActuacion()
+                self.addActuacion(actuacion)
         else:
             vista = VerActuacion(actuacion = actuacion, parent = self)
             vista.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
@@ -431,9 +439,5 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             vista.addActions([editar, eliminar])
             self.verticalLayout.addWidget(vista)
             self.__actuaciones.append(actuacion)
-                
-import sys
-app = QtGui.QApplication(sys.argv)
-form = NuevoProceso(None, None)
-form.show()
-app.exec_()
+            
+proceso = Persistence().consultarProceso("1")
