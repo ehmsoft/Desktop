@@ -73,19 +73,15 @@ class GestorCampos(object):
         func = lambda x: x is not None and 1 or 0
         self.__campos = filter(func, self.__campos)
         
-        if len(self.__camposOriginales) is not 0:        
-            camposObjeto = self.__camposOriginales
-            remover = []
-            
-            for campoNuevo in self.__campos:
-                if campoNuevo not in camposObjeto:
-                    self.__camposNuevos.append(campoNuevo)
-                    remover.append(campoNuevo)
-            for campoViejo in camposObjeto:
-                if campoViejo not in self.__campos:
-                    self.__camposEliminados.append(campoViejo)
-            for r in remover:
-                self.__campos.remove(r)
+        camposObjeto = self.__camposOriginales
+        
+        for campoNuevo in self.__campos:
+            if campoNuevo not in camposObjeto:
+                self.__camposNuevos.append(campoNuevo)
+        for campoViejo in camposObjeto:
+            if campoViejo not in self.__campos:
+                self.__camposEliminados.append(campoViejo)
+
         return True
     
     def __borrarElemento(self):

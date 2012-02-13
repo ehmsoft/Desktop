@@ -440,4 +440,10 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             self.verticalLayout.addWidget(vista)
             self.__actuaciones.append(actuacion)
             
-proceso = Persistence().consultarProceso("1")
+proceso = Persistence().consultarProceso("2")
+
+import sys
+app = QtGui.QApplication(sys.argv)
+form = NuevoProceso(proceso, None)
+form.show()
+app.exec_()
