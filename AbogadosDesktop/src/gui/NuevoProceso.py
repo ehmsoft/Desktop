@@ -21,6 +21,7 @@ from gui.NuevaCategoria import NuevaCategoria
 from gui.NuevaActuacion import NuevaActuacion
 from gui.VerActuacion import VerActuacion
 from gui.GestorCampos import GestorCampos
+from core.Categoria import Categoria
 
 class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     '''
@@ -47,7 +48,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         self.__demandante = None
         self.__demandado = None
         self.__juzgado = None
-        self.__categoria = None
+        self.__categoria = Categoria("Ninguna", "1")
         
         self.sbPrioridad.setRange(0, 10)        
         if self.__proceso is not None:
@@ -439,11 +440,3 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             vista.addActions([editar, eliminar])
             self.verticalLayout.addWidget(vista)
             self.__actuaciones.append(actuacion)
-            
-proceso = Persistence().consultarProceso("2")
-
-import sys
-app = QtGui.QApplication(sys.argv)
-form = NuevoProceso(proceso, None)
-form.show()
-app.exec_()
