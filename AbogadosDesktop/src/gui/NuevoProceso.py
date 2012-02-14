@@ -376,16 +376,12 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             
             try:
                 p = Persistence()
-                remover = []
                 for nuevaActuacion in actuaciones:
                     if nuevaActuacion not in actuacionesOriginales:
                         p.guardarActuacion(nuevaActuacion, self.__proceso.getId_proceso())
-                        remover.append(nuevaActuacion)
                 for viejaActuacion in actuacionesOriginales:
                     if viejaActuacion not in actuaciones:
                         p.borrarActuacion(viejaActuacion)
-                for actuacion in remover:
-                    actuaciones.remove(actuacion)
             except Exception, e:
                 print "organizarActuaciones -> %s" % e                    
                 
