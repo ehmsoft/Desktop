@@ -44,9 +44,10 @@ class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
         self.sbLongMin.valueChanged[int].connect(self.validarLongitudMin)       
         
     def validarLongitudMax(self, lmax):
-        lmin = self.sbLongMin.value()
-        if lmin is not 0 and lmax < lmin:
-            self.sbLongMax.setValue(lmax + 1)
+        if lmax is not 0:
+            lmin = self.sbLongMin.value()
+            if lmin is not 0 and lmax < lmin:
+                self.sbLongMax.setValue(lmax + 1)
             
     def validarLongitudMin(self, lmin):
         lmax = self.sbLongMax.value()

@@ -263,15 +263,16 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            demandante = "1"
-            if demandante != None:
-                demandante = proceso.getDemandante().getId_persona()
-            demandado = "1"
-            if demandado != None:
-                proceso.getDemandado().getId_persona()
-            juzgado = "1"
-            if juzgado != None:
-                proceso.getJuzgado().getId_juzgado()
+            
+            demandante = proceso.getDemandante().getId_persona()
+            if demandante == None:
+                demandante = "1"
+            demandado = proceso.getDemandado().getId_persona()
+            if demandado == None:
+                demandado = "1"             
+            juzgado = proceso.getJuzgado().getId_juzgado()
+            if juzgado == None:
+                juzgado = "1"
                 
             c.execute('''UPDATE procesos SET id_demandante = ?,''' + ''' id_demandado = ?,''' + ''' fecha_creacion = datetime(?),''' + ''' radicado = ?,''' + ''' radicado_unico = ?,''' + ''' estado = ?,''' + ''' tipo = ?,''' + ''' notas = ?,''' + ''' prioridad = ?,''' + ''' id_juzgado = ?,''' + ''' id_categoria = ?,''' + ''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''', (demandante, demandado, proceso.getFecha(), proceso.getRadicado(), proceso.getRadicadoUnico(), proceso.getEstado(), proceso.getTipo(), proceso.getNotas(), proceso.getPrioridad(), juzgado, proceso.getCategoria().getId_categoria(), proceso.getId_proceso()))                                                         
             conn.commit()
@@ -282,8 +283,10 @@ class Persistence(object):
             conn.close()
         campos = proceso.getCampos()
         for campo in campos:
-            self.guardarCampoPersonalizado(campo, proceso.getId_proceso())
-            
+            self.actualizarCampoPersonalizado(campo, proceso.getId_proceso())
+        actuaciones = proceso.getActuaciones()
+        for actuacion in actuaciones:
+            self.actualizarActuacion(actuacion) 
     def guardarProceso(self, proceso):
         try:
             self.__conMgr.prepararBD()
@@ -367,15 +370,15 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            demandante = "1"
-            if demandante != None:
-                demandante = plantilla.getDemandante().getId_persona()
-            demandado = "1"
-            if demandado != None:
-                plantilla.getDemandado().getId_persona()
-            juzgado = "1"
-            if juzgado != None:
-                plantilla.getJuzgado().getId_juzgado()
+            demandante = plantilla.getDemandante().getId_persona()
+            if demandante == None:
+                demandante = "1"                
+            demandado = plantilla.getDemandado().getId_persona()
+            if demandado == None:
+                demandado = "1"
+            juzgado= plantilla.getJuzgado().getId_juzgado()   
+            if juzgado == None:
+                juzgado = "1"              
                 
             c.execute('''UPDATE plantillas SET nombre=?,''' + '''id_demandante = ?,''' + ''' id_demandado = ?,''' + ''' fecha_creacion = datetime(?),''' + ''' radicado = ?,''' + ''' radicado_unico = ?,''' + ''' estado = ?,''' + ''' tipo = ?,''' + ''' notas = ?,''' + ''' prioridad = ?,''' + ''' id_juzgado = ?,''' + ''' id_categoria = ?,''' + ''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''', (plantilla.getNombre(), demandante, demandado, plantilla.getFecha(), plantilla.getRadicado(), plantilla.getRadicadoUnico(), plantilla.getEstado(), plantilla.getTipo(), plantilla.getNotas(), plantilla.getPrioridad(), juzgado, plantilla.getCategoria().getId_categoria(), plantilla.getId_plantilla()))                                                         
             conn.commit()
@@ -386,7 +389,7 @@ class Persistence(object):
             conn.close()
         campos = plantilla.getCampos()
         for campo in campos:
-            self.guardarCampoPersonalizado(campo, plantilla.getId_proceso())
+            self.actualizarCampoPlantilla(campo, plantilla.getId_proceso())
 
     def guardarPlantilla(self, plantilla):
         try:

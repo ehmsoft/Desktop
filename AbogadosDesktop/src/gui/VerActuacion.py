@@ -14,7 +14,7 @@ class VerActuacion(QWidget, Ui_VerActuacion):
         self.__actuacion = actuacion
         self.setupUi(self)
         if self.__actuacion:
-            self.lblJuzgado.setText(str(self.__actuacion.getJuzgado()))
+            self.lblJuzgado.setText(self.__actuacion.getJuzgado().getNombre())
             self.lblDescripcion.setText(self.__actuacion.getDescripcion())
             self.dteFecha.setDateTime(self.__actuacion.getFecha())
             self.dteFechaProxima.setDateTime(self.__actuacion.getFechaProxima())

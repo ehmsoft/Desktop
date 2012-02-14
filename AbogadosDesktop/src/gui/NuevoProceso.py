@@ -8,7 +8,7 @@ Created on 7/02/2012
 from PySide import QtGui, QtCore
 from core.Proceso import Proceso
 from gui.NuevoProcesoScreen import Ui_NuevoProceso
-from copy import deepcopy
+from copy import copy
 from gui.ListadoDialogo import ListadoDialogo
 from gui.NuevoCampo import NuevoCampo
 from persistence.Persistence import Persistence
@@ -18,6 +18,10 @@ from datetime import datetime
 from gui.NuevaPersona import NuevaPersona
 from gui.NuevoJuzgado import NuevoJuzgado
 from gui.NuevaCategoria import NuevaCategoria
+from gui.NuevaActuacion import NuevaActuacion
+from gui.VerActuacion import VerActuacion
+from gui.GestorCampos import GestorCampos
+from core.Categoria import Categoria
 
 class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     '''
@@ -30,20 +34,21 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         Constructor
         '''
         super(NuevoProceso, self).__init__(parent)
+        self.setupUi(self)
         if proceso is not None and not isinstance(proceso, Proceso):
             raise TypeError("El objeto proceso debe pertenecer a la clase Proceso")
         if proceso is not None:
             self.groupBox.setTitle("Datos del proceso:")
             self.setWindowTitle("Editar proceso")
             
-        self.setupUi(self)
         self.__proceso = proceso
-        self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.addCampo)
-        self.__campos = []
+        self.connect(self.btnAdd_2, QtCore.SIGNAL("clicked()"), self.addActuacion)
+        campos = []
+        self.__actuaciones = []
         self.__demandante = None
         self.__demandado = None
         self.__juzgado = None
-        self.__categoria = None
+        self.__categoria = Categoria("Ninguna", "1")
         
         self.sbPrioridad.setRange(0, 10)        
         if self.__proceso is not None:
@@ -51,12 +56,13 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             self.__demandado = self.__proceso.getDemandado()
             self.__juzgado = self.__proceso.getJuzgado()
             self.__categoria = self.__proceso.getCategoria()
-            self.__campos = deepcopy(self.__proceso.getCampos())
+            campos = self.__proceso.getCampos()
+            self.__actuaciones = copy(self.__proceso.getActuaciones())
             
             self.lblDemandante.setText(self.__demandante.getNombre())
             self.lblDemandado.setText(self.__demandado.getNombre())
             self.lblJuzgado.setText(self.__juzgado.getNombre())
-            self.lblCategoria.setText(self.__categoria.getNombre())
+            self.lblCategoria.setText(self.__categoria.getDescripcion())
             self.txtRadicado.setText(self.__proceso.getRadicado())
             self.txtRadicadoUnico.setText(self.__proceso.getRadicadoUnico())
             self.txtTipo.setText(self.__proceso.getTipo())
@@ -67,9 +73,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         else:
             self.dteFecha.setDateTime(datetime.today())
             
-        if self.__campos is not None and self.__campos != []:
-            for campo in self.__campos:
-                self.addCampo(campo)
+        self.cargarActuaciones()
                 
         self.clickDemandante()
         self.clickDemandado()
@@ -104,6 +108,10 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         editar.setData(self.lblCategoria)
         
         self.lblCategoria.addActions([cambiar, editar])
+        
+        self.__gestor = GestorCampos(campos = campos, formLayout = self.formLayout, parent = self,
+                                     constante_de_edicion = NuevoCampo.PROCESO, constante_de_creacion = ListadoDialogo.CAMPOPROCESOP)
+        self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.__gestor.addCampo)
                 
     def clickDemandante(self):
         container = self.horizontalLayout 
@@ -299,148 +307,136 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             message.setText("El radicado se considera obligatorio")
             message.exec_()
             self.txtRadicado.setFocus()
-        elif self.organizarCampos():
+        elif self.__gestor.organizarCampos():
             self.guardar()
     
     def guardar(self):
         try:
+            self.organizarActuaciones()
             p = Persistence()
+            demandante = self.__demandante
+            demandado = self.__demandado
+            fecha = self.dteFecha.dateTime().toPython()
+            juzgado = self.__juzgado
+            radicado = self.txtRadicado.text()
+            radicadoUnico = self.txtRadicadoUnico.text()
+            actuaciones = self.__actuaciones
+            estado = self.txtEstado.text()
+            categoria = self.__categoria
+            tipo = self.txtTipo.text()
+            notas = self.txtNotas.toPlainText()
+            prioridad = self.sbPrioridad.value()
+            campos = self.__gestor.getCampos()
             if self.__proceso is None:
-                demandante = self.__demandante
-                demandado = self.__demandado
-                fecha = self.dteFecha.dateTime()
-                juzgado = self.__juzgado
-                radicado = self.txtRadicado.text()
-                radicadoUnico = self.txtRadicadoUnico.text()
-                actuaciones = None #TODO: Realizar implementación de las actuaciones
-                estado = self.txtEstado.text()
-                categoria = self.__categoria
-                tipo = self.txtTipo.text()
-                #TODO: El restante de atributos po sacar de la pantalla
-                notas = None
-                prioridad = None
-                campos = None
                 proceso = Proceso(demandante = demandante, demandado = demandado, fecha = fecha, juzgado = juzgado,
                                   radicado = radicado, radicadoUnico = radicadoUnico, actuaciones = actuaciones,
                                   estado = estado, categoria = categoria, tipo = tipo, notas = notas,
                                   prioridad = prioridad, campos = campos)
+                p.guardarProceso(proceso)
+            else:
+                camposNuevos = self.__gestor.getCamposNuevos()
+                camposEliminados = self.__gestor.getCamposEliminados()
+                for campo in camposEliminados:
+                    p.borrarCampoPersonalizado(campo)
+                for campo in camposNuevos:
+                    p.guardarCampoPersonalizado(campo, self.__proceso.getId_proceso())
+                self.__proceso.setDemandante(demandante)
+                self.__proceso.setDemandado(demandado)
+                self.__proceso.setFecha(fecha)
+                self.__proceso.setJuzgado(juzgado)
+                self.__proceso.setRadicado(radicado)
+                self.__proceso.setRadicadoUnico(radicadoUnico)
+                self.__proceso.setActuaciones(actuaciones)
+                self.__proceso.setEstado(estado)
+                self.__proceso.setCategoria(categoria)
+                self.__proceso.setTipo(tipo)
+                self.__proceso.setNotas(notas)
+                self.__proceso.setPrioridad(prioridad)
+                self.__proceso.setCampos(campos)
+                p.actualizarProceso(self.__proceso)
         except Exception, e:
-            print "Guardar proceso -> %s" % e
+            print "Guardar proceso -> %s con %s" % (e, e.args)
+        finally:
+            return QtGui.QDialog.accept(self)
                 
     def getProceso(self):
         return self.__proceso
-                
-    def organizarCampos(self):
-        count = 11
-        for campo in self.__campos:
-            if campo is not None:
-                item = self.formLayout.itemAt(count, QtGui.QFormLayout.FieldRole).widget()
-                
-                message = QtGui.QMessageBox()
-                message.setIcon(QtGui.QMessageBox.Warning)
-                
-                if campo.isObligatorio() and len(item.text()) is 0:
-                    message.setText("El campo %s es obligatorio" % campo.getNombre())
-                    message.exec_()
-                    return False
-                elif campo.getLongitudMax() is not 0 and len(item.text()) > campo.getLongitudMax():
-                    message.setText(unicode("La longitud máxima del campo %s es de %i caracteres" % (campo.getNombre(), campo.getLongitudMax())))
-                    message.exec_()
-                    return False
-                elif campo.getLongitudMin() is not 0 and len(item.text()) < campo.getLongitudMin():
-                    message.setText(unicode("La longitud mínima del campo %s es de %i caracteres" % (campo.getNombre(), campo.getLongitudMin())))
-                    message.exec_()
-                    return False
-                count += 1
-                    
-        count = 11
-        for campo in self.__campos:
-            if campo is not None:
-                item = self.formLayout.itemAt(count, QtGui.QFormLayout.FieldRole).widget()
-                campo.setValor(item.text())
-            count += 1
-                        
-        func = lambda x: x is not None and 1 or 0
-        self.__campos = filter(func, self.__campos)
-        
-        if self.__proceso is not None:        
-            camposObjeto = self.__persona.getCampos()
-            
-            for campoNuevo in self.__campos:
-                if campoNuevo not in camposObjeto:
-                    try:
-                        p = Persistence()
-                        p.guardarCampoPersonalizado(campoNuevo, self.__proceso.getId_proceso())
-                    except Exception, e:
-                        print e
-            for campoViejo in camposObjeto:
-                if campoViejo not in self.__campos:
-                    try:
-                        p = Persistence()
-                        p.borrarCampoPersonalizado(campoViejo)
-                    except Exception, e:
-                        print e
-            self.__persona.setCampos(self.__campos)
-        return True
-    
-    def borrarElemento(self):
-        index = self.formLayout.getWidgetPosition(self.sender().data())[0]
-        label = self.formLayout.itemAt(index, QtGui.QFormLayout.LabelRole)
-        item = self.formLayout.itemAt(index, QtGui.QFormLayout.FieldRole)
-        label.widget().deleteLater()
-        item.widget().deleteLater()
-        self.__campos[index - 11] = None
-        
-    def editarElemento(self):
-        index = self.formLayout.getWidgetPosition(self.sender().data())[0]
-        label = self.formLayout.itemAt(index, QtGui.QFormLayout.LabelRole).widget()
-        txtBox = self.formLayout.itemAt(index, QtGui.QFormLayout.FieldRole).widget()
-        campo = self.__campos[index - 11]
-        dialogo = NuevoCampo(NuevoCampo.PROCESO, campo, self)
-        if dialogo.exec_():
-            label.setText(unicode("%s:" % campo.getNombre()))
-            if campo.getLongitudMax() is not 0:
-                txtBox.setMaxLength(campo.getLongitudMax())
     
     def createAction(self, text, slot = None):
         action = QtGui.QAction(text, self)
         if slot is not None:
             self.connect(action, QtCore.SIGNAL("triggered()"), slot)
-        return action    
+        return action 
+    
+    def organizarActuaciones(self):
+        if self.__proceso is not None:
+            actuacionesOriginales = self.__proceso.getActuaciones()
+            actuaciones = self.__actuaciones
+            
+            try:
+                p = Persistence()
+                remover = []
+                for nuevaActuacion in actuaciones:
+                    if nuevaActuacion not in actuacionesOriginales:
+                        p.guardarActuacion(nuevaActuacion, self.__proceso.getId_proceso())
+                        remover.append(nuevaActuacion)
+                for viejaActuacion in actuacionesOriginales:
+                    if viejaActuacion not in actuaciones:
+                        p.borrarActuacion(viejaActuacion)
+                for actuacion in remover:
+                    actuaciones.remove(actuacion)
+            except Exception, e:
+                print "organizarActuaciones -> %s" % e                    
                 
-    def addCampo(self, campo = None):
-        if campo is not None:
-            if campo in self.__campos:
-                message = QtGui.QMessageBox()
-                message.setIcon(QtGui.QMessageBox.Warning)
-                message.setText("El campo ya se encuentra")
-                message.exec_()
-            else:
-                label = QtGui.QLabel()
-                label.setText("%s:" % campo.getNombre())
-                txtBox = QtGui.QLineEdit()
-                txtBox.setText(campo.getValor())
-                if campo.getLongitudMax() is not 0:
-                    txtBox.setMaxLength(campo.getLongitudMax())
+    def editarActuacion(self):
+        index = self.verticalLayout.indexOf(self.sender().data())
+        dialogo = NuevaActuacion(actuacion = self.__actuaciones[index], parent = self)
+        if dialogo.exec_():
+            self.verticalLayout.itemAt(index).widget().deleteLater()
+            vista = VerActuacion(dialogo.getActuacion(), self)
+            self.verticalLayout.insertWidget(index, vista)
+            
+    
+    def eliminarActuacion(self):
+        index = self.verticalLayout.indexOf(self.sender().data())
+        actuacion = self.__actuaciones[index]
+        message = QtGui.QMessageBox()
+        message.setIcon(QtGui.QMessageBox.Question)
+        message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        message.setDefaultButton(QtGui.QMessageBox.No)
+        message.setText(unicode("¿Desea eliminar la actuación %s?" % unicode(actuacion)))
+        ret = message.exec_()
+        if ret == QtGui.QMessageBox.Yes:
+            item = self.verticalLayout.takeAt(index)
+            item.widget().deleteLater()            
+            del(self.__actuaciones[index])
+            self.verticalLayout.update()                
                 
-                txtBox.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-                
-                eliminar = self.createAction('Eliminar', self.borrarElemento)
-                eliminar.setData(txtBox)
-                editar = self.createAction("Editar", self.editarElemento)
-                editar.setData(txtBox)
-                
-                txtBox.addActions([eliminar, editar])
-                self.formLayout.addRow(label, txtBox)
-                self.__campos.append(campo)
-        else:
-            dialogo = ListadoDialogo(ListadoDialogo.CAMPOPROCESOP, self)                
+    def cargarActuaciones(self):
+        if len(self.__actuaciones) is not 0:
+            for actuacion in self.__actuaciones:
+                vista = VerActuacion(actuacion = actuacion, parent = self)
+                vista.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+                editar = self.createAction("Editar", self.editarActuacion)
+                editar.setData(vista)
+                eliminar = self.createAction("Eliminar", self.eliminarActuacion)
+                eliminar.setData(vista)
+                vista.addActions([editar, eliminar])
+                self.verticalLayout.addWidget(vista)
+    
+    def addActuacion(self, actuacion = None):
+        if actuacion is None:
+            dialogo = NuevaActuacion(parent = self)
             if dialogo.exec_():
-                campo = dialogo.getSelected()
-                self.addCampo(campo)
-                
-import sys
-app = QtGui.QApplication(sys.argv)
-form = NuevoProceso(None, None)
-form.show()
-app.exec_()
+                actuacion = dialogo.getActuacion()
+                self.addActuacion(actuacion)
+        else:
+            vista = VerActuacion(actuacion = actuacion, parent = self)
+            vista.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+            editar = self.createAction("Editar", self.editarActuacion)
+            editar.setData(vista)
+            eliminar = self.createAction("Eliminar", self.eliminarActuacion)
+            eliminar.setData(vista)
+            vista.addActions([editar, eliminar])
+            self.verticalLayout.addWidget(vista)
+            self.__actuaciones.append(actuacion)

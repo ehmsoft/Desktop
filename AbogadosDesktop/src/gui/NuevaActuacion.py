@@ -7,34 +7,33 @@ Created on 26/01/2012
 
 from PySide import QtGui, QtCore
 from gui.NuevaActuacionScreen import Ui_NuevaActuacion
-from persistence.Persistence import Persistence
 from core.Actuacion import Actuacion
 from gui.VerJuzgado import VerJuzgado
 from gui.ListadoDialogo import ListadoDialogo
 from gui.NuevoCampo import NuevoCampo
 from datetime import datetime
 from gui.NuevoJuzgado import NuevoJuzgado
+from gui.GestorCampos import GestorCampos
+from persistence.Persistence import Persistence
 
 class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
     '''
     classdocs
     '''
-    def __init__(self, actuacion = None, id_proceso = None, parent = None):
+    def __init__(self, actuacion = None, parent = None):
         super(NuevaActuacion, self).__init__(parent)
         
         if actuacion is not None and not isinstance(actuacion, Actuacion):
             raise TypeError("El objeto actuacion debe ser de la clase Actuacion")
-        
-        
+ 
         self.setupUi(self)
         self.__actuacion = actuacion
-        self.__idProceso = id_proceso
         self.__juzgado = None
-        self.__campos = []
+        campos = []
                 
         if actuacion is not None:
             self.__juzgado = actuacion.getJuzgado()
-            self.__campos = actuacion.getCampos()
+            campos = actuacion.getCampos()
             self.txtDescripcion.setText(unicode(actuacion.getDescripcion()))
             self.lblJuzgado.setText(unicode(self.__juzgado.getNombre()))
             self.dteFecha.setDateTime(actuacion.getFecha())
@@ -45,13 +44,10 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             self.dteFecha.setDateTime(datetime.today())
             self.dteFechaProxima.setDateTime(datetime.today())
             self.lblJuzgado.setText(unicode("vacío"))
-            
-        self.cargarCampos()
         
         self.clickJuzgado()
         self.clickFecha()
         self.clickFechaProxima()
-        self.btnAdd.clicked.connect(self.addCampo)
         
         cambiar = self.createAction("Cambiar", self.cambiarJuzgado)
         cambiar.setData(self.lblJuzgado)
@@ -60,8 +56,18 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         
         self.lblJuzgado.addActions([cambiar, editar])
         
+        self.__gestor = GestorCampos(campos = campos, formLayout = self.formLayout, parent = self,
+                                     constante_de_edicion = NuevoCampo.ACTUACION, constante_de_creacion = ListadoDialogo.CAMPOACTUACION)
+        self.btnAdd.clicked.connect(self.__gestor.addCampo)
+        
     def getActuacion(self):
         return self.__actuacion
+    
+    def createAction(self, text, slot = None):
+        action = QtGui.QAction(text, self)
+        if slot is not None:
+            self.connect(action, QtCore.SIGNAL("triggered()"), slot)
+        return action 
     
     def cambiarJuzgado(self):
         listado = ListadoDialogo(ListadoDialogo.JUZGADO, self)
@@ -86,35 +92,40 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             message.setText("La descripción se considera obligatoria")
             message.exec_()
             self.txtDescripcion.setFocus()
-        elif self.__juzgado.getId_juzgado() is "1":
+        elif self.__juzgado is None or self.__juzgado.getId_juzgado() is "1":
             message = QtGui.QMessageBox()
             message.setIcon(QtGui.QMessageBox.Warning)
             message.setText("El juzgado no se permite vacío")
             message.exec_()
             self.txtDescripcion.setFocus()
-        elif self.organizarCampos():
+        elif self.__gestor.organizarCampos():
             self.guardar()
             
     def guardar(self):
-        try:
-            p = Persistence()
-            fecha = self.dteFecha.dateTime().toPython()
-            fechaProxima = self.dteFechaProxima.dateTime().toPython()
-            descripcion = self.txtDescripcion.text()
-            if self.__actuacion is None:
-                self.__actuacion = Actuacion(juzgado = self.__juzgado, fecha = fecha,
-                                             fechaProxima = fechaProxima, descripcion = descripcion,
-                                             campos = self.__campos)
-                if self.__idProceso is not None:
-                    p.guardarActuacion(actuacion = self.__actuacion, id_proceso = self.__idProceso)
-            else:
-                self.__actuacion.setDescripcion(descripcion)
-                self.__actuacion.setFecha(fecha)
-                self.__actuacion.setFechaProxima(fechaProxima)
-                self.__actuacion.setCampos(self.__campos)
-                p.actualizarActuacion(self.__actuacion)
-        except Exception, e:
-            print e
+        fecha = self.dteFecha.dateTime().toPython()
+        fechaProxima = self.dteFechaProxima.dateTime().toPython()
+        descripcion = self.txtDescripcion.text()
+        if self.__actuacion is None:
+            self.__actuacion = Actuacion(juzgado = self.__juzgado, fecha = fecha,
+                                         fechaProxima = fechaProxima, descripcion = descripcion,
+                                         campos = self.__gestor.getCampos())
+        else:
+            if self.__actuacion.getId_actuacion() is not None:
+                camposNuevos = self.__gestor.getCamposNuevos()
+                camposEliminados = self.__gestor.getCamposEliminados()
+                try:
+                    p = Persistence()
+                    for campo in camposEliminados:
+                        p.borrarCampoActuacion(campo)
+                    for campo in camposNuevos:
+                        p.guardarCampoActuacion(campo, self.__actuacion.getId_actuacion())
+                except Exception, e:
+                    print "guardar actuación -> " % e.args
+            self.__actuacion.setDescripcion(descripcion)
+            self.__actuacion.setFecha(fecha)
+            self.__actuacion.setFechaProxima(fechaProxima)
+            self.__actuacion.setCampos(self.__gestor.getCampos())
+            self.__actuacion.setJuzgado(self.__juzgado)
         return QtGui.QDialog.accept(self)
         
     def clickJuzgado(self):
@@ -182,132 +193,3 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             
         dteFecha.focusInEvent = focusInEvent
         dteFecha.dateChanged.connect(dateChanged)
-        
-    def organizarCampos(self):
-        count = 4
-        for campo in self.__campos:
-            if campo is not None:
-                item = self.formLayout.itemAt(count, QtGui.QFormLayout.FieldRole).widget()
-                
-                message = QtGui.QMessageBox()
-                message.setIcon(QtGui.QMessageBox.Warning)
-                
-                if campo.isObligatorio() and len(item.text()) is 0:
-                    message.setText("El campo %s es obligatorio" % campo.getNombre())
-                    message.exec_()
-                    return False
-                elif campo.getLongitudMax() is not 0 and len(item.text()) > campo.getLongitudMax():
-                    message.setText(unicode("La longitud máxima del campo %s es de %i caracteres" % (campo.getNombre(), campo.getLongitudMax())))
-                    message.exec_()
-                    return False
-                elif campo.getLongitudMin() is not 0 and len(item.text()) < campo.getLongitudMin():
-                    message.setText(unicode("La longitud mínima del campo %s es de %i caracteres" % (campo.getNombre(), campo.getLongitudMin())))
-                    message.exec_()
-                    return False
-                count += 1
-                    
-        count = 4
-        for campo in self.__campos:
-            if campo is not None:
-                item = self.formLayout.itemAt(count, QtGui.QFormLayout.FieldRole).widget()
-                campo.setValor(item.text())
-            count += 1
-                        
-        func = lambda x: x is not None and 1 or 0
-        self.__campos = filter(func, self.__campos)
-        
-        if self.__actuacion is not None:        
-            camposObjeto = self.__actuacion.getCampos()
-            
-            for campoNuevo in self.__campos:
-                if campoNuevo not in camposObjeto:
-                    try:
-                        p = Persistence()
-                        p.guardarCampoJuzgado(campoNuevo, self.__actuacion.getId_actuacion())
-                    except Exception, e:
-                        print e
-            for campoViejo in camposObjeto:
-                if campoViejo not in self.__campos:
-                    try:
-                        p = Persistence()
-                        p.borrarCampoJuzgado(campoViejo)
-                    except Exception, e:
-                        print e
-            self.__actuacion.setCampos(self.__campos)
-        return True
-        
-    def borrarElemento(self):
-        index = self.formLayout.getWidgetPosition(self.sender().data())[0]
-        label = self.formLayout.itemAt(index, QtGui.QFormLayout.LabelRole)
-        item = self.formLayout.itemAt(index, QtGui.QFormLayout.FieldRole)
-        label.widget().deleteLater()
-        item.widget().deleteLater()
-        self.__campos[index - 4] = None
-        
-    def editarElemento(self):
-        index = self.formLayout.getWidgetPosition(self.sender().data())[0]
-        label = self.formLayout.itemAt(index, QtGui.QFormLayout.LabelRole).widget()
-        txtBox = self.formLayout.itemAt(index, QtGui.QFormLayout.FieldRole).widget()
-        campo = self.__campos[index - 4]
-        dialogo = NuevoCampo(NuevoCampo.actuacion, campo, self)
-        if dialogo.exec_():
-            label.setText("%s:" % campo.getNombre())
-            if campo.getLongitudMax() is not 0:
-                txtBox.setMaxLength(campo.getLongitudMax())
-    
-    def createAction(self, text, slot = None):
-        action = QtGui.QAction(text, self)
-        if slot is not None:
-            self.connect(action, QtCore.SIGNAL("triggered()"), slot)
-        return action
-    
-    def cargarCampos(self):
-        if len(self.__campos) is not 0:
-            for campo in self.__campos:
-                label = QtGui.QLabel()
-                label.setText("%s:" % campo.getNombre())
-                txtBox = QtGui.QLineEdit()
-                txtBox.setText(campo.getValor())
-                if campo.getLongitudMax() is not 0:
-                    txtBox.setMaxLength(campo.getLongitudMax())
-                
-                txtBox.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-                
-                eliminar = self.createAction('Eliminar', self.borrarElemento)
-                eliminar.setData(txtBox)
-                editar = self.createAction("Editar", self.editarElemento)
-                editar.setData(txtBox)
-                
-                txtBox.addActions([eliminar, editar])
-                self.formLayout.addRow(label, txtBox)     
-        
-    def addCampo(self, campo = None):
-        if campo is not None:
-            if campo in self.__campos:
-                message = QtGui.QMessageBox()
-                message.setIcon(QtGui.QMessageBox.Warning)
-                message.setText("El campo ya se encuentra")
-                message.exec_()
-            else:
-                label = QtGui.QLabel()
-                label.setText("%s:" % campo.getNombre())
-                txtBox = QtGui.QLineEdit()
-                txtBox.setText(campo.getValor())
-                if campo.getLongitudMax() is not 0:
-                    txtBox.setMaxLength(campo.getLongitudMax())
-                
-                txtBox.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-                
-                eliminar = self.createAction('Eliminar', self.borrarElemento)
-                eliminar.setData(txtBox)
-                editar = self.createAction("Editar", self.editarElemento)
-                editar.setData(txtBox)
-                
-                txtBox.addActions([eliminar, editar])
-                self.formLayout.addRow(label, txtBox)
-                self.__campos.append(campo)
-        else:
-            dialogo = ListadoDialogo(ListadoDialogo.CAMPOACTUACION, self)
-            if dialogo.exec_():
-                campo = dialogo.getSelected()
-                self.addCampo(campo)
