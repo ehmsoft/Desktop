@@ -30,6 +30,7 @@ from gui.NuevaCategoria import NuevaCategoria
 from gui.NuevoCampo import NuevoCampo
 from gui.NuevaActuacion import NuevaActuacion
 from gui.NuevoProceso import NuevoProceso
+from gui.NuevaPlantilla import NuevaPlantilla
 
 class MainApp(QMainWindow, Ui_mainApp):
     def __init__(self, parent = None):
@@ -394,8 +395,10 @@ class MainApp(QMainWindow, Ui_mainApp):
                 proceso = procesoVentana.getProceso()
                 self.columna1.getCentralWidget().add(proceso)
         elif item.text() == 'Plantillas':
-            #TODO: Metodo de agregar Plantillas
-            pass
+            plantillaVentana = NuevaPlantilla()
+            if plantillaVentana.exec_():
+                plantilla = plantillaVentana.getPlantilla()
+                self.columna1.getCentralWidget().add(plantilla)
                 
         elif item.text() == 'Demandantes':
             personaVentana = NuevaPersona(tipo = 1)
@@ -730,7 +733,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.gridLayout.addWidget(self.label, 0,1,1,1)
     
     def plantillaEditarClicked(self):
-        pass
+        plantilla = self.columna1.getCentralWidget().currentItem().getObjeto()
+        plantillaVentana = NuevaPlantilla(plantilla)
+        if plantillaVentana.exec_():
+            self.columna1.getCentralWidget().replace(plantillaVentana.getPlantilla())
+        self.columna1ElementChanged()
+        plantillaVentana = None
     
     def plantillaEliminarClicked(self):
         plantilla = self.columna1.getCentralWidget().getSelectedItem()
