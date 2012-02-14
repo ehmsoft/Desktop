@@ -14,15 +14,15 @@ class VerPlantilla(QWidget, Ui_VerPlantilla):
         self.setupUi(self)
     
         if self.__plantilla:
-            self.lblNombre.setText(str(self.__plantilla))
-            self.lblDemandante.setText(str(self.__plantilla.getDemandante()))
-            self.lblDemandado.setText(str(self.__plantilla.getDemandado()))
-            self.lblJuzgado.setText(str(self.__plantilla.getJuzgado()))
+            self.lblNombre.setText(unicode(self.__plantilla))
+            self.lblDemandante.setText(unicode(self.__plantilla.getDemandante()))
+            self.lblDemandado.setText(unicode(self.__plantilla.getDemandado()))
+            self.lblJuzgado.setText(unicode(self.__plantilla.getJuzgado()))
             self.lblRadicado.setText(self.__plantilla.getRadicado())
             self.lblRadicadoUnico.setText(self.__plantilla.getRadicadoUnico())
             self.lblEstado.setText(self.__plantilla.getEstado())
-            self.lblCategoria.setText(str(self.__plantilla.getCategoria()))
-            self.lblTipo.setText(str(self.__plantilla.getTipo()))
+            self.lblCategoria.setText(unicode(self.__plantilla.getCategoria()))
+            self.lblTipo.setText(unicode(self.__plantilla.getTipo()))
             self.lblPrioridad.setNum(self.__plantilla.getPrioridad())
             self.lblNotas.setText(self.__plantilla.getNotas())
             
