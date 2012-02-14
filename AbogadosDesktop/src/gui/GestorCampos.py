@@ -40,7 +40,7 @@ class GestorCampos(object):
     def getCamposEliminados(self):
         return self.__camposEliminados        
         
-    def organizarCampos(self, validar):
+    def organizarCampos(self, validar = True):
         count = self.__count
         for campo in self.__campos:
             if campo is not None:
