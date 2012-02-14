@@ -333,6 +333,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
                                   estado = estado, categoria = categoria, tipo = tipo, notas = notas,
                                   prioridad = prioridad, campos = campos)
                 p.guardarProceso(proceso)
+                self.__proceso = proceso
             else:
                 camposNuevos = self.__gestor.getCamposNuevos()
                 camposEliminados = self.__gestor.getCamposEliminados()
