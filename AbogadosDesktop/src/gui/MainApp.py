@@ -29,6 +29,7 @@ from gui.NuevoJuzgado import NuevoJuzgado
 from gui.NuevaCategoria import NuevaCategoria
 from gui.NuevoCampo import NuevoCampo
 from gui.NuevaActuacion import NuevaActuacion
+from gui.NuevoProceso import NuevoProceso
 
 class MainApp(QMainWindow, Ui_mainApp):
     def __init__(self, parent = None):
@@ -388,8 +389,10 @@ class MainApp(QMainWindow, Ui_mainApp):
         #Manejar el evento de agregar un item en la columna1
         item = self.listaIzquierda.currentItem()
         if item.text() == 'Procesos':
-            #TODO: Metodo de agregar procesos
-            pass
+            procesoVentana = NuevoProceso()
+            if procesoVentana.exec_():
+                proceso = procesoVentana.getProceso()
+                self.columna1.getCentralWidget().add(proceso)
         elif item.text() == 'Plantillas':
             #TODO: Metodo de agregar Plantillas
             pass
@@ -660,7 +663,12 @@ class MainApp(QMainWindow, Ui_mainApp):
             campoVentana = None
     
     def procesoEditarClicked(self):
-        print 'clicked'
+        proceso = self.columna1.getCentralWidget().currentItem().getObjeto()
+        procesoVentana = NuevoProceso(proceso)
+        if procesoVentana.exec_():
+            self.columna1.getCentralWidget().replace(procesoVentana.getProceso())
+        self.columna1ElementChanged()
+        procesoVentana = None
         
     def procesoEliminarClicked(self):
         proceso = self.columna1.getCentralWidget().getSelectedItem()
