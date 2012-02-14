@@ -10,13 +10,14 @@ from NuevaCategoriaScreen import Ui_NuevaCategoria
 from core.Categoria import Categoria
 from persistence.Persistence import Persistence
 
+
 class NuevaCategoria(QDialog, Ui_NuevaCategoria):
     def __init__(self,categoria=None,parent=None):
         super(NuevaCategoria, self).__init__(parent)
         self.__categoria = categoria
         self.setupUi(self)        
         if self.__categoria is not None:
-            self.__txtCategoria.setText(self.__categoria.getDescripcion())
+            self.txtCategoria.setText(self.__categoria.getDescripcion())
             
         
     def getCategoria(self):
@@ -50,8 +51,7 @@ class NuevaCategoria(QDialog, Ui_NuevaCategoria):
         else:
             self.guardar()
             
-
-    
+  
     
     
     
