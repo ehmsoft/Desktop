@@ -255,29 +255,8 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
         return action 
                 
     def accept(self):
-        if self.__demandante is None or self.__demandante.getId_persona() is "1":
-            message = QtGui.QMessageBox()
-            message.setIcon(QtGui.QMessageBox.Warning)
-            message.setText("El demandante se considera obligatorio")
-            message.exec_()
-        elif self.__demandado is None or self.__demandado.getId_persona() is "1":
-            message = QtGui.QMessageBox()
-            message.setIcon(QtGui.QMessageBox.Warning)
-            message.setText("El demandado se considera obligatorio")
-            message.exec_()
-        elif self.__juzgado is None or self.__juzgado.getId_juzgado() is "1":
-            message = QtGui.QMessageBox()
-            message.setIcon(QtGui.QMessageBox.Warning)
-            message.setText("El juzgado se considera obligatorio")
-            message.exec_()
-        elif len(self.txtRadicado.text()) is 0:
-            message = QtGui.QMessageBox()
-            message.setIcon(QtGui.QMessageBox.Warning)
-            message.setText("El radicado se considera obligatorio")
-            message.exec_()
-            self.txtRadicado.setFocus()
-        elif self.__gestor.organizarCampos():
-            self.guardar()
+        self.__gestor.organizarCampos(False)
+        self.guardar()
     
     def guardar(self):
         try:
@@ -300,6 +279,7 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
                                       estado = estado, categoria = categoria, tipo = tipo, notas = notas, 
                                       campos = campos, prioridad = prioridad)
                 p.guardarPlantilla(plantilla)
+                self.__plantilla = plantilla
             else:
                 camposNuevos = self.__gestor.getCamposNuevos()
                 camposEliminados = self.__gestor.getCamposEliminados()

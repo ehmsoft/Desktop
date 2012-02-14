@@ -40,7 +40,7 @@ class GestorCampos(object):
     def getCamposEliminados(self):
         return self.__camposEliminados        
         
-    def organizarCampos(self):
+    def organizarCampos(self, validar):
         count = self.__count
         for campo in self.__campos:
             if campo is not None:
@@ -49,17 +49,17 @@ class GestorCampos(object):
                 message = QtGui.QMessageBox()
                 message.setIcon(QtGui.QMessageBox.Warning)
                 
-                if campo.isObligatorio() and len(item.text()) is 0:
+                if validar and campo.isObligatorio() and len(item.text()) is 0:
                     message.setText("El campo %s es obligatorio" % campo.getNombre())
                     message.exec_()
                     item.setFocus()
                     return False
-                elif campo.getLongitudMax() is not 0 and len(item.text()) > campo.getLongitudMax():
+                elif validar and campo.getLongitudMax() is not 0 and len(item.text()) > campo.getLongitudMax():
                     message.setText(unicode("La longitud máxima del campo %s es de %i caracteres" % (campo.getNombre(), campo.getLongitudMax())))
                     message.exec_()
                     return False
                     item.setFocus()
-                elif campo.getLongitudMin() is not 0 and len(item.text()) < campo.getLongitudMin():
+                elif validar and campo.getLongitudMin() is not 0 and len(item.text()) < campo.getLongitudMin():
                     message.setText(unicode("La longitud mínima del campo %s es de %i caracteres" % (campo.getNombre(), campo.getLongitudMin())))
                     message.exec_()
                     return False
