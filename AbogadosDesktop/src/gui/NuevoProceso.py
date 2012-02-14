@@ -121,7 +121,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         def mousePressEvent(self):
             if QtCore.Qt.MouseButton.LeftButton is self.button():
                 if widget.__demandante is not None and widget.__demandante.getId_persona() is not "1":
-                    if container.itemAt(1) is not None:
+                    if container.count() > 1:
                         container.itemAt(1).widget().deleteLater()
                     vista = VerPersona(widget.__demandante, widget)
                     container.addWidget(vista)
@@ -139,7 +139,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         def mousePressEvent(self):
             if QtCore.Qt.MouseButton.LeftButton is self.button():
                 if widget.__demandado is not None and widget.__demandado.getId_persona() is not "1":
-                    if container.itemAt(1) is not None:
+                    if container.count() > 1:
                         container.itemAt(1).widget().deleteLater()
                     vista = VerPersona(widget.__demandado, widget)
                     container.addWidget(vista)
@@ -157,7 +157,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         def mousePressEvent(self):
             if QtCore.Qt.MouseButton.LeftButton is self.button():
                 if widget.__juzgado is not None and widget.__juzgado.getId_juzgado() is not "1":
-                    if container.itemAt(1) is not None:
+                    if container.count() > 1:
                         container.itemAt(1).widget().deleteLater()
                     vista = VerJuzgado(widget.__juzgado, widget)
                     container.addWidget(vista)
@@ -183,7 +183,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         dteFecha = self.dteFecha
         
         def focusInEvent(self):
-            if container.itemAt(1) is not None:
+            if container.count() > 1:
                 container.itemAt(1).widget().deleteLater()       
             calendar = QtGui.QCalendarWidget()
             calendar.setSelectedDate(dteFecha.dateTime().date())
