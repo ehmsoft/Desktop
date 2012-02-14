@@ -16,15 +16,15 @@ class VerProceso(QWidget, Ui_VerProceso):
         self.setupUi(self)
     
         if self.__proceso:
-            self.lblDemandante.setText(str(self.__proceso.getDemandante()))
-            self.lblDemandado.setText(str(self.__proceso.getDemandado()))
+            self.lblDemandante.setText(unicode(self.__proceso.getDemandante()))
+            self.lblDemandado.setText(unicode(self.__proceso.getDemandado()))
             self.dteFecha.setDateTime(self.__proceso.getFecha())
-            self.lblJuzgado.setText(str(self.__proceso.getJuzgado()))
+            self.lblJuzgado.setText(unicode(self.__proceso.getJuzgado()))
             self.lblRadicado.setText(self.__proceso.getRadicado())
             self.lblRadicadoUnico.setText(self.__proceso.getRadicadoUnico())
             self.lblEstado.setText(self.__proceso.getEstado())
-            self.lblCategoria.setText(str(self.__proceso.getCategoria()))
-            self.lblTipo.setText(str(self.__proceso.getTipo()))
+            self.lblCategoria.setText(unicode(self.__proceso.getCategoria()))
+            self.lblTipo.setText(unicode(self.__proceso.getTipo()))
             self.lblPrioridad.setNum(self.__proceso.getPrioridad())
             self.lblNotas.setText(self.__proceso.getNotas())
             

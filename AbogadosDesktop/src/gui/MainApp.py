@@ -29,6 +29,7 @@ from gui.NuevoJuzgado import NuevoJuzgado
 from gui.NuevaCategoria import NuevaCategoria
 from gui.NuevoCampo import NuevoCampo
 from gui.NuevaActuacion import NuevaActuacion
+from gui.NuevoProceso import NuevoProceso
 
 class MainApp(QMainWindow, Ui_mainApp):
     def __init__(self, parent = None):
@@ -388,8 +389,10 @@ class MainApp(QMainWindow, Ui_mainApp):
         #Manejar el evento de agregar un item en la columna1
         item = self.listaIzquierda.currentItem()
         if item.text() == 'Procesos':
-            #TODO: Metodo de agregar procesos
-            pass
+            procesoVentana = NuevoProceso()
+            if procesoVentana.exec_():
+                proceso = procesoVentana.getProceso()
+                self.columna1.getCentralWidget().add(proceso)
         elif item.text() == 'Plantillas':
             #TODO: Metodo de agregar Plantillas
             pass
@@ -510,6 +513,14 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.categoriaEliminarClicked)
         elif hasattr(self.columna1, 'widget'):
             #Se va por aqui si columna1 es un splitter
+            elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+            #Reestablecer el logo de la bolita
+            if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion, VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
+                elementoGrid.hide()
+                elementoGrid.deleteLater()
+                self.label = QLabel() 
+                self.label.setPixmap(QPixmap.fromImage(self.image))
+                self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
             if self.columna1.widget(0).currentItem().text() == 'Procesos':
                 p = Persistence()
                 lista = p.consultarAtributos()
@@ -652,7 +663,12 @@ class MainApp(QMainWindow, Ui_mainApp):
             campoVentana = None
     
     def procesoEditarClicked(self):
-        print 'clicked'
+        proceso = self.columna1.getCentralWidget().currentItem().getObjeto()
+        procesoVentana = NuevoProceso(proceso)
+        if procesoVentana.exec_():
+            self.columna1.getCentralWidget().replace(procesoVentana.getProceso())
+        self.columna1ElementChanged()
+        procesoVentana = None
         
     def procesoEliminarClicked(self):
         proceso = self.columna1.getCentralWidget().getSelectedItem()
@@ -670,7 +686,12 @@ class MainApp(QMainWindow, Ui_mainApp):
             
     
     def personaEditarClicked(self):
-        pass
+        persona = self.columna1.getCentralWidget().currentItem().getObjeto()
+        personaVentana = NuevaPersona(persona)
+        if personaVentana.exec_():
+            self.columna1.getCentralWidget().replace(personaVentana.getPersona())
+        self.columna1ElementChanged()
+        personaVentana = None
     
     def personaEliminarClicked(self):
         persona = self.columna1.getCentralWidget().getSelectedItem()
@@ -687,7 +708,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.gridLayout.addWidget(self.label, 0,1,1,1)
     
     def juzgadoEditarClicked(self):
-        pass
+        juzgado = self.columna1.getCentralWidget().currentItem().getObjeto()
+        juzgadoVentana = NuevoJuzgado(juzgado)
+        if juzgadoVentana.exec_():
+            self.columna1.getCentralWidget().replace(juzgadoVentana.getJuzgado())
+        self.columna1ElementChanged()
+        juzgadoVentana = None
     
     def juzgadoEliminarClicked(self):
         juzgado = self.columna1.getCentralWidget().getSelectedItem()
@@ -721,7 +747,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.gridLayout.addWidget(self.label, 0,1,1,1)
     
     def categoriaEditarClicked(self):
-        pass
+        categoria = self.columna1.getCentralWidget().currentItem().getObjeto()
+        categoriaVentana = NuevaCategoria(categoria)
+        if categoriaVentana.exec_():
+            self.columna1.getCentralWidget().replace(categoriaVentana.getCategoria())
+        self.columna1ElementChanged()
+        categoriaVentana = None
     
     def categoriaEliminarClicked(self):
         categoria = self.columna1.getCentralWidget().getSelectedItem()
@@ -740,7 +771,54 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.gridLayout.addWidget(self.label, 0,1,1,1)
     
     def campoEditarClicked(self):
-        pass
+        if self.columna1.widget(0).currentItem().text() == 'Procesos':
+            if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
+                campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
+                campoVentana = NuevoCampo(tipo=NuevoCampo.PROCESO, campo=campo)
+                if campoVentana.exec_():
+                    self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
+                    self.columnaCamposElementChanged()
+                campoVentana = None
+        elif self.columna1.widget(0).currentItem().text() == 'Plantillas':
+            if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
+                campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
+                campoVentana = NuevoCampo(tipo=NuevoCampo.PROCESO, campo=campo)
+                if campoVentana.exec_():
+                    self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
+                    self.columnaCamposElementChanged()
+                campoVentana = None
+        elif self.columna1.widget(0).currentItem().text() == 'Demandantes':
+            if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
+                campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
+                campoVentana = NuevoCampo(tipo=NuevoCampo.PERSONA, campo=campo)
+                if campoVentana.exec_():
+                    self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
+                    self.columnaCamposElementChanged()
+                campoVentana = None
+        elif self.columna1.widget(0).currentItem().text() == 'Demandados':
+            if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
+                campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
+                campoVentana = NuevoCampo(tipo=NuevoCampo.PERSONA, campo=campo)
+                if campoVentana.exec_():
+                    self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
+                    self.columnaCamposElementChanged()
+                campoVentana = None
+        elif self.columna1.widget(0).currentItem().text() == 'Juzgados':
+            if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
+                campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
+                campoVentana = NuevoCampo(tipo=NuevoCampo.JUZGADO, campo=campo)
+                if campoVentana.exec_():
+                    self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
+                    self.columnaCamposElementChanged()
+                campoVentana = None
+        elif self.columna1.widget(0).currentItem().text() == 'Actuaciones':
+            if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
+                campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
+                campoVentana = NuevoCampo(tipo=NuevoCampo.ACTUACION, campo=campo)
+                if campoVentana.exec_():
+                    self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
+                    self.columnaCamposElementChanged()
+                campoVentana = None
     
     def campoEliminarClicked(self):
         campo = self.columna1.widget(1).getCentralWidget().getSelectedItem()

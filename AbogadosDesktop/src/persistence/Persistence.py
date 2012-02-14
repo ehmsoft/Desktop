@@ -380,7 +380,7 @@ class Persistence(object):
             if juzgado == None:
                 juzgado = "1"              
                 
-            c.execute('''UPDATE plantillas SET nombre=?,''' + '''id_demandante = ?,''' + ''' id_demandado = ?,''' + ''' fecha_creacion = datetime(?),''' + ''' radicado = ?,''' + ''' radicado_unico = ?,''' + ''' estado = ?,''' + ''' tipo = ?,''' + ''' notas = ?,''' + ''' prioridad = ?,''' + ''' id_juzgado = ?,''' + ''' id_categoria = ?,''' + ''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''', (plantilla.getNombre(), demandante, demandado, plantilla.getFecha(), plantilla.getRadicado(), plantilla.getRadicadoUnico(), plantilla.getEstado(), plantilla.getTipo(), plantilla.getNotas(), plantilla.getPrioridad(), juzgado, plantilla.getCategoria().getId_categoria(), plantilla.getId_plantilla()))                                                         
+            c.execute('''UPDATE plantillas SET nombre=?,''' + '''id_demandante = ?,''' + ''' id_demandado = ?,''' + ''' radicado = ?,''' + ''' radicado_unico = ?,''' + ''' estado = ?,''' + ''' tipo = ?,''' + ''' notas = ?,''' + ''' prioridad = ?,''' + ''' id_juzgado = ?,''' + ''' id_categoria = ?,''' + ''' modificado =1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''', (plantilla.getNombre(), demandante, demandado, plantilla.getRadicado(), plantilla.getRadicadoUnico(), plantilla.getEstado(), plantilla.getTipo(), plantilla.getNotas(), plantilla.getPrioridad(), juzgado, plantilla.getCategoria().getId_categoria(), plantilla.getId_plantilla()))                                                         
             conn.commit()
                       
         except Exception as e:
