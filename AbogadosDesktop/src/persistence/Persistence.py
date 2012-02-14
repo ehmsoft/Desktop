@@ -35,7 +35,7 @@ class Persistence(object):
             elif persona.getTipo() == 2:
                 c.execute('''UPDATE demandados SET cedula = ?,''' + ''' nombre = ?,''' + ''' telefono = ?,''' + ''' direccion = ?,''' + '''correo= ?,''' + ''' notas = ?,''' + ''' fecha_mod = datetime('now','localtime'), modificado =1 WHERE id_demandado = ?''', (persona.getId(), persona.getNombre(), persona.getTelefono(), persona.getDireccion(), persona.getCorreo(), persona.getNotas(), persona.getId_persona(),))
             else:
-                print("eso no es asi")  
+                raise Exception('el tipo de persona no existe') 
             conn.commit()            
         except Exception as e:
             raise e
@@ -51,7 +51,7 @@ class Persistence(object):
             elif persona.getTipo() == 2:
                 c.execute('''INSERT INTO demandados (id_demandado,cedula,nombre,telefono,direccion,correo,notas,nuevo,fecha_mod) VALUES(NULL,?,?,?,?,?,?,1,datetime('now','localtime'))''', (persona.getId(), persona.getNombre(), persona.getTelefono(), persona.getDireccion(), persona.getCorreo(), persona.getNotas()))
             else:
-                print("eso no es asi")
+                raise Exception('el tipo de persona no existe')
             conn.commit() 
             persona.setId_persona(str(c.lastrowid))  
                      
@@ -88,7 +88,7 @@ class Persistence(object):
                 c.execute('''UPDATE plantillas SET id_demandado = 1 WHERE id_demandado = ?''', (persona.getId_persona(),))
 
             else:
-                print("eso no es asi") 
+                raise Exception('el tipo de persona no existe')
             conn.commit()            
         except Exception as e:
             raise e
@@ -396,6 +396,15 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
+            demandante = plantilla.getDemandante().getId_persona()
+            if demandante == None:
+                demandante = "1"                
+            demandado = plantilla.getDemandado().getId_persona()
+            if demandado == None:
+                demandado = "1"
+            juzgado= plantilla.getJuzgado().getId_juzgado()   
+            if juzgado == None:
+                juzgado = "1"   
             c.execute('''INSERT INTO plantillas (id_plantilla,nombre,id_demandante,id_demandado,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nuevo, fecha_mod) VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,1,datetime('now','localtime'))''', (plantilla.getNombre(), plantilla.getDemandante().getId_persona(), plantilla.getDemandado().getId_persona(), plantilla.getRadicado(), plantilla.getRadicadoUnico(), plantilla.getEstado(), plantilla.getTipo(), plantilla.getNotas(), plantilla.getPrioridad(), plantilla.getJuzgado().getId_juzgado(), plantilla.getCategoria().getId_categoria()))                                                         
             conn.commit()
             plantilla.setId_plantilla(str(c.lastrowid))
