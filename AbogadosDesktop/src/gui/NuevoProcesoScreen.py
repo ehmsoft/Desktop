@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'nuevoProceso.ui'
 #
-# Created: Thu Feb  9 21:56:31 2012
+# Created: Wed Feb 15 11:37:40 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,19 +12,19 @@ from PySide import QtCore, QtGui
 class Ui_NuevoProceso(object):
     def setupUi(self, NuevoProceso):
         NuevoProceso.setObjectName("NuevoProceso")
-        NuevoProceso.resize(325, 415)
+        NuevoProceso.resize(337, 455)
         self.gridLayout_2 = QtGui.QGridLayout(NuevoProceso)
         self.gridLayout_2.setObjectName("gridLayout_2")
-        self.line = QtGui.QFrame(NuevoProceso)
-        self.line.setFrameShape(QtGui.QFrame.HLine)
-        self.line.setFrameShadow(QtGui.QFrame.Sunken)
-        self.line.setObjectName("line")
-        self.gridLayout_2.addWidget(self.line, 1, 0, 1, 1)
         self.buttonBox = QtGui.QDialogButtonBox(NuevoProceso)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.gridLayout_2.addWidget(self.buttonBox, 2, 0, 1, 1)
+        self.line = QtGui.QFrame(NuevoProceso)
+        self.line.setFrameShape(QtGui.QFrame.HLine)
+        self.line.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.gridLayout_2.addWidget(self.line, 1, 0, 1, 1)
         self.tabWidget = QtGui.QTabWidget(NuevoProceso)
         self.tabWidget.setTabShape(QtGui.QTabWidget.Rounded)
         self.tabWidget.setMovable(True)
@@ -33,8 +33,6 @@ class Ui_NuevoProceso(object):
         self.Proceso.setObjectName("Proceso")
         self.gridLayout_3 = QtGui.QGridLayout(self.Proceso)
         self.gridLayout_3.setObjectName("gridLayout_3")
-        self.horizontalLayout = QtGui.QHBoxLayout()
-        self.horizontalLayout.setObjectName("horizontalLayout")
         self.groupBox = QtGui.QGroupBox(self.Proceso)
         self.groupBox.setObjectName("groupBox")
         self.gridLayout = QtGui.QGridLayout(self.groupBox)
@@ -130,8 +128,7 @@ class Ui_NuevoProceso(object):
         self.btnAdd.setLayoutDirection(QtCore.Qt.RightToLeft)
         self.btnAdd.setObjectName("btnAdd")
         self.gridLayout.addWidget(self.btnAdd, 1, 0, 1, 1)
-        self.horizontalLayout.addWidget(self.groupBox)
-        self.gridLayout_3.addLayout(self.horizontalLayout, 0, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.groupBox, 0, 0, 1, 1)
         self.tabWidget.addTab(self.Proceso, "")
         self.Actuaciones = QtGui.QWidget()
         self.Actuaciones.setObjectName("Actuaciones")
@@ -141,7 +138,7 @@ class Ui_NuevoProceso(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 295, 301))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 307, 341))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.gridLayout_5 = QtGui.QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_5.setObjectName("gridLayout_5")
@@ -163,7 +160,7 @@ class Ui_NuevoProceso(object):
         self.gridLayout_2.addWidget(self.tabWidget, 0, 0, 1, 1)
 
         self.retranslateUi(NuevoProceso)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("accepted()"), NuevoProceso.accept)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("rejected()"), NuevoProceso.reject)
         QtCore.QMetaObject.connectSlotsByName(NuevoProceso)

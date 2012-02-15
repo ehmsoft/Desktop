@@ -22,6 +22,7 @@ from gui.NuevaActuacion import NuevaActuacion
 from gui.VerActuacion import VerActuacion
 from gui.GestorCampos import GestorCampos
 from core.Categoria import Categoria
+from gui.DialogoAuxiliar import DialogoAuxiliar
 
 class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     '''
@@ -74,6 +75,8 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             self.dteFecha.setDateTime(datetime.today())
             
         self.cargarActuaciones()
+        
+        self.__dialogo = DialogoAuxiliar(self)
                 
         self.clickDemandante()
         self.clickDemandado()
@@ -114,17 +117,15 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.__gestor.addCampo)
                 
     def clickDemandante(self):
-        container = self.horizontalLayout 
+        dialogo = self.__dialogo
         widget = self
         lblDemandante = self.lblDemandante
                     
         def mousePressEvent(self):
             if QtCore.Qt.MouseButton.LeftButton is self.button():
                 if widget.__demandante is not None and widget.__demandante.getId_persona() is not "1":
-                    if container.count() > 1:
-                        container.itemAt(1).widget().deleteLater()
                     vista = VerPersona(widget.__demandante, widget)
-                    container.addWidget(vista)
+                    dialogo.setWidget(vista)
                 else:
                     widget.cambiarDemandante()
             return QtGui.QLabel.mousePressEvent(lblDemandante, self)
@@ -132,17 +133,15 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         self.lblDemandante.mousePressEvent = mousePressEvent
     
     def clickDemandado(self):
-        container = self.horizontalLayout  
+        dialogo = self.__dialogo 
         widget = self
         lblDemandado = self.lblDemandado
                     
         def mousePressEvent(self):
             if QtCore.Qt.MouseButton.LeftButton is self.button():
                 if widget.__demandado is not None and widget.__demandado.getId_persona() is not "1":
-                    if container.count() > 1:
-                        container.itemAt(1).widget().deleteLater()
                     vista = VerPersona(widget.__demandado, widget)
-                    container.addWidget(vista)
+                    dialogo.setWidget(vista)
                 else:
                     widget.cambiarDemandado()
             return QtGui.QLabel.mousePressEvent(lblDemandado, self)
@@ -150,17 +149,15 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         self.lblDemandado.mousePressEvent = mousePressEvent
     
     def clickJuzgado(self):
-        container = self.horizontalLayout  
+        dialogo = self.__dialogo 
         widget = self
         lblJuzgado = self.lblJuzgado
                     
         def mousePressEvent(self):
             if QtCore.Qt.MouseButton.LeftButton is self.button():
                 if widget.__juzgado is not None and widget.__juzgado.getId_juzgado() is not "1":
-                    if container.count() > 1:
-                        container.itemAt(1).widget().deleteLater()
                     vista = VerJuzgado(widget.__juzgado, widget)
-                    container.addWidget(vista)
+                    dialogo.setWidget(vista)
                 else:
                     widget.cambiarJuzgado()
             return QtGui.QLabel.mousePressEvent(lblJuzgado, self)
@@ -179,15 +176,13 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         self.lblCategoria.mousePressEvent = mousePressEvent
     
     def clickFecha(self):
-        container = self.horizontalLayout
+        dialogo = self.__dialogo
         dteFecha = self.dteFecha
         
-        def focusInEvent(self):
-            if container.count() > 1:
-                container.itemAt(1).widget().deleteLater()       
+        def focusInEvent(self):    
             calendar = QtGui.QCalendarWidget()
             calendar.setSelectedDate(dteFecha.dateTime().date())
-            container.addWidget(calendar)  
+            dialogo.setWidget(calendar)  
             
             selectionChanged = lambda:dteFecha.setDate(calendar.selectedDate())           
             calendar.selectionChanged.connect(selectionChanged)
@@ -195,7 +190,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             return QtGui.QDateTimeEdit.focusInEvent(dteFecha, self)
         
         def dateChanged(date):
-            calendar = container.itemAt(1).widget()
+            calendar = dialogo.getWidget()
             calendar.setSelectedDate(date)        
             
         dteFecha.focusInEvent = focusInEvent
