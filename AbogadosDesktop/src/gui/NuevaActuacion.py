@@ -47,7 +47,6 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             self.lblJuzgado.setText(unicode("vacío"))
             
         self.__dialogo = DialogoAuxiliar(self)
-        self.__dialogo.show()
         
         self.clickJuzgado()
         self.clickFecha()

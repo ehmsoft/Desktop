@@ -17,6 +17,7 @@ from NuevaPersona import NuevaPersona
 from NuevoJuzgado import NuevoJuzgado
 from NuevaCategoria import NuevaCategoria
 from persistence.Persistence import Persistence
+from gui.DialogoAuxiliar import DialogoAuxiliar
 
 class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
     '''
@@ -61,6 +62,8 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
             self.txtEstado.setText(self.__plantilla.getEstado())
             self.sbPrioridad.setValue(self.__plantilla.getPrioridad())
             self.txtNotas.setText(self.__plantilla.getNotas())
+            
+        self.__dialogo = DialogoAuxiliar(self)
                             
         self.clickDemandante()
         self.clickDemandado()
@@ -100,17 +103,15 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
         self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.__gestor.addCampo)
                 
     def clickDemandante(self):
-        container = self.horizontalLayout 
+        dialogo = self.__dialogo 
         widget = self
         lblDemandante = self.lblDemandante
                     
         def mousePressEvent(self):
             if QtCore.Qt.MouseButton.LeftButton is self.button():
                 if widget.__demandante is not None and widget.__demandante.getId_persona() is not "1":
-                    if container.count() > 1:
-                        container.itemAt(1).widget().deleteLater()
                     vista = VerPersona(widget.__demandante, widget)
-                    container.addWidget(vista)
+                    dialogo.setWidget(vista)
                 else:
                     widget.cambiarDemandante()
             return QtGui.QLabel.mousePressEvent(lblDemandante, self)
@@ -118,17 +119,15 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
         self.lblDemandante.mousePressEvent = mousePressEvent
     
     def clickDemandado(self):
-        container = self.horizontalLayout  
+        dialogo = self.__dialogo  
         widget = self
         lblDemandado = self.lblDemandado
                     
         def mousePressEvent(self):
             if QtCore.Qt.MouseButton.LeftButton is self.button():
                 if widget.__demandado is not None and widget.__demandado.getId_persona() is not "1":
-                    if container.count() > 1:
-                        container.itemAt(1).widget().deleteLater()
                     vista = VerPersona(widget.__demandado, widget)
-                    container.addWidget(vista)
+                    dialogo.setWidget(vista)
                 else:
                     widget.cambiarDemandado()
             return QtGui.QLabel.mousePressEvent(lblDemandado, self)
@@ -136,17 +135,15 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
         self.lblDemandado.mousePressEvent = mousePressEvent
     
     def clickJuzgado(self):
-        container = self.horizontalLayout  
+        dialogo = self.__dialogo 
         widget = self
         lblJuzgado = self.lblJuzgado
                     
         def mousePressEvent(self):
             if QtCore.Qt.MouseButton.LeftButton is self.button():
                 if widget.__juzgado is not None and widget.__juzgado.getId_juzgado() is not "1":
-                    if container.count() > 1:
-                        container.itemAt(1).widget().deleteLater()
                     vista = VerJuzgado(widget.__juzgado, widget)
-                    container.addWidget(vista)
+                    dialogo.setWidget(vista)
                 else:
                     widget.cambiarJuzgado()
             return QtGui.QLabel.mousePressEvent(lblJuzgado, self)
@@ -169,39 +166,24 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
         if listado.exec_():
             self.__demandante = listado.getSelected()
             self.lblDemandante.setText(self.__demandante.getNombre())
-            if (self.horizontalLayout.count() < 2 or 
-                isinstance(self.horizontalLayout.itemAt(1).widget(), VerPersona) or
-                self.lblJuzgado.hasFocus()):
-                if self.horizontalLayout.count() > 1:
-                    self.horizontalLayout.itemAt(1).widget().deleteLater()
-                vista = VerPersona(self.__demandante, self)
-                self.horizontalLayout.addWidget(vista)
+            vista = VerPersona(self.__demandante, self)
+            self.__dialogo.setWidget(vista)
     
     def cambiarDemandado(self):
         listado = ListadoDialogo(ListadoDialogo.DEMANDADO, self)
         if listado.exec_():
             self.__demandado = listado.getSelected()
             self.lblDemandado.setText(self.__demandado.getNombre())
-            if (self.horizontalLayout.count() < 2 or 
-                isinstance(self.horizontalLayout.itemAt(1).widget(), VerPersona) or 
-                self.lblDemandado.hasFocus()):
-                if self.horizontalLayout.count() > 1:    
-                    self.horizontalLayout.itemAt(1).widget().deleteLater()
-                vista = VerPersona(self.__demandado, self)
-                self.horizontalLayout.addWidget(vista)
+            vista = VerPersona(self.__demandado, self)
+            self.__dialogo.setWidget(vista)
     
     def cambiarJuzgado(self):
         listado = ListadoDialogo(ListadoDialogo.JUZGADO, self)
         if listado.exec_():
             self.__juzgado = listado.getSelected()
             self.lblJuzgado.setText(self.__juzgado.getNombre())
-            if (self.horizontalLayout.count() < 2 or 
-                isinstance(self.horizontalLayout.itemAt(1).widget(), VerJuzgado) or 
-                self.lblJuzgado.hasFocus()):
-                if self.horizontalLayout.count() > 1:
-                    self.horizontalLayout.itemAt(1).widget().deleteLater()
-                vista = VerJuzgado(self.__juzgado, self)
-                self.horizontalLayout.addWidget(vista)
+            vista = VerJuzgado(self.__juzgado, self)
+            self.__dialogo.setWidget(vista)
     
     def cambiarCategoria(self):
         listado = ListadoDialogo(ListadoDialogo.CATEGORIA, self)
@@ -214,31 +196,25 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
             dialogo = NuevaPersona(persona = self.__demandante, parent = self)
             if dialogo.exec_():
                 self.lblDemandante.setText(self.__demandante.getNombre())
-                if (self.horizontalLayout.count() > 1 and 
-                isinstance(self.horizontalLayout.itemAt(1).widget(), VerPersona)):
-                    self.horizontalLayout.itemAt(1).widget().deleteLater()
+                if (isinstance(self.__dialogo.getWidget(), VerPersona)):
                     vista = VerPersona(self.__demandante, self)
-                    self.horizontalLayout.addWidget(vista)
+                    self.__dialogo.setWidget(vista)
     
     def editarDemandado(self):
         if self.__demandado is not None and self.__demandado.getId_persona() is not "1":
             dialogo = NuevaPersona(persona = self.__demandado, parent = self)
             if dialogo.exec_():
                 self.lblDemandado.setText(self.__demandado.getNombre())
-                if (self.horizontalLayout.count() > 1 and 
-                isinstance(self.horizontalLayout.itemAt(1).widget(), VerPersona)):
-                    self.horizontalLayout.itemAt(1).widget().deleteLater()
+                if (isinstance(self.__dialogo.getWidget(), VerPersona)):
                     vista = VerPersona(self.__demandado, self)
-                    self.horizontalLayout.addWidget(vista)
+                    self.__dialogo.setWidget(vista)
     
     def editarJuzgado(self):
         if self.__juzgado is not None and self.__juzgado.getId_juzgado() is not "1":
             dialogo = NuevoJuzgado(juzgado = self.__juzgado, parent = self)
             if dialogo.exec_():
                 self.lblJuzgado.setText(self.__juzgado.getNombre())
-                if (self.horizontalLayout.count() > 1 and 
-                isinstance(self.horizontalLayout.itemAt(1).widget(), VerJuzgado)):
-                    self.horizontalLayout.itemAt(1).widget().deleteLater()
+                if (isinstance(self.__dialogo.getWidget(), VerJuzgado)):
                     vista = VerJuzgado(self.__juzgado, self)
                     self.horizontalLayout.addWidget(vista)
     
@@ -274,9 +250,9 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
             prioridad = self.sbPrioridad.value()
             campos = self.__gestor.getCampos()
             if self.__plantilla is None:
-                plantilla = Plantilla(nombre = nombre, demandante = demandante, demandado = demandado, 
-                                      juzgado = juzgado, radicado = radicado, radicadoUnico = radicadoUnico, 
-                                      estado = estado, categoria = categoria, tipo = tipo, notas = notas, 
+                plantilla = Plantilla(nombre = nombre, demandante = demandante, demandado = demandado,
+                                      juzgado = juzgado, radicado = radicado, radicadoUnico = radicadoUnico,
+                                      estado = estado, categoria = categoria, tipo = tipo, notas = notas,
                                       campos = campos, prioridad = prioridad)
                 p.guardarPlantilla(plantilla)
                 self.__plantilla = plantilla
