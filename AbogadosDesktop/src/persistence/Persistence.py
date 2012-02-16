@@ -283,7 +283,7 @@ class Persistence(object):
             conn.close()
         campos = proceso.getCampos()
         for campo in campos:
-            self.actualizarCampoPersonalizado(campo, proceso.getId_proceso())
+            self.actualizarCampoPersonalizado(campo)
         actuaciones = proceso.getActuaciones()
         for actuacion in actuaciones:
             self.actualizarActuacion(actuacion) 
@@ -376,7 +376,7 @@ class Persistence(object):
             demandado = plantilla.getDemandado().getId_persona()
             if demandado == None:
                 demandado = "1"
-            juzgado= plantilla.getJuzgado().getId_juzgado()   
+            juzgado = plantilla.getJuzgado().getId_juzgado()   
             if juzgado == None:
                 juzgado = "1"              
                 
@@ -402,10 +402,10 @@ class Persistence(object):
             demandado = plantilla.getDemandado().getId_persona()
             if demandado == None:
                 demandado = "1"
-            juzgado= plantilla.getJuzgado().getId_juzgado()   
+            juzgado = plantilla.getJuzgado().getId_juzgado()   
             if juzgado == None:
                 juzgado = "1"   
-            c.execute('''INSERT INTO plantillas (id_plantilla,nombre,id_demandante,id_demandado,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nuevo, fecha_mod) VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,1,datetime('now','localtime'))''', (plantilla.getNombre(), demandante,demandado, plantilla.getRadicado(), plantilla.getRadicadoUnico(), plantilla.getEstado(), plantilla.getTipo(), plantilla.getNotas(), plantilla.getPrioridad(), juzgado, plantilla.getCategoria().getId_categoria()))                                                         
+            c.execute('''INSERT INTO plantillas (id_plantilla,nombre,id_demandante,id_demandado,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nuevo, fecha_mod) VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,1,datetime('now','localtime'))''', (plantilla.getNombre(), demandante, demandado, plantilla.getRadicado(), plantilla.getRadicadoUnico(), plantilla.getEstado(), plantilla.getTipo(), plantilla.getNotas(), plantilla.getPrioridad(), juzgado, plantilla.getCategoria().getId_categoria()))                                                         
             conn.commit()
             plantilla.setId_plantilla(str(c.lastrowid))
         except Exception as e:
@@ -825,7 +825,7 @@ class Persistence(object):
                 direccion = row['direccion']            
                 correo = row['correo']
                 notas = row['notas']
-                demandante = Persona(tipo=1, id=cedula, nombre=nombre, telefono=telefono, direccion=direccion, correo=correo, notas=notas, id_persona=id_demandante)
+                demandante = Persona(tipo = 1, id = cedula, nombre = nombre, telefono = telefono, direccion = direccion, correo = correo, notas = notas, id_persona = id_demandante)
                 demandantes.append(demandante)
         except Exception as e:
             raise e
@@ -852,7 +852,7 @@ class Persistence(object):
                 direccion = row['direccion']            
                 correo = row['correo']
                 notas = row['notas']
-                demandado = Persona(tipo=2, id=cedula, nombre=nombre, telefono=telefono, direccion=direccion, correo=correo, notas=notas, id_persona= id_demandado)
+                demandado = Persona(tipo = 2, id = cedula, nombre = nombre, telefono = telefono, direccion = direccion, correo = correo, notas = notas, id_persona = id_demandado)
                 demandados.append(demandado)
         except Exception as e:
             raise e
@@ -878,7 +878,7 @@ class Persistence(object):
                 direccion = row['direccion']            
                 correo = row['correo']
                 notas = row['notas']
-                demandado = Persona(tipo=2, id=cedula, nombre=nombre, telefono=telefono, direccion=direccion, correo=correo, notas=notas, id_persona= id_demandado)
+                demandado = Persona(tipo = 2, id = cedula, nombre = nombre, telefono = telefono, direccion = direccion, correo = correo, notas = notas, id_persona = id_demandado)
                 personas.append(demandado)
             c.execute('''SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes WHERE eliminado = 0 ORDER BY nombre''')
             for row in c:
@@ -889,7 +889,7 @@ class Persistence(object):
                 direccion = row['direccion']            
                 correo = row['correo']
                 notas = row['notas']
-                demandante = Persona(tipo=1, id=cedula, nombre=nombre, telefono=telefono, direccion=direccion, correo=correo, notas=notas, id_persona=id_demandante)
+                demandante = Persona(tipo = 1, id = cedula, nombre = nombre, telefono = telefono, direccion = direccion, correo = correo, notas = notas, id_persona = id_demandante)
                 personas.append(demandante)
         except Exception as e:
             raise e
@@ -920,7 +920,7 @@ class Persistence(object):
                     direccion = row['direccion']            
                     correo = row['correo']
                     notas = row['notas']
-                    persona = Persona(tipo=1, id=cedula, nombre=nombre, telefono=telefono, direccion=direccion, correo=correo, notas=notas, id_persona=id_demandante)
+                    persona = Persona(tipo = 1, id = cedula, nombre = nombre, telefono = telefono, direccion = direccion, correo = correo, notas = notas, id_persona = id_demandante)
             elif tipo == 2:
                 c.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE id_demandado = ?''', (id_persona,))
                 row = c.fetchone()
@@ -932,7 +932,7 @@ class Persistence(object):
                     direccion = row['direccion']            
                     correo = row['correo']
                     notas = row['notas']
-                    persona = Persona(tipo=2, id=cedula, nombre=nombre, telefono=telefono, direccion=direccion, correo=correo, notas=notas, id_persona= id_demandado)
+                    persona = Persona(tipo = 2, id = cedula, nombre = nombre, telefono = telefono, direccion = direccion, correo = correo, notas = notas, id_persona = id_demandado)
             else:
                 raise ValueError('El tipo de persona no es correcto')
         except Exception as e:
@@ -1008,11 +1008,11 @@ class Persistence(object):
                 prioridad = int(row['prioridad'])
                 id_juzgado = str(row['id_juzgado'])
                 id_categoria = str(row['id_categoria'])
-                demandante = Persona(1, id_persona=id_demandante)
-                demandado = Persona(2, id_persona=id_demandado)
-                juzgado = Juzgado(id_juzgado=id_juzgado)
-                categoria = Categoria(id_categoria=id_categoria)
-                proceso = Proceso(demandante=demandante, demandado=demandado, fecha=fecha_creacion, juzgado=juzgado, radicado=radicado, radicadoUnico=radicado_unico, actuaciones=[], estado=estado, categoria=categoria, tipo=tipo, notas=notas, campos=[], prioridad=prioridad, id_proceso=id_proceso)
+                demandante = Persona(1, id_persona = id_demandante)
+                demandado = Persona(2, id_persona = id_demandado)
+                juzgado = Juzgado(id_juzgado = id_juzgado)
+                categoria = Categoria(id_categoria = id_categoria)
+                proceso = Proceso(demandante = demandante, demandado = demandado, fecha = fecha_creacion, juzgado = juzgado, radicado = radicado, radicadoUnico = radicado_unico, actuaciones = [], estado = estado, categoria = categoria, tipo = tipo, notas = notas, campos = [], prioridad = prioridad, id_proceso = id_proceso)
         except Exception as e:
             raise e
         finally:
@@ -1040,8 +1040,8 @@ class Persistence(object):
                 fecha_proxima = row['fecha_proxima']
                 descripcion = row['descripcion']
                 uid = row['uid']
-                juzgado = Juzgado(id_juzgado=id_juzgado)
-                actuacion = Actuacion(juzgado=juzgado, fecha=fecha_creacion, fechaProxima=fecha_proxima, descripcion=descripcion, id_actuacion=id_actuacion, uid=uid)
+                juzgado = Juzgado(id_juzgado = id_juzgado)
+                actuacion = Actuacion(juzgado = juzgado, fecha = fecha_creacion, fechaProxima = fecha_proxima, descripcion = descripcion, id_actuacion = id_actuacion, uid = uid)
                 actuaciones.append(actuacion)
         except Exception as e:
             raise e
@@ -1068,8 +1068,8 @@ class Persistence(object):
                 fecha_proxima = row['fecha_proxima']
                 descripcion = row['descripcion']
                 uid = row['uid']
-                juzgado = Juzgado(id_juzgado=id_juzgado)
-                actuacion = Actuacion(juzgado=juzgado, fecha=fecha_creacion, fechaProxima=fecha_proxima, descripcion=descripcion, id_actuacion=id_actuacion, uid=uid)  
+                juzgado = Juzgado(id_juzgado = id_juzgado)
+                actuacion = Actuacion(juzgado = juzgado, fecha = fecha_creacion, fechaProxima = fecha_proxima, descripcion = descripcion, id_actuacion = id_actuacion, uid = uid)  
         except Exception as e:
             raise e
         finally:
@@ -1092,8 +1092,8 @@ class Persistence(object):
                 fecha_proxima = row['fecha_proxima']
                 descripcion = row['descripcion']
                 uid = row['uid']
-                juzgado = Juzgado(id_juzgado=id_juzgado)
-                actuacion = Actuacion(juzgado=juzgado, fecha=fecha_creacion, fechaProxima=fecha_proxima, descripcion=descripcion, id_actuacion=id_actuacion, uid=uid)
+                juzgado = Juzgado(id_juzgado = id_juzgado)
+                actuacion = Actuacion(juzgado = juzgado, fecha = fecha_creacion, fechaProxima = fecha_proxima, descripcion = descripcion, id_actuacion = id_actuacion, uid = uid)
                 actuaciones.append(actuacion)
         except Exception as e:
             raise e
@@ -1119,7 +1119,7 @@ class Persistence(object):
                 telefono = row['telefono']
                 direccion = row['direccion']
                 tipo = row['tipo']
-                juzgado = Juzgado(nombre=nombre, ciudad=ciudad, direccion=direccion, telefono=telefono, tipo=tipo, id_juzgado=id_juzgado)
+                juzgado = Juzgado(nombre = nombre, ciudad = ciudad, direccion = direccion, telefono = telefono, tipo = tipo, id_juzgado = id_juzgado)
                 juzgados.append(juzgado)
         except Exception as e:
             raise e
@@ -1145,7 +1145,7 @@ class Persistence(object):
                 telefono = row['telefono']
                 direccion = row['direccion']
                 tipo = row['tipo']
-                juzgado = Juzgado(nombre=nombre, ciudad=ciudad, direccion=direccion, telefono=telefono, tipo=tipo, id_juzgado=id_juzgado)            
+                juzgado = Juzgado(nombre = nombre, ciudad = ciudad, direccion = direccion, telefono = telefono, tipo = tipo, id_juzgado = id_juzgado)            
         except Exception as e:
             raise e
         finally:
@@ -1165,7 +1165,7 @@ class Persistence(object):
             if row:
                 id_categoria = str(row['id_categoria'])
                 descripcion = row['descripcion']
-                categoria = Categoria(descripcion=descripcion, id_categoria=id_categoria)
+                categoria = Categoria(descripcion = descripcion, id_categoria = id_categoria)
         except Exception as e:
             raise e
         finally:
@@ -1183,7 +1183,7 @@ class Persistence(object):
             for row in c:
                 id_categoria = str(row['id_categoria'])
                 descripcion = row['descripcion']
-                categoria = Categoria(descripcion=descripcion, id_categoria=id_categoria)
+                categoria = Categoria(descripcion = descripcion, id_categoria = id_categoria)
                 categorias.append(categoria)
         except Exception as e:
             raise e
@@ -1212,7 +1212,7 @@ class Persistence(object):
                     obligatorio = True
                 else:
                     obligatorio = False
-                campo = CampoPersonalizado(nombre=nombre, valor=valor, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min, id_campo=id_atributo_proceso, id_atributo=id_atributo)
+                campo = CampoPersonalizado(nombre = nombre, valor = valor, obligatorio = obligatorio, longitudMax = longitud_max, longitudMin = longitud_min, id_campo = id_atributo_proceso, id_atributo = id_atributo)
                 campos.append(campo)
         except Exception as e:
             raise e
@@ -1242,7 +1242,7 @@ class Persistence(object):
                     obligatorio = True
                 else:
                     obligatorio = False
-                campo = CampoPersonalizado(nombre=nombre, valor=valor, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min, id_campo=id_atributo_proceso, id_atributo=id_atributo)
+                campo = CampoPersonalizado(nombre = nombre, valor = valor, obligatorio = obligatorio, longitudMax = longitud_max, longitudMin = longitud_min, id_campo = id_atributo_proceso, id_atributo = id_atributo)
         except Exception as e:
             raise e
         finally:
@@ -1297,11 +1297,11 @@ class Persistence(object):
                 id_juzgado = str(row['id_juzgado'])
                 id_categoria = str(row['id_categoria'])
                 nombre = row['nombre']
-                demandante = Persona(1, id_persona=id_demandante)
-                demandado = Persona(2, id_persona=id_demandado)
-                juzgado = Juzgado(id_juzgado=id_juzgado)
-                categoria = Categoria(id_categoria=id_categoria)
-                plantilla = Plantilla(nombre=nombre, demandante=demandante, demandado=demandado, juzgado=juzgado, radicado=radicado, radicadoUnico=radicado_unico, estado=estado, categoria=categoria, tipo=tipo, notas=notas, campos=[], prioridad=prioridad, id_plantilla=id_plantilla)
+                demandante = Persona(1, id_persona = id_demandante)
+                demandado = Persona(2, id_persona = id_demandado)
+                juzgado = Juzgado(id_juzgado = id_juzgado)
+                categoria = Categoria(id_categoria = id_categoria)
+                plantilla = Plantilla(nombre = nombre, demandante = demandante, demandado = demandado, juzgado = juzgado, radicado = radicado, radicadoUnico = radicado_unico, estado = estado, categoria = categoria, tipo = tipo, notas = notas, campos = [], prioridad = prioridad, id_plantilla = id_plantilla)
                 plantillas.append(plantilla)
         except Exception as e:
             raise e
@@ -1337,11 +1337,11 @@ class Persistence(object):
                 id_juzgado = str(row['id_juzgado'])
                 id_categoria = str(row['id_categoria'])
                 nombre = row['nombre']
-                demandante = Persona(1, id_persona=id_demandante)
-                demandado = Persona(2, id_persona=id_demandado)
-                juzgado = Juzgado(id_juzgado=id_juzgado)
-                categoria = Categoria(id_categoria=id_categoria)
-                plantilla = Plantilla(nombre=nombre, demandante=demandante, demandado=demandado, juzgado=juzgado, radicado=radicado, radicadoUnico=radicado_unico, estado=estado, categoria=categoria, tipo=tipo, notas=notas, campos=[], prioridad=prioridad, id_plantilla=id_plantilla)
+                demandante = Persona(1, id_persona = id_demandante)
+                demandado = Persona(2, id_persona = id_demandado)
+                juzgado = Juzgado(id_juzgado = id_juzgado)
+                categoria = Categoria(id_categoria = id_categoria)
+                plantilla = Plantilla(nombre = nombre, demandante = demandante, demandado = demandado, juzgado = juzgado, radicado = radicado, radicadoUnico = radicado_unico, estado = estado, categoria = categoria, tipo = tipo, notas = notas, campos = [], prioridad = prioridad, id_plantilla = id_plantilla)
         except Exception as e:
             raise e
         finally:
@@ -1374,7 +1374,7 @@ class Persistence(object):
                     obligatorio = True
                 else:
                     obligatorio = False
-                campo = CampoPersonalizado(nombre=nombre, valor=valor, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min, id_campo= id_atributo_plantilla, id_atributo=id_atributo)
+                campo = CampoPersonalizado(nombre = nombre, valor = valor, obligatorio = obligatorio, longitudMax = longitud_max, longitudMin = longitud_min, id_campo = id_atributo_plantilla, id_atributo = id_atributo)
                 campos.append(campo)
         except Exception as e:
             raise e
@@ -1404,7 +1404,7 @@ class Persistence(object):
                     obligatorio = True
                 else:
                     obligatorio = False
-                campo = CampoPersonalizado(nombre=nombre, valor=valor, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min, id_campo= id_atributo_plantilla, id_atributo=id_atributo)
+                campo = CampoPersonalizado(nombre = nombre, valor = valor, obligatorio = obligatorio, longitudMax = longitud_max, longitudMin = longitud_min, id_campo = id_atributo_plantilla, id_atributo = id_atributo)
         except Exception as e:
             raise e
         finally:
@@ -1478,7 +1478,7 @@ class Persistence(object):
                     obligatorio = True
                 else:
                     obligatorio = False
-                campo = CampoPersonalizado(nombre=nombre, valor=valor, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min, id_campo=id_atributo_demandante, id_atributo=id_atributo)
+                campo = CampoPersonalizado(nombre = nombre, valor = valor, obligatorio = obligatorio, longitudMax = longitud_max, longitudMin = longitud_min, id_campo = id_atributo_demandante, id_atributo = id_atributo)
                 campos.append(campo)
         except Exception as e:
             raise e
@@ -1509,7 +1509,7 @@ class Persistence(object):
                     obligatorio = True
                 else:
                     obligatorio = False
-                campo = CampoPersonalizado(nombre=nombre, valor=valor, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min, id_campo=id_atributo_demandante, id_atributo=id_atributo)
+                campo = CampoPersonalizado(nombre = nombre, valor = valor, obligatorio = obligatorio, longitudMax = longitud_max, longitudMin = longitud_min, id_campo = id_atributo_demandante, id_atributo = id_atributo)
         except Exception as e:
             raise e
         finally:
@@ -1538,7 +1538,7 @@ class Persistence(object):
                     obligatorio = True
                 else:
                     obligatorio = False
-                campo = CampoPersonalizado(nombre=nombre, valor=valor, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min, id_campo=id_atributo_demandado, id_atributo=id_atributo)
+                campo = CampoPersonalizado(nombre = nombre, valor = valor, obligatorio = obligatorio, longitudMax = longitud_max, longitudMin = longitud_min, id_campo = id_atributo_demandado, id_atributo = id_atributo)
                 campos.append(campo)
         except Exception as e:
             raise e
@@ -1569,7 +1569,7 @@ class Persistence(object):
                     obligatorio = True
                 else:
                     obligatorio = False
-                campo = CampoPersonalizado(nombre=nombre, valor=valor, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min, id_campo=id_atributo_demandado, id_atributo=id_atributo)
+                campo = CampoPersonalizado(nombre = nombre, valor = valor, obligatorio = obligatorio, longitudMax = longitud_max, longitudMin = longitud_min, id_campo = id_atributo_demandado, id_atributo = id_atributo)
         except Exception as e:
             raise e
         finally:
@@ -1625,7 +1625,7 @@ class Persistence(object):
                     obligatorio = True
                 else:
                     obligatorio = False
-                campo = CampoPersonalizado(nombre=nombre, valor=valor, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min, id_campo=id_atributo_juzgado, id_atributo=id_atributo)
+                campo = CampoPersonalizado(nombre = nombre, valor = valor, obligatorio = obligatorio, longitudMax = longitud_max, longitudMin = longitud_min, id_campo = id_atributo_juzgado, id_atributo = id_atributo)
                 campos.append(campo)
         except Exception as e:
             raise e
@@ -1656,7 +1656,7 @@ class Persistence(object):
                     obligatorio = True
                 else:
                     obligatorio = False
-                campo = CampoPersonalizado(nombre=nombre, valor=valor, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min, id_campo=id_atributo_juzgado, id_atributo=id_atributo)
+                campo = CampoPersonalizado(nombre = nombre, valor = valor, obligatorio = obligatorio, longitudMax = longitud_max, longitudMin = longitud_min, id_campo = id_atributo_juzgado, id_atributo = id_atributo)
         except Exception as e:
             raise e
         finally:
@@ -1712,7 +1712,7 @@ class Persistence(object):
                     obligatorio = True
                 else:
                     obligatorio = False
-                campo = CampoPersonalizado(nombre=nombre, valor=valor, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min, id_campo=id_atributo_actuacion, id_atributo=id_atributo)
+                campo = CampoPersonalizado(nombre = nombre, valor = valor, obligatorio = obligatorio, longitudMax = longitud_max, longitudMin = longitud_min, id_campo = id_atributo_actuacion, id_atributo = id_atributo)
                 campos.append(campo)
         except Exception as e:
             raise e
@@ -1743,7 +1743,7 @@ class Persistence(object):
                     obligatorio = True
                 else:
                     obligatorio = False
-                campo = CampoPersonalizado(nombre=nombre, valor=valor, obligatorio=obligatorio, longitudMax=longitud_max, longitudMin=longitud_min, id_campo=id_atributo_actuacion, id_atributo=id_atributo)
+                campo = CampoPersonalizado(nombre = nombre, valor = valor, obligatorio = obligatorio, longitudMax = longitud_max, longitudMin = longitud_min, id_campo = id_atributo_actuacion, id_atributo = id_atributo)
         except Exception as e:
             raise e
         finally:
