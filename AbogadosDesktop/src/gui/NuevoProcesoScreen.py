@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'nuevoProceso.ui'
 #
-# Created: Wed Feb 15 11:37:40 2012
+# Created: Wed Feb 15 20:56:43 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -160,7 +160,7 @@ class Ui_NuevoProceso(object):
         self.gridLayout_2.addWidget(self.tabWidget, 0, 0, 1, 1)
 
         self.retranslateUi(NuevoProceso)
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("accepted()"), NuevoProceso.accept)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("rejected()"), NuevoProceso.reject)
         QtCore.QMetaObject.connectSlotsByName(NuevoProceso)
