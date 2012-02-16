@@ -396,14 +396,17 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            demandante = plantilla.getDemandante().getId_persona()
-            if demandante == None:
-                demandante = "1"                
-            demandado = plantilla.getDemandado().getId_persona()
-            if demandado == None:
+            if plantilla.getDemandante():
+                demandante = plantilla.getDemandante().getId_persona()
+            else:
+                demandante = 1  
+            if plantilla.getDemandado():            
+                demandado = plantilla.getDemandado().getId_persona()
+            else:
                 demandado = "1"
-            juzgado= plantilla.getJuzgado().getId_juzgado()   
-            if juzgado == None:
+            if plantilla.getJuzgado():
+                juzgado= plantilla.getJuzgado().getId_juzgado()   
+            else:
                 juzgado = "1"   
             c.execute('''INSERT INTO plantillas (id_plantilla,nombre,id_demandante,id_demandado,radicado,radicado_unico,estado,tipo,notas,prioridad,id_juzgado,id_categoria,nuevo, fecha_mod) VALUES(NULL,?,?,?,?,?,?,?,?,?,?,?,1,datetime('now','localtime'))''', (plantilla.getNombre(), demandante,demandado, plantilla.getRadicado(), plantilla.getRadicadoUnico(), plantilla.getEstado(), plantilla.getTipo(), plantilla.getNotas(), plantilla.getPrioridad(), juzgado, plantilla.getCategoria().getId_categoria()))                                                         
             conn.commit()
@@ -416,6 +419,13 @@ class Persistence(object):
         campos = plantilla.getCampos()
         for campo in campos:
             self.guardarCampoPlantilla(campo, plantilla.getId_plantilla())
+        
+        if not plantilla.getDemandante():
+            plantilla.setDemandante(self.consultarPersona('1', 1))
+        if not plantilla.getDemandado():            
+            plantilla.setDemandado(self.consultarPersona('1', 2))
+        if not plantilla.getJuzgado():
+            plantilla.setJuzgado(self.consultarJuzgado('1'))
         
     def borrarPlantilla(self, plantilla):
         try:
