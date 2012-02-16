@@ -27,12 +27,12 @@ class Plantilla(object):
         else:
             raise TypeError('Tipo de dato no admitido')
         
-        if isinstance(demandado, Persona) or isinstance(demandante, NoneType):
+        if isinstance(demandado, Persona) or isinstance(demandado, NoneType):
             self.__demandado = demandado
         else:
             raise TypeError('Tipo de dato no admitido')
         
-        if isinstance(juzgado, Juzgado) or isinstance(demandante, NoneType):
+        if isinstance(juzgado, Juzgado) or isinstance(juzgado, NoneType):
             self.__juzgado = juzgado
         else:
             raise TypeError('Tipo de dato no admitido')
