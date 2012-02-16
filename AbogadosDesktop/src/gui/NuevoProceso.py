@@ -23,6 +23,7 @@ from gui.VerActuacion import VerActuacion
 from gui.GestorCampos import GestorCampos
 from core.Categoria import Categoria
 from gui.DialogoAuxiliar import DialogoAuxiliar
+from core.Plantilla import Plantilla
 
 class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     '''
@@ -30,14 +31,18 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     '''
 
 
-    def __init__(self, proceso = None, parent = None):
+    def __init__(self, proceso = None, plantilla = None,parent = None):
         '''
         Constructor
         '''
         super(NuevoProceso, self).__init__(parent)
         self.setupUi(self)
+        if proceso is not None and plantilla is not None:
+            raise TypeError("Solo se puede enviar el argumento plantilla o proceso sólo")
         if proceso is not None and not isinstance(proceso, Proceso):
             raise TypeError("El objeto proceso debe pertenecer a la clase Proceso")
+        if plantilla is not None and not isinstance(plantilla, Plantilla):
+            raise TypeError("El objeto plantilla debe pertenecer a la clase Plantilla")
         if proceso is not None:
             self.groupBox.setTitle("Datos del proceso:")
             self.setWindowTitle("Editar proceso")
@@ -71,6 +76,23 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             self.sbPrioridad.setValue(self.__proceso.getPrioridad())
             self.dteFecha.setDateTime(self.__proceso.getFecha())
             self.txtNotas.setText(self.__proceso.getNotas())
+        elif plantilla is not None:
+            self.__demandante = plantilla.getDemandante()
+            self.__demandado = plantilla.getDemandado()
+            self.__juzgado = plantilla.getJuzgado()
+            self.__categoria = plantilla.getCategoria()
+            campos = plantilla.getCampos()
+            
+            self.lblDemandante.setText(self.__demandante.getNombre())
+            self.lblDemandado.setText(self.__demandado.getNombre())
+            self.lblJuzgado.setText(self.__juzgado.getNombre())
+            self.lblCategoria.setText(self.__categoria.getDescripcion())
+            self.txtRadicado.setText(plantilla.getRadicado())
+            self.txtRadicadoUnico.setText(plantilla.getRadicadoUnico())
+            self.txtTipo.setText(plantilla.getTipo())
+            self.txtEstado.setText(plantilla.getEstado())
+            self.sbPrioridad.setValue(plantilla.getPrioridad())
+            self.txtNotas.setText(plantilla.getNotas())
         else:
             self.dteFecha.setDateTime(datetime.today())
             
