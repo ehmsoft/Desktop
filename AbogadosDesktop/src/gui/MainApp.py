@@ -470,10 +470,11 @@ class MainApp(QMainWindow, Ui_mainApp):
                 elementoGrid.deleteLater()
                 plantilla = VerPlantilla(item.getObjeto())
                 #Agregar elemento derecho y ponerle un tamano maximo
-                nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=plantilla )
+                nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=plantilla, plantilla = True )
                 nuevoElemento.setMaximumWidth(310)
                 nuevoElemento.setMinimumWidth(310)
                 self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
+                self.connect(nuevoElemento.btnCrearProceso, SIGNAL('clicked()'), self.plantillaNuevoProcesoClicked)
                 self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.plantillaEditarClicked)
                 self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.plantillaEliminarClicked)
             if isinstance(item.getObjeto(), Persona):
@@ -731,6 +732,13 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.label = QLabel() 
                 self.label.setPixmap(QPixmap.fromImage(self.image))
                 self.gridLayout.addWidget(self.label, 0,1,1,1)
+    
+    def plantillaNuevoProcesoClicked(self):
+        plantilla = self.columna1.getCentralWidget().currentItem().getObjeto()
+        procesoVentana = NuevoProceso(plantilla = plantilla)
+        procesoVentana.exec_()
+        self.columna1ElementChanged()
+        procesoVentana = None
     
     def plantillaEditarClicked(self):
         plantilla = self.columna1.getCentralWidget().currentItem().getObjeto()
