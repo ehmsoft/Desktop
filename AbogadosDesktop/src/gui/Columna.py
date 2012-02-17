@@ -17,7 +17,7 @@ class ColumnaWidget(QWidget):
         self.btnAgregar = QPushButton('+')
         btnLayout.addWidget(self.btnAgregar)
         layout.addWidget(self.__centralWidget)
-        layout.addStretch()
+        #layout.addStretch()
         layout.addLayout(btnLayout)
         self.setLayout(layout)
         self.connect(self.btnAgregar, SIGNAL('clicked()'), self.click)
@@ -48,7 +48,7 @@ class ColumnaDerecha(QWidget):
             label.setAlignment(Qt.AlignCenter)
             layout.addWidget(label)
         layout.addWidget(self.__centralWidget)
-        layout.addStretch()
+        #layout.addStretch()
         layout.addLayout(btnLayout)
         self.setLayout(layout)
     
