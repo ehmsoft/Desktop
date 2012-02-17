@@ -42,12 +42,15 @@ class Listado(QListWidget):
                                       
             for objeto in listaObjetos:
                 item = ItemListas(objeto)
+                item.setToolTip(unicode(objeto))
                 self.addItem(item)
         else:
             raise TypeError('Tipo de dato no admitido')
         
     def add(self,objeto):
-        self.addItem(ItemListas(objeto))
+        item = ItemListas(objeto)
+        item.setToolTip(unicode(objeto))
+        self.addItem(item)
         
     def remove(self):        
         objeto = self.currentItem()
