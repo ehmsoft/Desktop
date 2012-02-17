@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'nuevaActuacion.ui'
 #
-# Created: Tue Feb  7 11:11:16 2012
+# Created: Wed Feb 15 11:37:56 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -20,20 +20,8 @@ class Ui_NuevaActuacion(object):
         NuevaActuacion.setSizePolicy(sizePolicy)
         self.horizontalLayout_3 = QtGui.QHBoxLayout(NuevaActuacion)
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.horizontal = QtGui.QHBoxLayout()
-        self.horizontal.setObjectName("horizontal")
-        self.gridLayout = QtGui.QGridLayout()
-        self.gridLayout.setObjectName("gridLayout")
-        self.buttonBox = QtGui.QDialogButtonBox(NuevaActuacion)
-        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
-        self.buttonBox.setObjectName("buttonBox")
-        self.gridLayout.addWidget(self.buttonBox, 2, 0, 1, 1)
-        self.line = QtGui.QFrame(NuevaActuacion)
-        self.line.setFrameShape(QtGui.QFrame.HLine)
-        self.line.setFrameShadow(QtGui.QFrame.Sunken)
-        self.line.setObjectName("line")
-        self.gridLayout.addWidget(self.line, 1, 0, 1, 1)
+        self.verticalLayout = QtGui.QVBoxLayout()
+        self.verticalLayout.setObjectName("verticalLayout")
         self.groupBox = QtGui.QGroupBox(NuevaActuacion)
         self.groupBox.setObjectName("groupBox")
         self.gridLayout_2 = QtGui.QGridLayout(self.groupBox)
@@ -78,9 +66,18 @@ class Ui_NuevaActuacion(object):
         self.btnAdd.setLayoutDirection(QtCore.Qt.RightToLeft)
         self.btnAdd.setObjectName("btnAdd")
         self.gridLayout_2.addWidget(self.btnAdd, 1, 0, 1, 1)
-        self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
-        self.horizontal.addLayout(self.gridLayout)
-        self.horizontalLayout_3.addLayout(self.horizontal)
+        self.verticalLayout.addWidget(self.groupBox)
+        self.line = QtGui.QFrame(NuevaActuacion)
+        self.line.setFrameShape(QtGui.QFrame.HLine)
+        self.line.setFrameShadow(QtGui.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.verticalLayout.addWidget(self.line)
+        self.buttonBox = QtGui.QDialogButtonBox(NuevaActuacion)
+        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
+        self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
+        self.buttonBox.setObjectName("buttonBox")
+        self.verticalLayout.addWidget(self.buttonBox)
+        self.horizontalLayout_3.addLayout(self.verticalLayout)
         self.lblDescripcion.setBuddy(self.txtDescripcion)
         self.lblFecha.setBuddy(self.dteFecha)
         self.lblFechaProxima.setBuddy(self.dteFechaProxima)

@@ -20,7 +20,7 @@ class GestorCampos(object):
         Constructor
         '''
         self.__count = formLayout.rowCount()
-        self.__campos = campos
+        self.__campos = copy(campos)
         self.__camposOriginales = copy(campos)
         self.__formLayout = formLayout
         self.__parent = parent
@@ -38,7 +38,13 @@ class GestorCampos(object):
         return self.__camposNuevos
     
     def getCamposEliminados(self):
-        return self.__camposEliminados        
+        return self.__camposEliminados
+    
+    def __filtro(self, campo):
+        if campo is None:
+            return False
+        else:
+            return True        
         
     def organizarCampos(self, validar = True):
         count = self.__count
@@ -70,7 +76,7 @@ class GestorCampos(object):
                 item = self.__formLayout.itemAt(count + self.__campos.index(campo), QtGui.QFormLayout.FieldRole).widget()
                 campo.setValor(item.text())
                         
-        func = lambda x: x is not None and 1 or 0
+        func = lambda x: x is not None
         self.__campos = filter(func, self.__campos)
         
         camposObjeto = self.__camposOriginales

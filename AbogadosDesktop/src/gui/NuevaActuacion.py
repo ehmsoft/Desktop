@@ -15,6 +15,7 @@ from datetime import datetime
 from gui.NuevoJuzgado import NuevoJuzgado
 from gui.GestorCampos import GestorCampos
 from persistence.Persistence import Persistence
+from gui.DialogoAuxiliar import DialogoAuxiliar
 
 class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
     '''
@@ -44,6 +45,8 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             self.dteFecha.setDateTime(datetime.today())
             self.dteFechaProxima.setDateTime(datetime.today())
             self.lblJuzgado.setText(unicode("vacío"))
+            
+        self.__dialogo = DialogoAuxiliar(self)
         
         self.clickJuzgado()
         self.clickFecha()
@@ -129,18 +132,15 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         return QtGui.QDialog.accept(self)
         
     def clickJuzgado(self):
-        container = self.horizontal  
+        dialogo = self.__dialogo
         widget = self
         lblJuzgado = self.lblJuzgado
                     
         def mousePressEvent(self):
             if QtCore.Qt.MouseButton.LeftButton is self.button():
                 if widget.__juzgado is not None and widget.__juzgado.getId_juzgado() is not "1":
-                    if container.count() > 1:
-                        container.itemAt(1).widget().deleteLater()
-                    if widget.__juzgado is not None and widget.__juzgado.getId_juzgado is not "1":
-                        vista = VerJuzgado(widget.__juzgado, widget)
-                        container.addWidget(vista)
+                    vista = VerJuzgado(widget.__juzgado, widget)
+                    dialogo.setWidget(vista)
                 else:
                     widget.cambiarJuzgado()
             return QtGui.QLabel.mousePressEvent(lblJuzgado, self)
@@ -148,15 +148,13 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         self.lblJuzgado.mousePressEvent = mousePressEvent
     
     def clickFecha(self):
-        container = self.horizontal  
+        dialogo = self.__dialogo 
         dteFecha = self.dteFecha
         
-        def focusInEvent(self):
-            if container.count() > 1:
-                container.itemAt(1).widget().deleteLater()       
+        def focusInEvent(self):     
             calendar = QtGui.QCalendarWidget()
             calendar.setSelectedDate(dteFecha.dateTime().date())
-            container.addWidget(calendar)  
+            dialogo.setWidget(calendar)  
             
             selectionChanged = lambda:dteFecha.setDate(calendar.selectedDate())           
             calendar.selectionChanged.connect(selectionChanged)
@@ -164,7 +162,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             return QtGui.QDateTimeEdit.focusInEvent(dteFecha, self)
         
         def dateChanged(date):
-            calendar = container.itemAt(1).widget()
+            calendar = dialogo.getWidget()
             calendar.setSelectedDate(date)        
             
         dteFecha.focusInEvent = focusInEvent
@@ -172,15 +170,13 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         
     
     def clickFechaProxima(self):
-        container = self.horizontal  
+        dialogo = self.__dialogo
         dteFecha = self.dteFechaProxima
         
-        def focusInEvent(self):
-            if container.count() > 1:
-                container.itemAt(1).widget().deleteLater()       
+        def focusInEvent(self):     
             calendar = QtGui.QCalendarWidget()
             calendar.setSelectedDate(dteFecha.dateTime().date())
-            container.addWidget(calendar)   
+            dialogo.setWidget(calendar) 
             
             selectionChanged = lambda:dteFecha.setDate(calendar.selectedDate())           
             calendar.selectionChanged.connect(selectionChanged)
@@ -188,7 +184,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             return QtGui.QDateTimeEdit.focusInEvent(dteFecha, self)
         
         def dateChanged(date):
-            calendar = container.itemAt(1).widget()
+            calendar = dialogo.getWidget()
             calendar.setSelectedDate(date)        
             
         dteFecha.focusInEvent = focusInEvent
