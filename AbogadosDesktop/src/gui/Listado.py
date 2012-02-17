@@ -35,14 +35,15 @@ class Listado(QListWidget):
                 listaObjetos.remove(vacio)
             except Exception,e:
                 print e
-            
-               
+        
+        self.setMouseTracking(True)       
         if isinstance(listaObjetos, ListType):
             self.__listaObjetos = listaObjetos
                                       
             for objeto in listaObjetos:
                 item = ItemListas(objeto)
                 item.setToolTip(unicode(objeto))
+                item.setStatusTip(unicode(objeto))
                 self.addItem(item)
         else:
             raise TypeError('Tipo de dato no admitido')
@@ -50,6 +51,7 @@ class Listado(QListWidget):
     def add(self,objeto):
         item = ItemListas(objeto)
         item.setToolTip(unicode(objeto))
+        item.setStatusTip(unicode(objeto))
         self.addItem(item)
         
     def remove(self):        
