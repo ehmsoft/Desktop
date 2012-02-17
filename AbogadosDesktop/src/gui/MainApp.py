@@ -48,6 +48,7 @@ class MainApp(QMainWindow, Ui_mainApp):
         #self.listaIzquierda.setStyleSheet('background-color: transparent;')
         #self.connect(self.listaIzquierda, SIGNAL('itemClicked(QListWidgetItem*)'), self.elementClicked)
         self.connect(self.listaIzquierda, SIGNAL('itemSelectionChanged()'), self.elementChanged)
+        self.listaIzquierda.setMouseTracking(True)
         for row in self.lista:
             #Recorre cada elemento de la lista izquierda y le establece la fuente por defecto
             item = QListWidgetItem(row)
@@ -57,6 +58,7 @@ class MainApp(QMainWindow, Ui_mainApp):
             item.setFont(fuente)
             item.setSizeHint(QSize(fm.width(row), fm.height() +20))
             item.setToolTip('Ver %s' % row)
+            item.setStatusTip('Ver %s' % row)
             self.listaIzquierda.addItem(item)
         self.centralSplitter.addWidget(self.listaIzquierda)
         self.setWindowIcon(QIcon('./images/icono.png'))
@@ -328,6 +330,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 #Agregar la segunda columna si no existe
                 lista = ['Procesos', 'Plantillas', 'Demandantes', 'Demandados', 'Juzgados', 'Actuaciones']
                 listado = QListWidget()
+                listado.setMouseTracking(True)
                 for row in lista:
                     #Recorrer la lista y cambiar la fuente de los elementos
                     item = QListWidgetItem(row)
@@ -336,6 +339,8 @@ class MainApp(QMainWindow, Ui_mainApp):
                     fm = QFontMetrics(fuente)
                     item.setFont(fuente)
                     item.setSizeHint(QSize(fm.width(row), fm.height() +20))
+                    item.setToolTip('Campos para %s' % row)
+                    item.setStatusTip('Campos para %s' % row)
                     listado.addItem(item)
                 #La columna central (columna1) se vuelve un splitter para poder tener una tercera columna
                 splitter = QSplitter()
