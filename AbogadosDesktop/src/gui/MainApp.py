@@ -56,6 +56,7 @@ class MainApp(QMainWindow, Ui_mainApp):
             fm = QFontMetrics(fuente)
             item.setFont(fuente)
             item.setSizeHint(QSize(fm.width(row), fm.height() +20))
+            item.setToolTip('Ver %s' % row)
             self.listaIzquierda.addItem(item)
         self.centralSplitter.addWidget(self.listaIzquierda)
         self.setWindowIcon(QIcon('./images/icono.png'))
