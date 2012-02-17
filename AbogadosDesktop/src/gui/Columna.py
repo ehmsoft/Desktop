@@ -32,7 +32,7 @@ class ColumnaWidget(QWidget):
         self.emit(SIGNAL('clicked()')) 
         
 class ColumnaDerecha(QWidget):
-    def __init__(self, titulo,centralWidget,parent=None):
+    def __init__(self, titulo,centralWidget, plantilla = False,parent=None):
         super(ColumnaDerecha, self).__init__(parent)
         self.__centralWidget = centralWidget
         self.__titulo = titulo
@@ -41,6 +41,9 @@ class ColumnaDerecha(QWidget):
         btnLayout.addStretch()
         self.btnEditar = QPushButton('Editar')
         self.btnEliminar = QPushButton('Eliminar')
+        if plantilla:
+            self.btnCrearProceso = QPushButton('Crear Proceso')
+            btnLayout.addWidget(self.btnCrearProceso)
         btnLayout.addWidget(self.btnEditar)
         btnLayout.addWidget(self.btnEliminar)
         if self.__titulo:
