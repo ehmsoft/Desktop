@@ -76,14 +76,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 listado = Listado(p.consultarProcesos())
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
@@ -92,14 +85,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = Persistence()
                 listado = Listado(p.consultarProcesos())
                 self.columna1.hide()
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
@@ -110,14 +96,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 #Agregar la segunda columna si no existe
                 p = Persistence()
                 lista = p.consultarPlantillas()
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 listado = Listado(lista)
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
@@ -130,14 +109,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = Persistence()
                 lista = p.consultarPlantillas()
                 self.columna1.hide()
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 listado = Listado(lista)
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
@@ -152,14 +124,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 listado = Listado(p.consultarDemandantes())
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
@@ -168,14 +133,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = Persistence()
                 listado = Listado(p.consultarDemandantes())
                 self.columna1.hide()
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
@@ -188,14 +146,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 listado = Listado(p.consultarDemandados())
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
@@ -204,14 +155,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = Persistence()
                 listado = Listado(p.consultarDemandados())
                 self.columna1.hide()
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
@@ -224,14 +168,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 listado = Listado(p.consultarJuzgados())
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
@@ -240,14 +177,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = Persistence()
                 listado = Listado(p.consultarJuzgados())
                 self.columna1.hide()
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
@@ -260,14 +190,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 listado = Listado(p.consultarCategorias())
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
@@ -276,14 +199,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = Persistence()
                 listado = Listado(p.consultarCategorias())
                 self.columna1.hide()
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
@@ -296,14 +212,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 listado = Listado(p.consultarProcesos())
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
@@ -312,14 +221,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = Persistence()
                 listado = Listado(p.consultarProcesos())
                 self.columna1.hide()
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaWidget(listado)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
@@ -347,14 +249,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 splitter.addWidget(listado)
                 self.columna1 = splitter
                 self.centralSplitter.addWidget(self.columna1)
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 p = None
             else:
@@ -371,14 +266,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     item.setSizeHint(QSize(fm.width(row), fm.height() +20))
                     listado.addItem(item)
                 self.columna1.hide()
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 #La columna central (columna1) se vuelve un splitter para permitir una tercera columna
                 splitter = QSplitter()
                 splitter.addWidget(listado)
@@ -388,10 +276,10 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = None
         elif item.text() == 'Sincronizar':   
             #TODO: Acciones para el menu sincronizar
-            pass
+            self.__restablecerElementoDerecho()
         elif item.text() == 'Ajustes':     
             #TODO: Acciones para el menu Ajustes
-            pass
+            self.__restablecerElementoDerecho()
     def columna1AgregarClicked(self):
         #Manejar el evento de agregar un item en la columna1
         item = self.listaIzquierda.currentItem()
@@ -523,14 +411,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.categoriaEliminarClicked)
         elif hasattr(self.columna1, 'widget'):
             #Se va por aqui si columna1 es un splitter
-            elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-            #Reestablecer el logo de la bolita
-            if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion, VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                elementoGrid.hide()
-                elementoGrid.deleteLater()
-                self.label = QLabel() 
-                self.label.setPixmap(QPixmap.fromImage(self.image))
-                self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
+            self.__restablecerElementoDerecho()
             if self.columna1.widget(0).currentItem().text() == 'Procesos':
                 p = Persistence()
                 lista = p.consultarAtributos()
@@ -917,6 +798,16 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
+                    
+    def __restablecerElementoDerecho(self):
+        #Reestablecer el logo de la bolita
+        elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+        if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
+            elementoGrid.hide()
+            elementoGrid.deleteLater()
+            self.label = QLabel() 
+            self.label.setPixmap(QPixmap.fromImage(self.image))
+            self.gridLayout.addWidget(self.label, 0,1,1,1)
 import sys
 app = QApplication(sys.argv)
 app.setOrganizationName("ehmSoftware")
