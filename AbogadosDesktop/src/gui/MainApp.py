@@ -45,9 +45,11 @@ class MainApp(QMainWindow, Ui_mainApp):
         self.image = QImage('./images/bolita.png')
         self.label.setPixmap(QPixmap.fromImage(self.image))
         self.listaIzquierda = QListWidget()
+        self.listaIzquierda.setContextMenuPolicy(Qt.CustomContextMenu)
         #self.listaIzquierda.setStyleSheet('background-color: transparent;')
         #self.connect(self.listaIzquierda, SIGNAL('itemClicked(QListWidgetItem*)'), self.elementClicked)
         self.connect(self.listaIzquierda, SIGNAL('itemSelectionChanged()'), self.elementChanged)
+        self.connect(self.listaIzquierda, SIGNAL('customContextMenuRequested(QPoint)'), self.listaIzquierdaContextMenu)
         self.listaIzquierda.setMouseTracking(True)
         for row in self.lista:
             #Recorre cada elemento de la lista izquierda y le establece la fuente por defecto
@@ -233,6 +235,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 lista = ['Procesos', 'Plantillas', 'Demandantes', 'Demandados', 'Juzgados', 'Actuaciones']
                 listado = QListWidget()
                 listado.setMouseTracking(True)
+                listado.setContextMenuPolicy(Qt.CustomContextMenu)
                 for row in lista:
                     #Recorrer la lista y cambiar la fuente de los elementos
                     item = QListWidgetItem(row)
@@ -251,19 +254,23 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.listaCamposContextMenu)
                 p = None
             else:
                 #Borrar la segunda columna y poner una nueva
                 lista = ['Procesos', 'Plantillas', 'Demandantes', 'Demandados', 'Juzgados', 'Actuaciones']
                 listado = QListWidget()
+                listado.setContextMenuPolicy(Qt.CustomContextMenu)
                 for row in lista:
                     #Recorrer la lista y cambiar la fuente de los elementos
                     item = QListWidgetItem(row)
                     fuente = item.font()
-                    fuente.setPointSize(16)
+                    fuente.setPointSize(15)
                     fm = QFontMetrics(fuente)
                     item.setFont(fuente)
                     item.setSizeHint(QSize(fm.width(row), fm.height() +20))
+                    item.setToolTip('Campos para %s' % row)
+                    item.setStatusTip('Campos para %s' % row)
                     listado.addItem(item)
                 self.columna1.hide()
                 self.__restablecerElementoDerecho()
@@ -273,6 +280,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1 = splitter
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.listaCamposContextMenu)
                 p = None
         elif item.text() == 'Sincronizar':   
             #TODO: Acciones para el menu sincronizar
@@ -312,7 +320,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 juzgado = juzgadoVentana.getJuzgado()
                 self.columna1.getCentralWidget().add(juzgado)
             juzgadoVentana = None
-        elif item.text() == 'Categorias':
+        elif item.text() == unicode('Categorías'):
             categoriaVentana = NuevaCategoria()
             if categoriaVentana.exec_():
                 categoria = categoriaVentana.getCategoria()
@@ -808,6 +816,33 @@ class MainApp(QMainWindow, Ui_mainApp):
             self.label = QLabel() 
             self.label.setPixmap(QPixmap.fromImage(self.image))
             self.gridLayout.addWidget(self.label, 0,1,1,1)
+            
+    def listaIzquierdaContextMenu(self, pos):
+        item = self.listaIzquierda.currentItem()
+        if item.text() not in ('Actuaciones', 'Campos Personalizados', 'Sincronizar', 'Ajustes'):
+            menu = QMenu(self)
+            menu.addAction(self.createAction('Nuevo', self.columna1AgregarClicked))
+            menu.exec_(self.mapToGlobal(pos))
+        
+    def listaCamposContextMenu(self, pos):
+        menu = QMenu(self)
+        menu.addAction(self.createAction('Nuevo', self.columnaCamposAgregarClicked))
+        menu.exec_(self.columna1.mapToGlobal(pos))
+    
+    def createAction(self, text, slot= None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
+        action = QAction(text, self)
+        if icon is not None:
+            action.setIcon(QIcon("./images/%s.png" % icon))
+        if shortcut is not None:
+            action.setShortcut(shortcut)
+        if tip is not None:
+            action.setToolTip(tip)
+            action.setStatusTip(tip)
+        if slot is not None:
+            self.connect(action, SIGNAL(signal), slot)
+        if checkable:
+            action.setCheckable(True)
+        return action
 import sys
 app = QApplication(sys.argv)
 app.setOrganizationName("ehmSoftware")
