@@ -33,11 +33,22 @@ from gui.NuevoProceso import NuevoProceso
 from gui.NuevaPlantilla import NuevaPlantilla
 
 class MainApp(QMainWindow, Ui_mainApp):
+    #Constantes para elementos  del menu listaIzquierda
+    TXTPROCESOS = 'Procesos'
+    TXTPLANTILLAS = 'Plantillas'
+    TXTDEMANDANTES = 'Demandantes'
+    TXTDEMANDADOS = 'Demandados'
+    TXTJUZGADOS = 'Juzgados'
+    TXTACTUACIONES = 'Actuaciones'
+    TXTCATEGORIAS = unicode('Categorías')
+    TXTCAMPOS = 'Campos Personalizados'
+    TXTSINCRONIZAR = 'Sincronizar'
+    TXTAJUSTES = 'Ajustes'
     def __init__(self, parent = None):
         super(MainApp, self).__init__(parent)
         self.setupUi(self)
         #Crear menu izquierdo
-        self.lista = ['Procesos', 'Plantillas', 'Demandantes', 'Demandados', 'Juzgados', 'Actuaciones', unicode('Categorías'), 'Campos Personalizados', 'Sincronizar', 'Ajustes']
+        self.lista = [MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES, MainApp.TXTCATEGORIAS, MainApp.TXTCAMPOS, MainApp.TXTSINCRONIZAR, MainApp.TXTAJUSTES]
         self.centralSplitter = QSplitter(Qt.Horizontal)
         #El elemento de la izquierda es un splitter para pantallas pequenas
         self.scrollArea.setWidget(self.centralSplitter)
@@ -83,7 +94,7 @@ class MainApp(QMainWindow, Ui_mainApp):
         
     def elementClicked(self, item):
         #Metodo que maneja el click en la lista izquierda
-        if item.text() == 'Procesos':
+        if item.text() == MainApp.TXTPROCESOS:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
@@ -109,7 +120,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
-        elif item.text() == 'Plantillas':
+        elif item.text() == MainApp.TXTPLANTILLAS:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
@@ -139,7 +150,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
                 
-        elif item.text() == 'Demandantes':
+        elif item.text() == MainApp.TXTDEMANDANTES:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
@@ -165,7 +176,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
-        elif item.text() == 'Demandados':
+        elif item.text() == MainApp.TXTDEMANDADOS:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
@@ -191,7 +202,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
-        elif item.text() == 'Juzgados':
+        elif item.text() == MainApp.TXTJUZGADOS:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
@@ -217,7 +228,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
-        elif item.text() == unicode('Categorías'):
+        elif item.text() == MainApp.TXTCATEGORIAS:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
@@ -243,7 +254,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
-        elif item.text() == 'Actuaciones':
+        elif item.text() == MainApp.TXTACTUACIONES:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
@@ -269,10 +280,10 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
-        elif item.text() == 'Campos Personalizados':
+        elif item.text() == MainApp.TXTCAMPOS:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
-                lista = ['Procesos', 'Plantillas', 'Demandantes', 'Demandados', 'Juzgados', 'Actuaciones']
+                lista = [MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES]
                 listado = QListWidget()
                 listado.setMouseTracking(True)
                 listado.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -298,7 +309,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = None
             else:
                 #Borrar la segunda columna y poner una nueva
-                lista = ['Procesos', 'Plantillas', 'Demandantes', 'Demandados', 'Juzgados', 'Actuaciones']
+                lista = [MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES]
                 listado = QListWidget()
                 listado.setContextMenuPolicy(Qt.CustomContextMenu)
                 for row in lista:
@@ -322,51 +333,51 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
                 self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.listaCamposContextMenu)
                 p = None
-        elif item.text() == 'Sincronizar':   
+        elif item.text() == MainApp.TXTSINCRONIZAR:   
             #TODO: Acciones para el menu sincronizar
             self.__restablecerElementoDerecho()
-        elif item.text() == 'Ajustes':     
+        elif item.text() == MainApp.TXTAJUSTES:     
             #TODO: Acciones para el menu Ajustes
             self.__restablecerElementoDerecho()
     def columna1AgregarClicked(self):
         #Manejar el evento de agregar un item en la columna1
         item = self.listaIzquierda.currentItem()
-        if item.text() == 'Procesos':
+        if item.text() == MainApp.TXTPROCESOS:
             procesoVentana = NuevoProceso()
             if procesoVentana.exec_():
                 proceso = procesoVentana.getProceso()
                 self.columna1.getCentralWidget().add(proceso)
-        elif item.text() == 'Plantillas':
+        elif item.text() == MainApp.TXTPLANTILLAS:
             plantillaVentana = NuevaPlantilla()
             if plantillaVentana.exec_():
                 plantilla = plantillaVentana.getPlantilla()
                 self.columna1.getCentralWidget().add(plantilla)
                 
-        elif item.text() == 'Demandantes':
+        elif item.text() == MainApp.TXTDEMANDANTES:
             personaVentana = NuevaPersona(tipo = 1)
             if personaVentana.exec_():
                 persona = personaVentana.getPersona()
                 self.columna1.getCentralWidget().add(persona)
             personaVentana = None
-        elif item.text() == 'Demandados':
+        elif item.text() == MainApp.TXTDEMANDADOS:
             personaVentana = NuevaPersona(tipo = 2)
             if personaVentana.exec_():
                 persona = personaVentana.getPersona()
                 self.columna1.getCentralWidget().add(persona)
             personaVentana = None
-        elif item.text() == 'Juzgados':
+        elif item.text() == MainApp.TXTJUZGADOS:
             juzgadoVentana = NuevoJuzgado()
             if juzgadoVentana.exec_():
                 juzgado = juzgadoVentana.getJuzgado()
                 self.columna1.getCentralWidget().add(juzgado)
             juzgadoVentana = None
-        elif item.text() == unicode('Categorías'):
+        elif item.text() == MainApp.TXTCATEGORIAS:
             categoriaVentana = NuevaCategoria()
             if categoriaVentana.exec_():
                 categoria = categoriaVentana.getCategoria()
                 self.columna1.getCentralWidget().add(categoria)
             categoriaVentana = None
-        elif item.text() == 'Actuaciones':
+        elif item.text() == MainApp.TXTACTUACIONES:
             if self.columna1.getCentralWidget().currentItem() is not None:
                 proceso = self.columna1.getCentralWidget().getSelectedItem()
                 actuacionVentana = NuevaActuacion(id_proceso=proceso.getId_proceso())
@@ -398,7 +409,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 proceso = VerProceso(item.getObjeto())
                 #Agregar elemento derecho y ponerle un tamano maximo
                 nuevoElemento = ColumnaDerecha(titulo=False, centralWidget=proceso)
-                if self.listaIzquierda.currentItem().text() == 'Actuaciones':
+                if self.listaIzquierda.currentItem().text() == MainApp.TXTACTUACIONES:
                     nuevoElemento.getCentralWidget().tabWidget.setCurrentIndex(1)
                 nuevoElemento.setMaximumWidth(340)
                 nuevoElemento.setMinimumWidth(310)
@@ -460,7 +471,7 @@ class MainApp(QMainWindow, Ui_mainApp):
         elif hasattr(self.columna1, 'widget'):
             #Se va por aqui si columna1 es un splitter
             self.__restablecerElementoDerecho()
-            if self.columna1.widget(0).currentItem().text() == 'Procesos':
+            if self.columna1.widget(0).currentItem().text() == MainApp.TXTPROCESOS:
                 p = Persistence()
                 lista = p.consultarAtributos()
                 listado = Listado(lista)
@@ -475,7 +486,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
                 self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
-            elif self.columna1.widget(0).currentItem().text() == 'Plantillas':
+            elif self.columna1.widget(0).currentItem().text() == MainApp.TXTPLANTILLAS:
                 p = Persistence()
                 lista = p.consultarAtributos()
                 listado = Listado(lista)
@@ -491,7 +502,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
                 self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
-            elif self.columna1.widget(0).currentItem().text() == 'Demandantes':
+            elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDANTES:
                 p = Persistence()
                 lista = p.consultarAtributosPersona()
                 listado = Listado(lista)
@@ -507,7 +518,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
                 self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
-            elif self.columna1.widget(0).currentItem().text() == 'Demandados':
+            elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDADOS:
                 p = Persistence()
                 lista = p.consultarAtributosPersona()
                 listado = Listado(lista)
@@ -523,7 +534,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
                 self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
-            elif self.columna1.widget(0).currentItem().text() == 'Juzgados':
+            elif self.columna1.widget(0).currentItem().text() == MainApp.TXTJUZGADOS:
                 p = Persistence()
                 lista = p.consultarAtributosJuzgado()
                 listado = Listado(lista)
@@ -539,7 +550,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
                 self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
-            elif self.columna1.widget(0).currentItem().text() == 'Actuaciones':
+            elif self.columna1.widget(0).currentItem().text() == MainApp.TXTACTUACIONES:
                 p = Persistence()
                 lista = p.consultarAtributosActuacion()
                 listado = Listado(lista)
@@ -576,37 +587,37 @@ class MainApp(QMainWindow, Ui_mainApp):
     
     def columnaCamposAgregarClicked(self):
         #Manejo del boton agregar en campos personalizados de la tercera columna
-        if self.columna1.widget(0).currentItem().text() == 'Procesos':
+        if self.columna1.widget(0).currentItem().text() == MainApp.TXTPROCESOS:
             campoVentana = NuevoCampo(NuevoCampo.PROCESO)
             if campoVentana.exec_():
                 campo = campoVentana.getCampo()
                 self.columna1.widget(1).getCentralWidget().add(campo)
             campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Plantillas':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTPLANTILLAS:
             campoVentana = NuevoCampo(NuevoCampo.PROCESO)
             if campoVentana.exec_():
                 campo = campoVentana.getCampo()
                 self.columna1.widget(1).getCentralWidget().add(campo)
             campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Demandantes':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDANTES:
             campoVentana = NuevoCampo(NuevoCampo.PERSONA)
             if campoVentana.exec_():
                 campo = campoVentana.getCampo()
                 self.columna1.widget(1).getCentralWidget().add(campo)
             campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Demandados':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDADOS:
             campoVentana = NuevoCampo(NuevoCampo.PERSONA)
             if campoVentana.exec_():
                 campo = campoVentana.getCampo()
                 self.columna1.widget(1).getCentralWidget().add(campo)
             campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Juzgados':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTJUZGADOS:
             campoVentana = NuevoCampo(NuevoCampo.JUZGADO)
             if campoVentana.exec_():
                 campo = campoVentana.getCampo()
                 self.columna1.widget(1).getCentralWidget().add(campo)
             campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Actuaciones':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTACTUACIONES:
             campoVentana = NuevoCampo(NuevoCampo.ACTUACION)
             if campoVentana.exec_():
                 campo = campoVentana.getCampo()
@@ -734,7 +745,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.gridLayout.addWidget(self.label, 0,1,1,1)
     
     def campoEditarClicked(self):
-        if self.columna1.widget(0).currentItem().text() == 'Procesos':
+        if self.columna1.widget(0).currentItem().text() == MainApp.TXTPROCESOS:
             if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
                 campoVentana = NuevoCampo(tipo=NuevoCampo.PROCESO, campo=campo)
@@ -742,7 +753,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
                 campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Plantillas':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTPLANTILLAS:
             if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
                 campoVentana = NuevoCampo(tipo=NuevoCampo.PROCESO, campo=campo)
@@ -750,7 +761,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
                 campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Demandantes':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDANTES:
             if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
                 campoVentana = NuevoCampo(tipo=NuevoCampo.PERSONA, campo=campo)
@@ -758,7 +769,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
                 campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Demandados':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDADOS:
             if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
                 campoVentana = NuevoCampo(tipo=NuevoCampo.PERSONA, campo=campo)
@@ -766,7 +777,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
                 campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Juzgados':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTJUZGADOS:
             if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
                 campoVentana = NuevoCampo(tipo=NuevoCampo.JUZGADO, campo=campo)
@@ -774,7 +785,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
                 campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Actuaciones':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTACTUACIONES:
             if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
                 campoVentana = NuevoCampo(tipo=NuevoCampo.ACTUACION, campo=campo)
@@ -785,7 +796,7 @@ class MainApp(QMainWindow, Ui_mainApp):
     
     def campoEliminarClicked(self):
         campo = self.columna1.widget(1).getCentralWidget().getSelectedItem()
-        if self.columna1.widget(0).currentItem().text() == 'Procesos':
+        if self.columna1.widget(0).currentItem().text() == MainApp.TXTPROCESOS:
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributo(campo)
@@ -797,7 +808,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-        elif self.columna1.widget(0).currentItem().text() == 'Plantillas':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTPLANTILLAS:
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributo(campo)
@@ -809,7 +820,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-        elif self.columna1.widget(0).currentItem().text() == 'Demandantes':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDANTES:
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributoPersona(campo)
@@ -821,7 +832,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-        elif self.columna1.widget(0).currentItem().text() == 'Demandados':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDADOS:
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributoPersona(campo)
@@ -833,7 +844,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-        elif self.columna1.widget(0).currentItem().text() == 'Juzgados':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTJUZGADOS:
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributoJuzgado(campo)
@@ -846,7 +857,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
             p = None
-        elif self.columna1.widget(0).currentItem().text() == 'Actuaciones':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTACTUACIONES:
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributoActuacion(campo)
@@ -871,7 +882,7 @@ class MainApp(QMainWindow, Ui_mainApp):
             
     def listaIzquierdaContextMenu(self, pos):
         item = self.listaIzquierda.currentItem()
-        if item.text() not in ('Actuaciones', 'Campos Personalizados', 'Sincronizar', 'Ajustes'):
+        if item.text() not in (MainApp.TXTACTUACIONES, MainApp.TXTCAMPOS, MainApp.TXTSINCRONIZAR, MainApp.TXTAJUSTES):
             menu = QMenu(self)
             menu.addAction(self.createAction('Nuevo', self.columna1AgregarClicked))
             menu.exec_(self.mapToGlobal(pos))
@@ -926,32 +937,32 @@ class MainApp(QMainWindow, Ui_mainApp):
     def menuNuevoProcesoClicked(self):
         procesoVentana = NuevoProceso()
         if procesoVentana.exec_():
-            self.listaIzquierda.setCurrentRow(self.lista.index('Procesos'))
+            self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTPROCESOS))
         procesoVentana = None
         
     def menuNuevaPlantillaClicked(self):
         plantillaVentana = NuevaPlantilla()
         if plantillaVentana.exec_():
-            self.listaIzquierda.setCurrentRow(self.lista.index('Plantillas'))
+            self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTPLANTILLAS))
         plantillaVentana = None
     
     def menuNuevoDemandanteClicked(self):
         personaVentana = NuevaPersona(tipo = 1)
         if personaVentana.exec_():
-            self.listaIzquierda.setCurrentRow(self.lista.index('Demandantes'))
+            self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTDEMANDANTES))
         personaVentana = None
 
     
     def menuNuevoDemandadoClicked(self):
         personaVentana = NuevaPersona(tipo = 2)
         if personaVentana.exec_():
-            self.listaIzquierda.setCurrentRow(self.lista.index('Demandados'))
+            self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTDEMANDADOS))
         personaVentana = None        
         
     def menuNuevoJuzgadoClicked(self):
         juzgadoVentana = NuevoJuzgado()
         if juzgadoVentana.exec_():
-            self.listaIzquierda.setCurrentRow(self.lista.index('Juzgados'))
+            self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTJUZGADOS))
         juzgadoVentana = None
     
     def menuNuevaActuacionClicked(self):
@@ -961,31 +972,31 @@ class MainApp(QMainWindow, Ui_mainApp):
     def menuNuevaCategoriaClicked(self):
         categoriaVentana = NuevaCategoria()
         if categoriaVentana.exec_():
-            self.listaIzquierda.setCurrentRow(self.lista.index(unicode('Categorías')))
+            self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCATEGORIAS))
         categoriaVentana = None
         
     def menuNuevoCampoProcesoClicked(self):
             campoVentana = NuevoCampo(NuevoCampo.PROCESO)
             if campoVentana.exec_():
-                self.listaIzquierda.setCurrentRow(self.lista.index('Campos Personalizados'))
+                self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCAMPOS))
             campoVentana = None
 
     def menuNuevoCampoPersonaClicked(self):
             campoVentana = NuevoCampo(NuevoCampo.PERSONA)
             if campoVentana.exec_():
-                self.listaIzquierda.setCurrentRow(self.lista.index('Campos Personalizados'))
+                self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCAMPOS))
             campoVentana = None
             
     def menuNuevoCampoJuzgadoClicked(self):
             campoVentana = NuevoCampo(NuevoCampo.JUZGADO)
             if campoVentana.exec_():
-                self.listaIzquierda.setCurrentRow(self.lista.index('Campos Personalizados'))
+                self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCAMPOS))
             campoVentana = None
 
     def menuNuevoCampoActuacionClicked(self):
             campoVentana = NuevoCampo(NuevoCampo.ACTUACION)
             if campoVentana.exec_():
-                self.listaIzquierda.setCurrentRow(self.lista.index('Campos Personalizados'))
+                self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCAMPOS))
             campoVentana = None
     
     def createAction(self, text, slot= None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
