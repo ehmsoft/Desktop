@@ -77,10 +77,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = Persistence()
                 listado = Listado(p.consultarProcesos())
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
             else:
                 #Borrar la segunda columna y poner una nueva
@@ -89,9 +91,11 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1.hide()
                 self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
         elif item.text() == 'Plantillas':
             if self.centralSplitter.count() == 1:
@@ -101,10 +105,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.__restablecerElementoDerecho()
                 listado = Listado(lista)
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 #self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
             else:
                 #Borrar la segunda columna y poner una nueva
@@ -114,9 +120,11 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.__restablecerElementoDerecho()
                 listado = Listado(lista)
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
                 
         elif item.text() == 'Demandantes':
@@ -125,10 +133,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = Persistence()
                 listado = Listado(p.consultarDemandantes())
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
             else:
                 #Borrar la segunda columna y poner una nueva
@@ -137,9 +147,11 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1.hide()
                 self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
         elif item.text() == 'Demandados':
             if self.centralSplitter.count() == 1:
@@ -147,10 +159,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = Persistence()
                 listado = Listado(p.consultarDemandados())
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
             else:
                 #Borrar la segunda columna y poner una nueva
@@ -159,9 +173,11 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1.hide()
                 self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
         elif item.text() == 'Juzgados':
             if self.centralSplitter.count() == 1:
@@ -169,10 +185,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = Persistence()
                 listado = Listado(p.consultarJuzgados())
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
             else:
                 #Borrar la segunda columna y poner una nueva
@@ -181,9 +199,11 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1.hide()
                 self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
         elif item.text() == unicode('Categorías'):
             if self.centralSplitter.count() == 1:
@@ -191,10 +211,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = Persistence()
                 listado = Listado(p.consultarCategorias())
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
             else:
                 #Borrar la segunda columna y poner una nueva
@@ -203,9 +225,11 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1.hide()
                 self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
         elif item.text() == 'Actuaciones':
             if self.centralSplitter.count() == 1:
@@ -213,10 +237,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = Persistence()
                 listado = Listado(p.consultarProcesos())
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
             else:
                 #Borrar la segunda columna y poner una nueva
@@ -225,9 +251,11 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.columna1.hide()
                 self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
         elif item.text() == 'Campos Personalizados':
             if self.centralSplitter.count() == 1:
@@ -424,6 +452,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = Persistence()
                 lista = p.consultarAtributos()
                 listado = Listado(lista)
+                listado.setContextMenuPolicy(Qt.CustomContextMenu)
                 if self.columna1.count() > 1:
                     #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
@@ -431,12 +460,14 @@ class MainApp(QMainWindow, Ui_mainApp):
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
+                self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
                 self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
             elif self.columna1.widget(0).currentItem().text() == 'Plantillas':
                 p = Persistence()
                 lista = p.consultarAtributos()
                 listado = Listado(lista)
+                listado.setContextMenuPolicy(Qt.CustomContextMenu)
                 if self.columna1.count() > 1:
                     #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
@@ -445,12 +476,14 @@ class MainApp(QMainWindow, Ui_mainApp):
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
+                self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
                 self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
             elif self.columna1.widget(0).currentItem().text() == 'Demandantes':
                 p = Persistence()
                 lista = p.consultarAtributosPersona()
                 listado = Listado(lista)
+                listado.setContextMenuPolicy(Qt.CustomContextMenu)
                 if self.columna1.count() > 1:
                     #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
@@ -459,12 +492,14 @@ class MainApp(QMainWindow, Ui_mainApp):
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
+                self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
                 self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
             elif self.columna1.widget(0).currentItem().text() == 'Demandados':
                 p = Persistence()
                 lista = p.consultarAtributosPersona()
                 listado = Listado(lista)
+                listado.setContextMenuPolicy(Qt.CustomContextMenu)
                 if self.columna1.count() > 1:
                     #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
@@ -473,12 +508,14 @@ class MainApp(QMainWindow, Ui_mainApp):
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
+                self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
                 self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
             elif self.columna1.widget(0).currentItem().text() == 'Juzgados':
                 p = Persistence()
                 lista = p.consultarAtributosJuzgado()
                 listado = Listado(lista)
+                listado.setContextMenuPolicy(Qt.CustomContextMenu)
                 if self.columna1.count() > 1:
                     #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
@@ -487,12 +524,14 @@ class MainApp(QMainWindow, Ui_mainApp):
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
+                self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
                 self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
             elif self.columna1.widget(0).currentItem().text() == 'Actuaciones':
                 p = Persistence()
                 lista = p.consultarAtributosActuacion()
                 listado = Listado(lista)
+                listado.setContextMenuPolicy(Qt.CustomContextMenu)
                 if self.columna1.count() > 1:
                     #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
@@ -501,6 +540,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
+                self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
                 self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None       
 
@@ -828,7 +868,48 @@ class MainApp(QMainWindow, Ui_mainApp):
         menu = QMenu(self)
         menu.addAction(self.createAction('Nuevo', self.columnaCamposAgregarClicked))
         menu.exec_(self.columna1.mapToGlobal(pos))
+        
+    def camposContextMenu(self, pos):
+        menu = QMenu(self)
+        menu.addAction(self.createAction('Nuevo', self.columnaCamposAgregarClicked))
+        menu.addAction(self.createAction('Editar', self.campoEditarClicked))
+        menu.addSeparator()
+        menu.addAction(self.createAction('Eliminar', self.campoEliminarClicked))
+        menu.exec_(self.columna1.widget(1).getCentralWidget().mapToGlobal(pos))
+        
+    def columna1ContextMenu(self, pos):
+        menu = QMenu(self)
+        menu.addAction(self.createAction('Nuevo', self.columna1AgregarClicked))
+        menu.addAction(self.createAction('Editar', self.columna1ContextEditar))
+        menu.addSeparator()
+        menu.addAction(self.createAction('Eliminar', self.columna1ContextEliminar))
+        menu.exec_(self.columna1.mapToGlobal(pos))
     
+    def columna1ContextEditar(self):
+        objeto = self.columna1.getCentralWidget().currentItem().getObjeto()
+        if isinstance(objeto, Proceso):
+            self.procesoEditarClicked()
+        elif isinstance(objeto, Plantilla):
+            self.plantillaEditarClicked()
+        elif isinstance(objeto, Persona):
+            self.personaEditarClicked()
+        elif isinstance(objeto, Juzgado):
+            self.juzgadoEditarClicked()
+        elif isinstance(objeto, Categoria):
+            self.categoriaEditarClicked()
+    def columna1ContextEliminar(self):
+        objeto = self.columna1.getCentralWidget().currentItem().getObjeto()
+        if isinstance(objeto, Proceso):
+            self.procesoEliminarClicked()
+        elif isinstance(objeto, Plantilla):
+            self.plantillaEliminarClicked()
+        elif isinstance(objeto, Persona):
+            self.personaEliminarClicked()
+        elif isinstance(objeto, Juzgado):
+            self.juzgadoEliminarClicked()
+        elif isinstance(objeto, Categoria):
+            self.categoriaEliminarClicked()
+        
     def createAction(self, text, slot= None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
         action = QAction(text, self)
         if icon is not None:
