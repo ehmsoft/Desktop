@@ -49,7 +49,7 @@ class MainApp(QMainWindow, Ui_mainApp):
         #self.listaIzquierda.setStyleSheet('background-color: transparent;')
         #self.connect(self.listaIzquierda, SIGNAL('itemClicked(QListWidgetItem*)'), self.elementClicked)
         self.connect(self.listaIzquierda, SIGNAL('itemSelectionChanged()'), self.elementChanged)
-        self.connect(self.listaIzquierda, SIGNAL('customContextMenuRequested(QPoint)'), self.listaIzquierdaContextMenu)
+        self.connect(self.listaIzquierda, SIGNAL('customContextMenuRequested(QPoint)'), self.listaIzquierdaContextMenu)        
         self.listaIzquierda.setMouseTracking(True)
         for row in self.lista:
             #Recorre cada elemento de la lista izquierda y le establece la fuente por defecto
@@ -64,7 +64,19 @@ class MainApp(QMainWindow, Ui_mainApp):
             self.listaIzquierda.addItem(item)
         self.centralSplitter.addWidget(self.listaIzquierda)
         self.setWindowIcon(QIcon('./images/icono.png'))
-        
+        self.connect(self.actionNuevoProceso, SIGNAL('triggered()'), self.menuNuevoProcesoClicked)
+        self.connect(self.actionNuevaPlantilla, SIGNAL('triggered()'), self.menuNuevaPlantillaClicked)
+        self.connect(self.actionNuevoDemandante, SIGNAL('triggered()'), self.menuNuevoDemandanteClicked)
+        self.connect(self.actionNuevoDemandado, SIGNAL('triggered()'), self.menuNuevoDemandadoClicked)
+        self.connect(self.actionNuevoJuzgado, SIGNAL('triggered()'), self.menuNuevoJuzgadoClicked)
+        self.connect(self.actionNuevaCategoria, SIGNAL('triggered()'), self.menuNuevaCategoriaClicked)
+        self.connect(self.actionNuevaActuacion, SIGNAL('triggered()'), self.menuNuevaActuacionClicked)
+        self.connect(self.actionNuevoCampo_Proceso, SIGNAL('triggered()'), self.menuNuevoCampoProcesoClicked)
+        self.connect(self.actionNuevoCampo_Plantilla, SIGNAL('triggered()'), self.menuNuevoCampoProcesoClicked)
+        self.connect(self.actionNuevoCampo_Demandante, SIGNAL('triggered()'), self.menuNuevoCampoPersonaClicked)
+        self.connect(self.actionNuevoCampo_Demandado, SIGNAL('triggered()'), self.menuNuevoCampoPersonaClicked)
+        self.connect(self.actionNuevoCampo_Juzgado, SIGNAL('triggered()'), self.menuNuevoCampoJuzgadoClicked)
+        self.connect(self.actionNuevoCampo_Actuacion, SIGNAL('triggered()'), self.menuNuevoCampoActuacionClicked)
         
     def elementChanged(self):
         self.elementClicked(self.listaIzquierda.currentItem())
@@ -897,6 +909,7 @@ class MainApp(QMainWindow, Ui_mainApp):
             self.juzgadoEditarClicked()
         elif isinstance(objeto, Categoria):
             self.categoriaEditarClicked()
+            
     def columna1ContextEliminar(self):
         objeto = self.columna1.getCentralWidget().currentItem().getObjeto()
         if isinstance(objeto, Proceso):
@@ -909,7 +922,72 @@ class MainApp(QMainWindow, Ui_mainApp):
             self.juzgadoEliminarClicked()
         elif isinstance(objeto, Categoria):
             self.categoriaEliminarClicked()
+            
+    def menuNuevoProcesoClicked(self):
+        procesoVentana = NuevoProceso()
+        if procesoVentana.exec_():
+            self.listaIzquierda.setCurrentRow(self.lista.index('Procesos'))
+        procesoVentana = None
         
+    def menuNuevaPlantillaClicked(self):
+        plantillaVentana = NuevaPlantilla()
+        if plantillaVentana.exec_():
+            self.listaIzquierda.setCurrentRow(self.lista.index('Plantillas'))
+        plantillaVentana = None
+    
+    def menuNuevoDemandanteClicked(self):
+        personaVentana = NuevaPersona(tipo = 1)
+        if personaVentana.exec_():
+            self.listaIzquierda.setCurrentRow(self.lista.index('Demandantes'))
+        personaVentana = None
+
+    
+    def menuNuevoDemandadoClicked(self):
+        personaVentana = NuevaPersona(tipo = 2)
+        if personaVentana.exec_():
+            self.listaIzquierda.setCurrentRow(self.lista.index('Demandados'))
+        personaVentana = None        
+        
+    def menuNuevoJuzgadoClicked(self):
+        juzgadoVentana = NuevoJuzgado()
+        if juzgadoVentana.exec_():
+            self.listaIzquierda.setCurrentRow(self.lista.index('Juzgados'))
+        juzgadoVentana = None
+    
+    def menuNuevaActuacionClicked(self):
+        pass
+        #TODO: Acciones para seleccionar un proceso y crear una actuacion
+    
+    def menuNuevaCategoriaClicked(self):
+        categoriaVentana = NuevaCategoria()
+        if categoriaVentana.exec_():
+            self.listaIzquierda.setCurrentRow(self.lista.index(unicode('Categorías')))
+        categoriaVentana = None
+        
+    def menuNuevoCampoProcesoClicked(self):
+            campoVentana = NuevoCampo(NuevoCampo.PROCESO)
+            if campoVentana.exec_():
+                self.listaIzquierda.setCurrentRow(self.lista.index('Campos Personalizados'))
+            campoVentana = None
+
+    def menuNuevoCampoPersonaClicked(self):
+            campoVentana = NuevoCampo(NuevoCampo.PERSONA)
+            if campoVentana.exec_():
+                self.listaIzquierda.setCurrentRow(self.lista.index('Campos Personalizados'))
+            campoVentana = None
+            
+    def menuNuevoCampoJuzgadoClicked(self):
+            campoVentana = NuevoCampo(NuevoCampo.JUZGADO)
+            if campoVentana.exec_():
+                self.listaIzquierda.setCurrentRow(self.lista.index('Campos Personalizados'))
+            campoVentana = None
+
+    def menuNuevoCampoActuacionClicked(self):
+            campoVentana = NuevoCampo(NuevoCampo.ACTUACION)
+            if campoVentana.exec_():
+                self.listaIzquierda.setCurrentRow(self.lista.index('Campos Personalizados'))
+            campoVentana = None
+    
     def createAction(self, text, slot= None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
         action = QAction(text, self)
         if icon is not None:
