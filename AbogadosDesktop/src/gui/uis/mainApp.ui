@@ -89,6 +89,7 @@
      <addaction name="actionNuevaActuacion"/>
      <addaction name="actionNuevaCategoria"/>
      <addaction name="menuCampo_Personalizado"/>
+     <addaction name="actionNuevoProceso_a_partir_de_Plantilla"/>
     </widget>
     <addaction name="menu_Nuevo"/>
     <addaction name="actionImprimir"/>
@@ -212,6 +213,11 @@
    </property>
    <property name="shortcut">
     <string>Meta+I, Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionNuevoProceso_a_partir_de_Plantilla">
+   <property name="text">
+    <string>Proceso a partir de Plantilla</string>
    </property>
   </action>
  </widget>

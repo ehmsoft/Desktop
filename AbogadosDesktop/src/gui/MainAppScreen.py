@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'mainApp.ui'
 #
-# Created: Wed Feb 22 11:35:41 2012
+# Created: Thu Feb 23 10:30:14 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.0.7
 #
 # WARNING! All changes made in this file will be lost!
@@ -82,6 +82,8 @@ class Ui_mainApp(object):
         self.actionExportar.setObjectName("actionExportar")
         self.actionImportar = QtGui.QAction(mainApp)
         self.actionImportar.setObjectName("actionImportar")
+        self.actionNuevoProceso_a_partir_de_Plantilla = QtGui.QAction(mainApp)
+        self.actionNuevoProceso_a_partir_de_Plantilla.setObjectName("actionNuevoProceso_a_partir_de_Plantilla")
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Proceso)
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Plantilla)
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Demandante)
@@ -96,6 +98,7 @@ class Ui_mainApp(object):
         self.menu_Nuevo.addAction(self.actionNuevaActuacion)
         self.menu_Nuevo.addAction(self.actionNuevaCategoria)
         self.menu_Nuevo.addAction(self.menuCampo_Personalizado.menuAction())
+        self.menu_Nuevo.addAction(self.actionNuevoProceso_a_partir_de_Plantilla)
         self.menu_Archivo.addAction(self.menu_Nuevo.menuAction())
         self.menu_Archivo.addAction(self.actionImprimir)
         self.menu_Archivo.addAction(self.actionExportar)
@@ -138,4 +141,5 @@ class Ui_mainApp(object):
         self.actionExportar.setShortcut(QtGui.QApplication.translate("mainApp", "Meta+E, Ctrl+E", None, QtGui.QApplication.UnicodeUTF8))
         self.actionImportar.setText(QtGui.QApplication.translate("mainApp", "Importar", None, QtGui.QApplication.UnicodeUTF8))
         self.actionImportar.setShortcut(QtGui.QApplication.translate("mainApp", "Meta+I, Ctrl+I", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionNuevoProceso_a_partir_de_Plantilla.setText(QtGui.QApplication.translate("mainApp", "Proceso a partir de Plantilla", None, QtGui.QApplication.UnicodeUTF8))
 
