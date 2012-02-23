@@ -33,11 +33,22 @@ from gui.NuevoProceso import NuevoProceso
 from gui.NuevaPlantilla import NuevaPlantilla
 
 class MainApp(QMainWindow, Ui_mainApp):
+    #Constantes para elementos  del menu listaIzquierda
+    TXTPROCESOS = 'Procesos'
+    TXTPLANTILLAS = 'Plantillas'
+    TXTDEMANDANTES = 'Demandantes'
+    TXTDEMANDADOS = 'Demandados'
+    TXTJUZGADOS = 'Juzgados'
+    TXTACTUACIONES = 'Actuaciones'
+    TXTCATEGORIAS = unicode('Categorías')
+    TXTCAMPOS = 'Campos Personalizados'
+    TXTSINCRONIZAR = 'Sincronizar'
+    TXTAJUSTES = 'Ajustes'
     def __init__(self, parent = None):
         super(MainApp, self).__init__(parent)
         self.setupUi(self)
         #Crear menu izquierdo
-        self.lista = ['Procesos', 'Plantillas', 'Demandantes', 'Demandados', 'Juzgados', 'Actuaciones', unicode('Categorías'), 'Campos Personalizados', 'Sincronizar', 'Ajustes']
+        self.lista = [MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES, MainApp.TXTCATEGORIAS, MainApp.TXTCAMPOS, MainApp.TXTSINCRONIZAR, MainApp.TXTAJUSTES]
         self.centralSplitter = QSplitter(Qt.Horizontal)
         #El elemento de la izquierda es un splitter para pantallas pequenas
         self.scrollArea.setWidget(self.centralSplitter)
@@ -45,9 +56,11 @@ class MainApp(QMainWindow, Ui_mainApp):
         self.image = QImage('./images/bolita.png')
         self.label.setPixmap(QPixmap.fromImage(self.image))
         self.listaIzquierda = QListWidget()
+        self.listaIzquierda.setContextMenuPolicy(Qt.CustomContextMenu)
         #self.listaIzquierda.setStyleSheet('background-color: transparent;')
         #self.connect(self.listaIzquierda, SIGNAL('itemClicked(QListWidgetItem*)'), self.elementClicked)
         self.connect(self.listaIzquierda, SIGNAL('itemSelectionChanged()'), self.elementChanged)
+        self.connect(self.listaIzquierda, SIGNAL('customContextMenuRequested(QPoint)'), self.listaIzquierdaContextMenu)        
         self.listaIzquierda.setMouseTracking(True)
         for row in self.lista:
             #Recorre cada elemento de la lista izquierda y le establece la fuente por defecto
@@ -62,275 +75,218 @@ class MainApp(QMainWindow, Ui_mainApp):
             self.listaIzquierda.addItem(item)
         self.centralSplitter.addWidget(self.listaIzquierda)
         self.setWindowIcon(QIcon('./images/icono.png'))
-        
+        self.connect(self.actionNuevoProceso, SIGNAL('triggered()'), self.menuNuevoProcesoClicked)
+        self.connect(self.actionNuevaPlantilla, SIGNAL('triggered()'), self.menuNuevaPlantillaClicked)
+        self.connect(self.actionNuevoDemandante, SIGNAL('triggered()'), self.menuNuevoDemandanteClicked)
+        self.connect(self.actionNuevoDemandado, SIGNAL('triggered()'), self.menuNuevoDemandadoClicked)
+        self.connect(self.actionNuevoJuzgado, SIGNAL('triggered()'), self.menuNuevoJuzgadoClicked)
+        self.connect(self.actionNuevaCategoria, SIGNAL('triggered()'), self.menuNuevaCategoriaClicked)
+        self.connect(self.actionNuevaActuacion, SIGNAL('triggered()'), self.menuNuevaActuacionClicked)
+        self.connect(self.actionNuevoCampo_Proceso, SIGNAL('triggered()'), self.menuNuevoCampoProcesoClicked)
+        self.connect(self.actionNuevoCampo_Plantilla, SIGNAL('triggered()'), self.menuNuevoCampoProcesoClicked)
+        self.connect(self.actionNuevoCampo_Demandante, SIGNAL('triggered()'), self.menuNuevoCampoPersonaClicked)
+        self.connect(self.actionNuevoCampo_Demandado, SIGNAL('triggered()'), self.menuNuevoCampoPersonaClicked)
+        self.connect(self.actionNuevoCampo_Juzgado, SIGNAL('triggered()'), self.menuNuevoCampoJuzgadoClicked)
+        self.connect(self.actionNuevoCampo_Actuacion, SIGNAL('triggered()'), self.menuNuevoCampoActuacionClicked)
         
     def elementChanged(self):
         self.elementClicked(self.listaIzquierda.currentItem())
         
     def elementClicked(self, item):
         #Metodo que maneja el click en la lista izquierda
-        if item.text() == 'Procesos':
+        if item.text() == MainApp.TXTPROCESOS:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
                 listado = Listado(p.consultarProcesos())
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
                 listado = Listado(p.consultarProcesos())
                 self.columna1.hide()
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
-        elif item.text() == 'Plantillas':
+        elif item.text() == MainApp.TXTPLANTILLAS:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
                 lista = p.consultarPlantillas()
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 listado = Listado(lista)
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 #self.connect(self.columna1.getCentralWidget(), SIGNAL('itemClicked(QListWidgetItem*)'), self.columna1ElementClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
                 lista = p.consultarPlantillas()
                 self.columna1.hide()
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 listado = Listado(lista)
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
                 
-        elif item.text() == 'Demandantes':
+        elif item.text() == MainApp.TXTDEMANDANTES:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
                 listado = Listado(p.consultarDemandantes())
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
                 listado = Listado(p.consultarDemandantes())
                 self.columna1.hide()
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
-        elif item.text() == 'Demandados':
+        elif item.text() == MainApp.TXTDEMANDADOS:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
                 listado = Listado(p.consultarDemandados())
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
                 listado = Listado(p.consultarDemandados())
                 self.columna1.hide()
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
-        elif item.text() == 'Juzgados':
+        elif item.text() == MainApp.TXTJUZGADOS:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
                 listado = Listado(p.consultarJuzgados())
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
                 listado = Listado(p.consultarJuzgados())
                 self.columna1.hide()
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
-        elif item.text() == unicode('Categorías'):
+        elif item.text() == MainApp.TXTCATEGORIAS:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
                 listado = Listado(p.consultarCategorias())
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
                 listado = Listado(p.consultarCategorias())
                 self.columna1.hide()
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
-        elif item.text() == 'Actuaciones':
+        elif item.text() == MainApp.TXTACTUACIONES:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
                 listado = Listado(p.consultarProcesos())
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
                 listado = Listado(p.consultarProcesos())
                 self.columna1.hide()
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaWidget(listado)
+                self.columna1.getCentralWidget().setContextMenuPolicy(Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(self.columna1, SIGNAL('clicked()'), self.columna1AgregarClicked)
                 self.connect(self.columna1.getCentralWidget(), SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(self.columna1.getCentralWidget(), SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
                 p = None
-        elif item.text() == 'Campos Personalizados':
+        elif item.text() == MainApp.TXTCAMPOS:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
-                lista = ['Procesos', 'Plantillas', 'Demandantes', 'Demandados', 'Juzgados', 'Actuaciones']
+                lista = [MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES]
                 listado = QListWidget()
                 listado.setMouseTracking(True)
+                listado.setContextMenuPolicy(Qt.CustomContextMenu)
                 for row in lista:
                     #Recorrer la lista y cambiar la fuente de los elementos
                     item = QListWidgetItem(row)
@@ -347,90 +303,81 @@ class MainApp(QMainWindow, Ui_mainApp):
                 splitter.addWidget(listado)
                 self.columna1 = splitter
                 self.centralSplitter.addWidget(self.columna1)
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.listaCamposContextMenu)
                 p = None
             else:
                 #Borrar la segunda columna y poner una nueva
-                lista = ['Procesos', 'Plantillas', 'Demandantes', 'Demandados', 'Juzgados', 'Actuaciones']
+                lista = [MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES]
                 listado = QListWidget()
+                listado.setContextMenuPolicy(Qt.CustomContextMenu)
                 for row in lista:
                     #Recorrer la lista y cambiar la fuente de los elementos
                     item = QListWidgetItem(row)
                     fuente = item.font()
-                    fuente.setPointSize(16)
+                    fuente.setPointSize(15)
                     fm = QFontMetrics(fuente)
                     item.setFont(fuente)
                     item.setSizeHint(QSize(fm.width(row), fm.height() +20))
+                    item.setToolTip('Campos para %s' % row)
+                    item.setStatusTip('Campos para %s' % row)
                     listado.addItem(item)
                 self.columna1.hide()
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-                #Reestablecer el logo de la bolita
-                if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
-                    self.label = QLabel() 
-                    self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.__restablecerElementoDerecho()
                 #La columna central (columna1) se vuelve un splitter para permitir una tercera columna
                 splitter = QSplitter()
                 splitter.addWidget(listado)
                 self.columna1 = splitter
                 self.centralSplitter.addWidget(self.columna1)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
+                self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.listaCamposContextMenu)
                 p = None
-        elif item.text() == 'Sincronizar':   
+        elif item.text() == MainApp.TXTSINCRONIZAR:   
             #TODO: Acciones para el menu sincronizar
-            pass
-        elif item.text() == 'Ajustes':     
+            self.__restablecerElementoDerecho()
+        elif item.text() == MainApp.TXTAJUSTES:     
             #TODO: Acciones para el menu Ajustes
-            pass
+            self.__restablecerElementoDerecho()
     def columna1AgregarClicked(self):
         #Manejar el evento de agregar un item en la columna1
         item = self.listaIzquierda.currentItem()
-        if item.text() == 'Procesos':
+        if item.text() == MainApp.TXTPROCESOS:
             procesoVentana = NuevoProceso()
             if procesoVentana.exec_():
                 proceso = procesoVentana.getProceso()
                 self.columna1.getCentralWidget().add(proceso)
-        elif item.text() == 'Plantillas':
+        elif item.text() == MainApp.TXTPLANTILLAS:
             plantillaVentana = NuevaPlantilla()
             if plantillaVentana.exec_():
                 plantilla = plantillaVentana.getPlantilla()
                 self.columna1.getCentralWidget().add(plantilla)
                 
-        elif item.text() == 'Demandantes':
+        elif item.text() == MainApp.TXTDEMANDANTES:
             personaVentana = NuevaPersona(tipo = 1)
             if personaVentana.exec_():
                 persona = personaVentana.getPersona()
                 self.columna1.getCentralWidget().add(persona)
             personaVentana = None
-        elif item.text() == 'Demandados':
+        elif item.text() == MainApp.TXTDEMANDADOS:
             personaVentana = NuevaPersona(tipo = 2)
             if personaVentana.exec_():
                 persona = personaVentana.getPersona()
                 self.columna1.getCentralWidget().add(persona)
             personaVentana = None
-        elif item.text() == 'Juzgados':
+        elif item.text() == MainApp.TXTJUZGADOS:
             juzgadoVentana = NuevoJuzgado()
             if juzgadoVentana.exec_():
                 juzgado = juzgadoVentana.getJuzgado()
                 self.columna1.getCentralWidget().add(juzgado)
             juzgadoVentana = None
-        elif item.text() == 'Categorias':
+        elif item.text() == MainApp.TXTCATEGORIAS:
             categoriaVentana = NuevaCategoria()
             if categoriaVentana.exec_():
                 categoria = categoriaVentana.getCategoria()
                 self.columna1.getCentralWidget().add(categoria)
             categoriaVentana = None
-        elif item.text() == 'Actuaciones':
+        elif item.text() == MainApp.TXTACTUACIONES:
             if self.columna1.getCentralWidget().currentItem() is not None:
                 proceso = self.columna1.getCentralWidget().getSelectedItem()
                 actuacionVentana = NuevaActuacion(id_proceso=proceso.getId_proceso())
@@ -462,7 +409,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 proceso = VerProceso(item.getObjeto())
                 #Agregar elemento derecho y ponerle un tamano maximo
                 nuevoElemento = ColumnaDerecha(titulo=False, centralWidget=proceso)
-                if self.listaIzquierda.currentItem().text() == 'Actuaciones':
+                if self.listaIzquierda.currentItem().text() == MainApp.TXTACTUACIONES:
                     nuevoElemento.getCentralWidget().tabWidget.setCurrentIndex(1)
                 nuevoElemento.setMaximumWidth(340)
                 nuevoElemento.setMinimumWidth(310)
@@ -523,18 +470,12 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.categoriaEliminarClicked)
         elif hasattr(self.columna1, 'widget'):
             #Se va por aqui si columna1 es un splitter
-            elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-            #Reestablecer el logo de la bolita
-            if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion, VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-                elementoGrid.hide()
-                elementoGrid.deleteLater()
-                self.label = QLabel() 
-                self.label.setPixmap(QPixmap.fromImage(self.image))
-                self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
-            if self.columna1.widget(0).currentItem().text() == 'Procesos':
+            self.__restablecerElementoDerecho()
+            if self.columna1.widget(0).currentItem().text() == MainApp.TXTPROCESOS:
                 p = Persistence()
                 lista = p.consultarAtributos()
                 listado = Listado(lista)
+                listado.setContextMenuPolicy(Qt.CustomContextMenu)
                 if self.columna1.count() > 1:
                     #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
@@ -542,12 +483,14 @@ class MainApp(QMainWindow, Ui_mainApp):
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
+                self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
                 self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
-            elif self.columna1.widget(0).currentItem().text() == 'Plantillas':
+            elif self.columna1.widget(0).currentItem().text() == MainApp.TXTPLANTILLAS:
                 p = Persistence()
                 lista = p.consultarAtributos()
                 listado = Listado(lista)
+                listado.setContextMenuPolicy(Qt.CustomContextMenu)
                 if self.columna1.count() > 1:
                     #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
@@ -556,12 +499,14 @@ class MainApp(QMainWindow, Ui_mainApp):
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
+                self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
                 self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
-            elif self.columna1.widget(0).currentItem().text() == 'Demandantes':
+            elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDANTES:
                 p = Persistence()
                 lista = p.consultarAtributosPersona()
                 listado = Listado(lista)
+                listado.setContextMenuPolicy(Qt.CustomContextMenu)
                 if self.columna1.count() > 1:
                     #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
@@ -570,12 +515,14 @@ class MainApp(QMainWindow, Ui_mainApp):
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
+                self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
                 self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
-            elif self.columna1.widget(0).currentItem().text() == 'Demandados':
+            elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDADOS:
                 p = Persistence()
                 lista = p.consultarAtributosPersona()
                 listado = Listado(lista)
+                listado.setContextMenuPolicy(Qt.CustomContextMenu)
                 if self.columna1.count() > 1:
                     #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
@@ -584,12 +531,14 @@ class MainApp(QMainWindow, Ui_mainApp):
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
+                self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
                 self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
-            elif self.columna1.widget(0).currentItem().text() == 'Juzgados':
+            elif self.columna1.widget(0).currentItem().text() == MainApp.TXTJUZGADOS:
                 p = Persistence()
                 lista = p.consultarAtributosJuzgado()
                 listado = Listado(lista)
+                listado.setContextMenuPolicy(Qt.CustomContextMenu)
                 if self.columna1.count() > 1:
                     #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
@@ -598,12 +547,14 @@ class MainApp(QMainWindow, Ui_mainApp):
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
+                self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
                 self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None
-            elif self.columna1.widget(0).currentItem().text() == 'Actuaciones':
+            elif self.columna1.widget(0).currentItem().text() == MainApp.TXTACTUACIONES:
                 p = Persistence()
                 lista = p.consultarAtributosActuacion()
                 listado = Listado(lista)
+                listado.setContextMenuPolicy(Qt.CustomContextMenu)
                 if self.columna1.count() > 1:
                     #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
@@ -612,6 +563,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
                 self.connect(listado, SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
+                self.connect(listado, SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
                 self.connect(columna, SIGNAL('clicked()'), self.columnaCamposAgregarClicked)
                 p = None       
 
@@ -635,37 +587,37 @@ class MainApp(QMainWindow, Ui_mainApp):
     
     def columnaCamposAgregarClicked(self):
         #Manejo del boton agregar en campos personalizados de la tercera columna
-        if self.columna1.widget(0).currentItem().text() == 'Procesos':
+        if self.columna1.widget(0).currentItem().text() == MainApp.TXTPROCESOS:
             campoVentana = NuevoCampo(NuevoCampo.PROCESO)
             if campoVentana.exec_():
                 campo = campoVentana.getCampo()
                 self.columna1.widget(1).getCentralWidget().add(campo)
             campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Plantillas':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTPLANTILLAS:
             campoVentana = NuevoCampo(NuevoCampo.PROCESO)
             if campoVentana.exec_():
                 campo = campoVentana.getCampo()
                 self.columna1.widget(1).getCentralWidget().add(campo)
             campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Demandantes':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDANTES:
             campoVentana = NuevoCampo(NuevoCampo.PERSONA)
             if campoVentana.exec_():
                 campo = campoVentana.getCampo()
                 self.columna1.widget(1).getCentralWidget().add(campo)
             campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Demandados':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDADOS:
             campoVentana = NuevoCampo(NuevoCampo.PERSONA)
             if campoVentana.exec_():
                 campo = campoVentana.getCampo()
                 self.columna1.widget(1).getCentralWidget().add(campo)
             campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Juzgados':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTJUZGADOS:
             campoVentana = NuevoCampo(NuevoCampo.JUZGADO)
             if campoVentana.exec_():
                 campo = campoVentana.getCampo()
                 self.columna1.widget(1).getCentralWidget().add(campo)
             campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Actuaciones':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTACTUACIONES:
             campoVentana = NuevoCampo(NuevoCampo.ACTUACION)
             if campoVentana.exec_():
                 campo = campoVentana.getCampo()
@@ -793,7 +745,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 self.gridLayout.addWidget(self.label, 0,1,1,1)
     
     def campoEditarClicked(self):
-        if self.columna1.widget(0).currentItem().text() == 'Procesos':
+        if self.columna1.widget(0).currentItem().text() == MainApp.TXTPROCESOS:
             if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
                 campoVentana = NuevoCampo(tipo=NuevoCampo.PROCESO, campo=campo)
@@ -801,7 +753,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
                 campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Plantillas':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTPLANTILLAS:
             if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
                 campoVentana = NuevoCampo(tipo=NuevoCampo.PROCESO, campo=campo)
@@ -809,7 +761,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
                 campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Demandantes':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDANTES:
             if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
                 campoVentana = NuevoCampo(tipo=NuevoCampo.PERSONA, campo=campo)
@@ -817,7 +769,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
                 campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Demandados':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDADOS:
             if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
                 campoVentana = NuevoCampo(tipo=NuevoCampo.PERSONA, campo=campo)
@@ -825,7 +777,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
                 campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Juzgados':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTJUZGADOS:
             if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
                 campoVentana = NuevoCampo(tipo=NuevoCampo.JUZGADO, campo=campo)
@@ -833,7 +785,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
                 campoVentana = None
-        elif self.columna1.widget(0).currentItem().text() == 'Actuaciones':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTACTUACIONES:
             if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
                 campoVentana = NuevoCampo(tipo=NuevoCampo.ACTUACION, campo=campo)
@@ -844,7 +796,7 @@ class MainApp(QMainWindow, Ui_mainApp):
     
     def campoEliminarClicked(self):
         campo = self.columna1.widget(1).getCentralWidget().getSelectedItem()
-        if self.columna1.widget(0).currentItem().text() == 'Procesos':
+        if self.columna1.widget(0).currentItem().text() == MainApp.TXTPROCESOS:
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributo(campo)
@@ -856,7 +808,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-        elif self.columna1.widget(0).currentItem().text() == 'Plantillas':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTPLANTILLAS:
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributo(campo)
@@ -868,7 +820,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-        elif self.columna1.widget(0).currentItem().text() == 'Demandantes':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDANTES:
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributoPersona(campo)
@@ -880,7 +832,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-        elif self.columna1.widget(0).currentItem().text() == 'Demandados':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDADOS:
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributoPersona(campo)
@@ -892,7 +844,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
-        elif self.columna1.widget(0).currentItem().text() == 'Juzgados':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTJUZGADOS:
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributoJuzgado(campo)
@@ -905,7 +857,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
             p = None
-        elif self.columna1.widget(0).currentItem().text() == 'Actuaciones':
+        elif self.columna1.widget(0).currentItem().text() == MainApp.TXTACTUACIONES:
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributoActuacion(campo)
@@ -917,6 +869,150 @@ class MainApp(QMainWindow, Ui_mainApp):
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0,1,1,1)
+                    
+    def __restablecerElementoDerecho(self):
+        #Reestablecer el logo de la bolita
+        elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+        if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
+            elementoGrid.hide()
+            elementoGrid.deleteLater()
+            self.label = QLabel() 
+            self.label.setPixmap(QPixmap.fromImage(self.image))
+            self.gridLayout.addWidget(self.label, 0,1,1,1)
+            
+    def listaIzquierdaContextMenu(self, pos):
+        item = self.listaIzquierda.currentItem()
+        if item.text() not in (MainApp.TXTACTUACIONES, MainApp.TXTCAMPOS, MainApp.TXTSINCRONIZAR, MainApp.TXTAJUSTES):
+            menu = QMenu(self)
+            menu.addAction(self.createAction('Nuevo', self.columna1AgregarClicked))
+            menu.exec_(self.mapToGlobal(pos))
+        
+    def listaCamposContextMenu(self, pos):
+        menu = QMenu(self)
+        menu.addAction(self.createAction('Nuevo', self.columnaCamposAgregarClicked))
+        menu.exec_(self.columna1.mapToGlobal(pos))
+        
+    def camposContextMenu(self, pos):
+        menu = QMenu(self)
+        menu.addAction(self.createAction('Nuevo', self.columnaCamposAgregarClicked))
+        menu.addAction(self.createAction('Editar', self.campoEditarClicked))
+        menu.addSeparator()
+        menu.addAction(self.createAction('Eliminar', self.campoEliminarClicked))
+        menu.exec_(self.columna1.widget(1).getCentralWidget().mapToGlobal(pos))
+        
+    def columna1ContextMenu(self, pos):
+        menu = QMenu(self)
+        menu.addAction(self.createAction('Nuevo', self.columna1AgregarClicked))
+        menu.addAction(self.createAction('Editar', self.columna1ContextEditar))
+        menu.addSeparator()
+        menu.addAction(self.createAction('Eliminar', self.columna1ContextEliminar))
+        menu.exec_(self.columna1.mapToGlobal(pos))
+    
+    def columna1ContextEditar(self):
+        objeto = self.columna1.getCentralWidget().currentItem().getObjeto()
+        if isinstance(objeto, Proceso):
+            self.procesoEditarClicked()
+        elif isinstance(objeto, Plantilla):
+            self.plantillaEditarClicked()
+        elif isinstance(objeto, Persona):
+            self.personaEditarClicked()
+        elif isinstance(objeto, Juzgado):
+            self.juzgadoEditarClicked()
+        elif isinstance(objeto, Categoria):
+            self.categoriaEditarClicked()
+            
+    def columna1ContextEliminar(self):
+        objeto = self.columna1.getCentralWidget().currentItem().getObjeto()
+        if isinstance(objeto, Proceso):
+            self.procesoEliminarClicked()
+        elif isinstance(objeto, Plantilla):
+            self.plantillaEliminarClicked()
+        elif isinstance(objeto, Persona):
+            self.personaEliminarClicked()
+        elif isinstance(objeto, Juzgado):
+            self.juzgadoEliminarClicked()
+        elif isinstance(objeto, Categoria):
+            self.categoriaEliminarClicked()
+            
+    def menuNuevoProcesoClicked(self):
+        procesoVentana = NuevoProceso()
+        if procesoVentana.exec_():
+            self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTPROCESOS))
+        procesoVentana = None
+        
+    def menuNuevaPlantillaClicked(self):
+        plantillaVentana = NuevaPlantilla()
+        if plantillaVentana.exec_():
+            self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTPLANTILLAS))
+        plantillaVentana = None
+    
+    def menuNuevoDemandanteClicked(self):
+        personaVentana = NuevaPersona(tipo = 1)
+        if personaVentana.exec_():
+            self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTDEMANDANTES))
+        personaVentana = None
+
+    
+    def menuNuevoDemandadoClicked(self):
+        personaVentana = NuevaPersona(tipo = 2)
+        if personaVentana.exec_():
+            self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTDEMANDADOS))
+        personaVentana = None        
+        
+    def menuNuevoJuzgadoClicked(self):
+        juzgadoVentana = NuevoJuzgado()
+        if juzgadoVentana.exec_():
+            self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTJUZGADOS))
+        juzgadoVentana = None
+    
+    def menuNuevaActuacionClicked(self):
+        pass
+        #TODO: Acciones para seleccionar un proceso y crear una actuacion
+    
+    def menuNuevaCategoriaClicked(self):
+        categoriaVentana = NuevaCategoria()
+        if categoriaVentana.exec_():
+            self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCATEGORIAS))
+        categoriaVentana = None
+        
+    def menuNuevoCampoProcesoClicked(self):
+            campoVentana = NuevoCampo(NuevoCampo.PROCESO)
+            if campoVentana.exec_():
+                self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCAMPOS))
+            campoVentana = None
+
+    def menuNuevoCampoPersonaClicked(self):
+            campoVentana = NuevoCampo(NuevoCampo.PERSONA)
+            if campoVentana.exec_():
+                self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCAMPOS))
+            campoVentana = None
+            
+    def menuNuevoCampoJuzgadoClicked(self):
+            campoVentana = NuevoCampo(NuevoCampo.JUZGADO)
+            if campoVentana.exec_():
+                self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCAMPOS))
+            campoVentana = None
+
+    def menuNuevoCampoActuacionClicked(self):
+            campoVentana = NuevoCampo(NuevoCampo.ACTUACION)
+            if campoVentana.exec_():
+                self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCAMPOS))
+            campoVentana = None
+    
+    def createAction(self, text, slot= None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
+        action = QAction(text, self)
+        if icon is not None:
+            action.setIcon(QIcon("./images/%s.png" % icon))
+        if shortcut is not None:
+            action.setShortcut(shortcut)
+        if tip is not None:
+            action.setToolTip(tip)
+            action.setStatusTip(tip)
+        if slot is not None:
+            self.connect(action, SIGNAL(signal), slot)
+        if checkable:
+            action.setCheckable(True)
+        return action
 import sys
 app = QApplication(sys.argv)
 app.setOrganizationName("ehmSoftware")
