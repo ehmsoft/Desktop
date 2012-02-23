@@ -15,6 +15,8 @@ class ListadoDialogo (QDialog):
     CAMPOACTUACION = 7
     CAMPODEMANDANTE = 8
     CAMPODEMANDADO = 9
+    PROCESO = 10
+    PLANTILLA = 11
     
     def __init__(self, tipo, parent = None):
         super(ListadoDialogo, self).__init__(parent)
@@ -52,7 +54,10 @@ class ListadoDialogo (QDialog):
         elif self.__tipo is self.__class__.CAMPODEMANDADO:
             objetos = self.__p.consultarAtributosPersona()
             self.setWindowTitle('seleccione un campo')
-        
+        elif self.__tipo is self.__class__.PROCESO:
+            objetos = self.__p.consultarProcesos()
+            self.setWindowTitle('seleccione un proceso')
+            
         groupBox = QGroupBox("Selecciones un elemento")           
         self.lista = Listado(objetos)
         btnAgregar = QPushButton('+')
@@ -90,6 +95,9 @@ class ListadoDialogo (QDialog):
         from gui.NuevaPersona import NuevaPersona
         from gui.NuevaCategoria import NuevaCategoria
         from gui.NuevoCampo import NuevoCampo
+        from gui.NuevoProceso import NuevoProceso
+        from gui.NuevaPlantilla import NuevaPlantilla
+        
         if self.__tipo is self.__class__.DEMANDANTE:
             nuevaPersona = NuevaPersona(tipo = 1 , parent = self)
             if nuevaPersona.exec_():
@@ -144,6 +152,20 @@ class ListadoDialogo (QDialog):
                 campoJuzgado = nuevoCampoJuzgado.getCampo()
                 self.lista.add(campoJuzgado)
                 self.__agregado.append(campoJuzgado)
+        elif self.__tipo is self.__class__.PROCESO:
+            nuevoProceso = NuevoProceso(parent=self)
+            if nuevoProceso.exec_():
+                proceso = nuevoProceso.getProceso()
+                self.lista.add(proceso)
+                self.__agregado.append(proceso)
+        elif self.__tipo is self.__class__.PLANTILLA:
+            nuevaPlantilla = NuevaPlantilla(parent=self)
+            if nuevaPlantilla.exec_():
+                plantilla = nuevaPlantilla.getPlantilla()
+                self.lista.add(plantilla)
+                self.__agregado.append(plantilla)
+        
+                
     
     
     def createAction(self, text, slot = None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
@@ -189,6 +211,12 @@ class ListadoDialogo (QDialog):
             self.__eliminado.append(objeto) 
         elif self.__tipo is self.__class__.CAMPOJUZGADO:
             self.__p.borrarCampoJuzgado(objeto)
+            self.__eliminado.append(objeto)
+        elif self.__tipo is self.__class__.PROCESO:
+            self.__p.borrarProceso(objeto)
+            self.__eliminado.append(objeto)
+        elif self.__tipo is self.__class__.PLANTILLA:
+            self.__p.borrarPlantilla(objeto)
             self.__eliminado.append(objeto) 
         self.lista.remove()
             
@@ -198,6 +226,8 @@ class ListadoDialogo (QDialog):
         from gui.NuevaPersona import NuevaPersona
         from gui.NuevaCategoria import NuevaCategoria
         from gui.NuevoCampo import NuevoCampo
+        from gui.NuevoProceso import NuevoProceso
+        from gui.NuevaPlantilla import NuevaPlantilla
         if self.__tipo is self.__class__.DEMANDANTE:
             nuevaPersona = NuevaPersona(persona = self.lista.currentItem().getObjeto(), tipo = 1 , parent = self)
             if nuevaPersona.exec_():
@@ -252,6 +282,18 @@ class ListadoDialogo (QDialog):
                 campoJuzgado = nuevoCampoJuzgado.getCampo()
                 self.lista.replace(campoJuzgado)
                 self.__editado.append(campoJuzgado)
+        elif self.__tipo is self.__class__.PROCESO:
+            nuevoProceso = NuevoProceso(proceso = self.lista.currentItem().getObjeto(), parent = self)
+            if nuevoProceso.exec_():
+                proceso = nuevoProceso.getProceso()
+                self.lista.replace(proceso)
+                self.__editado.append(proceso)
+        elif self.__tipo is self.__class__.PLANTILLA:
+            nuevaPlantilla = NuevaPlantilla(pantilla = self.lista.currentItem().getObjeto(), parent = self)
+            if nuevaPlantilla.exec_():
+                plantilla = nuevaPlantilla.getProceso()
+                self.lista.replace(plantilla)
+                self.__editado.append(plantilla)
 
     def getEditados(self):
         return self.__editado
