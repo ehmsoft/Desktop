@@ -27,7 +27,6 @@ class ListadoDialogo (QDialog):
         self.__eliminado = []
         self.__agregado = []
         if self.__tipo is self.__class__.DEMANDANTE:
-            
             objetos = self.__p.consultarDemandantes()
             self.setWindowTitle('Seleccionar Demandante')
         elif self.__tipo is self.__class__.DEMANDADO:
@@ -41,24 +40,27 @@ class ListadoDialogo (QDialog):
             self.setWindowTitle('Seleccionar categoría')
         elif self.__tipo is self.__class__.CAMPOPROCESOP:
             objetos = self.__p.consultarAtributos()
-            self.setWindowTitle('seleccione un campo')
+            self.setWindowTitle('Seleccione un campo')
         elif self.__tipo is self.__class__.CAMPOJUZGADO:
             objetos = self.__p.consultarAtributosJuzgado()
-            self.setWindowTitle('seleccione un campo')
+            self.setWindowTitle('Seleccione un campo')
         elif self.__tipo is self.__class__.CAMPOACTUACION:
             objetos = self.__p.consultarAtributosActuacion()
-            self.setWindowTitle('seleccione un campo')
+            self.setWindowTitle('Seleccione un campo')
         elif self.__tipo is self.__class__.CAMPODEMANDANTE:
             objetos = self.__p.consultarAtributosPersona()
-            self.setWindowTitle('seleccione un campo')
+            self.setWindowTitle('Seleccione un campo')
         elif self.__tipo is self.__class__.CAMPODEMANDADO:
             objetos = self.__p.consultarAtributosPersona()
-            self.setWindowTitle('seleccione un campo')
+            self.setWindowTitle('Seleccione un campo')
         elif self.__tipo is self.__class__.PROCESO:
             objetos = self.__p.consultarProcesos()
             self.setWindowTitle('seleccione un proceso')
+        elif self.__tipo is self.__class__.PLANTILLA:
+            objetos = self.__p.consultarPlantillas()
+            self.setWindowTitle('Seleccione una plantilla')
             
-        groupBox = QGroupBox("Selecciones un elemento")           
+        groupBox = QGroupBox("Seleccione un elemento")           
         self.lista = Listado(objetos)
         btnAgregar = QPushButton('+')
         layout = QVBoxLayout()
