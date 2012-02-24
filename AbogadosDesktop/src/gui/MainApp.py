@@ -31,6 +31,7 @@ from gui.NuevoCampo import NuevoCampo
 from gui.NuevaActuacion import NuevaActuacion
 from gui.NuevoProceso import NuevoProceso
 from gui.NuevaPlantilla import NuevaPlantilla
+from gui.ListadoDialogo import ListadoDialogo
 
 class MainApp(QMainWindow, Ui_mainApp):
     #Constantes para elementos  del menu listaIzquierda
@@ -913,8 +914,16 @@ class MainApp(QMainWindow, Ui_mainApp):
         juzgadoVentana = None
     
     def menuNuevaActuacionClicked(self):
-        pass
-        #TODO: Acciones para seleccionar un proceso y crear una actuacion
+        procesoSelect = ListadoDialogo(ListadoDialogo.PROCESO)
+        if procesoSelect.exec_():
+            nuevaActuacion = NuevaActuacion()
+            if nuevaActuacion.exec_():
+                p = Persistence()
+                p.guardarActuacion(nuevaActuacion.getActuacion(), procesoSelect.getSelected().getId_proceso())
+                del p
+            del nuevaActuacion
+            self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTACTUACIONES))
+        del procesoSelect
     
     def menuNuevaCategoriaClicked(self):
         categoriaVentana = NuevaCategoria()
