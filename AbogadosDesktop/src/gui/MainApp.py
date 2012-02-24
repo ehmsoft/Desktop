@@ -886,30 +886,35 @@ class MainApp(QMainWindow, Ui_mainApp):
         procesoVentana = NuevoProceso()
         if procesoVentana.exec_():
             self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTPROCESOS))
+            self.elementChanged()
         del procesoVentana
         
     def menuNuevaPlantillaClicked(self):
         plantillaVentana = NuevaPlantilla()
         if plantillaVentana.exec_():
             self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTPLANTILLAS))
+            self.elementChanged()
         del plantillaVentana
     
     def menuNuevoDemandanteClicked(self):
         personaVentana = NuevaPersona(tipo = 1)
         if personaVentana.exec_():
             self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTDEMANDANTES))
+            self.elementChanged()
         del personaVentana
     
     def menuNuevoDemandadoClicked(self):
         personaVentana = NuevaPersona(tipo = 2)
         if personaVentana.exec_():
             self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTDEMANDADOS))
+            self.elementChanged()
         del personaVentana      
         
     def menuNuevoJuzgadoClicked(self):
         juzgadoVentana = NuevoJuzgado()
         if juzgadoVentana.exec_():
             self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTJUZGADOS))
+            self.elementChanged()
         del juzgadoVentana
     
     def menuNuevaActuacionClicked(self):
@@ -922,36 +927,42 @@ class MainApp(QMainWindow, Ui_mainApp):
                 del p
             del nuevaActuacion
             self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTACTUACIONES))
+            self.elementChanged()
         del procesoSelect
     
     def menuNuevaCategoriaClicked(self):
         categoriaVentana = NuevaCategoria()
         if categoriaVentana.exec_():
             self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCATEGORIAS))
+            self.elementChanged()
         del categoriaVentana
         
     def menuNuevoCampoProcesoClicked(self):
             campoVentana = NuevoCampo(NuevoCampo.PROCESO)
             if campoVentana.exec_():
                 self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCAMPOS))
+                self.elementChanged()
             del campoVentana
 
     def menuNuevoCampoPersonaClicked(self):
             campoVentana = NuevoCampo(NuevoCampo.PERSONA)
             if campoVentana.exec_():
                 self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCAMPOS))
+                self.elementChanged()
             del campoVentana
             
     def menuNuevoCampoJuzgadoClicked(self):
             campoVentana = NuevoCampo(NuevoCampo.JUZGADO)
             if campoVentana.exec_():
                 self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCAMPOS))
+                self.elementChanged()
             del campoVentana
 
     def menuNuevoCampoActuacionClicked(self):
             campoVentana = NuevoCampo(NuevoCampo.ACTUACION)
             if campoVentana.exec_():
                 self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCAMPOS))
+                self.elementChanged()
             del campoVentana
             
     def menuNuevoProcesoPlantillaClicked(self):
@@ -960,6 +971,7 @@ class MainApp(QMainWindow, Ui_mainApp):
             procesoVentana= NuevoProceso(plantilla=plantillaSelect.getSelected())
             if procesoVentana.exec_():
                 self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTPROCESOS))
+                self.elementChanged()
             del procesoVentana
         del plantillaSelect
     
