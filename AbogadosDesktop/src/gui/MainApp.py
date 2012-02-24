@@ -956,8 +956,13 @@ class MainApp(QMainWindow, Ui_mainApp):
             campoVentana = None
             
     def menuNuevoProcesoPlantillaClicked(self):
-        pass
-        #TODO: Acciones para crear un nuevo proceso a partir de la plantilla
+        plantillaSelect = ListadoDialogo(ListadoDialogo.PLANTILLA)
+        if plantillaSelect.exec_():
+            procesoVentana= NuevoProceso(plantilla=plantillaSelect.getSelected())
+            if procesoVentana.exec_():
+                self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTPROCESOS))
+            del procesoVentana
+        del plantillaSelect
     
     def createAction(self, text, slot= None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
         action = QAction(text, self)
