@@ -540,37 +540,37 @@ class MainApp(QMainWindow, Ui_mainApp):
             if campoVentana.exec_():
                 campo = campoVentana.getCampo()
                 self.columna1.widget(1).getCentralWidget().add(campo)
-            campoVentana = None
+            del campoVentana
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTPLANTILLAS:
             campoVentana = NuevoCampo(NuevoCampo.PROCESO)
             if campoVentana.exec_():
                 campo = campoVentana.getCampo()
                 self.columna1.widget(1).getCentralWidget().add(campo)
-            campoVentana = None
+            del campoVentana
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDANTES:
             campoVentana = NuevoCampo(NuevoCampo.PERSONA)
             if campoVentana.exec_():
                 campo = campoVentana.getCampo()
                 self.columna1.widget(1).getCentralWidget().add(campo)
-            campoVentana = None
+            del campoVentana
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDADOS:
             campoVentana = NuevoCampo(NuevoCampo.PERSONA)
             if campoVentana.exec_():
                 campo = campoVentana.getCampo()
                 self.columna1.widget(1).getCentralWidget().add(campo)
-            campoVentana = None
+            del campoVentana
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTJUZGADOS:
             campoVentana = NuevoCampo(NuevoCampo.JUZGADO)
             if campoVentana.exec_():
                 campo = campoVentana.getCampo()
                 self.columna1.widget(1).getCentralWidget().add(campo)
-            campoVentana = None
+            del campoVentana
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTACTUACIONES:
             campoVentana = NuevoCampo(NuevoCampo.ACTUACION)
             if campoVentana.exec_():
                 campo = campoVentana.getCampo()
                 self.columna1.widget(1).getCentralWidget().add(campo)
-            campoVentana = None
+            del campoVentana
     
     def procesoEditarClicked(self):
         proceso = self.columna1.getCentralWidget().currentItem().getObjeto()
@@ -700,7 +700,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 if campoVentana.exec_():
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
-                campoVentana = None
+                del campoVentana
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTPLANTILLAS:
             if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
@@ -708,7 +708,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 if campoVentana.exec_():
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
-                campoVentana = None
+                del campoVentana
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDANTES:
             if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
@@ -716,7 +716,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 if campoVentana.exec_():
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
-                campoVentana = None
+                del campoVentana
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDADOS:
             if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
@@ -724,7 +724,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 if campoVentana.exec_():
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
-                campoVentana = None
+                del campoVentana
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTJUZGADOS:
             if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
@@ -732,7 +732,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 if campoVentana.exec_():
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
-                campoVentana = None
+                del campoVentana
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTACTUACIONES:
             if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
@@ -740,7 +740,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                 if campoVentana.exec_():
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
-                campoVentana = None
+                del campoVentana
     
     def campoEliminarClicked(self):
         campo = self.columna1.widget(1).getCentralWidget().getSelectedItem()
@@ -886,32 +886,31 @@ class MainApp(QMainWindow, Ui_mainApp):
         procesoVentana = NuevoProceso()
         if procesoVentana.exec_():
             self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTPROCESOS))
-        procesoVentana = None
+        del procesoVentana
         
     def menuNuevaPlantillaClicked(self):
         plantillaVentana = NuevaPlantilla()
         if plantillaVentana.exec_():
             self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTPLANTILLAS))
-        plantillaVentana = None
+        del plantillaVentana
     
     def menuNuevoDemandanteClicked(self):
         personaVentana = NuevaPersona(tipo = 1)
         if personaVentana.exec_():
             self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTDEMANDANTES))
-        personaVentana = None
-
+        del personaVentana
     
     def menuNuevoDemandadoClicked(self):
         personaVentana = NuevaPersona(tipo = 2)
         if personaVentana.exec_():
             self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTDEMANDADOS))
-        personaVentana = None        
+        del personaVentana      
         
     def menuNuevoJuzgadoClicked(self):
         juzgadoVentana = NuevoJuzgado()
         if juzgadoVentana.exec_():
             self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTJUZGADOS))
-        juzgadoVentana = None
+        del juzgadoVentana
     
     def menuNuevaActuacionClicked(self):
         procesoSelect = ListadoDialogo(ListadoDialogo.PROCESO)
@@ -929,31 +928,31 @@ class MainApp(QMainWindow, Ui_mainApp):
         categoriaVentana = NuevaCategoria()
         if categoriaVentana.exec_():
             self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCATEGORIAS))
-        categoriaVentana = None
+        del categoriaVentana
         
     def menuNuevoCampoProcesoClicked(self):
             campoVentana = NuevoCampo(NuevoCampo.PROCESO)
             if campoVentana.exec_():
                 self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCAMPOS))
-            campoVentana = None
+            del campoVentana
 
     def menuNuevoCampoPersonaClicked(self):
             campoVentana = NuevoCampo(NuevoCampo.PERSONA)
             if campoVentana.exec_():
                 self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCAMPOS))
-            campoVentana = None
+            del campoVentana
             
     def menuNuevoCampoJuzgadoClicked(self):
             campoVentana = NuevoCampo(NuevoCampo.JUZGADO)
             if campoVentana.exec_():
                 self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCAMPOS))
-            campoVentana = None
+            del campoVentana
 
     def menuNuevoCampoActuacionClicked(self):
             campoVentana = NuevoCampo(NuevoCampo.ACTUACION)
             if campoVentana.exec_():
                 self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTCAMPOS))
-            campoVentana = None
+            del campoVentana
             
     def menuNuevoProcesoPlantillaClicked(self):
         plantillaSelect = ListadoDialogo(ListadoDialogo.PLANTILLA)
