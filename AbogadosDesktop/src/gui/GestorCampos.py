@@ -140,6 +140,7 @@ class GestorCampos(object):
                 txtBox.addActions([eliminar, editar])
                 self.__formLayout.addRow(label, txtBox)
                 self.__campos.append(campo)
+                txtBox.textEdited.connect(self.__parent.setDirty)
                 
     def existe(self, campo, lista):
         for c in lista:
@@ -165,7 +166,8 @@ class GestorCampos(object):
             editar.setData(txtBox)
             
             txtBox.addActions([eliminar, editar])
-            self.__formLayout.addRow(label, txtBox)   
+            self.__formLayout.addRow(label, txtBox)
+            txtBox.textEdited.connect(self.__parent.setDirty)   
             
     def __createAction(self, text, slot = None):
         action = QtGui.QAction(text, self.__formLayout)

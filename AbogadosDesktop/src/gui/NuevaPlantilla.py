@@ -283,3 +283,6 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
                 
     def getPlantilla(self):
         return self.__plantilla
+    
+    def setDirty(self):
+        pass

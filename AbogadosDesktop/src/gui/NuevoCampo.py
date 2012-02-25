@@ -102,4 +102,7 @@ class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
             message.exec_()
             self.txtNombre.setFocus()        
         else:
-            self.guardar()     
+            self.guardar()
+            
+    def setDirty(self):
+        pass     

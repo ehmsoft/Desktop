@@ -31,7 +31,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     '''
 
 
-    def __init__(self, proceso = None, plantilla = None,parent = None):
+    def __init__(self, proceso = None, plantilla = None, parent = None):
         '''
         Constructor
         '''
@@ -433,3 +433,6 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             vista.addActions([editar, eliminar])
             self.verticalLayout.addWidget(vista)
             self.__actuaciones.append(actuacion)
+            
+    def setDirty(self):
+        pass

@@ -12,7 +12,7 @@ from persistence.Persistence import Persistence
 
 
 class NuevaCategoria(QDialog, Ui_NuevaCategoria):
-    def __init__(self,categoria=None,parent=None):
+    def __init__(self, categoria = None, parent = None):
         super(NuevaCategoria, self).__init__(parent)
         self.__categoria = categoria
         self.setupUi(self)        
@@ -50,19 +50,7 @@ class NuevaCategoria(QDialog, Ui_NuevaCategoria):
             self.txtCategoria.setFocus()                 
         else:
             self.guardar()
-            
-  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
         
+    def setDirty(self):
+        pass
 

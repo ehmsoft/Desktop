@@ -7,10 +7,13 @@ from persistence.Persistence import Persistence
 from gui.NuevoCampo import NuevoCampo
 from gui.GestorCampos import GestorCampos
 from gui.ListadoDialogo import ListadoDialogo
+import Util
 
 class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
     def __init__(self, persona = None, tipo = None, parent = None):
         super(NuevaPersona, self).__init__(parent)
+        
+        self.__dirty = False
         
         if(persona is None and tipo is None):
             raise TypeError("Para crear una nueva persona debe pasar el argumento tipo")
@@ -51,6 +54,13 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
                 
         self.__gestor = GestorCampos(campos = campos, formLayout = self.formLayout, parent = self, constante_de_edicion = NuevoCampo.PERSONA, constante_de_creacion = constante)
         self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.__gestor.addCampo)
+        
+        self.txtNombre.textEdited.connect(self.setDirty)
+        self.txtCedula.textEdited.connect(self.setDirty)
+        self.txtCorreo.textEdited.connect(self.setDirty)
+        self.txtDireccion.textEdited.connect(self.setDirty)
+        self.txtNotas.textEdited.connect(self.setDirty)
+        self.txtTelefono.textEdited.connect(self.setDirty)
                         
     def getPersona(self):
         return self.__persona
@@ -116,3 +126,11 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
                 self.txtTelefono.setFocus()            
         elif self.__gestor.organizarCampos():
             self.guardar()
+            
+    def reject(self):
+        Util.reject(self, self.__dirty)
+                    
+    def setDirty(self):
+        self.__dirty = True
+        print "Signal"
+        self.disconnect(self.sender(), QtCore.SIGNAL("textEdited()"), self.setDirty)

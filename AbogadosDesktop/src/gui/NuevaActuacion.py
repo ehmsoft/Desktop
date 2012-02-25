@@ -189,3 +189,6 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             
         dteFecha.focusInEvent = focusInEvent
         dteFecha.dateChanged.connect(dateChanged)
+        
+    def setDirty(self):
+        pass

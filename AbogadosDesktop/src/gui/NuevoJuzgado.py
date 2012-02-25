@@ -102,3 +102,6 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
                 self.txtTelefono.setFocus()            
         elif self.__gestor.organizarCampos():
             self.guardar()
+            
+    def setDirty(self):
+        pass
