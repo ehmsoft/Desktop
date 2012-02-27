@@ -23,6 +23,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
     '''
     def __init__(self, actuacion = None, parent = None):
         super(NuevaActuacion, self).__init__(parent)
+        self.__dirty = False
         
         if actuacion is not None and not isinstance(actuacion, Actuacion):
             raise TypeError("El objeto actuacion debe ser de la clase Actuacion")
@@ -63,6 +64,10 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
                                      constante_de_edicion = NuevoCampo.ACTUACION, constante_de_creacion = ListadoDialogo.CAMPOACTUACION)
         self.btnAdd.clicked.connect(self.__gestor.addCampo)
         
+        self.txtDescripcion.textChanged.connect(self.setDirty)
+        self.dteFecha.dateTimeChanged.connect(self.setDirty)
+        self.dteFechaProxima.dateTimeChanged.connect(self.setDirty)
+        
     def getActuacion(self):
         return self.__actuacion
     
@@ -77,6 +82,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         if listado.exec_():
             self.__juzgado = listado.getSelected()
             self.lblJuzgado.setText(self.__juzgado.getNombre())
+            self.__dirty = True
     
     def editarJuzgado(self):
         if self.__juzgado is not None and self.__juzgado.getId_juzgado() is not "1":
@@ -191,4 +197,10 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         dteFecha.dateChanged.connect(dateChanged)
         
     def setDirty(self):
-        pass
+        sender = self.sender()
+        if isinstance(sender, QtGui.QLineEdit):
+            self.__dirty = True
+            self.disconnect(sender, QtCore.SIGNAL("textEdited()"), self.setDirty)
+        elif isinstance(sender, QtGui.QDateTimeEdit):
+            self.__dirty = True
+            self.disconnect(sender, QtCore.SIGNAL("dateTimeChanged()"), self.setDirty)

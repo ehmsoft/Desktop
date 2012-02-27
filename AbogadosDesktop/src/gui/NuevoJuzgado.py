@@ -25,6 +25,7 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
         Constructor
         '''
         super(NuevoJuzgado, self).__init__(parent)
+        self.__dirty = False
         
         if juzgado is not None and not isinstance(juzgado, Juzgado):
             raise TypeError("El objeto juzgado debe ser de la clase Juzgado")
@@ -44,8 +45,14 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
             
         self.__gestor = GestorCampos(campos = campos, formLayout = self.formLayout, parent = self,
                                      constante_de_edicion = NuevoCampo.JUZGADO, constante_de_creacion = ListadoDialogo.CAMPOJUZGADO)
-        self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.__gestor.addCampo)  
-            
+        self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.__gestor.addCampo)
+        
+        self.txtNombre.textChanged.connect(self.setDirty)
+        self.txtCiudad.textChanged.connect(self.setDirty)
+        self.txtDireccion.textChanged.connect(self.setDirty) 
+        self.txtTelefono.textChanged.connect(self.setDirty) 
+        self.txtTipo.textChanged.connect(self.setDirty)
+          
     def getJuzgado(self):
         return self.__juzgado
     
@@ -104,4 +111,5 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
             self.guardar()
             
     def setDirty(self):
-        pass
+        self.__dirty = True
+        self.disconnect(self.sender(), QtCore.SIGNAL("textEdited()"), self.setDirty)

@@ -36,6 +36,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         Constructor
         '''
         super(NuevoProceso, self).__init__(parent)
+        self.__dirty = False
         self.setupUi(self)
         if proceso is not None and plantilla is not None:
             raise TypeError("Solo se puede enviar el argumento plantilla o proceso sólo")
@@ -137,6 +138,12 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         self.__gestor = GestorCampos(campos = campos, formLayout = self.formLayout, parent = self,
                                      constante_de_edicion = NuevoCampo.PROCESO, constante_de_creacion = ListadoDialogo.CAMPOPROCESOP)
         self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.__gestor.addCampo)
+        self.txtRadicado.textEdited.connect(self.setDirty)
+        self.txtRadicadoUnico.textEdited.connect(self.setDirty)
+        self.txtTipo.textEdited.connect(self.setDirty)
+        self.txtEstado.textEdited.connect(self.setDirty)
+        self.sbPrioridad.valueChanged.connect(self.setDirty)
+        self.dteFecha.dateTimeChanged.connect(self.setDirty)
                 
     def clickDemandante(self):
         dialogo = self.__dialogo
@@ -225,6 +232,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             self.lblDemandante.setText(self.__demandante.getNombre())
             vista = VerPersona(self.__demandante, self)
             self.__dialogo.setWidget(vista)
+            self.__dirty = True
     
     def cambiarDemandado(self):
         listado = ListadoDialogo(ListadoDialogo.DEMANDADO, self)
@@ -241,12 +249,14 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             self.lblJuzgado.setText(self.__juzgado.getNombre())
             vista = VerJuzgado(self.__juzgado, self)
             self.__dialogo.setWidget(vista)
+            self.__dirty = True
     
     def cambiarCategoria(self):
         listado = ListadoDialogo(ListadoDialogo.CATEGORIA, self)
         if listado.exec_():
             self.__categoria = listado.getSelected()
             self.lblCategoria.setText(unicode(self.__categoria))
+            self.__dirty = True
             
     def editarDemandante(self):
         if self.__demandante is not None and self.__demandante.getId_persona() is not "1":
@@ -388,6 +398,8 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             self.verticalLayout.itemAt(index).widget().deleteLater()
             vista = VerActuacion(dialogo.getActuacion(), self)
             self.verticalLayout.insertWidget(index, vista)
+            if self.__proceso is not None:
+                self.__dirty = True
             
     
     def eliminarActuacion(self):
@@ -403,7 +415,8 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             item = self.verticalLayout.takeAt(index)
             item.widget().deleteLater()            
             del(self.__actuaciones[index])
-            self.verticalLayout.update()                
+            self.verticalLayout.update()
+            self.__dirty = True                
                 
     def cargarActuaciones(self):
         if len(self.__actuaciones) is not 0:
@@ -433,6 +446,13 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             vista.addActions([editar, eliminar])
             self.verticalLayout.addWidget(vista)
             self.__actuaciones.append(actuacion)
+            self.__dirty = True
             
     def setDirty(self):
-        pass
+        sender = self.sender()
+        if isinstance(sender, QtGui.QLineEdit) or isinstance(sender, QtGui.QTextEdit):
+            self.__dirty = True
+            self.disconnect(sender, QtCore.SIGNAL("textChanged()"), self.setDirty)
+        elif isinstance(sender, QtGui.QDateTimeEdit):
+            self.__dirty = True
+            self.disconnect(sender, QtCore.SIGNAL("dateTimeChanded()"), self.setDirty)

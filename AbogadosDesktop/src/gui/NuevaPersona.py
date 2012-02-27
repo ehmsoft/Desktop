@@ -132,5 +132,4 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
                     
     def setDirty(self):
         self.__dirty = True
-        print "Signal"
         self.disconnect(self.sender(), QtCore.SIGNAL("textEdited()"), self.setDirty)

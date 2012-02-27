@@ -29,6 +29,7 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
         Constructor
         '''
         super(NuevaPlantilla, self).__init__(parent)
+        self.__dirty = False
         self.setupUi(self)
         if plantilla is not None and not isinstance(plantilla, Plantilla):
             raise TypeError("El objeto plantilla debe pertenecer a la clase Plantilla")
@@ -101,6 +102,12 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
         self.__gestor = GestorCampos(campos = campos, formLayout = self.formLayout, parent = self,
                                      constante_de_edicion = NuevoCampo.PROCESO, constante_de_creacion = ListadoDialogo.CAMPOPROCESOP)
         self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.__gestor.addCampo)
+        
+        self.txtRadicado.textEdited.connect(self.setDirty)
+        self.txtRadicadoUnico.textEdited.connect(self.setDirty)
+        self.txtTipo.textEdited.connect(self.setDirty)
+        self.txtEstado.textEdited.connect(self.setDirty)
+        self.sbPrioridad.valueChanged.connect(self.setDirty)
                 
     def clickDemandante(self):
         dialogo = self.__dialogo 
@@ -168,6 +175,7 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
             self.lblDemandante.setText(self.__demandante.getNombre())
             vista = VerPersona(self.__demandante, self)
             self.__dialogo.setWidget(vista)
+            self.__dirty = True
     
     def cambiarDemandado(self):
         listado = ListadoDialogo(ListadoDialogo.DEMANDADO, self)
@@ -176,6 +184,7 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
             self.lblDemandado.setText(self.__demandado.getNombre())
             vista = VerPersona(self.__demandado, self)
             self.__dialogo.setWidget(vista)
+            self.__dirty = True
     
     def cambiarJuzgado(self):
         listado = ListadoDialogo(ListadoDialogo.JUZGADO, self)
@@ -184,12 +193,14 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
             self.lblJuzgado.setText(self.__juzgado.getNombre())
             vista = VerJuzgado(self.__juzgado, self)
             self.__dialogo.setWidget(vista)
+            self.__dirty = True
     
     def cambiarCategoria(self):
         listado = ListadoDialogo(ListadoDialogo.CATEGORIA, self)
         if listado.exec_():
             self.__categoria = listado.getSelected()
             self.lblCategoria.setText(unicode(self.__categoria))
+            self.__dirty = True
             
     def editarDemandante(self):
         if self.__demandante is not None and self.__demandante.getId_persona() is not "1":
@@ -285,4 +296,10 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
         return self.__plantilla
     
     def setDirty(self):
-        pass
+        sender = self.sender()
+        if isinstance(sender, QtGui.QLineEdit) or isinstance(sender, QtGui.QTextEdit):
+            self.__dirty = True
+            self.disconnect(sender, QtCore.SIGNAL("textChanged()"), self.setDirty)
+        elif isinstance(sender, QtGui.QDateTimeEdit):
+            self.__dirty = True
+            self.disconnect(sender, QtCore.SIGNAL("dateTimeChanded()"), self.setDirty)

@@ -5,7 +5,7 @@ Created on 26/01/2012
 
 @author: harold
 '''
-from PySide import QtGui
+from PySide import QtGui, QtCore
 from core.CampoPersonalizado import CampoPersonalizado
 from persistence.Persistence import Persistence
 from NuevoCampoScreen import Ui_NuevoCampo
@@ -21,6 +21,7 @@ class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
     
     def __init__(self, tipo, campo = None, parent = None):
         super(NuevoCampo, self).__init__(parent)
+        self.__dirty = False
         self.__campo = campo
         self.__tipo = tipo
         self.setupUi(self)
@@ -41,18 +42,23 @@ class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
             self.sbLongMin.setValue(self.__campo.getLongitudMin())
             self.cbObligatorio.setChecked(self.__campo.isObligatorio())
         self.sbLongMax.valueChanged[int].connect(self.validarLongitudMax)
-        self.sbLongMin.valueChanged[int].connect(self.validarLongitudMin)       
+        self.sbLongMin.valueChanged[int].connect(self.validarLongitudMin)
+        
+        self.txtNombre.textEdited.connect(self.setDirty)
+        self.cbObligatorio.stateChanged.connect(self.setDirty)       
         
     def validarLongitudMax(self, lmax):
         if lmax is not 0:
             lmin = self.sbLongMin.value()
             if lmin is not 0 and lmax < lmin:
                 self.sbLongMax.setValue(lmax + 1)
+        self.__dirty = True
             
     def validarLongitudMin(self, lmin):
         lmax = self.sbLongMax.value()
         if lmax is not 0 and lmin > lmax:
-            self.sbLongMin.setValue(lmin - 1)          
+            self.sbLongMin.setValue(lmin - 1) 
+        self.__dirty = True         
             
     def getCampo(self):
         return self.__campo
@@ -105,4 +111,8 @@ class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
             self.guardar()
             
     def setDirty(self):
-        pass     
+        sender = self.sender()
+        if isinstance(sender, QtGui.QLineEdit):
+            self.disconnect(sender, QtCore.SIGNAL("textChanged()"), self.setDirty)
+        elif isinstance(sender, QtGui.QCheckBox):
+            self.disconnect(sender, QtCore.SIGNAL("stateChanged()"), self.setDirty)

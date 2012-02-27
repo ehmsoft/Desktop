@@ -6,6 +6,7 @@ Created on 24/01/2012
 '''
 
 from PySide.QtGui import QDialog, QMessageBox
+from PySide.QtCore import SIGNAL
 from NuevaCategoriaScreen import Ui_NuevaCategoria
 from core.Categoria import Categoria
 from persistence.Persistence import Persistence
@@ -14,10 +15,13 @@ from persistence.Persistence import Persistence
 class NuevaCategoria(QDialog, Ui_NuevaCategoria):
     def __init__(self, categoria = None, parent = None):
         super(NuevaCategoria, self).__init__(parent)
+        self.__dirty = False
         self.__categoria = categoria
         self.setupUi(self)        
         if self.__categoria is not None:
             self.txtCategoria.setText(self.__categoria.getDescripcion())
+            
+        self.txtCategoria.textChanged.connect(self.setDirty)
             
         
     def getCategoria(self):
@@ -52,5 +56,5 @@ class NuevaCategoria(QDialog, Ui_NuevaCategoria):
             self.guardar()
         
     def setDirty(self):
-        pass
-
+        self.__dirty = True
+        self.disconnect(self.txtCategoria, SIGNAL("textChanged()"), self.setDirty)
