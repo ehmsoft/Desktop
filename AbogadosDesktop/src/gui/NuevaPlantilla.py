@@ -18,6 +18,7 @@ from NuevoJuzgado import NuevoJuzgado
 from NuevaCategoria import NuevaCategoria
 from persistence.Persistence import Persistence
 from gui.DialogoAuxiliar import DialogoAuxiliar
+import Util
 
 class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
     '''
@@ -103,11 +104,12 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
                                      constante_de_edicion = NuevoCampo.PROCESO, constante_de_creacion = ListadoDialogo.CAMPOPROCESOP)
         self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.__gestor.addCampo)
         
-        self.txtRadicado.textEdited.connect(self.setDirty)
-        self.txtRadicadoUnico.textEdited.connect(self.setDirty)
-        self.txtTipo.textEdited.connect(self.setDirty)
-        self.txtEstado.textEdited.connect(self.setDirty)
+        self.txtRadicado.textChanged.connect(self.setDirty)
+        self.txtRadicadoUnico.textChanged.connect(self.setDirty)
+        self.txtTipo.textChanged.connect(self.setDirty)
+        self.txtEstado.textChanged.connect(self.setDirty)
         self.sbPrioridad.valueChanged.connect(self.setDirty)
+        self.txtNombre.textChanged.connect(self.setDirty)
                 
     def clickDemandante(self):
         dialogo = self.__dialogo 
@@ -294,6 +296,9 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
                 
     def getPlantilla(self):
         return self.__plantilla
+    
+    def reject(self):
+        Util.reject(self, self.__dirty)
     
     def setDirty(self):
         sender = self.sender()

@@ -9,6 +9,7 @@ from PySide import QtGui, QtCore
 from core.CampoPersonalizado import CampoPersonalizado
 from persistence.Persistence import Persistence
 from NuevoCampoScreen import Ui_NuevoCampo
+import Util
 
 class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
     '''
@@ -44,7 +45,7 @@ class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
         self.sbLongMax.valueChanged[int].connect(self.validarLongitudMax)
         self.sbLongMin.valueChanged[int].connect(self.validarLongitudMin)
         
-        self.txtNombre.textEdited.connect(self.setDirty)
+        self.txtNombre.textChanged.connect(self.setDirty)
         self.cbObligatorio.stateChanged.connect(self.setDirty)       
         
     def validarLongitudMax(self, lmax):
@@ -109,6 +110,9 @@ class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
             self.txtNombre.setFocus()        
         else:
             self.guardar()
+            
+    def reject(self):
+        Util.reject(self, self.__dirty)
             
     def setDirty(self):
         sender = self.sender()

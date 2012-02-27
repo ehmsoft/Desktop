@@ -16,6 +16,7 @@ from gui.NuevoJuzgado import NuevoJuzgado
 from gui.GestorCampos import GestorCampos
 from persistence.Persistence import Persistence
 from gui.DialogoAuxiliar import DialogoAuxiliar
+import Util
 
 class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
     '''
@@ -195,6 +196,9 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             
         dteFecha.focusInEvent = focusInEvent
         dteFecha.dateChanged.connect(dateChanged)
+        
+    def reject(self):
+        Util.reject(self, self.__dirty)
         
     def setDirty(self):
         sender = self.sender()

@@ -24,6 +24,7 @@ from gui.GestorCampos import GestorCampos
 from core.Categoria import Categoria
 from gui.DialogoAuxiliar import DialogoAuxiliar
 from core.Plantilla import Plantilla
+import Util
 
 class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     '''
@@ -138,10 +139,10 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         self.__gestor = GestorCampos(campos = campos, formLayout = self.formLayout, parent = self,
                                      constante_de_edicion = NuevoCampo.PROCESO, constante_de_creacion = ListadoDialogo.CAMPOPROCESOP)
         self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.__gestor.addCampo)
-        self.txtRadicado.textEdited.connect(self.setDirty)
-        self.txtRadicadoUnico.textEdited.connect(self.setDirty)
-        self.txtTipo.textEdited.connect(self.setDirty)
-        self.txtEstado.textEdited.connect(self.setDirty)
+        self.txtRadicado.textChanged.connect(self.setDirty)
+        self.txtRadicadoUnico.textChanged.connect(self.setDirty)
+        self.txtTipo.textChanged.connect(self.setDirty)
+        self.txtEstado.textChanged.connect(self.setDirty)
         self.sbPrioridad.valueChanged.connect(self.setDirty)
         self.dteFecha.dateTimeChanged.connect(self.setDirty)
                 
@@ -447,6 +448,9 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             self.verticalLayout.addWidget(vista)
             self.__actuaciones.append(actuacion)
             self.__dirty = True
+        
+    def reject(self):
+        Util.reject(self, self.__dirty)
             
     def setDirty(self):
         sender = self.sender()

@@ -13,6 +13,7 @@ from persistence.Persistence import Persistence
 from gui.ListadoDialogo import ListadoDialogo
 from gui.NuevoCampo import NuevoCampo
 from gui.GestorCampos import GestorCampos
+import Util
 
 
 class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
@@ -109,6 +110,9 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
                 self.txtTelefono.setFocus()            
         elif self.__gestor.organizarCampos():
             self.guardar()
+            
+    def reject(self):
+        Util.reject(self, self.__dirty)
             
     def setDirty(self):
         self.__dirty = True

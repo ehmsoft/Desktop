@@ -10,6 +10,7 @@ from PySide.QtCore import SIGNAL
 from NuevaCategoriaScreen import Ui_NuevaCategoria
 from core.Categoria import Categoria
 from persistence.Persistence import Persistence
+import Util
 
 
 class NuevaCategoria(QDialog, Ui_NuevaCategoria):
@@ -54,6 +55,9 @@ class NuevaCategoria(QDialog, Ui_NuevaCategoria):
             self.txtCategoria.setFocus()                 
         else:
             self.guardar()
+            
+    def reject(self):
+        Util.reject(self, self.__dirty)
         
     def setDirty(self):
         self.__dirty = True
