@@ -742,3 +742,8 @@ class SyncManager(object):
         finally:
             connLocal.close()
             connMovil.close()
+            
+
+sync = SyncManager()
+sync.sincronizarLocal('./databaseMovil.ehm')
+sync.restaurarArchivo('./databaseMovil.ehm')
