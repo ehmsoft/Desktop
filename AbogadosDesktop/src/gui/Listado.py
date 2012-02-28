@@ -38,15 +38,12 @@ class Listado(QtGui.QListWidget):
         self.setMouseTracking(True)       
         self.addItems(listaObjetos)
         
-    def addItems(self, items):
-        if isinstance(items, ListType):                                      
-            for objeto in items:
-                item = ItemListas(objeto)
-                #item.setToolTip(unicode(objeto))
-                #item.setStatusTip(unicode(objeto))
-                self.addItem(item)
-        else:
-            raise TypeError('Tipo de dato no admitido')
+    def addItems(self, items):                              
+        for objeto in items:
+            item = ItemListas(objeto)
+            #item.setToolTip(unicode(objeto))
+            #item.setStatusTip(unicode(objeto))
+            self.addItem(item)
         
     def add(self, objeto):
         item = ItemListas(objeto)

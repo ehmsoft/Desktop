@@ -96,7 +96,8 @@ class ListadoBusqueda(Listado):
                 
     def __changed(self, text):
         self.texto = text.lower()
-        self.listadoActual = filter(self.__filtro, self.listaOriginal)
+        #self.listadoActual = filter(self.__filtro, self.listaOriginal)
+        self.listadoActual = (x for x  in self.listaOriginal if self.__filtro(x))
         self.__montarLista()
         
     def __click(self):
@@ -135,3 +136,13 @@ class CampoBusqueda(QtGui.QWidget):
     
     def getButton(self):
         return self.btnBuscar
+
+import sys
+from persistence.Persistence import Persistence
+
+lista = Persistence().consultarProcesos()
+app = QtGui.QApplication(sys.argv)
+form = ListadoBusqueda(lista, None)
+form.show()
+form.getSearchField()
+app.exec_()
