@@ -32,6 +32,7 @@ from gui.NuevaActuacion import NuevaActuacion
 from gui.NuevoProceso import NuevoProceso
 from gui.NuevaPlantilla import NuevaPlantilla
 from gui.ListadoDialogo import ListadoDialogo
+import resources
 
 class MainApp(QMainWindow, Ui_mainApp):
     #Constantes para elementos  del menu listaIzquierda
@@ -54,7 +55,7 @@ class MainApp(QMainWindow, Ui_mainApp):
         #El elemento de la izquierda es un splitter para pantallas pequenas
         self.scrollArea.setWidget(self.centralSplitter)
         #self.centralwidget.setStyleSheet('background-image: url(./images/bolita_marcaAgua.png);')
-        self.image = QImage('./images/bolita.png')
+        self.image = QImage(':/images/bolita.png')
         self.label.setPixmap(QPixmap.fromImage(self.image))
         self.listaIzquierda = QListWidget()
         self.listaIzquierda.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -70,12 +71,12 @@ class MainApp(QMainWindow, Ui_mainApp):
             fuente.setPointSize(16)
             fm = QFontMetrics(fuente)
             item.setFont(fuente)
-            item.setSizeHint(QSize(fm.width(row), fm.height() +20))
+            item.setSizeHint(QSize(fm.width(row), fm.height() + 20))
             item.setToolTip('Ver %s' % row)
             item.setStatusTip('Ver %s' % row)
             self.listaIzquierda.addItem(item)
         self.centralSplitter.addWidget(self.listaIzquierda)
-        self.setWindowIcon(QIcon('./images/icono.png'))
+        self.setWindowIcon(QIcon(':/images/icono.png'))
         self.connect(self.actionNuevoProceso, SIGNAL('triggered()'), self.menuNuevoProcesoClicked)
         self.connect(self.actionNuevaPlantilla, SIGNAL('triggered()'), self.menuNuevaPlantillaClicked)
         self.connect(self.actionNuevoDemandante, SIGNAL('triggered()'), self.menuNuevoDemandanteClicked)
@@ -253,7 +254,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     fuente.setPointSize(15)
                     fm = QFontMetrics(fuente)
                     itemTemp.setFont(fuente)
-                    itemTemp.setSizeHint(QSize(fm.width(row), fm.height() +20))
+                    itemTemp.setSizeHint(QSize(fm.width(row), fm.height() + 20))
                     itemTemp.setToolTip('Campos para %s' % row)
                     itemTemp.setStatusTip('Campos para %s' % row)
                     listado.addItem(itemTemp)
@@ -276,7 +277,7 @@ class MainApp(QMainWindow, Ui_mainApp):
                     fuente.setPointSize(15)
                     fm = QFontMetrics(fuente)
                     itemTemp.setFont(fuente)
-                    itemTemp.setSizeHint(QSize(fm.width(row), fm.height() +20))
+                    itemTemp.setSizeHint(QSize(fm.width(row), fm.height() + 20))
                     itemTemp.setToolTip('Campos para %s' % row)
                     itemTemp.setStatusTip('Campos para %s' % row)
                     listado.addItem(itemTemp)
@@ -343,7 +344,7 @@ class MainApp(QMainWindow, Ui_mainApp):
         elif item.text() == MainApp.TXTACTUACIONES:
             if self.columna1.getCentralWidget().currentItem() is not None:
                 proceso = self.columna1.getCentralWidget().getSelectedItem()
-                actuacionVentana = NuevaActuacion(id_proceso=proceso.getId_proceso())
+                actuacionVentana = NuevaActuacion(id_proceso = proceso.getId_proceso())
                 if actuacionVentana.exec_():
                     p = Persistence()
                     proceso = p.consultarProceso(proceso.getId_proceso())
@@ -366,69 +367,69 @@ class MainApp(QMainWindow, Ui_mainApp):
             #Se va por aqui si columna1 tiene una lista
             if isinstance(item.getObjeto(), Proceso):
                 #Borrar el elemento derecho
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
                 proceso = VerProceso(item.getObjeto())
                 #Agregar elemento derecho y ponerle un tamano maximo
-                nuevoElemento = ColumnaDerecha(titulo=False, centralWidget=proceso)
+                nuevoElemento = ColumnaDerecha(titulo = False, centralWidget = proceso)
                 if self.listaIzquierda.currentItem().text() == MainApp.TXTACTUACIONES:
                     nuevoElemento.getCentralWidget().tabWidget.setCurrentIndex(1)
                 nuevoElemento.setMaximumWidth(340)
                 nuevoElemento.setMinimumWidth(310)
-                self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
+                self.gridLayout.addWidget(nuevoElemento, 0, 1, 1, 1)
                 self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.procesoEditarClicked)
                 self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.procesoEliminarClicked)
             if isinstance(item.getObjeto(), Plantilla):
                 #Borrar el elemento derecho
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
                 plantilla = VerPlantilla(item.getObjeto())
                 #Agregar elemento derecho y ponerle un tamano maximo
-                nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=plantilla, plantilla = True )
+                nuevoElemento = ColumnaDerecha(titulo = True, centralWidget = plantilla, plantilla = True)
                 nuevoElemento.setMaximumWidth(310)
                 nuevoElemento.setMinimumWidth(310)
-                self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
+                self.gridLayout.addWidget(nuevoElemento, 0, 1, 1, 1)
                 self.connect(nuevoElemento.btnCrearProceso, SIGNAL('clicked()'), self.plantillaNuevoProcesoClicked)
                 self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.plantillaEditarClicked)
                 self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.plantillaEliminarClicked)
             if isinstance(item.getObjeto(), Persona):
                 #Borrar el elemento derecho
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
                 persona = VerPersona(item.getObjeto())
                 #Agregar elemento derecho y ponerle un tamano maximo
-                nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=persona)
+                nuevoElemento = ColumnaDerecha(titulo = True, centralWidget = persona)
                 nuevoElemento.setMaximumWidth(310)
-                self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
+                self.gridLayout.addWidget(nuevoElemento, 0, 1, 1, 1)
                 self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.personaEditarClicked)
                 self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.personaEliminarClicked)
             if isinstance(item.getObjeto(), Juzgado):
                 #Borrar el elemento derecho
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
                 juzgado = VerJuzgado(item.getObjeto())
                 #Agregar elemento derecho y ponerle un tamano maximo
-                nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=juzgado)
+                nuevoElemento = ColumnaDerecha(titulo = True, centralWidget = juzgado)
                 nuevoElemento.setMaximumWidth(310)
                 nuevoElemento.setMinimumWidth(310)
-                self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
+                self.gridLayout.addWidget(nuevoElemento, 0, 1, 1, 1)
                 self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.juzgadoEditarClicked)
                 self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.juzgadoEliminarClicked)
             if isinstance(item.getObjeto(), Categoria):
                 #Borrar el elemento derecho
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
                 categoria = VerCategoria(item.getObjeto())
                 #Agregar elemento derecho y ponerle un tamano maximo
-                nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=categoria)
+                nuevoElemento = ColumnaDerecha(titulo = True, centralWidget = categoria)
                 nuevoElemento.setMaximumWidth(310)
                 nuevoElemento.setMinimumWidth(310)
-                self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
+                self.gridLayout.addWidget(nuevoElemento, 0, 1, 1, 1)
                 self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.categoriaEditarClicked)
                 self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.categoriaEliminarClicked)
         elif hasattr(self.columna1, 'widget'):
@@ -522,14 +523,14 @@ class MainApp(QMainWindow, Ui_mainApp):
                 item = self.columna1.widget(1).getCentralWidget().currentItem()
                 if hasattr(item, 'getObjeto'):
                     # Se filtra que si se haya seleccionado algun campo
-                    elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                    elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     campo = VerCampoPersonalizado(item.getObjeto())
-                    nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=campo)
+                    nuevoElemento = ColumnaDerecha(titulo = True, centralWidget = campo)
                     nuevoElemento.setMaximumWidth(310)
                     nuevoElemento.setMinimumWidth(310)
-                    self.gridLayout.addWidget(nuevoElemento, 0,1,1,1)
+                    self.gridLayout.addWidget(nuevoElemento, 0, 1, 1, 1)
                     self.connect(nuevoElemento.btnEditar, SIGNAL('clicked()'), self.campoEditarClicked)
                     self.connect(nuevoElemento.btnEliminar, SIGNAL('clicked()'), self.campoEliminarClicked)
     
@@ -585,14 +586,14 @@ class MainApp(QMainWindow, Ui_mainApp):
         if self.columna1.getCentralWidget().remove():
             p = Persistence()
             p.borrarProceso(proceso)
-            p=None
-            elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+            p = None
+            elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
             if self.columna1.getCentralWidget().count() == 0:
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
                 self.label = QLabel() 
                 self.label.setPixmap(QPixmap.fromImage(self.image))
-                self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
             
     
     def personaEditarClicked(self):
@@ -608,14 +609,14 @@ class MainApp(QMainWindow, Ui_mainApp):
         if self.columna1.getCentralWidget().remove():
             p = Persistence()
             p.borrarPersona(persona)
-            p=None
-            elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+            p = None
+            elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
             if self.columna1.getCentralWidget().count() == 0:
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
                 self.label = QLabel() 
                 self.label.setPixmap(QPixmap.fromImage(self.image))
-                self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
     
     def juzgadoEditarClicked(self):
         juzgado = self.columna1.getCentralWidget().currentItem().getObjeto()
@@ -630,14 +631,14 @@ class MainApp(QMainWindow, Ui_mainApp):
         if self.columna1.getCentralWidget().remove():
             p = Persistence()
             p.borrarJuzgado(juzgado)
-            p=None
-            elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+            p = None
+            elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
             if self.columna1.getCentralWidget().count() == 0:
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
                 self.label = QLabel() 
                 self.label.setPixmap(QPixmap.fromImage(self.image))
-                self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
     
     def plantillaNuevoProcesoClicked(self):
         plantilla = self.columna1.getCentralWidget().currentItem().getObjeto()
@@ -659,14 +660,14 @@ class MainApp(QMainWindow, Ui_mainApp):
         if self.columna1.getCentralWidget().remove():
             p = Persistence()
             p.borrarPlantilla(plantilla)
-            p=None
-            elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+            p = None
+            elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
             if self.columna1.getCentralWidget().count() == 0:
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
                 self.label = QLabel() 
                 self.label.setPixmap(QPixmap.fromImage(self.image))
-                self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
     
     def categoriaEditarClicked(self):
         categoria = self.columna1.getCentralWidget().currentItem().getObjeto()
@@ -679,64 +680,64 @@ class MainApp(QMainWindow, Ui_mainApp):
     def categoriaEliminarClicked(self):
         categoria = self.columna1.getCentralWidget().getSelectedItem()
         if categoria.getId_categoria() == '1':
-            QMessageBox.warning(self, 'No se puede borrar',unicode('La categoría Ninguna es por defecto y no se puede eliminar'))
+            QMessageBox.warning(self, 'No se puede borrar', unicode('La categoría Ninguna es por defecto y no se puede eliminar'))
         elif self.columna1.getCentralWidget().remove():
             p = Persistence()
             p.borrarCategoria(categoria)
-            p=None
-            elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+            p = None
+            elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
             if self.columna1.getCentralWidget().count() == 0:
                 elementoGrid.hide()
                 elementoGrid.deleteLater()
                 self.label = QLabel() 
                 self.label.setPixmap(QPixmap.fromImage(self.image))
-                self.gridLayout.addWidget(self.label, 0,1,1,1)
+                self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
     
     def campoEditarClicked(self):
         if self.columna1.widget(0).currentItem().text() == MainApp.TXTPROCESOS:
-            if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
+            if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(), 'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
-                campoVentana = NuevoCampo(tipo=NuevoCampo.PROCESO, campo=campo)
+                campoVentana = NuevoCampo(tipo = NuevoCampo.PROCESO, campo = campo)
                 if campoVentana.exec_():
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
                 del campoVentana
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTPLANTILLAS:
-            if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
+            if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(), 'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
-                campoVentana = NuevoCampo(tipo=NuevoCampo.PROCESO, campo=campo)
+                campoVentana = NuevoCampo(tipo = NuevoCampo.PROCESO, campo = campo)
                 if campoVentana.exec_():
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
                 del campoVentana
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDANTES:
-            if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
+            if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(), 'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
-                campoVentana = NuevoCampo(tipo=NuevoCampo.PERSONA, campo=campo)
+                campoVentana = NuevoCampo(tipo = NuevoCampo.PERSONA, campo = campo)
                 if campoVentana.exec_():
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
                 del campoVentana
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDADOS:
-            if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
+            if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(), 'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
-                campoVentana = NuevoCampo(tipo=NuevoCampo.PERSONA, campo=campo)
+                campoVentana = NuevoCampo(tipo = NuevoCampo.PERSONA, campo = campo)
                 if campoVentana.exec_():
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
                 del campoVentana
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTJUZGADOS:
-            if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
+            if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(), 'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
-                campoVentana = NuevoCampo(tipo=NuevoCampo.JUZGADO, campo=campo)
+                campoVentana = NuevoCampo(tipo = NuevoCampo.JUZGADO, campo = campo)
                 if campoVentana.exec_():
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
                 del campoVentana
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTACTUACIONES:
-            if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(),'getObjeto'):
+            if hasattr(self.columna1.widget(1).getCentralWidget().currentItem(), 'getObjeto'):
                 campo = self.columna1.widget(1).getCentralWidget().currentItem().getObjeto()
-                campoVentana = NuevoCampo(tipo=NuevoCampo.ACTUACION, campo=campo)
+                campoVentana = NuevoCampo(tipo = NuevoCampo.ACTUACION, campo = campo)
                 if campoVentana.exec_():
                     self.columna1.widget(1).getCentralWidget().replace(campoVentana.getCampo())
                     self.columnaCamposElementChanged()
@@ -749,84 +750,84 @@ class MainApp(QMainWindow, Ui_mainApp):
                 p = Persistence()
                 p.borrarAtributo(campo)
                 p = None
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 if self.columna1.widget(1).getCentralWidget().count() == 0:
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                    self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTPLANTILLAS:
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributo(campo)
                 p = None
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 if self.columna1.widget(1).getCentralWidget().count() == 0:
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                    self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDANTES:
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributoPersona(campo)
                 p = None
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 if self.columna1.widget(1).getCentralWidget().count() == 0:
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                    self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDADOS:
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributoPersona(campo)
                 p = None
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 if self.columna1.widget(1).getCentralWidget().count() == 0:
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                    self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTJUZGADOS:
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributoJuzgado(campo)
                 p = None
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 if self.columna1.widget(1).getCentralWidget().count() == 0:
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                    self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
             p = None
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTACTUACIONES:
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributoActuacion(campo)
                 p = None
-                elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
+                elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 if self.columna1.widget(1).getCentralWidget().count() == 0:
                     elementoGrid.hide()
                     elementoGrid.deleteLater()
                     self.label = QLabel() 
                     self.label.setPixmap(QPixmap.fromImage(self.image))
-                    self.gridLayout.addWidget(self.label, 0,1,1,1)
+                    self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
                     
     def __restablecerElementoDerecho(self):
         #Reestablecer el logo de la bolita
-        elementoGrid = self.gridLayout.itemAtPosition(0,1).widget()
-        if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion,VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
+        elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
+        if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion, VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
             elementoGrid.hide()
             elementoGrid.deleteLater()
             self.label = QLabel() 
             self.label.setPixmap(QPixmap.fromImage(self.image))
-            self.gridLayout.addWidget(self.label, 0,1,1,1)
+            self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
             
     def listaIzquierdaContextMenu(self, pos):
         item = self.listaIzquierda.currentItem()
@@ -968,17 +969,17 @@ class MainApp(QMainWindow, Ui_mainApp):
     def menuNuevoProcesoPlantillaClicked(self):
         plantillaSelect = ListadoDialogo(ListadoDialogo.PLANTILLA)
         if plantillaSelect.exec_():
-            procesoVentana= NuevoProceso(plantilla=plantillaSelect.getSelected())
+            procesoVentana = NuevoProceso(plantilla = plantillaSelect.getSelected())
             if procesoVentana.exec_():
                 self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTPROCESOS))
                 self.elementChanged()
             del procesoVentana
         del plantillaSelect
     
-    def createAction(self, text, slot= None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
+    def createAction(self, text, slot = None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
         action = QAction(text, self)
         if icon is not None:
-            action.setIcon(QIcon("./images/%s.png" % icon))
+            action.setIcon(QIcon(":/images/%s.png" % icon))
         if shortcut is not None:
             action.setShortcut(shortcut)
         if tip is not None:
@@ -994,7 +995,7 @@ app = QApplication(sys.argv)
 app.setOrganizationName("ehmSoftware")
 app.setOrganizationDomain("ehmsoft.com")
 app.setApplicationName("Procesos Judiciales")
-app.setWindowIcon(QIcon("./images/icono.png"))
+app.setWindowIcon(QIcon(":/images/icono.png"))
 theapp = MainApp()
 theapp.show()
 sys.exit(app.exec_())

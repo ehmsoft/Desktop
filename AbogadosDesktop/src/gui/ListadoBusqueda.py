@@ -13,6 +13,7 @@ from core.Juzgado import Juzgado
 from core.Actuacion import Actuacion
 from core.Categoria import Categoria
 from core.CampoPersonalizado import CampoPersonalizado
+import resources
 
 class ListadoBusqueda(Listado):
     '''
@@ -122,7 +123,7 @@ class CampoBusqueda(QtGui.QWidget):
         Constructor
         '''
         super(CampoBusqueda, self).__init__(parent)
-        iconoBuscar = QtGui.QIcon('./images/iconoBuscar.png')
+        iconoBuscar = QtGui.QIcon(':/images/iconoBuscar.png')
         buscar = QtGui.QHBoxLayout(self)
         self.txtBuscar = QtGui.QLineEdit(self)
         self.btnBuscar = QtGui.QPushButton(self)
