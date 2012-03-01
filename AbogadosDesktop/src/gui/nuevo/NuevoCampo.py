@@ -8,7 +8,7 @@ Created on 26/01/2012
 from PySide import QtGui, QtCore
 from core.CampoPersonalizado import CampoPersonalizado
 from persistence.Persistence import Persistence
-from NuevoCampoScreen import Ui_NuevoCampo
+from nuevo.NuevoCampoScreen import Ui_NuevoCampo
 import Util
 
 class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):

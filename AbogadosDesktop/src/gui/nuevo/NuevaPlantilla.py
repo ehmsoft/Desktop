@@ -5,17 +5,17 @@ Created on 14/02/2012
 '''
 
 from core.Plantilla import Plantilla
-from NuevaPlantillaScreen import Ui_NuevaPlantilla
+from nuevo.NuevaPlantillaScreen import Ui_NuevaPlantilla
 from PySide import QtCore, QtGui
 from core.Categoria import Categoria
 from GestorCampos import GestorCampos
-from NuevoCampo import NuevoCampo
+from nuevo.NuevoCampo import NuevoCampo
 from ListadoDialogo import ListadoDialogo
-from VerPersona import VerPersona
-from VerJuzgado import VerJuzgado
-from NuevaPersona import NuevaPersona
-from NuevoJuzgado import NuevoJuzgado
-from NuevaCategoria import NuevaCategoria
+from ver.VerPersona import VerPersona
+from ver.VerJuzgado import VerJuzgado
+from nuevo.NuevaPersona import NuevaPersona
+from nuevo.NuevoJuzgado import NuevoJuzgado
+from nuevo.NuevaCategoria import NuevaCategoria
 from persistence.Persistence import Persistence
 from gui.DialogoAuxiliar import DialogoAuxiliar
 import Util

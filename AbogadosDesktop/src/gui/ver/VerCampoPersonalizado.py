@@ -5,7 +5,7 @@ Created on 26/01/2012
 '''
 from PySide.QtGui import *
 from PySide.QtCore import *
-from gui.VerCampoPersonalizadoScreen import Ui_VerCampoPersonalizado
+from gui.ver.VerCampoPersonalizadoScreen import Ui_VerCampoPersonalizado
 
 
 class VerCampoPersonalizado(QWidget, Ui_VerCampoPersonalizado):

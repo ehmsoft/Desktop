@@ -5,7 +5,7 @@ Created on 10/02/2012
 @author: harold
 '''
 from PySide import QtGui, QtCore
-from NuevoCampo import NuevoCampo
+from nuevo.NuevoCampo import NuevoCampo
 from copy import copy
 from gui.ListadoDialogo import ListadoDialogo
 

@@ -6,17 +6,17 @@ Created on 26/01/2012
 '''
 
 from PySide import QtGui, QtCore
-from gui.NuevaActuacionScreen import Ui_NuevaActuacion
+from gui.nuevo.NuevaActuacionScreen import Ui_NuevaActuacion
 from core.Actuacion import Actuacion
-from gui.VerJuzgado import VerJuzgado
+from gui.ver.VerJuzgado import VerJuzgado
 from gui.ListadoDialogo import ListadoDialogo
-from gui.NuevoCampo import NuevoCampo
+from gui.nuevo.NuevoCampo import NuevoCampo
 from datetime import datetime
-from gui.NuevoJuzgado import NuevoJuzgado
+from gui.nuevo.NuevoJuzgado import NuevoJuzgado
 from gui.GestorCampos import GestorCampos
 from persistence.Persistence import Persistence
 from gui.DialogoAuxiliar import DialogoAuxiliar
-import Util
+from gui import Util
 
 class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
     '''

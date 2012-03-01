@@ -6,8 +6,8 @@ Created on 26/01/2012
 '''
 from PySide.QtGui import *
 from PySide.QtCore import *
-from gui.VerProcesoScreen import Ui_VerProceso
-from VerActuacion import VerActuacion
+from gui.ver.VerProcesoScreen import Ui_VerProceso
+from ver.VerActuacion import VerActuacion
 
 class VerProceso(QWidget, Ui_VerProceso):
     def __init__(self, proceso = None, parent = None):

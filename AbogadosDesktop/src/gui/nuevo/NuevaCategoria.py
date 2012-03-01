@@ -7,7 +7,7 @@ Created on 24/01/2012
 
 from PySide.QtGui import QDialog, QMessageBox
 from PySide.QtCore import SIGNAL
-from NuevaCategoriaScreen import Ui_NuevaCategoria
+from nuevo.NuevaCategoriaScreen import Ui_NuevaCategoria
 from core.Categoria import Categoria
 from persistence.Persistence import Persistence
 import Util

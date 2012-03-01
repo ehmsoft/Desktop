@@ -5,7 +5,7 @@ Created on 28/01/2012
 '''
 from PySide.QtGui import *
 from PySide.QtCore import *
-from gui.VerPlantillaScreen import Ui_VerPlantilla
+from gui.ver.VerPlantillaScreen import Ui_VerPlantilla
 
 class VerPlantilla(QWidget, Ui_VerPlantilla):
     def __init__(self, plantilla = None, parent = None):

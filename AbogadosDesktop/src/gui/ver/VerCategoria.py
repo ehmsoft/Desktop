@@ -5,7 +5,7 @@ Created on 26/01/2012
 '''
 from PySide.QtGui import *
 from PySide.QtCore import *
-from gui.VerCategoriaScreen import Ui_VerCategoria
+from gui.ver.VerCategoriaScreen import Ui_VerCategoria
 
 
 class VerCategoria(QWidget, Ui_VerCategoria):

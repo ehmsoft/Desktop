@@ -93,12 +93,12 @@ class ListadoDialogo (QDialog):
         return self.selected
     
     def button(self):
-        from gui.NuevoJuzgado import NuevoJuzgado
-        from gui.NuevaPersona import NuevaPersona
-        from gui.NuevaCategoria import NuevaCategoria
-        from gui.NuevoCampo import NuevoCampo
-        from gui.NuevoProceso import NuevoProceso
-        from gui.NuevaPlantilla import NuevaPlantilla
+        from gui.nuevo.NuevoJuzgado import NuevoJuzgado
+        from gui.nuevo.NuevaPersona import NuevaPersona
+        from gui.nuevo.NuevaCategoria import NuevaCategoria
+        from gui.nuevo.NuevoCampo import NuevoCampo
+        from gui.nuevo.NuevoProceso import NuevoProceso
+        from gui.nuevo.NuevaPlantilla import NuevaPlantilla
         
         if self.__tipo is self.__class__.DEMANDANTE:
             nuevaPersona = NuevaPersona(tipo = 1 , parent = self)
@@ -224,12 +224,12 @@ class ListadoDialogo (QDialog):
             
         
     def editar(self):
-        from gui.NuevoJuzgado import NuevoJuzgado
-        from gui.NuevaPersona import NuevaPersona
-        from gui.NuevaCategoria import NuevaCategoria
-        from gui.NuevoCampo import NuevoCampo
-        from gui.NuevoProceso import NuevoProceso
-        from gui.NuevaPlantilla import NuevaPlantilla
+        from gui.nuevo.NuevoJuzgado import NuevoJuzgado
+        from gui.nuevo.NuevaPersona import NuevaPersona
+        from gui.nuevo.NuevaCategoria import NuevaCategoria
+        from gui.nuevo.NuevoCampo import NuevoCampo
+        from gui.nuevo.NuevoProceso import NuevoProceso
+        from gui.nuevo.NuevaPlantilla import NuevaPlantilla
         if self.__tipo is self.__class__.DEMANDANTE:
             nuevaPersona = NuevaPersona(persona = self.lista.currentItem().getObjeto(), tipo = 1 , parent = self)
             if nuevaPersona.exec_():

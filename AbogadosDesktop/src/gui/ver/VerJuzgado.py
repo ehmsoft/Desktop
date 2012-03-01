@@ -5,7 +5,7 @@ Created on 25/01/2012
 '''
 from PySide.QtGui import *
 from PySide.QtCore import *
-from gui.VerJuzgadoScreen import Ui_VerJuzgado
+from gui.ver.VerJuzgadoScreen import Ui_VerJuzgado
 
 
 class VerJuzgado(QWidget, Ui_VerJuzgado):

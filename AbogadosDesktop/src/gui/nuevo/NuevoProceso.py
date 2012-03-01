@@ -7,19 +7,19 @@ Created on 7/02/2012
 
 from PySide import QtGui, QtCore
 from core.Proceso import Proceso
-from gui.NuevoProcesoScreen import Ui_NuevoProceso
+from gui.nuevo.NuevoProcesoScreen import Ui_NuevoProceso
 from copy import copy
 from gui.ListadoDialogo import ListadoDialogo
-from gui.NuevoCampo import NuevoCampo
+from gui.nuevo.NuevoCampo import NuevoCampo
 from persistence.Persistence import Persistence
-from gui.VerPersona import VerPersona
-from gui.VerJuzgado import VerJuzgado
+from gui.ver.VerPersona import VerPersona
+from gui.ver.VerJuzgado import VerJuzgado
 from datetime import datetime
-from gui.NuevaPersona import NuevaPersona
-from gui.NuevoJuzgado import NuevoJuzgado
-from gui.NuevaCategoria import NuevaCategoria
-from gui.NuevaActuacion import NuevaActuacion
-from gui.VerActuacion import VerActuacion
+from gui.nuevo.NuevaPersona import NuevaPersona
+from gui.nuevo.NuevoJuzgado import NuevoJuzgado
+from gui.nuevo.NuevaCategoria import NuevaCategoria
+from gui.nuevo.NuevaActuacion import NuevaActuacion
+from gui.ver.VerActuacion import VerActuacion
 from gui.GestorCampos import GestorCampos
 from core.Categoria import Categoria
 from gui.DialogoAuxiliar import DialogoAuxiliar

@@ -5,7 +5,7 @@ Created on 26/01/2012
 '''
 from PySide.QtGui import *
 from PySide.QtCore import *
-from gui.VerActuacionScreen import Ui_VerActuacion
+from gui.ver.VerActuacionScreen import Ui_VerActuacion
 
 
 class VerActuacion(QWidget, Ui_VerActuacion):

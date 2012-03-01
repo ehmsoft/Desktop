@@ -5,7 +5,7 @@ Created on 25/01/2012
 '''
 from PySide.QtGui import *
 from PySide.QtCore import *
-from gui.VerPersonaScreen import Ui_VerPersona
+from gui.ver.VerPersonaScreen import Ui_VerPersona
 
 class VerPersona(QWidget, Ui_VerPersona):
     def __init__(self, persona = None, parent = None):

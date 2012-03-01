@@ -7,11 +7,11 @@ Created on 25/01/2012
 '''
 
 from PySide import QtGui, QtCore
-from NuevoJuzgadoScreen import Ui_NuevoJuzgado
+from nuevo.NuevoJuzgadoScreen import Ui_NuevoJuzgado
 from core.Juzgado import Juzgado
 from persistence.Persistence import Persistence
 from gui.ListadoDialogo import ListadoDialogo
-from gui.NuevoCampo import NuevoCampo
+from gui.nuevo.NuevoCampo import NuevoCampo
 from gui.GestorCampos import GestorCampos
 import Util
 

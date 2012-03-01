@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from PySide import QtGui, QtCore
-from NuevaPersonaScreen import Ui_NuevaPersona
+from nuevo.NuevaPersonaScreen import Ui_NuevaPersona
 from core.Persona import Persona
 from persistence.Persistence import Persistence
-from gui.NuevoCampo import NuevoCampo
+from gui.nuevo.NuevoCampo import NuevoCampo
 from gui.GestorCampos import GestorCampos
 from gui.ListadoDialogo import ListadoDialogo
 import Util
