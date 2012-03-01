@@ -5,20 +5,20 @@ Created on 14/02/2012
 '''
 
 from core.Plantilla import Plantilla
-from nuevo.NuevaPlantillaScreen import Ui_NuevaPlantilla
+from NuevaPlantillaScreen import Ui_NuevaPlantilla
 from PySide import QtCore, QtGui
 from core.Categoria import Categoria
-from GestorCampos import GestorCampos
-from nuevo.NuevoCampo import NuevoCampo
-from ListadoDialogo import ListadoDialogo
-from ver.VerPersona import VerPersona
-from ver.VerJuzgado import VerJuzgado
-from nuevo.NuevaPersona import NuevaPersona
-from nuevo.NuevoJuzgado import NuevoJuzgado
-from nuevo.NuevaCategoria import NuevaCategoria
+from gui.GestorCampos import GestorCampos
+from NuevoCampo import NuevoCampo
+from gui.ListadoDialogo import ListadoDialogo
+from gui.ver.VerPersona import VerPersona
+from gui.ver.VerJuzgado import VerJuzgado
+from NuevaPersona import NuevaPersona
+from NuevoJuzgado import NuevoJuzgado
+from NuevaCategoria import NuevaCategoria
 from persistence.Persistence import Persistence
 from gui.DialogoAuxiliar import DialogoAuxiliar
-import Util
+from gui import Util
 
 class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
     '''
@@ -67,35 +67,35 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
             
         self.__dialogo = DialogoAuxiliar(self)
                             
-        self.clickDemandante()
-        self.clickDemandado()
-        self.clickJuzgado()
-        self.clickCategoria()
+        self.__clickDemandante()
+        self.__clickDemandado()
+        self.__clickJuzgado()
+        self.__clickCategoria()
         
-        cambiar = self.createAction("Cambiar", self.cambiarJuzgado)
+        cambiar = self.__createAction("Cambiar", self.__cambiarJuzgado)
         cambiar.setData(self.lblJuzgado)
-        editar = self.createAction("Editar", self.editarJuzgado)
+        editar = self.__createAction("Editar", self.__editarJuzgado)
         editar.setData(self.lblJuzgado)
         
         self.lblJuzgado.addActions([cambiar, editar])
         
-        cambiar = self.createAction("Cambiar", self.cambiarDemandante)
+        cambiar = self.__createAction("Cambiar", self.__cambiarDemandante)
         cambiar.setData(self.lblDemandante)
-        editar = self.createAction("Editar", self.editarDemandante)
+        editar = self.__createAction("Editar", self.__editarDemandante)
         editar.setData(self.lblDemandante)
         
         self.lblDemandante.addActions([cambiar, editar])
         
-        cambiar = self.createAction("Cambiar", self.cambiarDemandado)
+        cambiar = self.__createAction("Cambiar", self.__cambiarDemandado)
         cambiar.setData(self.lblDemandado)
-        editar = self.createAction("Editar", self.editarDemandado)
+        editar = self.__createAction("Editar", self.__editarDemandado)
         editar.setData(self.lblDemandado)
         
         self.lblDemandado.addActions([cambiar, editar])
         
-        cambiar = self.createAction("Cambiar", self.cambiarCategoria)
+        cambiar = self.__createAction("Cambiar", self.__cambiarCategoria)
         cambiar.setData(self.lblCategoria)
-        editar = self.createAction("Editar", self.editarCategoria)
+        editar = self.__createAction("Editar", self.__editarCategoria)
         editar.setData(self.lblCategoria)
         
         self.lblCategoria.addActions([cambiar, editar])
@@ -111,7 +111,7 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
         self.sbPrioridad.valueChanged.connect(self.setDirty)
         self.txtNombre.textChanged.connect(self.setDirty)
                 
-    def clickDemandante(self):
+    def __clickDemandante(self):
         dialogo = self.__dialogo 
         widget = self
         lblDemandante = self.lblDemandante
@@ -122,12 +122,12 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
                     vista = VerPersona(widget.__demandante, widget)
                     dialogo.setWidget(vista)
                 else:
-                    widget.cambiarDemandante()
+                    widget.__cambiarDemandante()
             return QtGui.QLabel.mousePressEvent(lblDemandante, self)
             
         self.lblDemandante.mousePressEvent = mousePressEvent
     
-    def clickDemandado(self):
+    def __clickDemandado(self):
         dialogo = self.__dialogo  
         widget = self
         lblDemandado = self.lblDemandado
@@ -138,12 +138,12 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
                     vista = VerPersona(widget.__demandado, widget)
                     dialogo.setWidget(vista)
                 else:
-                    widget.cambiarDemandado()
+                    widget.__cambiarDemandado()
             return QtGui.QLabel.mousePressEvent(lblDemandado, self)
             
         self.lblDemandado.mousePressEvent = mousePressEvent
     
-    def clickJuzgado(self):
+    def __clickJuzgado(self):
         dialogo = self.__dialogo 
         widget = self
         lblJuzgado = self.lblJuzgado
@@ -154,23 +154,23 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
                     vista = VerJuzgado(widget.__juzgado, widget)
                     dialogo.setWidget(vista)
                 else:
-                    widget.cambiarJuzgado()
+                    widget.__cambiarJuzgado()
             return QtGui.QLabel.mousePressEvent(lblJuzgado, self)
             
         self.lblJuzgado.mousePressEvent = mousePressEvent
     
-    def clickCategoria(self):
+    def __clickCategoria(self):
         widget = self
         lblCategoria = self.lblCategoria
                     
         def mousePressEvent(self):
             if QtCore.Qt.MouseButton.LeftButton is self.button():
-                widget.cambiarCategoria()
+                widget.__cambiarCategoria()
             return QtGui.QLabel.mousePressEvent(lblCategoria, self)
             
         self.lblCategoria.mousePressEvent = mousePressEvent
     
-    def cambiarDemandante(self):
+    def __cambiarDemandante(self):
         listado = ListadoDialogo(ListadoDialogo.DEMANDANTE, self)
         if listado.exec_():
             self.__demandante = listado.getSelected()
@@ -179,7 +179,7 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
             self.__dialogo.setWidget(vista)
             self.__dirty = True
     
-    def cambiarDemandado(self):
+    def __cambiarDemandado(self):
         listado = ListadoDialogo(ListadoDialogo.DEMANDADO, self)
         if listado.exec_():
             self.__demandado = listado.getSelected()
@@ -188,7 +188,7 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
             self.__dialogo.setWidget(vista)
             self.__dirty = True
     
-    def cambiarJuzgado(self):
+    def __cambiarJuzgado(self):
         listado = ListadoDialogo(ListadoDialogo.JUZGADO, self)
         if listado.exec_():
             self.__juzgado = listado.getSelected()
@@ -197,14 +197,14 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
             self.__dialogo.setWidget(vista)
             self.__dirty = True
     
-    def cambiarCategoria(self):
+    def __cambiarCategoria(self):
         listado = ListadoDialogo(ListadoDialogo.CATEGORIA, self)
         if listado.exec_():
             self.__categoria = listado.getSelected()
             self.lblCategoria.setText(unicode(self.__categoria))
             self.__dirty = True
             
-    def editarDemandante(self):
+    def __editarDemandante(self):
         if self.__demandante is not None and self.__demandante.getId_persona() is not "1":
             dialogo = NuevaPersona(persona = self.__demandante, parent = self)
             if dialogo.exec_():
@@ -213,7 +213,7 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
                     vista = VerPersona(self.__demandante, self)
                     self.__dialogo.setWidget(vista)
     
-    def editarDemandado(self):
+    def __editarDemandado(self):
         if self.__demandado is not None and self.__demandado.getId_persona() is not "1":
             dialogo = NuevaPersona(persona = self.__demandado, parent = self)
             if dialogo.exec_():
@@ -222,7 +222,7 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
                     vista = VerPersona(self.__demandado, self)
                     self.__dialogo.setWidget(vista)
     
-    def editarJuzgado(self):
+    def __editarJuzgado(self):
         if self.__juzgado is not None and self.__juzgado.getId_juzgado() is not "1":
             dialogo = NuevoJuzgado(juzgado = self.__juzgado, parent = self)
             if dialogo.exec_():
@@ -231,13 +231,13 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
                     vista = VerJuzgado(self.__juzgado, self)
                     self.horizontalLayout.addWidget(vista)
     
-    def editarCategoria(self):
+    def __editarCategoria(self):
         if self.__categoria is not None and self.__categoria.getId_categoria() is not "1":
             dialogo = NuevaCategoria(self.__categoria, self)
             if dialogo.exec_():
                 self.lblCategoria.setText(self.__categoria.getNombre())
                 
-    def createAction(self, text, slot = None):
+    def __createAction(self, text, slot = None):
         action = QtGui.QAction(text, self)
         if slot is not None:
             self.connect(action, QtCore.SIGNAL("triggered()"), slot)
@@ -245,9 +245,9 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
                 
     def accept(self):
         self.__gestor.organizarCampos(False)
-        self.guardar()
+        self.__guardar()
     
-    def guardar(self):
+    def __guardar(self):
         try:
             p = Persistence()
             nombre = self.txtNombre.text()

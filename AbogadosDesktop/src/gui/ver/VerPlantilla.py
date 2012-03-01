@@ -3,11 +3,10 @@ Created on 28/01/2012
 
 @author: elfotografo007
 '''
-from PySide.QtGui import *
-from PySide.QtCore import *
-from gui.ver.VerPlantillaScreen import Ui_VerPlantilla
+from PySide import QtGui
+from VerPlantillaScreen import Ui_VerPlantilla
 
-class VerPlantilla(QWidget, Ui_VerPlantilla):
+class VerPlantilla(QtGui.QWidget, Ui_VerPlantilla):
     def __init__(self, plantilla = None, parent = None):
         super(VerPlantilla, self).__init__(parent)
         self.__plantilla = plantilla
@@ -27,8 +26,8 @@ class VerPlantilla(QWidget, Ui_VerPlantilla):
             self.lblNotas.setText(self.__plantilla.getNotas())
             
             for campo in self.__plantilla.getCampos():
-                label = QLabel()
+                label = QtGui.QLabel()
                 label.setText('%s:' % campo.getNombre())
-                lblBox = QLabel()
+                lblBox = QtGui.QLabel()
                 lblBox.setText(campo.getValor())
                 self.formLayout.addRow(label,lblBox)

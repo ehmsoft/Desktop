@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from PySide import QtGui, QtCore
-from nuevo.NuevaPersonaScreen import Ui_NuevaPersona
+from NuevaPersonaScreen import Ui_NuevaPersona
 from core.Persona import Persona
 from persistence.Persistence import Persistence
-from gui.nuevo.NuevoCampo import NuevoCampo
+from NuevoCampo import NuevoCampo
 from gui.GestorCampos import GestorCampos
 from gui.ListadoDialogo import ListadoDialogo
-import Util
+from gui import Util
 
 class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
     def __init__(self, persona = None, tipo = None, parent = None):
@@ -65,7 +65,7 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
     def getPersona(self):
         return self.__persona
     
-    def guardar(self):
+    def __guardar(self):
         try:
             p = Persistence()
             if self.__persona is None:
@@ -118,14 +118,14 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
             message.setIcon(QtGui.QMessageBox.Question)
             message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
             message.setDefaultButton(QtGui.QMessageBox.No)
-            message.setText(unicode("¿Desea guardar sin agregar un teléfono?"))
+            message.setText(unicode("¿Desea __guardar sin agregar un teléfono?"))
             ret = message.exec_()
             if ret == QtGui.QMessageBox.Yes:
-                self.guardar()
+                self.__guardar()
             else:
                 self.txtTelefono.setFocus()            
         elif self.__gestor.organizarCampos():
-            self.guardar()
+            self.__guardar()
             
     def reject(self):
         Util.reject(self, self.__dirty)

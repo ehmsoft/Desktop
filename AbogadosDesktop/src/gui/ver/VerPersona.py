@@ -3,11 +3,10 @@ Created on 25/01/2012
 
 @author: elfotografo007
 '''
-from PySide.QtGui import *
-from PySide.QtCore import *
+from PySide import QtGui
 from gui.ver.VerPersonaScreen import Ui_VerPersona
 
-class VerPersona(QWidget, Ui_VerPersona):
+class VerPersona(QtGui.QWidget, Ui_VerPersona):
     def __init__(self, persona = None, parent = None):
         super(VerPersona, self).__init__(parent)
         self.__persona = persona
@@ -22,9 +21,9 @@ class VerPersona(QWidget, Ui_VerPersona):
             self.lblCorreo.setText(self.__persona.getCorreo())
             self.lblNotas.setText(self.__persona.getNotas())
             for campo in self.__persona.getCampos():
-                label = QLabel()
+                label = QtGui.QLabel()
                 label.setText('%s:' % campo.getNombre())
-                lblBox = QLabel()
+                lblBox = QtGui.QLabel()
                 lblBox.setText(campo.getValor())
                 self.formLayout.addRow(label,lblBox)
             

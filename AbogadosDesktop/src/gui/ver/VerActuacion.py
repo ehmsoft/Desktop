@@ -3,12 +3,11 @@ Created on 26/01/2012
 
 @author: elfotografo007
 '''
-from PySide.QtGui import *
-from PySide.QtCore import *
-from gui.ver.VerActuacionScreen import Ui_VerActuacion
+from PySide import QtGui
+from VerActuacionScreen import Ui_VerActuacion
 
 
-class VerActuacion(QWidget, Ui_VerActuacion):
+class VerActuacion(QtGui.QWidget, Ui_VerActuacion):
     def __init__(self, actuacion = None, parent = None):
         super(VerActuacion, self).__init__(parent)
         self.__actuacion = actuacion
@@ -19,8 +18,8 @@ class VerActuacion(QWidget, Ui_VerActuacion):
             self.dteFecha.setDateTime(self.__actuacion.getFecha())
             self.dteFechaProxima.setDateTime(self.__actuacion.getFechaProxima())
             for campo in self.__actuacion.getCampos():
-                label = QLabel()
+                label = QtGui.QLabel()
                 label.setText('%s:' % campo.getNombre())
-                lblBox = QLabel()
+                lblBox = QtGui.QLabel()
                 lblBox.setText(campo.getValor())
                 self.formLayout.addRow(label,lblBox)

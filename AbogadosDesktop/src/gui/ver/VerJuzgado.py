@@ -3,12 +3,11 @@ Created on 25/01/2012
 
 @author: elfotografo007
 '''
-from PySide.QtGui import *
-from PySide.QtCore import *
+from PySide import QtGui
 from gui.ver.VerJuzgadoScreen import Ui_VerJuzgado
 
 
-class VerJuzgado(QWidget, Ui_VerJuzgado):
+class VerJuzgado(QtGui.QWidget, Ui_VerJuzgado):
     def __init__(self, juzgado = None, parent = None):
         super(VerJuzgado, self).__init__(parent)
         self.__juzgado = juzgado
@@ -21,9 +20,9 @@ class VerJuzgado(QWidget, Ui_VerJuzgado):
             self.lblDireccion.setText(self.__juzgado.getDireccion())
             self.lblTipo.setText(self.__juzgado.getTipo())
             for campo in self.__juzgado.getCampos():
-                label = QLabel()
+                label = QtGui.QLabel()
                 label.setText('%s:' % campo.getNombre())
-                lblBox = QLabel()
+                lblBox = QtGui.QLabel()
                 lblBox.setText(campo.getValor())
                 self.formLayout.addRow(label,lblBox)
 

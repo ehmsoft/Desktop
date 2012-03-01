@@ -6,13 +6,13 @@ Created on 26/01/2012
 '''
 
 from PySide import QtGui, QtCore
-from gui.nuevo.NuevaActuacionScreen import Ui_NuevaActuacion
+from NuevaActuacionScreen import Ui_NuevaActuacion
 from core.Actuacion import Actuacion
 from gui.ver.VerJuzgado import VerJuzgado
 from gui.ListadoDialogo import ListadoDialogo
-from gui.nuevo.NuevoCampo import NuevoCampo
+from NuevoCampo import NuevoCampo
 from datetime import datetime
-from gui.nuevo.NuevoJuzgado import NuevoJuzgado
+from NuevoJuzgado import NuevoJuzgado
 from gui.GestorCampos import GestorCampos
 from persistence.Persistence import Persistence
 from gui.DialogoAuxiliar import DialogoAuxiliar
@@ -50,13 +50,13 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             
         self.__dialogo = DialogoAuxiliar(self)
         
-        self.clickJuzgado()
-        self.clickFecha()
-        self.clickFechaProxima()
+        self.__clickJuzgado()
+        self.__clickFecha()
+        self.__clickFechaProxima()
         
-        cambiar = self.createAction("Cambiar", self.cambiarJuzgado)
+        cambiar = self.__createAction("Cambiar", self.__cambiarJuzgado)
         cambiar.setData(self.lblJuzgado)
-        editar = self.createAction("Editar", self.editarJuzgado)
+        editar = self.__createAction("Editar", self.__editarJuzgado)
         editar.setData(self.lblJuzgado)
         
         self.lblJuzgado.addActions([cambiar, editar])
@@ -72,20 +72,20 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
     def getActuacion(self):
         return self.__actuacion
     
-    def createAction(self, text, slot = None):
+    def __createAction(self, text, slot = None):
         action = QtGui.QAction(text, self)
         if slot is not None:
             self.connect(action, QtCore.SIGNAL("triggered()"), slot)
         return action 
     
-    def cambiarJuzgado(self):
+    def __cambiarJuzgado(self):
         listado = ListadoDialogo(ListadoDialogo.JUZGADO, self)
         if listado.exec_():
             self.__juzgado = listado.getSelected()
             self.lblJuzgado.setText(self.__juzgado.getNombre())
             self.__dirty = True
     
-    def editarJuzgado(self):
+    def __editarJuzgado(self):
         if self.__juzgado is not None and self.__juzgado.getId_juzgado() is not "1":
             dialogo = NuevoJuzgado(self.__juzgado, self)
             if dialogo.exec_():
@@ -109,9 +109,9 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             message.exec_()
             self.txtDescripcion.setFocus()
         elif self.__gestor.organizarCampos():
-            self.guardar()
+            self.__guardar()
             
-    def guardar(self):
+    def __guardar(self):
         fecha = self.dteFecha.dateTime().toPython()
         fechaProxima = self.dteFechaProxima.dateTime().toPython()
         descripcion = self.txtDescripcion.text()
@@ -130,7 +130,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
                     for campo in camposNuevos:
                         p.guardarCampoActuacion(campo, self.__actuacion.getId_actuacion())
                 except Exception, e:
-                    print "guardar actuación -> " % e.args
+                    print "__guardar actuación -> " % e.args
             self.__actuacion.setDescripcion(descripcion)
             self.__actuacion.setFecha(fecha)
             self.__actuacion.setFechaProxima(fechaProxima)
@@ -138,7 +138,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             self.__actuacion.setJuzgado(self.__juzgado)
         return QtGui.QDialog.accept(self)
         
-    def clickJuzgado(self):
+    def __clickJuzgado(self):
         dialogo = self.__dialogo
         widget = self
         lblJuzgado = self.lblJuzgado
@@ -149,12 +149,12 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
                     vista = VerJuzgado(widget.__juzgado, widget)
                     dialogo.setWidget(vista)
                 else:
-                    widget.cambiarJuzgado()
+                    widget.__cambiarJuzgado()
             return QtGui.QLabel.mousePressEvent(lblJuzgado, self)
             
         self.lblJuzgado.mousePressEvent = mousePressEvent
     
-    def clickFecha(self):
+    def __clickFecha(self):
         dialogo = self.__dialogo 
         dteFecha = self.dteFecha
         
@@ -176,7 +176,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         dteFecha.dateChanged.connect(dateChanged)
         
     
-    def clickFechaProxima(self):
+    def __clickFechaProxima(self):
         dialogo = self.__dialogo
         dteFecha = self.dteFechaProxima
         

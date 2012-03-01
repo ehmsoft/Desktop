@@ -77,9 +77,9 @@ class ListadoDialogo (QDialog):
         self.connect(btnAgregar, SIGNAL("clicked()"), self.button)
         self.lista.setContextMenuPolicy(Qt.ActionsContextMenu)
         
-        actionEliminar = self.createAction("Eliminar", self.eliminar)
-        actionAgregar = self.createAction("Agregar", self.button)
-        actionEditar = self.createAction("Editar", self.editar)
+        actionEliminar = self.__createAction("Eliminar", self.eliminar)
+        actionAgregar = self.__createAction("Agregar", self.button)
+        actionEditar = self.__createAction("Editar", self.editar)
         self.lista.addAction(actionEliminar)
         self.lista.addAction(actionAgregar)
         self.lista.addAction(actionEditar)
@@ -170,7 +170,7 @@ class ListadoDialogo (QDialog):
                 
     
     
-    def createAction(self, text, slot = None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
+    def __createAction(self, text, slot = None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
         action = QAction(text, self)
         if icon is not None:
             action.setIcon(QIcon("./images/%s.png" % icon))

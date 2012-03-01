@@ -4,12 +4,11 @@ Created on 26/01/2012
 
 @author: elfotografo007
 '''
-from PySide.QtGui import *
-from PySide.QtCore import *
-from gui.ver.VerProcesoScreen import Ui_VerProceso
-from ver.VerActuacion import VerActuacion
+from PySide import QtGui
+from VerProcesoScreen import Ui_VerProceso
+from VerActuacion import VerActuacion
 
-class VerProceso(QWidget, Ui_VerProceso):
+class VerProceso(QtGui.QWidget, Ui_VerProceso):
     def __init__(self, proceso = None, parent = None):
         super(VerProceso, self).__init__(parent)
         self.__proceso = proceso
@@ -29,21 +28,21 @@ class VerProceso(QWidget, Ui_VerProceso):
             self.lblNotas.setText(self.__proceso.getNotas())
             
             for campo in self.__proceso.getCampos():
-                label = QLabel()
+                label = QtGui.QLabel()
                 label.setText('%s:' % campo.getNombre())
-                lblBox = QLabel()
+                lblBox = QtGui.QLabel()
                 lblBox.setText(campo.getValor())
                 self.formLayout.addRow(label,lblBox)
             actuaciones = self.__proceso.getActuaciones()
             if len(actuaciones) is not 0:
-                vbox = QVBoxLayout()
+                vbox = QtGui.QVBoxLayout()
                 for actuacion in actuaciones:
                     vbox.addWidget(VerActuacion(actuacion))
                 
                 vbox.setContentsMargins(1,1,1,1)
                 vbox.setSpacing(1)
-                scroll = QScrollArea()
-                widgetActuaciones = QWidget()
+                scroll = QtGui.QScrollArea()
+                widgetActuaciones = QtGui.QWidget()
                 widgetActuaciones.setLayout(vbox)
                 widgetActuaciones.setContentsMargins(0,0,0,0)
                 scroll.setWidget(widgetActuaciones)

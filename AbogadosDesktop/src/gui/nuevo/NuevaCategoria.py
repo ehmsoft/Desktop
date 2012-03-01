@@ -7,10 +7,10 @@ Created on 24/01/2012
 
 from PySide.QtGui import QDialog, QMessageBox
 from PySide.QtCore import SIGNAL
-from nuevo.NuevaCategoriaScreen import Ui_NuevaCategoria
+from NuevaCategoriaScreen import Ui_NuevaCategoria
 from core.Categoria import Categoria
 from persistence.Persistence import Persistence
-import Util
+from gui import Util
 
 
 class NuevaCategoria(QDialog, Ui_NuevaCategoria):
@@ -30,7 +30,7 @@ class NuevaCategoria(QDialog, Ui_NuevaCategoria):
     def getCategoria(self):
         return self.__categoria
     
-    def guardar(self):
+    def __guardar(self):
         try:
             p = Persistence()
             if self.__categoria is None:
@@ -56,7 +56,7 @@ class NuevaCategoria(QDialog, Ui_NuevaCategoria):
             message.exec_()
             self.txtCategoria.setFocus()                 
         else:
-            self.guardar()
+            self.__guardar()
             
     def reject(self):
         Util.reject(self, self.__dirty)

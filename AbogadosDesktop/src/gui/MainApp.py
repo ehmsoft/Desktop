@@ -833,28 +833,28 @@ class MainApp(QMainWindow, Ui_mainApp):
         item = self.listaIzquierda.currentItem()
         if item.text() not in (MainApp.TXTACTUACIONES, MainApp.TXTCAMPOS, MainApp.TXTSINCRONIZAR, MainApp.TXTAJUSTES):
             menu = QMenu(self)
-            menu.addAction(self.createAction('Nuevo', self.columna1AgregarClicked))
+            menu.addAction(self.__createAction('Nuevo', self.columna1AgregarClicked))
             menu.exec_(self.mapToGlobal(pos))
         
     def listaCamposContextMenu(self, pos):
         menu = QMenu(self)
-        menu.addAction(self.createAction('Nuevo', self.columnaCamposAgregarClicked))
+        menu.addAction(self.__createAction('Nuevo', self.columnaCamposAgregarClicked))
         menu.exec_(self.columna1.mapToGlobal(pos))
         
     def camposContextMenu(self, pos):
         menu = QMenu(self)
-        menu.addAction(self.createAction('Nuevo', self.columnaCamposAgregarClicked))
-        menu.addAction(self.createAction('Editar', self.campoEditarClicked))
+        menu.addAction(self.__createAction('Nuevo', self.columnaCamposAgregarClicked))
+        menu.addAction(self.__createAction('Editar', self.campoEditarClicked))
         menu.addSeparator()
-        menu.addAction(self.createAction('Eliminar', self.campoEliminarClicked))
+        menu.addAction(self.__createAction('Eliminar', self.campoEliminarClicked))
         menu.exec_(self.columna1.widget(1).getCentralWidget().mapToGlobal(pos))
         
     def columna1ContextMenu(self, pos):
         menu = QMenu(self)
-        menu.addAction(self.createAction('Nuevo', self.columna1AgregarClicked))
-        menu.addAction(self.createAction('Editar', self.columna1ContextEditar))
+        menu.addAction(self.__createAction('Nuevo', self.columna1AgregarClicked))
+        menu.addAction(self.__createAction('Editar', self.columna1ContextEditar))
         menu.addSeparator()
-        menu.addAction(self.createAction('Eliminar', self.columna1ContextEliminar))
+        menu.addAction(self.__createAction('Eliminar', self.columna1ContextEliminar))
         menu.exec_(self.columna1.mapToGlobal(pos))
     
     def columna1ContextEditar(self):
@@ -976,7 +976,7 @@ class MainApp(QMainWindow, Ui_mainApp):
             del procesoVentana
         del plantillaSelect
     
-    def createAction(self, text, slot = None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
+    def __createAction(self, text, slot = None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
         action = QAction(text, self)
         if icon is not None:
             action.setIcon(QIcon(":/images/%s.png" % icon))

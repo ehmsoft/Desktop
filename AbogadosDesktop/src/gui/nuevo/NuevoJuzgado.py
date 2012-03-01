@@ -7,13 +7,13 @@ Created on 25/01/2012
 '''
 
 from PySide import QtGui, QtCore
-from nuevo.NuevoJuzgadoScreen import Ui_NuevoJuzgado
+from NuevoJuzgadoScreen import Ui_NuevoJuzgado
 from core.Juzgado import Juzgado
 from persistence.Persistence import Persistence
 from gui.ListadoDialogo import ListadoDialogo
-from gui.nuevo.NuevoCampo import NuevoCampo
+from NuevoCampo import NuevoCampo
 from gui.GestorCampos import GestorCampos
-import Util
+from gui import Util
 
 
 class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
@@ -59,7 +59,7 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
     def getJuzgado(self):
         return self.__juzgado
     
-    def guardar(self):
+    def __guardar(self):
         try:
             p = Persistence()
             if self.__juzgado is None:
@@ -104,14 +104,14 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
             message.setIcon(QtGui.QMessageBox.Question)
             message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
             message.setDefaultButton(QtGui.QMessageBox.No)
-            message.setText(unicode("¿Desea guardar sin agregar un teléfono?"))
+            message.setText(unicode("¿Desea __guardar sin agregar un teléfono?"))
             ret = message.exec_()
             if ret == QtGui.QMessageBox.Yes:
-                self.guardar()
+                self.__guardar()
             else:
                 self.txtTelefono.setFocus()            
         elif self.__gestor.organizarCampos():
-            self.guardar()
+            self.__guardar()
             
     def reject(self):
         Util.reject(self, self.__dirty)

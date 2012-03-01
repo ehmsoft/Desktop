@@ -8,8 +8,8 @@ Created on 26/01/2012
 from PySide import QtGui, QtCore
 from core.CampoPersonalizado import CampoPersonalizado
 from persistence.Persistence import Persistence
-from nuevo.NuevoCampoScreen import Ui_NuevoCampo
-import Util
+from NuevoCampoScreen import Ui_NuevoCampo
+from gui import Util
 
 class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
     '''
@@ -44,20 +44,20 @@ class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
             self.sbLongMax.setValue(self.__campo.getLongitudMax())
             self.sbLongMin.setValue(self.__campo.getLongitudMin())
             self.cbObligatorio.setChecked(self.__campo.isObligatorio())
-        self.sbLongMax.valueChanged[int].connect(self.validarLongitudMax)
-        self.sbLongMin.valueChanged[int].connect(self.validarLongitudMin)
+        self.sbLongMax.valueChanged[int].connect(self.__validarLongitudMax)
+        self.sbLongMin.valueChanged[int].connect(self.__validarLongitudMin)
         
         self.txtNombre.textChanged.connect(self.setDirty)
         self.cbObligatorio.stateChanged.connect(self.setDirty)       
         
-    def validarLongitudMax(self, lmax):
+    def __validarLongitudMax(self, lmax):
         if lmax is not 0:
             lmin = self.sbLongMin.value()
             if lmin is not 0 and lmax < lmin:
                 self.sbLongMax.setValue(lmax + 1)
         self.__dirty = True
             
-    def validarLongitudMin(self, lmin):
+    def __validarLongitudMin(self, lmin):
         lmax = self.sbLongMax.value()
         if lmax is not 0 and lmin > lmax:
             self.sbLongMin.setValue(lmin - 1) 
@@ -66,7 +66,7 @@ class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
     def getCampo(self):
         return self.__campo
     
-    def guardar(self):
+    def __guardar(self):
         try:
             p = Persistence()
             if self.__campo is None:
@@ -111,7 +111,7 @@ class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
             message.exec_()
             self.txtNombre.setFocus()        
         else:
-            self.guardar()
+            self.__guardar()
             
     def reject(self):
         Util.reject(self, self.__dirty)

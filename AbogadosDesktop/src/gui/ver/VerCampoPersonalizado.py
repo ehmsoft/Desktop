@@ -3,12 +3,11 @@ Created on 26/01/2012
 
 @author: elfotografo007
 '''
-from PySide.QtGui import *
-from PySide.QtCore import *
-from gui.ver.VerCampoPersonalizadoScreen import Ui_VerCampoPersonalizado
+from PySide import QtGui
+from VerCampoPersonalizadoScreen import Ui_VerCampoPersonalizado
 
 
-class VerCampoPersonalizado(QWidget, Ui_VerCampoPersonalizado):
+class VerCampoPersonalizado(QtGui.QWidget, Ui_VerCampoPersonalizado):
     def __init__(self, campo = None, parent = None):
         super(VerCampoPersonalizado, self).__init__(parent)
         self.__campo = campo
