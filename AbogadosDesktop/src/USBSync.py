@@ -28,7 +28,7 @@ class USBSync(object):
         return self.dirEncontrado
     
     def traer(self):
-        arbol = self.getNodos()
+        arbol = self.__getNodos()
         if arbol is None or len(arbol) is 0:
             raise NoDeviceError
         else:
@@ -36,7 +36,7 @@ class USBSync(object):
                 origen = os.path.join(self.path, nodo, self.dirRemoto, self.archivo)
                 if os.path.isfile(origen):
                     destino = os.path.join(self.dirLocal, self.archivoTemp)
-                    if self.copiar(origen, destino):
+                    if self.__copiar(origen, destino):
                         self.dirEncontrado = origen
                     else:
                         raise IOError('Error al copiar')
@@ -49,17 +49,17 @@ class USBSync(object):
             if os.path.isdir(destino) and os.path.isfile(origen):
                 self.copiar(origen, destino)
         else:
-            arbol = self.getNodos()
+            arbol = self.__getNodos()
             if arbol is None or len(arbol) is 0:
                 raise NoDeviceError
             else:
                 for nodo in arbol:
                     temp = os.path.join(self.path, nodo, self.dirRemoto)
                     if os.path.isdir(temp):
-                        origen = os.path.join(self.dirLocal, self.archivo)
+                        origen = os.path.join(self.dirLocal, self.archivoTemp)
                         destino = os.path.join(temp, self.archivo)
                         if os.path.isfile(origen):
-                            if self.copiar(origen, destino):
+                            if self.__copiar(origen, destino):
                                 self.dirEncontrado = temp
                             else:
                                 raise IOError('Error al copiar')
@@ -83,11 +83,11 @@ class USBSync(object):
             return os.listdir(self.path)
                             
     def __copiar(self, origen, destino):
-        hashOrigen = self.hashfile(open(origen))
+        hashOrigen = self.__hashfile(open(origen))
         intentos = 0
         while intentos < 5:
             shutil.copy(origen, destino)
-            hashDestino = self.hashfile(open(destino))
+            hashDestino = self.__hashfile(open(destino))
             if hashDestino == hashOrigen:
                 return True
             else:
@@ -107,3 +107,4 @@ class NoDeviceError(Exception):
         
     def __str__(self):
         return 'Error %s' % str(self.valor)
+USBSync().llevar()
