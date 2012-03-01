@@ -35,6 +35,8 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         campos = []
                 
         if actuacion is not None:
+            self.setWindowTitle(unicode("Editar actuación"))
+            self.groupBox.setTitle(unicode("Datos de la actuación:"))
             self.__juzgado = actuacion.getJuzgado()
             campos = actuacion.getCampos()
             self.txtDescripcion.setText(unicode(actuacion.getDescripcion()))
@@ -42,8 +44,6 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             self.dteFecha.setDateTime(actuacion.getFecha())
             self.dteFechaProxima.setDateTime(actuacion.getFechaProxima())
         else:
-            self.setWindowTitle(unicode("Editar actuación"))
-            self.groupBox.setTitle(unicode("Editar los datos de la actuación:"))
             self.dteFecha.setDateTime(datetime.today())
             self.dteFechaProxima.setDateTime(datetime.today())
             self.lblJuzgado.setText(unicode("vacío"))

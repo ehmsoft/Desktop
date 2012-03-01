@@ -37,6 +37,8 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
         campos = []
                 
         if self.__juzgado is not None:
+            self.setWindowTitle(unicode("Editar juzgado"))
+            self.groupBox.setTitle(unicode("Datos del juzgado:"))
             campos = juzgado.getCampos()
             self.txtNombre.setText(self.__juzgado.getNombre())
             self.txtDireccion.setText(self.__juzgado.getDireccion())

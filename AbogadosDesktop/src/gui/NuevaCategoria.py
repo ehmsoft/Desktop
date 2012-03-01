@@ -20,6 +20,8 @@ class NuevaCategoria(QDialog, Ui_NuevaCategoria):
         self.__categoria = categoria
         self.setupUi(self)        
         if self.__categoria is not None:
+            self.setWindowTitle(unicode("Editar categoría"))
+            self.groupBox.setTitle(unicode("Datos de la categoría:"))
             self.txtCategoria.setText(self.__categoria.getDescripcion())
             
         self.txtCategoria.textChanged.connect(self.setDirty)

@@ -38,6 +38,8 @@ class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
         
         
         if self.__campo is not None:
+            self.setWindowTitle(unicode("Editar campo personalizado"))
+            self.groupBox.setTitle(unicode("Datos del campo personalizado:"))
             self.txtNombre.setText(self.__campo.getNombre())
             self.sbLongMax.setValue(self.__campo.getLongitudMax())
             self.sbLongMin.setValue(self.__campo.getLongitudMin())
