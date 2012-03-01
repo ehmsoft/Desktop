@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from PySide import QtCore, QtGui
+from PySide import QtGui
 
 def reject(dialog, dirty):
     if dirty:

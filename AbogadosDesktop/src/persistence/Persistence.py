@@ -5,7 +5,6 @@ Created on 07/08/2011
 '''
 from ConnectionManager import ConnectionManager
 import sqlite3
-from datetime import datetime
 from core.Persona import Persona
 from core.Proceso import Proceso
 from core.Actuacion import Actuacion
