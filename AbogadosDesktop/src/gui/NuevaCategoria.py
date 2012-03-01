@@ -1,5 +1,5 @@
+# -*- coding: utf-8 -*-
 '''
-
 Created on 24/01/2012
 
 @author: esteban
