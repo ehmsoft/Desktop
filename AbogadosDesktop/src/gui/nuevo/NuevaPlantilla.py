@@ -187,6 +187,7 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
             vista = VerPersona(self.__demandado, self)
             self.__dialogo.setWidget(vista)
             self.__dirty = True
+        del(listado)
     
     def __cambiarJuzgado(self):
         listado = ListadoDialogo(ListadoDialogo.JUZGADO, self)
@@ -196,6 +197,7 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
             vista = VerJuzgado(self.__juzgado, self)
             self.__dialogo.setWidget(vista)
             self.__dirty = True
+        del(listado)
     
     def __cambiarCategoria(self):
         listado = ListadoDialogo(ListadoDialogo.CATEGORIA, self)
@@ -203,6 +205,7 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
             self.__categoria = listado.getSelected()
             self.lblCategoria.setText(unicode(self.__categoria))
             self.__dirty = True
+        del(listado)
             
     def __editarDemandante(self):
         if self.__demandante is not None and self.__demandante.getId_persona() is not "1":
@@ -212,6 +215,7 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
                 if (isinstance(self.__dialogo.getWidget(), VerPersona)):
                     vista = VerPersona(self.__demandante, self)
                     self.__dialogo.setWidget(vista)
+            del(dialogo)
     
     def __editarDemandado(self):
         if self.__demandado is not None and self.__demandado.getId_persona() is not "1":
@@ -221,6 +225,7 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
                 if (isinstance(self.__dialogo.getWidget(), VerPersona)):
                     vista = VerPersona(self.__demandado, self)
                     self.__dialogo.setWidget(vista)
+            del(dialogo)
     
     def __editarJuzgado(self):
         if self.__juzgado is not None and self.__juzgado.getId_juzgado() is not "1":
@@ -230,12 +235,14 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
                 if (isinstance(self.__dialogo.getWidget(), VerJuzgado)):
                     vista = VerJuzgado(self.__juzgado, self)
                     self.horizontalLayout.addWidget(vista)
+                del(dialogo)
     
     def __editarCategoria(self):
         if self.__categoria is not None and self.__categoria.getId_categoria() is not "1":
             dialogo = NuevaCategoria(self.__categoria, self)
             if dialogo.exec_():
                 self.lblCategoria.setText(self.__categoria.getNombre())
+            del(dialogo)
                 
     def __createAction(self, text, slot = None):
         action = QtGui.QAction(text, self)
@@ -248,6 +255,7 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
         self.__guardar()
     
     def __guardar(self):
+        del(self.__dialogo)
         try:
             p = Persistence()
             nombre = self.txtNombre.text()
@@ -298,6 +306,7 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
         return self.__plantilla
     
     def reject(self):
+        del(self.__dialogo)
         Util.reject(self, self.__dirty)
     
     def setDirty(self):

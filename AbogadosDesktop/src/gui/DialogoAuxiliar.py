@@ -31,7 +31,7 @@ class DialogoAuxiliar(QtGui.QDialog):
         if self.__layout.count() > 0:
             item = self.__layout.takeAt(0)
             if item is not None:
-                item.widget().deleteLater()
+                del(item)
         self.__layout.addWidget(widget)
         
     def getWidget(self):

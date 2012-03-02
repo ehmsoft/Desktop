@@ -84,6 +84,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             self.__juzgado = listado.getSelected()
             self.lblJuzgado.setText(self.__juzgado.getNombre())
             self.__dirty = True
+            del(listado)
     
     def __editarJuzgado(self):
         if self.__juzgado is not None and self.__juzgado.getId_juzgado() is not "1":
@@ -94,6 +95,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
                     self.horizontal.itemAt(1).widget().deleteLater()
                     vista = VerJuzgado(self.__juzgado, self)
                     self.horizontal.addWidget(vista)
+            del(dialogo)
         
     def accept(self):
         if len(self.txtDescripcion.text()) is 0:
@@ -112,6 +114,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             self.__guardar()
             
     def __guardar(self):
+        del(self.__dialogo)
         fecha = self.dteFecha.dateTime().toPython()
         fechaProxima = self.dteFechaProxima.dateTime().toPython()
         descripcion = self.txtDescripcion.text()
@@ -198,6 +201,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         dteFecha.dateChanged.connect(dateChanged)
         
     def reject(self):
+        del(self.__dialogo)
         Util.reject(self, self.__dirty)
         
     def setDirty(self):

@@ -6,7 +6,6 @@ Created on 19/01/2012
 '''
 from PySide import QtGui
 from ItemListas import ItemListas
-from types import ListType
 from core.Persona import Persona
 from core.Juzgado import Juzgado
 from persistence.Persistence import Persistence
