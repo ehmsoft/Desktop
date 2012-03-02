@@ -137,7 +137,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.columna1 = ColumnaWidget(listado)
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
-                p = None
+                del p
                 
         elif item.text() == MainApp.TXTDEMANDANTES:
             if self.centralSplitter.count() == 1:
@@ -148,7 +148,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
-                p = None
+                del p
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
@@ -158,7 +158,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.columna1 = ColumnaWidget(listado)
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
-                p = None
+                del p
         elif item.text() == MainApp.TXTDEMANDADOS:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
@@ -168,7 +168,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
-                p = None
+                del p
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
@@ -178,7 +178,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.columna1 = ColumnaWidget(listado)
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
-                p = None
+                del p
         elif item.text() == MainApp.TXTJUZGADOS:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
@@ -188,7 +188,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
-                p = None
+                del p
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
@@ -198,7 +198,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.columna1 = ColumnaWidget(listado)
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
-                p = None
+                del p
         elif item.text() == MainApp.TXTCATEGORIAS:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
@@ -208,7 +208,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
-                p = None
+                del p
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
@@ -218,7 +218,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.columna1 = ColumnaWidget(listado)
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
-                p = None
+                del p
         elif item.text() == MainApp.TXTACTUACIONES:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
@@ -228,7 +228,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
-                p = None
+                del p
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
@@ -238,7 +238,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.columna1 = ColumnaWidget(listado)
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
-                p = None
+                del p
         elif item.text() == MainApp.TXTCAMPOS:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
@@ -263,7 +263,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.columna1 = splitter
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
-                p = None
+                del p
             else:
                 #Borrar la segunda columna y poner una nueva
                 lista = [MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES]
@@ -287,7 +287,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 splitter.addWidget(listado)
                 self.columna1 = splitter
                 self.centralSplitter.addWidget(self.columna1)
-                p = None
+                del p
             self.connect(listado, QtCore.SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
             self.connect(listado, QtCore.SIGNAL('customContextMenuRequested(QPoint)'), self.listaCamposContextMenu)
                 
@@ -321,25 +321,25 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if personaVentana.exec_():
                 persona = personaVentana.getPersona()
                 self.columna1.getCentralWidget().add(persona)
-            personaVentana = None
+            del personaVentana
         elif item.text() == MainApp.TXTDEMANDADOS:
             personaVentana = NuevaPersona(tipo = 2)
             if personaVentana.exec_():
                 persona = personaVentana.getPersona()
                 self.columna1.getCentralWidget().add(persona)
-            personaVentana = None
+            del personaVentana
         elif item.text() == MainApp.TXTJUZGADOS:
             juzgadoVentana = NuevoJuzgado()
             if juzgadoVentana.exec_():
                 juzgado = juzgadoVentana.getJuzgado()
                 self.columna1.getCentralWidget().add(juzgado)
-            juzgadoVentana = None
+            del juzgadoVentana
         elif item.text() == MainApp.TXTCATEGORIAS:
             categoriaVentana = NuevaCategoria()
             if categoriaVentana.exec_():
                 categoria = categoriaVentana.getCategoria()
                 self.columna1.getCentralWidget().add(categoria)
-            categoriaVentana = None
+            del categoriaVentana
         elif item.text() == MainApp.TXTACTUACIONES:
             if self.columna1.getCentralWidget().currentItem() is not None:
                 proceso = self.columna1.getCentralWidget().getSelectedItem()
@@ -348,9 +348,9 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                     p = Persistence()
                     proceso = p.consultarProceso(proceso.getId_proceso())
                     self.columna1.getCentralWidget().replace(proceso)
-                    p = None
+                    del p
                     self.columna1ElementChanged()
-                actuacionVentana = None
+                del actuacionVentana
             else:
                 QtGui.QMessageBox.warning(self, 'Advertencia', unicode('Debe seleccionar un proceso para poder agregar una actuación'))
                 
@@ -445,7 +445,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                     self.columna1.widget(1).deleteLater()
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
-                p = None
+                del p
             elif self.columna1.widget(0).currentItem().text() == MainApp.TXTPLANTILLAS:
                 p = Persistence()
                 lista = p.consultarAtributos()
@@ -458,7 +458,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 #Agregar la tercera columna
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
-                p = None
+                del p
             elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDANTES:
                 p = Persistence()
                 lista = p.consultarAtributosPersona()
@@ -471,7 +471,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 #Agregar la tercera columna
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
-                p = None
+                del p
             elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDADOS:
                 p = Persistence()
                 lista = p.consultarAtributosPersona()
@@ -484,7 +484,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 #Agregar la tercera columna
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
-                p = None
+                del p
             elif self.columna1.widget(0).currentItem().text() == MainApp.TXTJUZGADOS:
                 p = Persistence()
                 lista = p.consultarAtributosJuzgado()
@@ -497,7 +497,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 #Agregar la tercera columna
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
-                p = None
+                del p
             elif self.columna1.widget(0).currentItem().text() == MainApp.TXTACTUACIONES:
                 p = Persistence()
                 lista = p.consultarAtributosActuacion()
@@ -510,7 +510,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 #Agregar la tercera columna
                 columna = ColumnaWidget(listado)
                 self.columna1.addWidget(columna)
-                p = None   
+                del p   
             self.connect(listado, QtCore.SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
             self.connect(listado, QtCore.SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
             self.connect(columna, QtCore.SIGNAL('clicked()'), self.columnaCamposAgregarClicked)    
@@ -578,14 +578,14 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         if procesoVentana.exec_():
             self.columna1.getCentralWidget().replace(procesoVentana.getProceso())
         self.columna1ElementChanged()
-        procesoVentana = None
+        del procesoVentana
         
     def procesoEliminarClicked(self):
         proceso = self.columna1.getCentralWidget().getSelectedItem()
         if self.columna1.getCentralWidget().remove():
             p = Persistence()
             p.borrarProceso(proceso)
-            p = None
+            del p
             elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
             if self.columna1.getCentralWidget().count() == 0:
                 elementoGrid.hide()
@@ -601,14 +601,14 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         if personaVentana.exec_():
             self.columna1.getCentralWidget().replace(personaVentana.getPersona())
         self.columna1ElementChanged()
-        personaVentana = None
+        del personaVentana
     
     def personaEliminarClicked(self):
         persona = self.columna1.getCentralWidget().getSelectedItem()
         if self.columna1.getCentralWidget().remove():
             p = Persistence()
             p.borrarPersona(persona)
-            p = None
+            del p
             elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
             if self.columna1.getCentralWidget().count() == 0:
                 elementoGrid.hide()
@@ -623,14 +623,14 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         if juzgadoVentana.exec_():
             self.columna1.getCentralWidget().replace(juzgadoVentana.getJuzgado())
         self.columna1ElementChanged()
-        juzgadoVentana = None
+        del juzgadoVentana
     
     def juzgadoEliminarClicked(self):
         juzgado = self.columna1.getCentralWidget().getSelectedItem()
         if self.columna1.getCentralWidget().remove():
             p = Persistence()
             p.borrarJuzgado(juzgado)
-            p = None
+            del p
             elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
             if self.columna1.getCentralWidget().count() == 0:
                 elementoGrid.hide()
@@ -644,7 +644,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         procesoVentana = NuevoProceso(plantilla = plantilla)
         procesoVentana.exec_()
         self.columna1ElementChanged()
-        procesoVentana = None
+        del procesoVentana
     
     def plantillaEditarClicked(self):
         plantilla = self.columna1.getCentralWidget().currentItem().getObjeto()
@@ -652,14 +652,14 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         if plantillaVentana.exec_():
             self.columna1.getCentralWidget().replace(plantillaVentana.getPlantilla())
         self.columna1ElementChanged()
-        plantillaVentana = None
+        del plantillaVentana
     
     def plantillaEliminarClicked(self):
         plantilla = self.columna1.getCentralWidget().getSelectedItem()
         if self.columna1.getCentralWidget().remove():
             p = Persistence()
             p.borrarPlantilla(plantilla)
-            p = None
+            del p
             elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
             if self.columna1.getCentralWidget().count() == 0:
                 elementoGrid.hide()
@@ -674,7 +674,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         if categoriaVentana.exec_():
             self.columna1.getCentralWidget().replace(categoriaVentana.getCategoria())
         self.columna1ElementChanged()
-        categoriaVentana = None
+        del categoriaVentana
     
     def categoriaEliminarClicked(self):
         categoria = self.columna1.getCentralWidget().getSelectedItem()
@@ -683,7 +683,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         elif self.columna1.getCentralWidget().remove():
             p = Persistence()
             p.borrarCategoria(categoria)
-            p = None
+            del p
             elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
             if self.columna1.getCentralWidget().count() == 0:
                 elementoGrid.hide()
@@ -748,7 +748,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributo(campo)
-                p = None
+                del p
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 if self.columna1.widget(1).getCentralWidget().count() == 0:
                     elementoGrid.hide()
@@ -760,7 +760,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributo(campo)
-                p = None
+                del p
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 if self.columna1.widget(1).getCentralWidget().count() == 0:
                     elementoGrid.hide()
@@ -772,7 +772,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributoPersona(campo)
-                p = None
+                del p
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 if self.columna1.widget(1).getCentralWidget().count() == 0:
                     elementoGrid.hide()
@@ -784,7 +784,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributoPersona(campo)
-                p = None
+                del p
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 if self.columna1.widget(1).getCentralWidget().count() == 0:
                     elementoGrid.hide()
@@ -796,7 +796,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributoJuzgado(campo)
-                p = None
+                del p
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 if self.columna1.widget(1).getCentralWidget().count() == 0:
                     elementoGrid.hide()
@@ -804,12 +804,12 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                     self.label = QtGui.QLabel() 
                     self.label.setPixmap(QtGui.QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
-            p = None
+            del p
         elif self.columna1.widget(0).currentItem().text() == MainApp.TXTACTUACIONES:
             if self.columna1.widget(1).getCentralWidget().remove():
                 p = Persistence()
                 p.borrarAtributoActuacion(campo)
-                p = None
+                del p
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 if self.columna1.widget(1).getCentralWidget().count() == 0:
                     elementoGrid.hide()
