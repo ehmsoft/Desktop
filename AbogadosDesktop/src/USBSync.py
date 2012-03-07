@@ -38,14 +38,14 @@ class USBSync(object):
                     destino = os.path.join(self.dirLocal, self.archivoTemp)
                     if self.__copiar(origen, destino):
                         self.dirEncontrado = origen
+                        break
                     else:
                         raise IOError('Error al copiar')
-                    break
     
     def llevar(self):
         if len(self.dirEncontrado) is not 0:
             destino = self.dirEncontrado
-            origen = os.path.join(self.dirLocal, self.dirEncontrado.split()[1])
+            origen = os.path.join(self.dirLocal, self.archivoTemp)
             if os.path.isdir(destino) and os.path.isfile(origen):
                 self.copiar(origen, destino)
         else:
@@ -61,6 +61,7 @@ class USBSync(object):
                         if os.path.isfile(origen):
                             if self.__copiar(origen, destino):
                                 self.dirEncontrado = temp
+                                break
                             else:
                                 raise IOError('Error al copiar')
                         else:
@@ -92,6 +93,8 @@ class USBSync(object):
                 return True
             else:
                 intentos += 1
+        if intentos >= 5:
+            return False
                             
     def __hashfile(self, afile, blocksize = 65536):
         hasher = hashlib.md5()
