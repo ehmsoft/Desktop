@@ -29,8 +29,8 @@ class ListadoBusqueda(Listado):
         
         self.listaOriginal = listado
         self.listadoActual = self.listaOriginal
-        self.buscar = CampoBusqueda()
-        self.buscar.show()
+        self.buscar = CampoBusqueda(self)
+        self.buscar.hide()
                 
         self.texto = None
         self.buscar.getTextEdit().textChanged.connect(self.__changed)
@@ -109,14 +109,6 @@ class ListadoBusqueda(Listado):
     def getSearchField(self):
         self.buscar.show()
         return self.buscar
-    
-    def add(self, objeto):
-        item = ItemListas(objeto)
-        item.setToolTip(unicode(objeto))
-        item.setStatusTip(unicode(objeto))
-        self.addItem(item)
-        self.listaOriginal.append(item)
-        self.__click()
         
     def __montarLista(self):
         while self.count() > 0:
@@ -125,6 +117,21 @@ class ListadoBusqueda(Listado):
     
     def showSearchField(self):
         self.buscar.show()
+        
+        
+    def add(self, objeto):
+        Listado.add(self, objeto)
+        self.listaOriginal.append(objeto)
+        
+    def remove(self):
+        objeto = self.currentItem()
+        if QtGui.QMessageBox.question(self,"Eliminar","Desea eliminar "+objeto.text()+" ?",QtGui.QMessageBox.Yes|QtGui.QMessageBox.No) == QtGui.QMessageBox.Yes:
+            self.takeItem(self.currentRow())
+            del self.listaOriginal[self.listaOriginal.index(objeto.getObjeto())]
+            self.__click()
+            return True
+        else:
+            return False
         
 class CampoBusqueda(QtGui.QWidget):
     def __init__(self, parent = None):

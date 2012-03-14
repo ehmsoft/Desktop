@@ -7,7 +7,6 @@ Created on 30/01/2012
 '''
 from PySide import QtCore, QtGui
 from MainAppScreen import Ui_mainApp
-from gui.Listado import Listado
 from gui.Columna import ColumnaWidget
 from gui.Columna import ColumnaDerecha
 from persistence.Persistence import Persistence
@@ -101,8 +100,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
-                listado = Listado(p.consultarProcesos())
-                self.columna1 = ColumnaWidget(listado)
+                listado = ListadoBusqueda(p.consultarProcesos())
+                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
@@ -110,10 +109,10 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
-                listado = Listado(p.consultarProcesos())
+                listado = ListadoBusqueda(p.consultarProcesos())
                 self.columna1.hide()
                 self.__restablecerElementoDerecho()
-                self.columna1 = ColumnaWidget(listado)
+                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 del(p)
@@ -123,8 +122,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 p = Persistence()
                 lista = p.consultarPlantillas()
                 self.__restablecerElementoDerecho()
-                listado = Listado(lista)
-                self.columna1 = ColumnaWidget(listado)
+                listado = ListadoBusqueda(lista)
+                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 del(p)
@@ -134,8 +133,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 lista = p.consultarPlantillas()
                 self.columna1.hide()
                 self.__restablecerElementoDerecho()
-                listado = Listado(lista)
-                self.columna1 = ColumnaWidget(listado)
+                listado = ListadoBusqueda(lista)
+                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 del p
@@ -164,8 +163,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
-                listado = Listado(p.consultarDemandados())
-                self.columna1 = ColumnaWidget(listado)
+                listado = ListadoDialogo(p.consultarDemandados())
+                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
@@ -173,10 +172,10 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
-                listado = Listado(p.consultarDemandados())
+                listado = ListadoBusqueda(p.consultarDemandados())
                 self.columna1.hide()
                 self.__restablecerElementoDerecho()
-                self.columna1 = ColumnaWidget(listado)
+                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 del p
@@ -184,8 +183,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
-                listado = Listado(p.consultarJuzgados())
-                self.columna1 = ColumnaWidget(listado)
+                listado = ListadoBusqueda(p.consultarJuzgados())
+                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
@@ -193,10 +192,10 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
-                listado = Listado(p.consultarJuzgados())
+                listado = ListadoBusqueda(p.consultarJuzgados())
                 self.columna1.hide()
                 self.__restablecerElementoDerecho()
-                self.columna1 = ColumnaWidget(listado)
+                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 del p
@@ -204,8 +203,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
-                listado = Listado(p.consultarCategorias())
-                self.columna1 = ColumnaWidget(listado)
+                listado = ListadoBusqueda(p.consultarCategorias())
+                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
@@ -213,10 +212,10 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
-                listado = Listado(p.consultarCategorias())
+                listado = ListadoBusqueda(p.consultarCategorias())
                 self.columna1.hide()
                 self.__restablecerElementoDerecho()
-                self.columna1 = ColumnaWidget(listado)
+                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 del p
@@ -224,8 +223,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
-                listado = Listado(p.consultarProcesos())
-                self.columna1 = ColumnaWidget(listado)
+                listado = ListadoBusqueda(p.consultarProcesos())
+                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
@@ -233,10 +232,10 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
-                listado = Listado(p.consultarProcesos())
+                listado = ListadoBusqueda(p.consultarProcesos())
                 self.columna1.hide()
                 self.__restablecerElementoDerecho()
-                self.columna1 = ColumnaWidget(listado)
+                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 del p
@@ -264,7 +263,6 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.columna1 = splitter
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
-                del p
             else:
                 #Borrar la segunda columna y poner una nueva
                 lista = [MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES]
@@ -288,7 +286,6 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 splitter.addWidget(listado)
                 self.columna1 = splitter
                 self.centralSplitter.addWidget(self.columna1)
-                del p
             self.connect(listado, QtCore.SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
             self.connect(listado, QtCore.SIGNAL('customContextMenuRequested(QPoint)'), self.listaCamposContextMenu)
                 
@@ -438,78 +435,78 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if self.columna1.widget(0).currentItem().text() == MainApp.TXTPROCESOS:
                 p = Persistence()
                 lista = p.consultarAtributos()
-                listado = Listado(lista)
+                listado = ListadoBusqueda(lista)
                 listado.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 if self.columna1.count() > 1:
                     #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
                     self.columna1.widget(1).deleteLater()
-                columna = ColumnaWidget(listado)
+                columna = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.addWidget(columna)
                 del p
             elif self.columna1.widget(0).currentItem().text() == MainApp.TXTPLANTILLAS:
                 p = Persistence()
                 lista = p.consultarAtributos()
-                listado = Listado(lista)
+                listado = ListadoBusqueda(lista)
                 listado.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 if self.columna1.count() > 1:
                     #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
                     self.columna1.widget(1).deleteLater()
                 #Agregar la tercera columna
-                columna = ColumnaWidget(listado)
+                columna = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.addWidget(columna)
                 del p
             elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDANTES:
                 p = Persistence()
                 lista = p.consultarAtributosPersona()
-                listado = Listado(lista)
+                listado = ListadoBusqueda(lista)
                 listado.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 if self.columna1.count() > 1:
                     #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
                     self.columna1.widget(1).deleteLater()
                 #Agregar la tercera columna
-                columna = ColumnaWidget(listado)
+                columna = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.addWidget(columna)
                 del p
             elif self.columna1.widget(0).currentItem().text() == MainApp.TXTDEMANDADOS:
                 p = Persistence()
                 lista = p.consultarAtributosPersona()
-                listado = Listado(lista)
+                listado = ListadoBusqueda(lista)
                 listado.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 if self.columna1.count() > 1:
                     #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
                     self.columna1.widget(1).deleteLater()
                 #Agregar la tercera columna
-                columna = ColumnaWidget(listado)
+                columna = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.addWidget(columna)
                 del p
             elif self.columna1.widget(0).currentItem().text() == MainApp.TXTJUZGADOS:
                 p = Persistence()
                 lista = p.consultarAtributosJuzgado()
-                listado = Listado(lista)
+                listado = ListadoBusqueda(lista)
                 listado.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 if self.columna1.count() > 1:
                     #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
                     self.columna1.widget(1).deleteLater()
                 #Agregar la tercera columna
-                columna = ColumnaWidget(listado)
+                columna = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.addWidget(columna)
                 del p
             elif self.columna1.widget(0).currentItem().text() == MainApp.TXTACTUACIONES:
                 p = Persistence()
                 lista = p.consultarAtributosActuacion()
-                listado = Listado(lista)
+                listado = ListadoBusqueda(lista)
                 listado.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 if self.columna1.count() > 1:
                     #Borrar la tercera columna si existe
                     self.columna1.widget(1).hide()
                     self.columna1.widget(1).deleteLater()
                 #Agregar la tercera columna
-                columna = ColumnaWidget(listado)
+                columna = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.addWidget(columna)
                 del p   
             self.connect(listado, QtCore.SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
