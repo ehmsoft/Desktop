@@ -31,6 +31,7 @@ from gui.nuevo.NuevaActuacion import NuevaActuacion
 from gui.nuevo.NuevoProceso import NuevoProceso
 from gui.nuevo.NuevaPlantilla import NuevaPlantilla
 from gui.ListadoDialogo import ListadoDialogo
+from gui.ListadoBusqueda import ListadoBusqueda
 import resources
 
 class MainApp(QtGui.QMainWindow, Ui_mainApp):
@@ -143,8 +144,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
-                listado = Listado(p.consultarDemandantes())
-                self.columna1 = ColumnaWidget(listado)
+                listado = ListadoBusqueda(p.consultarDemandantes())
+                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
@@ -152,10 +153,10 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
-                listado = Listado(p.consultarDemandantes())
+                listado = ListadoBusqueda(p.consultarDemandantes())
                 self.columna1.hide()
                 self.__restablecerElementoDerecho()
-                self.columna1 = ColumnaWidget(listado)
+                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 del p

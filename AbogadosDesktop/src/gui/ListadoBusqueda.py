@@ -14,6 +14,7 @@ from core.Actuacion import Actuacion
 from core.Categoria import Categoria
 from core.CampoPersonalizado import CampoPersonalizado
 import resources
+from gui.ItemListas import ItemListas
 
 class ListadoBusqueda(Listado):
     '''
@@ -108,6 +109,14 @@ class ListadoBusqueda(Listado):
     def getSearchField(self):
         self.buscar.show()
         return self.buscar
+    
+    def add(self, objeto):
+        item = ItemListas(objeto)
+        item.setToolTip(unicode(objeto))
+        item.setStatusTip(unicode(objeto))
+        self.addItem(item)
+        self.listaOriginal.append(item)
+        self.__click()
         
     def __montarLista(self):
         while self.count() > 0:
@@ -137,13 +146,3 @@ class CampoBusqueda(QtGui.QWidget):
     
     def getButton(self):
         return self.btnBuscar
-
-import sys
-from persistence.Persistence import Persistence
-
-lista = Persistence().consultarProcesos()
-app = QtGui.QApplication(sys.argv)
-form = ListadoBusqueda(lista, None)
-form.show()
-form.getSearchField()
-app.exec_()
