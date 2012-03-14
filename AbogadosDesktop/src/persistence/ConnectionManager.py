@@ -14,7 +14,7 @@ class ConnectionManager(object):
 
     
     def __init__(self):
-        self.__DBNAME = './database.ehm'
+        self.__DBNAME = '../persistence/database.ehm'
         
     def prepararBD(self):
         if not exists(self.__DBNAME):
