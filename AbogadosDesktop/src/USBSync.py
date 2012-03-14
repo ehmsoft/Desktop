@@ -48,6 +48,7 @@ class USBSync(object):
             origen = os.path.join(self.dirLocal, self.archivoTemp)
             if os.path.isdir(destino) and os.path.isfile(origen):
                 self.copiar(origen, destino)
+                os.remove(origen)
         else:
             arbol = self.__getNodos()
             if arbol is None or len(arbol) is 0:
@@ -61,6 +62,7 @@ class USBSync(object):
                         if os.path.isfile(origen):
                             if self.__copiar(origen, destino):
                                 self.dirEncontrado = temp
+                                os.remove(origen)
                                 break
                             else:
                                 raise IOError('Error al copiar')
