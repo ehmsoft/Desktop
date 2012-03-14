@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="/">
+    <file>images/bolita.png</file>
+    <file>images/bolita_marcaAgua.png</file>
+    <file>images/icono.png</file>
+    <file>images/iconoBuscar.png</file>
+  </qresource>
+</RCC>

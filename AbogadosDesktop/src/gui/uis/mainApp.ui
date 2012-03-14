@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>mainApp</class>
+ <widget class="QMainWindow" name="mainApp">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Procesos Judiciales</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="1">
+     <widget class="QLabel" name="label">
+      <property name="minimumSize">
+       <size>
+        <width>100</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Plain</enum>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>664</width>
+         <height>531</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_Archivo">
+    <property name="title">
+     <string>&amp;Archivo</string>
+    </property>
+    <widget class="QMenu" name="menu_Nuevo">
+     <property name="title">
+      <string>&amp;Nuevo</string>
+     </property>
+     <widget class="QMenu" name="menuCampo_Personalizado">
+      <property name="title">
+       <string>Campo Personalizado</string>
+      </property>
+      <addaction name="actionNuevoCampo_Proceso"/>
+      <addaction name="actionNuevoCampo_Plantilla"/>
+      <addaction name="actionNuevoCampo_Demandante"/>
+      <addaction name="actionNuevoCampo_Demandado"/>
+      <addaction name="actionNuevoCampo_Juzgado"/>
+      <addaction name="actionNuevoCampo_Actuacion"/>
+     </widget>
+     <addaction name="actionNuevoProceso"/>
+     <addaction name="actionNuevaPlantilla"/>
+     <addaction name="actionNuevoDemandante"/>
+     <addaction name="actionNuevoDemandado"/>
+     <addaction name="actionNuevoJuzgado"/>
+     <addaction name="actionNuevaActuacion"/>
+     <addaction name="actionNuevaCategoria"/>
+     <addaction name="menuCampo_Personalizado"/>
+     <addaction name="actionNuevoProceso_a_partir_de_Plantilla"/>
+    </widget>
+    <addaction name="menu_Nuevo"/>
+    <addaction name="actionImprimir"/>
+    <addaction name="actionExportar"/>
+    <addaction name="actionImportar"/>
+   </widget>
+   <widget class="QMenu" name="menuEditar">
+    <property name="title">
+     <string>Editar</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuSincronizar">
+    <property name="title">
+     <string>Sincronizar</string>
+    </property>
+   </widget>
+   <addaction name="menu_Archivo"/>
+   <addaction name="menuEditar"/>
+   <addaction name="menuSincronizar"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionNuevoProceso">
+   <property name="text">
+    <string>Proceso</string>
+   </property>
+  </action>
+  <action name="actionNuevaPlantilla">
+   <property name="text">
+    <string>Plantilla</string>
+   </property>
+  </action>
+  <action name="actionNuevoDemandante">
+   <property name="text">
+    <string>Demandante</string>
+   </property>
+  </action>
+  <action name="actionNuevoDemandado">
+   <property name="text">
+    <string>Demandado</string>
+   </property>
+  </action>
+  <action name="actionNuevoJuzgado">
+   <property name="text">
+    <string>Juzgado</string>
+   </property>
+  </action>
+  <action name="actionNuevaActuacion">
+   <property name="text">
+    <string>Actuación</string>
+   </property>
+  </action>
+  <action name="actionNuevaCategoria">
+   <property name="text">
+    <string>Categoría</string>
+   </property>
+  </action>
+  <action name="actionNuevoCampo_Proceso">
+   <property name="text">
+    <string>Campo Proceso</string>
+   </property>
+  </action>
+  <action name="actionNuevoCampo_Plantilla">
+   <property name="text">
+    <string>Campo Plantilla</string>
+   </property>
+   <property name="toolTip">
+    <string>Nuevo Campo Plantilla</string>
+   </property>
+  </action>
+  <action name="actionNuevoCampo_Demandante">
+   <property name="text">
+    <string>Campo Demandante</string>
+   </property>
+   <property name="toolTip">
+    <string>Nuevo Campo Demandante</string>
+   </property>
+  </action>
+  <action name="actionNuevoCampo_Demandado">
+   <property name="text">
+    <string>Campo Demandado</string>
+   </property>
+   <property name="toolTip">
+    <string>Nuevo Campo Demandado</string>
+   </property>
+  </action>
+  <action name="actionNuevoCampo_Juzgado">
+   <property name="text">
+    <string>Campo Juzgado</string>
+   </property>
+   <property name="toolTip">
+    <string>Nuevo Campo Juzgado</string>
+   </property>
+  </action>
+  <action name="actionNuevoCampo_Actuacion">
+   <property name="text">
+    <string>Campo Actuacion</string>
+   </property>
+   <property name="toolTip">
+    <string>Nuevo Campo Actuacion</string>
+   </property>
+  </action>
+  <action name="actionImprimir">
+   <property name="text">
+    <string>Imprimir</string>
+   </property>
+   <property name="shortcut">
+    <string>Meta+P, Ctrl+P</string>
+   </property>
+  </action>
+  <action name="actionExportar">
+   <property name="text">
+    <string>Exportar</string>
+   </property>
+   <property name="shortcut">
+    <string>Meta+E, Ctrl+E</string>
+   </property>
+  </action>
+  <action name="actionImportar">
+   <property name="text">
+    <string>Importar</string>
+   </property>
+   <property name="shortcut">
+    <string>Meta+I, Ctrl+I</string>
+   </property>
+  </action>
+  <action name="actionNuevoProceso_a_partir_de_Plantilla">
+   <property name="text">
+    <string>Proceso a partir de Plantilla</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

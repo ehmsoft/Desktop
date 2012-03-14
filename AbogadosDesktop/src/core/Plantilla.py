@@ -22,17 +22,17 @@ class Plantilla(object):
         else:
             raise TypeError('Tipo de dato no admitido')
         
-        if isinstance(demandante, Persona):
+        if isinstance(demandante, Persona) or isinstance(demandante, NoneType):
             self.__demandante = demandante
         else:
             raise TypeError('Tipo de dato no admitido')
         
-        if isinstance(demandado, Persona):
+        if isinstance(demandado, Persona) or isinstance(demandado, NoneType):
             self.__demandado = demandado
         else:
             raise TypeError('Tipo de dato no admitido')
         
-        if isinstance(juzgado, Juzgado):
+        if isinstance(juzgado, Juzgado) or isinstance(juzgado, NoneType):
             self.__juzgado = juzgado
         else:
             raise TypeError('Tipo de dato no admitido')
@@ -196,3 +196,81 @@ class Plantilla(object):
             self.__id_plantilla = id_plantilla
         else:
             raise TypeError('Tipo de dato no admitido')    
+    def __str__(self):
+        return self.getNombre()
+    
+    def __eq__(self, other):
+        if other is None:
+            return False
+        if isinstance(other, Plantilla):
+            if self.__demandado != other.getDemandado():
+                return False
+            if self.__demandante != other.getDemandante():
+                return False
+            if self.__juzgado != other.getJuzgado():
+                return False
+            if self.__nombre != other.getNombre():
+                return False
+            if self.__radicado != other.getRadicado():
+                return False
+            if self.__radicadoUnico != other.getRadicadoUnico():
+                return False
+            if self.__tipo != other.getTipo():
+                return False
+            if self.__estado != other.getEstado():
+                return False
+            if self.__categoria != other.getCategoria():
+                return False
+            if self.__notas != other.getNotas():
+                return False
+            if self.__prioridad != other.getPrioridad():
+                return False
+            if len(self.__campos) != len(other.getCampos()):
+                return False
+            else:
+                camposOther = other.getCampos()
+                campos = self.__campos
+                for i in range(len(campos)):
+                    if campos[i] != camposOther[i]:
+                        return False
+            return True         
+        else:
+            return False
+        
+    def __ne__(self, other):
+        if other is None:
+            return True
+        if isinstance(other, Plantilla):
+            if self.__demandado != other.getDemandado():
+                return True
+            if self.__demandante != other.getDemandante():
+                return True
+            if self.__juzgado != other.getJuzgado():
+                return True
+            if self.__nombre != other.getNombre():
+                return True
+            if self.__radicado != other.getRadicado():
+                return True
+            if self.__radicadoUnico != other.getRadicadoUnico():
+                return True
+            if self.__tipo != other.getTipo():
+                return True
+            if self.__estado != other.getEstado():
+                return True
+            if self.__categoria != other.getCategoria():
+                return True
+            if self.__notas != other.getNotas():
+                return True
+            if self.__prioridad != other.getPrioridad():
+                return True
+            if len(self.__campos) != len(other.getCampos()):
+                return True
+            else:
+                camposOther = other.getCampos()
+                campos = self.__campos
+                for i in range(len(campos)):
+                    if campos[i] != camposOther[i]:
+                        return True
+            return False         
+        else:
+            return True
