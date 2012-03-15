@@ -32,6 +32,7 @@ from gui.nuevo.NuevaPlantilla import NuevaPlantilla
 from gui.ListadoDialogo import ListadoDialogo
 from gui.ListadoBusqueda import ListadoBusqueda
 import resources
+from gui.ColumnaSync import ColumnaSync
 
 class MainApp(QtGui.QMainWindow, Ui_mainApp):
     #Constantes para elementos  del menu listaIzquierda
@@ -290,8 +291,20 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             self.connect(listado, QtCore.SIGNAL('customContextMenuRequested(QPoint)'), self.listaCamposContextMenu)
                 
         elif item.text() == MainApp.TXTSINCRONIZAR:   
-            #TODO: Acciones para el menu sincronizar
-            self.__restablecerElementoDerecho()
+            if self.centralSplitter.count() == 1:
+                #Agregar la segunda columna si no existe
+                self.columna1 =  ColumnaSync()
+                #self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+                self.centralSplitter.addWidget(self.columna1)
+                self.__restablecerElementoDerecho()
+            else:
+                #Borrar la segunda columna y poner una nueva
+                self.columna1.hide()
+                self.__restablecerElementoDerecho()
+                self.columna1 = ColumnaSync()
+                #self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+                self.centralSplitter.addWidget(self.columna1)
+            #self.__restablecerElementoDerecho()
         elif item.text() == MainApp.TXTAJUSTES:     
             #TODO: Acciones para el menu Ajustes
             self.__restablecerElementoDerecho()
