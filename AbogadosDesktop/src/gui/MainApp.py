@@ -106,7 +106,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
-                del(p)
+                del p
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
@@ -116,7 +116,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.columna1 = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
-                del(p)
+                del p
         elif item.text() == MainApp.TXTPLANTILLAS:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
@@ -127,7 +127,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.columna1 = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
-                del(p)
+                del p
             else:
                 #Borrar la segunda columna y poner una nueva
                 p = Persistence()
