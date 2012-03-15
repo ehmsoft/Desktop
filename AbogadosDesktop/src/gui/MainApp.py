@@ -300,10 +300,10 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             else:
                 #Borrar la segunda columna y poner una nueva
                 self.columna1.hide()
-                self.__restablecerElementoDerecho()
                 self.columna1 = ColumnaSync()
                 #self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
+                self.__restablecerElementoDerecho()
             #self.__restablecerElementoDerecho()
         elif item.text() == MainApp.TXTAJUSTES:     
             #TODO: Acciones para el menu Ajustes
