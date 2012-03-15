@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on 14/03/2012
 
@@ -16,6 +17,10 @@ class ColumnaSync(QWidget, Ui_ColumnaSync):
         self.connect(self.btnSincronizar, SIGNAL("clicked()"), self.sincronizar)
         
     def sincronizar(self):
+
         self.syncObject.syncViaUSB()
-        #TODO Capturar excepciones
+        dialogoOk = QMessageBox()
+        dialogoOk.setText(unicode("Sincronización Finalizada con éxito!"))
+        dialogoOk.exec_()
+        #TODO: Capturar excepciones
         
