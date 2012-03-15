@@ -8,6 +8,7 @@ from PySide.QtGui import *
 from PySide.QtCore import *
 from gui.ColumnaSyncScreen import Ui_ColumnaSync
 from persistence.Sync import Sync
+from persistence.USBSync import NoDeviceError
 
 class ColumnaSync(QWidget, Ui_ColumnaSync):
     def __init__(self,parent = None):
@@ -17,10 +18,13 @@ class ColumnaSync(QWidget, Ui_ColumnaSync):
         self.connect(self.btnSincronizar, SIGNAL("clicked()"), self.sincronizar)
         
     def sincronizar(self):
-
-        self.syncObject.syncViaUSB()
-        dialogoOk = QMessageBox()
-        dialogoOk.setText(unicode("Sincronización Finalizada con éxito!"))
-        dialogoOk.exec_()
+        try:
+            self.syncObject.syncViaUSB()
+            dialogoOk = QMessageBox()
+            dialogoOk.setText(unicode("Sincronización Finalizada con éxito!"))
+            dialogoOk.exec_()
+        except NoDeviceError:
+            QMessageBox.warning(self, "Error", unicode("El dispositivo no fue encontrado, verifique que está conectado mediante USB y el modo Unidad USB está activado.\nSi el problema persiste solicite ayuda en soporte@ehmsoft.com"))
+        
         #TODO: Capturar excepciones
         
