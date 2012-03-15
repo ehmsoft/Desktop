@@ -164,7 +164,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
                 p = Persistence()
-                listado = ListadoDialogo(p.consultarDemandados())
+                listado = ListadoBusqueda(p.consultarDemandados())
                 self.columna1 = ColumnaWidget(listado, listado.getSearchField())
                 self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
