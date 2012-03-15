@@ -576,6 +576,17 @@ class SyncManager(object):
             connMovil.row_factory = sqlite3.Row
             cLocal = connLocal.cursor()
             cMovil = connMovil.cursor()
+            #Borrar eliminados en la base de datos de escritorio
+            cLocal.execute('''DELETE FROM demandantes WHERE eliminado = 1''')
+            cLocal.execute('''DELETE FROM demandados WHERE eliminado = 1''')
+            cLocal.execute('''DELETE FROM juzgados WHERE eliminado = 1''')
+            cLocal.execute('''DELETE FROM categorias WHERE eliminado = 1''')
+            cLocal.execute('''DELETE FROM actuaciones WHERE eliminado = 1''')
+            cLocal.execute('''DELETE FROM atributos WHERE eliminado = 1''')
+            cLocal.execute('''DELETE FROM procesos WHERE eliminado = 1''')
+            cLocal.execute('''DELETE FROM plantillas WHERE eliminado = 1''')
+            cLocal.execute('''DELETE FROM atributos_proceso WHERE  eliminado = 1''')
+            cLocal.execute('''DELETE FROM atributos_plantilla WHERE  eliminado = 1''')
             
             #Vaciar tablas
             cMovil.execute('''DELETE FROM demandantes WHERE id_demandante <> 1''')
@@ -704,17 +715,6 @@ class SyncManager(object):
                 id_plantilla = row['id_plantilla']
                 valor = row['valor']
                 cMovil.execute('''INSERT INTO atributos_plantilla(id_atributo_plantilla, id_atributo, id_plantilla, valor, nuevo) VALUES (?,?,?,?,0)''', (id_atributo_plantilla, id_atributo, id_plantilla, valor,))
-            #Borrar eliminados en la base de datos de escritorio
-            cLocal.execute('''DELETE FROM demandantes WHERE eliminado = 1''')
-            cLocal.execute('''DELETE FROM demandados WHERE eliminado = 1''')
-            cLocal.execute('''DELETE FROM juzgados WHERE eliminado = 1''')
-            cLocal.execute('''DELETE FROM categorias WHERE eliminado = 1''')
-            cLocal.execute('''DELETE FROM actuaciones WHERE eliminado = 1''')
-            cLocal.execute('''DELETE FROM atributos WHERE eliminado = 1''')
-            cLocal.execute('''DELETE FROM procesos WHERE eliminado = 1''')
-            cLocal.execute('''DELETE FROM plantillas WHERE eliminado = 1''')
-            cLocal.execute('''DELETE FROM atributos_proceso WHERE  eliminado = 1''')
-            cLocal.execute('''DELETE FROM atributos_plantilla WHERE  eliminado = 1''')
             
             #Bajar Flags de la base de datos de escritorio
             cLocal.execute('''UPDATE demandantes SET nuevo = 0, modificado = 0''')     
