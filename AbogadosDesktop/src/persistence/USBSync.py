@@ -23,9 +23,11 @@ class USBSync(object):
         self.os = sys.platform.lower()
         
     def getLocalMobilePath(self):
+        self.traer()
         if len(self.dirEncontrado) is 0:
-            self.traer()
-        return self.dirEncontrado
+            raise NoDeviceError
+        else:
+            return self.dirEncontrado
     
     def traer(self):
         arbol = self.__getNodos()
@@ -41,6 +43,7 @@ class USBSync(object):
                         break
                     else:
                         raise IOError('Error al copiar')
+                
     
     def llevar(self):
         if len(self.dirEncontrado) is not 0:
