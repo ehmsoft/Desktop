@@ -18,6 +18,7 @@ class Sync(object):
         
     def syncViaUSB(self):
         mobilePath = self.usbSync.getLocalMobilePath()
-        self.syncMgr.sincronizarLocal(mobilePath)
+        if self.syncMgr.verificarSyncLocal(mobilePath):
+            self.syncMgr.sincronizarLocal(mobilePath)
         self.syncMgr.restaurarArchivo(mobilePath)
         self.usbSync.llevar()
