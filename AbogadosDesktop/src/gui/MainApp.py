@@ -98,148 +98,83 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
     def elementClicked(self, item):
         #Metodo que maneja el click en la lista izquierda
         if item.text() == MainApp.TXTPROCESOS:
-            if self.centralSplitter.count() == 1:
-                #Agregar la segunda columna si no existe
-                p = Persistence()
-                listado = ListadoBusqueda(p.consultarProcesos())
-                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
-                self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-                self.centralSplitter.addWidget(self.columna1)
-                self.__restablecerElementoDerecho()
-                del p
-            else:
-                #Borrar la segunda columna y poner una nueva
-                p = Persistence()
-                listado = ListadoBusqueda(p.consultarProcesos())
-                self.columna1.hide()
-                self.__restablecerElementoDerecho()
-                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
-                self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-                self.centralSplitter.addWidget(self.columna1)
-                del p
+            if not self.centralSplitter.count() == 1:
+                self.columna1.setParent(None)
+            p = Persistence()
+            listado = ListadoBusqueda(p.consultarProcesos())
+            self.columna1 = ColumnaWidget(listado, listado.getSearchField())
+            self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+            self.centralSplitter.addWidget(self.columna1)
+            self.__restablecerElementoDerecho()
+            del p
+
         elif item.text() == MainApp.TXTPLANTILLAS:
-            if self.centralSplitter.count() == 1:
-                #Agregar la segunda columna si no existe
-                p = Persistence()
-                lista = p.consultarPlantillas()
-                self.__restablecerElementoDerecho()
-                listado = ListadoBusqueda(lista)
-                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
-                self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-                self.centralSplitter.addWidget(self.columna1)
-                del p
-            else:
-                #Borrar la segunda columna y poner una nueva
-                p = Persistence()
-                lista = p.consultarPlantillas()
-                self.columna1.hide()
-                self.__restablecerElementoDerecho()
-                listado = ListadoBusqueda(lista)
-                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
-                self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-                self.centralSplitter.addWidget(self.columna1)
-                del p
-                
+            if not self.centralSplitter.count() == 1:
+                self.columna1.setParent(None)
+            p = Persistence()
+            lista = p.consultarPlantillas()
+            listado = ListadoBusqueda(lista)
+            self.columna1 = ColumnaWidget(listado, listado.getSearchField())
+            self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+            self.centralSplitter.addWidget(self.columna1)
+            self.__restablecerElementoDerecho()
+            del p
+          
         elif item.text() == MainApp.TXTDEMANDANTES:
-            if self.centralSplitter.count() == 1:
-                #Agregar la segunda columna si no existe
-                p = Persistence()
-                listado = ListadoBusqueda(p.consultarDemandantes())
-                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
-                self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-                self.centralSplitter.addWidget(self.columna1)
-                self.__restablecerElementoDerecho()
-                del p
-            else:
-                #Borrar la segunda columna y poner una nueva
-                p = Persistence()
-                listado = ListadoBusqueda(p.consultarDemandantes())
-                self.columna1.hide()
-                self.__restablecerElementoDerecho()
-                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
-                self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-                self.centralSplitter.addWidget(self.columna1)
-                del p
+            if not self.centralSplitter.count() == 1:
+                self.columna1.setParent(None)
+            p = Persistence()
+            listado = ListadoBusqueda(p.consultarDemandantes())
+            self.columna1 = ColumnaWidget(listado, listado.getSearchField())
+            self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+            self.centralSplitter.addWidget(self.columna1)
+            self.__restablecerElementoDerecho()
+            del p
+
         elif item.text() == MainApp.TXTDEMANDADOS:
-            if self.centralSplitter.count() == 1:
-                #Agregar la segunda columna si no existe
-                p = Persistence()
-                listado = ListadoBusqueda(p.consultarDemandados())
-                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
-                self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-                self.centralSplitter.addWidget(self.columna1)
-                self.__restablecerElementoDerecho()
-                del p
-            else:
-                #Borrar la segunda columna y poner una nueva
-                p = Persistence()
-                listado = ListadoBusqueda(p.consultarDemandados())
-                self.columna1.hide()
-                self.__restablecerElementoDerecho()
-                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
-                self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-                self.centralSplitter.addWidget(self.columna1)
-                del p
+            if not self.centralSplitter.count() == 1:
+                self.columna1.setParent(None)
+            p = Persistence()
+            listado = ListadoBusqueda(p.consultarDemandados())
+            self.columna1 = ColumnaWidget(listado, listado.getSearchField())
+            self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+            self.centralSplitter.addWidget(self.columna1)
+            self.__restablecerElementoDerecho()
+            del p
+
         elif item.text() == MainApp.TXTJUZGADOS:
-            if self.centralSplitter.count() == 1:
-                #Agregar la segunda columna si no existe
-                p = Persistence()
-                listado = ListadoBusqueda(p.consultarJuzgados())
-                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
-                self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-                self.centralSplitter.addWidget(self.columna1)
-                self.__restablecerElementoDerecho()
-                del p
-            else:
-                #Borrar la segunda columna y poner una nueva
-                p = Persistence()
-                listado = ListadoBusqueda(p.consultarJuzgados())
-                self.columna1.hide()
-                self.__restablecerElementoDerecho()
-                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
-                self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-                self.centralSplitter.addWidget(self.columna1)
-                del p
+            if not self.centralSplitter.count() == 1:
+                self.columna1.setParent(None)
+            p = Persistence()
+            listado = ListadoBusqueda(p.consultarJuzgados())
+            self.columna1 = ColumnaWidget(listado, listado.getSearchField())
+            self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+            self.centralSplitter.addWidget(self.columna1)
+            self.__restablecerElementoDerecho()
+            del p
+            
         elif item.text() == MainApp.TXTCATEGORIAS:
-            if self.centralSplitter.count() == 1:
-                #Agregar la segunda columna si no existe
-                p = Persistence()
-                listado = ListadoBusqueda(p.consultarCategorias())
-                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
-                self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-                self.centralSplitter.addWidget(self.columna1)
-                self.__restablecerElementoDerecho()
-                del p
-            else:
-                #Borrar la segunda columna y poner una nueva
-                p = Persistence()
-                listado = ListadoBusqueda(p.consultarCategorias())
-                self.columna1.hide()
-                self.__restablecerElementoDerecho()
-                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
-                self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-                self.centralSplitter.addWidget(self.columna1)
-                del p
+            if not self.centralSplitter.count() == 1:
+                self.columna1.setParent(None)
+            p = Persistence()
+            listado = ListadoBusqueda(p.consultarCategorias())
+            self.columna1 = ColumnaWidget(listado, listado.getSearchField())
+            self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+            self.centralSplitter.addWidget(self.columna1)
+            self.__restablecerElementoDerecho()
+            del p
+            
         elif item.text() == MainApp.TXTACTUACIONES:
-            if self.centralSplitter.count() == 1:
-                #Agregar la segunda columna si no existe
-                p = Persistence()
-                listado = ListadoBusqueda(p.consultarProcesos())
-                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
-                self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-                self.centralSplitter.addWidget(self.columna1)
-                self.__restablecerElementoDerecho()
-                del p
-            else:
-                #Borrar la segunda columna y poner una nueva
-                p = Persistence()
-                listado = ListadoBusqueda(p.consultarProcesos())
-                self.columna1.hide()
-                self.__restablecerElementoDerecho()
-                self.columna1 = ColumnaWidget(listado, listado.getSearchField())
-                self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-                self.centralSplitter.addWidget(self.columna1)
-                del p
+            if not self.centralSplitter.count() == 1:
+                self.columna1.setParent(None)
+            p = Persistence()
+            listado = ListadoBusqueda(p.consultarProcesos())
+            self.columna1 = ColumnaWidget(listado, listado.getSearchField())
+            self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+            self.centralSplitter.addWidget(self.columna1)
+            self.__restablecerElementoDerecho()
+            del p
+           
         elif item.text() == MainApp.TXTCAMPOS:
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
@@ -378,8 +313,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if isinstance(item.getObjeto(), Proceso):
                 #Borrar el elemento derecho
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
-                elementoGrid.hide()
-                elementoGrid.deleteLater()
+                self.gridLayout.removeWidget(elementoGrid)
+                elementoGrid.setParent(None)
                 proceso = VerProceso(item.getObjeto())
                 #Agregar elemento derecho y ponerle un tamano maximo
                 nuevoElemento = ColumnaDerecha(titulo = False, centralWidget = proceso)
@@ -393,8 +328,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if isinstance(item.getObjeto(), Plantilla):
                 #Borrar el elemento derecho
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
-                elementoGrid.hide()
-                elementoGrid.deleteLater()
+                self.gridLayout.removeWidget(elementoGrid)
+                elementoGrid.setParent(None)
                 plantilla = VerPlantilla(item.getObjeto())
                 #Agregar elemento derecho y ponerle un tamano maximo
                 nuevoElemento = ColumnaDerecha(titulo = True, centralWidget = plantilla, plantilla = True)
@@ -407,8 +342,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if isinstance(item.getObjeto(), Persona):
                 #Borrar el elemento derecho
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
-                elementoGrid.hide()
-                elementoGrid.deleteLater()
+                self.gridLayout.removeWidget(elementoGrid)
+                elementoGrid.setParent(None)
                 persona = VerPersona(item.getObjeto())
                 #Agregar elemento derecho y ponerle un tamano maximo
                 nuevoElemento = ColumnaDerecha(titulo = True, centralWidget = persona)
@@ -419,8 +354,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if isinstance(item.getObjeto(), Juzgado):
                 #Borrar el elemento derecho
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
-                elementoGrid.hide()
-                elementoGrid.deleteLater()
+                self.gridLayout.removeWidget(elementoGrid)
+                elementoGrid.setParent(None)
                 juzgado = VerJuzgado(item.getObjeto())
                 #Agregar elemento derecho y ponerle un tamano maximo
                 nuevoElemento = ColumnaDerecha(titulo = True, centralWidget = juzgado)
@@ -432,8 +367,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if isinstance(item.getObjeto(), Categoria):
                 #Borrar el elemento derecho
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
-                elementoGrid.hide()
-                elementoGrid.deleteLater()
+                self.gridLayout.removeWidget(elementoGrid)
+                elementoGrid.setParent(None)
                 categoria = VerCategoria(item.getObjeto())
                 #Agregar elemento derecho y ponerle un tamano maximo
                 nuevoElemento = ColumnaDerecha(titulo = True, centralWidget = categoria)
@@ -534,8 +469,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 if hasattr(item, 'getObjeto'):
                     # Se filtra que si se haya seleccionado algun campo
                     elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
+                    self.gridLayout.removeWidget(elementoGrid)
+                    elementoGrid.setParent(None)
                     campo = VerCampoPersonalizado(item.getObjeto())
                     nuevoElemento = ColumnaDerecha(titulo = True, centralWidget = campo)
                     nuevoElemento.setMaximumWidth(310)
@@ -599,8 +534,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             del p
             elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
             if self.columna1.getCentralWidget().count() == 0:
-                elementoGrid.hide()
-                elementoGrid.deleteLater()
+                self.gridLayout.removeWidget(elementoGrid)
+                elementoGrid.setParent(None)
                 self.label = QtGui.QLabel() 
                 self.label.setPixmap(QtGui.QPixmap.fromImage(self.image))
                 self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
@@ -622,8 +557,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             del p
             elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
             if self.columna1.getCentralWidget().count() == 0:
-                elementoGrid.hide()
-                elementoGrid.deleteLater()
+                self.gridLayout.removeWidget(elementoGrid)
+                elementoGrid.setParent(None)
                 self.label = QtGui.QLabel() 
                 self.label.setPixmap(QtGui.QPixmap.fromImage(self.image))
                 self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
@@ -644,8 +579,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             del p
             elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
             if self.columna1.getCentralWidget().count() == 0:
-                elementoGrid.hide()
-                elementoGrid.deleteLater()
+                self.gridLayout.removeWidget(elementoGrid)
+                elementoGrid.setParent(None)
                 self.label = QtGui.QLabel() 
                 self.label.setPixmap(QtGui.QPixmap.fromImage(self.image))
                 self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
@@ -673,8 +608,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             del p
             elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
             if self.columna1.getCentralWidget().count() == 0:
-                elementoGrid.hide()
-                elementoGrid.deleteLater()
+                self.gridLayout.removeWidget(elementoGrid)
+                elementoGrid.setParent(None)
                 self.label = QtGui.QLabel() 
                 self.label.setPixmap(QtGui.QPixmap.fromImage(self.image))
                 self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
@@ -697,8 +632,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             del p
             elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
             if self.columna1.getCentralWidget().count() == 0:
-                elementoGrid.hide()
-                elementoGrid.deleteLater()
+                self.gridLayout.removeWidget(elementoGrid)
+                elementoGrid.setParent(None)
                 self.label = QtGui.QLabel() 
                 self.label.setPixmap(QtGui.QPixmap.fromImage(self.image))
                 self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
@@ -762,8 +697,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 del p
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 if self.columna1.widget(1).getCentralWidget().count() == 0:
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
+                    self.gridLayout.removeWidget(elementoGrid)
+                    elementoGrid.setParent(None)
                     self.label = QtGui.QLabel() 
                     self.label.setPixmap(QtGui.QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
@@ -774,8 +709,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 del p
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 if self.columna1.widget(1).getCentralWidget().count() == 0:
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
+                    self.gridLayout.removeWidget(elementoGrid)
+                    elementoGrid.setParent(None)
                     self.label = QtGui.QLabel() 
                     self.label.setPixmap(QtGui.QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
@@ -786,8 +721,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 del p
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 if self.columna1.widget(1).getCentralWidget().count() == 0:
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
+                    self.gridLayout.removeWidget(elementoGrid)
+                    elementoGrid.setParent(None)
                     self.label = QtGui.QLabel() 
                     self.label.setPixmap(QtGui.QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
@@ -798,8 +733,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 del p
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 if self.columna1.widget(1).getCentralWidget().count() == 0:
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
+                    self.gridLayout.removeWidget(elementoGrid)
+                    elementoGrid.setParent(None)
                     self.label = QtGui.QLabel() 
                     self.label.setPixmap(QtGui.QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
@@ -810,8 +745,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 del p
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 if self.columna1.widget(1).getCentralWidget().count() == 0:
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
+                    self.gridLayout.removeWidget(elementoGrid)
+                    elementoGrid.setParent(None)
                     self.label = QtGui.QLabel() 
                     self.label.setPixmap(QtGui.QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
@@ -823,8 +758,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 del p
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
                 if self.columna1.widget(1).getCentralWidget().count() == 0:
-                    elementoGrid.hide()
-                    elementoGrid.deleteLater()
+                    self.gridLayout.removeWidget(elementoGrid)
+                    elementoGrid.setParent(None)
                     self.label = QtGui.QLabel() 
                     self.label.setPixmap(QtGui.QPixmap.fromImage(self.image))
                     self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
@@ -833,8 +768,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         #Reestablecer el logo de la bolita
         elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
         if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion, VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
-            elementoGrid.hide()
-            elementoGrid.deleteLater()
+            self.gridLayout.removeWidget(elementoGrid)
+            elementoGrid.setParent(None)
             self.label = QtGui.QLabel() 
             self.label.setPixmap(QtGui.QPixmap.fromImage(self.image))
             self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
