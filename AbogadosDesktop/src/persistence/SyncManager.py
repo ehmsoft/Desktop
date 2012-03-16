@@ -561,9 +561,11 @@ class SyncManager(object):
             connLocal.commit()
             print 'sincronizacion terminada'         
         except Exception as e:
+            connLocal.rollback()
+            connMovil.rollback()
+            print "Operations rolled back"
             raise e
         finally:
-            
             connLocal.close()
             connMovil.close()
         
@@ -738,6 +740,9 @@ class SyncManager(object):
             connLocal.commit()
             print 'Archivo Movil actualizado'         
         except Exception as e:
+            connLocal.rollback()
+            connMovil.rollback()
+            print "Operations rolled back"
             raise e
         finally:
             connLocal.close()
