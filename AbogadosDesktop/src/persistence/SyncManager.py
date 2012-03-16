@@ -49,9 +49,9 @@ class SyncManager(object):
                 correo = row['correo']
                 notas = row['notas']
                 cLocal.execute('''INSERT INTO demandantes(cedula, nombre, telefono, direccion, correo, notas, nuevo) VALUES(?,?,?,?,?,?,0)''', (cedula, nombre, telefono, direccion, correo, notas,))
-                id = cLocal.lastrowid
-                cMovil.execute('''UPDATE procesos SET id_demandante = ? WHERE id_demandante = ? ''', (id, id_demandante,))
-                cMovil.execute('''UPDATE plantillas SET id_demandante = ? WHERE id_demandante = ? ''', (id, id_demandante,))
+                _id = cLocal.lastrowid
+                cMovil.execute('''UPDATE procesos SET id_demandante = ? WHERE id_demandante = ? ''', (_id, id_demandante,))
+                cMovil.execute('''UPDATE plantillas SET id_demandante = ? WHERE id_demandante = ? ''', (_id, id_demandante,))
             
             #Seccion demandados
             cMovil.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE nuevo = 1 AND eliminado = 0''')
@@ -65,9 +65,9 @@ class SyncManager(object):
                 correo = row['correo']
                 notas = row['notas']
                 cLocal.execute('''INSERT INTO demandados(cedula, nombre, telefono, direccion, correo, notas, nuevo) VALUES(?,?,?,?,?,?,0)''', (cedula, nombre, telefono, direccion, correo, notas,))
-                id = cLocal.lastrowid
-                cMovil.execute('''UPDATE procesos SET id_demandado = ? WHERE id_demandado = ? ''', (id, id_demandado,))
-                cMovil.execute('''UPDATE plantillas SET id_demandado = ? WHERE id_demandado = ? ''', (id, id_demandado,))            
+                _id = cLocal.lastrowid
+                cMovil.execute('''UPDATE procesos SET id_demandado = ? WHERE id_demandado = ? ''', (_id, id_demandado,))
+                cMovil.execute('''UPDATE plantillas SET id_demandado = ? WHERE id_demandado = ? ''', (_id, id_demandado,))            
             
             #Seccion Juzgados
             cMovil.execute('''SELECT id_juzgado, nombre, ciudad, telefono, direccion, tipo FROM juzgados WHERE nuevo = 1 AND eliminado = 0''')
@@ -80,10 +80,10 @@ class SyncManager(object):
                 direccion = row['direccion'] 
                 tipo = row['tipo']
                 cLocal.execute('''INSERT INTO juzgados(nombre, ciudad, telefono, direccion, tipo, nuevo) VALUES(?,?,?,?,?,0)''', (nombre, ciudad, telefono, direccion, tipo,))
-                id = cLocal.lastrowid
-                cMovil.execute('''UPDATE procesos SET id_juzgado = ? WHERE id_juzgado = ? ''', (id, id_juzgado,))
-                cMovil.execute('''UPDATE plantillas SET id_juzgado = ? WHERE id_juzgado = ? ''', (id, id_juzgado,))
-                cMovil.execute('''UPDATE actuaciones SET id_juzgado = ? WHERE id_juzgado = ? ''', (id, id_juzgado,))
+                _id = cLocal.lastrowid
+                cMovil.execute('''UPDATE procesos SET id_juzgado = ? WHERE id_juzgado = ? ''', (_id, id_juzgado,))
+                cMovil.execute('''UPDATE plantillas SET id_juzgado = ? WHERE id_juzgado = ? ''', (_id, id_juzgado,))
+                cMovil.execute('''UPDATE actuaciones SET id_juzgado = ? WHERE id_juzgado = ? ''', (_id, id_juzgado,))
             
             #Seccion categorias
             cMovil.execute('''SELECT id_categoria, descripcion FROM categorias WHERE nuevo = 1 AND eliminado = 0''')
@@ -92,9 +92,9 @@ class SyncManager(object):
                 id_categoria = row['id_categoria']
                 descripcion = row['descripcion']
                 cLocal.execute('''INSERT INTO categorias(descripcion, nuevo) VALUES(?,0)''', (descripcion,))
-                id = cLocal.lastrowid
-                cMovil.execute('''UPDATE procesos SET id_categoria = ? WHERE id_categoria = ? ''', (id, id_categoria,))
-                cMovil.execute('''UPDATE plantillas SET id_categoria = ? WHERE id_categoria = ? ''', (id, id_categoria,))
+                _id = cLocal.lastrowid
+                cMovil.execute('''UPDATE procesos SET id_categoria = ? WHERE id_categoria = ? ''', (_id, id_categoria,))
+                cMovil.execute('''UPDATE plantillas SET id_categoria = ? WHERE id_categoria = ? ''', (_id, id_categoria,))
             
             #Seccion Atributos
             cMovil.execute('''SELECT id_atributo, nombre, obligatorio, longitud_max, longitud_min FROM atributos WHERE nuevo = 1 AND eliminado = 0''')
@@ -106,9 +106,9 @@ class SyncManager(object):
                 longitud_max = row['longitud_max']
                 longitud_min = row['longitud_min']
                 cLocal.execute('''INSERT INTO atributos(nombre, obligatorio, longitud_max, longitud_min, nuevo) VALUES(?,?,?,?,0)''', (nombre, obligatorio, longitud_max, longitud_min,))
-                id = cLocal.lastrowid
-                cMovil.execute('''UPDATE atributos_proceso SET id_atributo = ? WHERE id_atributo = ? ''', (id, id_atributo,))
-                cMovil.execute('''UPDATE atributos_plantilla SET id_atributo = ? WHERE id_atributo = ? ''', (id, id_atributo,))
+                _id = cLocal.lastrowid
+                cMovil.execute('''UPDATE atributos_proceso SET id_atributo = ? WHERE id_atributo = ? ''', (_id, id_atributo,))
+                cMovil.execute('''UPDATE atributos_plantilla SET id_atributo = ? WHERE id_atributo = ? ''', (_id, id_atributo,))
             
             #Seccion Procesos
             cMovil.execute('''SELECT id_proceso, id_demandante, id_demandado, fecha_creacion as "fecha_creacion [timestamp]", radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria FROM procesos WHERE nuevo = 1 AND eliminado = 0''')
@@ -127,9 +127,9 @@ class SyncManager(object):
                 id_juzgado = row['id_juzgado']
                 id_categoria = row['id_categoria']
                 cLocal.execute('''INSERT INTO procesos(id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, nuevo) VALUES (?,?,?,?,?,?,?,?,?,?,?,0)''', (id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria,))
-                id = cLocal.lastrowid
-                cMovil.execute('''UPDATE atributos_proceso SET id_proceso = ? WHERE id_proceso = ? ''', (id, id_proceso,))
-                cMovil.execute('''UPDATE actuaciones SET id_proceso = ? WHERE id_proceso = ? ''', (id, id_proceso,))
+                _id = cLocal.lastrowid
+                cMovil.execute('''UPDATE atributos_proceso SET id_proceso = ? WHERE id_proceso = ? ''', (_id, id_proceso,))
+                cMovil.execute('''UPDATE actuaciones SET id_proceso = ? WHERE id_proceso = ? ''', (_id, id_proceso,))
             
             #Seccion Plantillas
             cMovil.execute('''SELECT id_plantilla, nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria FROM plantillas WHERE nuevo = 1 AND eliminado = 0''')
@@ -148,8 +148,8 @@ class SyncManager(object):
                 id_juzgado = row['id_juzgado']
                 id_categoria = row['id_categoria']
                 cLocal.execute('''INSERT INTO plantillas(nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, nuevo) VALUES (?,?,?,?,?,?,?,?,?,?,?,0)''', (nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria,))
-                id = cLocal.lastrowid
-                cMovil.execute('''UPDATE atributos_plantilla SET id_plantilla = ? WHERE id_plantilla = ? ''', (id, id_plantilla,))
+                _id = cLocal.lastrowid
+                cMovil.execute('''UPDATE atributos_plantilla SET id_plantilla = ? WHERE id_plantilla = ? ''', (_id, id_plantilla,))
             
             #Seccion Actuaciones
             cMovil.execute('''SELECT id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE nuevo = 1 AND eliminado = 0''')
@@ -776,9 +776,9 @@ class SyncManager(object):
                     correo = row['correo']
                     notas = row['notas']
                     cLocal.execute('''INSERT INTO demandantes(cedula, nombre, telefono, direccion, correo, notas, nuevo) VALUES(?,?,?,?,?,?,0)''', (cedula, nombre, telefono, direccion, correo, notas,))
-                    id = cLocal.lastrowid
-                    cMovil.execute('''UPDATE procesos SET id_demandante = ? WHERE id_demandante = ? ''', (id, id_demandante,))
-                    cMovil.execute('''UPDATE plantillas SET id_demandante = ? WHERE id_demandante = ? ''', (id, id_demandante,))
+                    _id = cLocal.lastrowid
+                    cMovil.execute('''UPDATE procesos SET id_demandante = ? WHERE id_demandante = ? ''', (_id, id_demandante,))
+                    cMovil.execute('''UPDATE plantillas SET id_demandante = ? WHERE id_demandante = ? ''', (_id, id_demandante,))
                 
                 #Seccion demandados
                 cMovil.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE id_demandado <> 1''')
@@ -792,9 +792,9 @@ class SyncManager(object):
                     correo = row['correo']
                     notas = row['notas']
                     cLocal.execute('''INSERT INTO demandados(cedula, nombre, telefono, direccion, correo, notas, nuevo) VALUES(?,?,?,?,?,?,0)''', (cedula, nombre, telefono, direccion, correo, notas,))
-                    id = cLocal.lastrowid
-                    cMovil.execute('''UPDATE procesos SET id_demandado = ? WHERE id_demandado = ? ''', (id, id_demandado,))
-                    cMovil.execute('''UPDATE plantillas SET id_demandado = ? WHERE id_demandado = ? ''', (id, id_demandado,))            
+                    _id = cLocal.lastrowid
+                    cMovil.execute('''UPDATE procesos SET id_demandado = ? WHERE id_demandado = ? ''', (_id, id_demandado,))
+                    cMovil.execute('''UPDATE plantillas SET id_demandado = ? WHERE id_demandado = ? ''', (_id, id_demandado,))            
                 
                 #Seccion Juzgados
                 cMovil.execute('''SELECT id_juzgado, nombre, ciudad, telefono, direccion, tipo FROM juzgados WHERE id_juzgado <> 1''')
@@ -807,10 +807,10 @@ class SyncManager(object):
                     direccion = row['direccion'] 
                     tipo = row['tipo']
                     cLocal.execute('''INSERT INTO juzgados(nombre, ciudad, telefono, direccion, tipo, nuevo) VALUES(?,?,?,?,?,0)''', (nombre, ciudad, telefono, direccion, tipo,))
-                    id = cLocal.lastrowid
-                    cMovil.execute('''UPDATE procesos SET id_juzgado = ? WHERE id_juzgado = ? ''', (id, id_juzgado,))
-                    cMovil.execute('''UPDATE plantillas SET id_juzgado = ? WHERE id_juzgado = ? ''', (id, id_juzgado,))
-                    cMovil.execute('''UPDATE actuaciones SET id_juzgado = ? WHERE id_juzgado = ? ''', (id, id_juzgado,))
+                    _id = cLocal.lastrowid
+                    cMovil.execute('''UPDATE procesos SET id_juzgado = ? WHERE id_juzgado = ? ''', (_id, id_juzgado,))
+                    cMovil.execute('''UPDATE plantillas SET id_juzgado = ? WHERE id_juzgado = ? ''', (_id, id_juzgado,))
+                    cMovil.execute('''UPDATE actuaciones SET id_juzgado = ? WHERE id_juzgado = ? ''', (_id, id_juzgado,))
                 
                 #Seccion categorias
                 cMovil.execute('''SELECT id_categoria, descripcion FROM categorias WHERE id_categoria <> 1''')
@@ -819,9 +819,9 @@ class SyncManager(object):
                     id_categoria = row['id_categoria']
                     descripcion = row['descripcion']
                     cLocal.execute('''INSERT INTO categorias(descripcion, nuevo) VALUES(?,0)''', (descripcion,))
-                    id = cLocal.lastrowid
-                    cMovil.execute('''UPDATE procesos SET id_categoria = ? WHERE id_categoria = ? ''', (id, id_categoria,))
-                    cMovil.execute('''UPDATE plantillas SET id_categoria = ? WHERE id_categoria = ? ''', (id, id_categoria,))
+                    _id = cLocal.lastrowid
+                    cMovil.execute('''UPDATE procesos SET id_categoria = ? WHERE id_categoria = ? ''', (_id, id_categoria,))
+                    cMovil.execute('''UPDATE plantillas SET id_categoria = ? WHERE id_categoria = ? ''', (_id, id_categoria,))
                 
                 #Seccion Atributos
                 cMovil.execute('''SELECT id_atributo, nombre, obligatorio, longitud_max, longitud_min FROM atributos''')
@@ -833,9 +833,9 @@ class SyncManager(object):
                     longitud_max = row['longitud_max']
                     longitud_min = row['longitud_min']
                     cLocal.execute('''INSERT INTO atributos(nombre, obligatorio, longitud_max, longitud_min, nuevo) VALUES(?,?,?,?,0)''', (nombre, obligatorio, longitud_max, longitud_min,))
-                    id = cLocal.lastrowid
-                    cMovil.execute('''UPDATE atributos_proceso SET id_atributo = ? WHERE id_atributo = ? ''', (id, id_atributo,))
-                    cMovil.execute('''UPDATE atributos_plantilla SET id_atributo = ? WHERE id_atributo = ? ''', (id, id_atributo,))
+                    _id = cLocal.lastrowid
+                    cMovil.execute('''UPDATE atributos_proceso SET id_atributo = ? WHERE id_atributo = ? ''', (_id, id_atributo,))
+                    cMovil.execute('''UPDATE atributos_plantilla SET id_atributo = ? WHERE id_atributo = ? ''', (_id, id_atributo,))
                 
                 #Seccion Procesos
                 cMovil.execute('''SELECT id_proceso, id_demandante, id_demandado, fecha_creacion as "fecha_creacion [timestamp]", radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria FROM procesos''')
@@ -854,9 +854,9 @@ class SyncManager(object):
                     id_juzgado = row['id_juzgado']
                     id_categoria = row['id_categoria']
                     cLocal.execute('''INSERT INTO procesos(id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, nuevo) VALUES (?,?,?,?,?,?,?,?,?,?,?,0)''', (id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria,))
-                    id = cLocal.lastrowid
-                    cMovil.execute('''UPDATE atributos_proceso SET id_proceso = ? WHERE id_proceso = ? ''', (id, id_proceso,))
-                    cMovil.execute('''UPDATE actuaciones SET id_proceso = ? WHERE id_proceso = ? ''', (id, id_proceso,))
+                    _id = cLocal.lastrowid
+                    cMovil.execute('''UPDATE atributos_proceso SET id_proceso = ? WHERE id_proceso = ? ''', (_id, id_proceso,))
+                    cMovil.execute('''UPDATE actuaciones SET id_proceso = ? WHERE id_proceso = ? ''', (_id, id_proceso,))
                 
                 #Seccion Plantillas
                 cMovil.execute('''SELECT id_plantilla, nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria FROM plantillas''')
@@ -875,8 +875,8 @@ class SyncManager(object):
                     id_juzgado = row['id_juzgado']
                     id_categoria = row['id_categoria']
                     cLocal.execute('''INSERT INTO plantillas(nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, nuevo) VALUES (?,?,?,?,?,?,?,?,?,?,?,0)''', (nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria,))
-                    id = cLocal.lastrowid
-                    cMovil.execute('''UPDATE atributos_plantilla SET id_plantilla = ? WHERE id_plantilla = ? ''', (id, id_plantilla,))
+                    _id = cLocal.lastrowid
+                    cMovil.execute('''UPDATE atributos_plantilla SET id_plantilla = ? WHERE id_plantilla = ? ''', (_id, id_plantilla,))
                 
                 #Seccion Actuaciones
                 cMovil.execute('''SELECT id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones''')
