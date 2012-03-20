@@ -46,16 +46,13 @@ class Listado(QtGui.QListWidget):
         
     def add(self, objeto):
         item = ItemListas(objeto)
-        #item.setToolTip(unicode(objeto))
-        #item.setStatusTip(unicode(objeto))
+        item.setToolTip(unicode(objeto))
+        item.setStatusTip(unicode(objeto))
         self.addItem(item)
         
     def remove(self):        
         objeto = self.currentItem()
-        pregunta = QtGui.QMessageBox.question(self, "Eliminar", "¿Desea eliminar %s?" % objeto.text(), QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-        pregunta.setDefaultButton(QtGui.QMessageBox.No)
-        ret = pregunta.exec_()
-        if ret == QtGui.QMessageBox.Yes:
+        if QtGui.QMessageBox.question(self,"Eliminar","Desea eliminar "+objeto.text()+" ?",QtGui.QMessageBox.Yes|QtGui.QMessageBox.No) == QtGui.QMessageBox.Yes:
             self.takeItem(self.currentRow())
             return True
         else:

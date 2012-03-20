@@ -14,6 +14,7 @@ from core.Actuacion import Actuacion
 from core.Categoria import Categoria
 from core.CampoPersonalizado import CampoPersonalizado
 import resources
+from gui.ItemListas import ItemListas
 
 class ListadoBusqueda(Listado):
     '''
@@ -28,8 +29,8 @@ class ListadoBusqueda(Listado):
         
         self.listaOriginal = listado
         self.listadoActual = self.listaOriginal
-        self.buscar = CampoBusqueda()
-        self.buscar.show()
+        self.buscar = CampoBusqueda(self)
+        self.buscar.hide()
                 
         self.texto = None
         self.buscar.getTextEdit().textChanged.connect(self.__changed)
@@ -117,6 +118,21 @@ class ListadoBusqueda(Listado):
     def showSearchField(self):
         self.buscar.show()
         
+        
+    def add(self, objeto):
+        Listado.add(self, objeto)
+        self.listaOriginal.append(objeto)
+        
+    def remove(self):
+        objeto = self.currentItem()
+        if QtGui.QMessageBox.question(self,"Eliminar","Desea eliminar "+objeto.text()+" ?",QtGui.QMessageBox.Yes|QtGui.QMessageBox.No) == QtGui.QMessageBox.Yes:
+            self.takeItem(self.currentRow())
+            del self.listaOriginal[self.listaOriginal.index(objeto.getObjeto())]
+            self.__click()
+            return True
+        else:
+            return False
+        
 class CampoBusqueda(QtGui.QWidget):
     def __init__(self, parent = None):
         '''
@@ -137,13 +153,3 @@ class CampoBusqueda(QtGui.QWidget):
     
     def getButton(self):
         return self.btnBuscar
-
-import sys
-from persistence.Persistence import Persistence
-
-lista = Persistence().consultarProcesos()
-app = QtGui.QApplication(sys.argv)
-form = ListadoBusqueda(lista, None)
-form.show()
-form.getSearchField()
-app.exec_()

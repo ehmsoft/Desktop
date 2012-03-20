@@ -13,7 +13,7 @@ import hashlib
 #la carpeta en la que se ejecuta el modulo/databaseMobile.ehm
 
 class USBSync(object):
-    def __init__(self, remoto = 'databases/ehmSoft', archivo = 'database.ehm', archivoTemp = 'databaseMobile.ehm', local = os.getcwd()):
+    def __init__(self, remoto = 'databases/ehmSoft', archivo = 'database.ehm', archivoTemp = 'databaseMobile.ehm', local = '../persistence'):
         self.path = ''
         self.dirRemoto = remoto
         self.archivo = archivo
@@ -23,9 +23,11 @@ class USBSync(object):
         self.os = sys.platform.lower()
         
     def getLocalMobilePath(self):
+        self.traer()
         if len(self.dirEncontrado) is 0:
-            self.traer()
-        return self.dirEncontrado
+            raise NoDeviceError
+        else:
+            return self.dirEncontrado
     
     def traer(self):
         arbol = self.__getNodos()
@@ -38,16 +40,21 @@ class USBSync(object):
                     destino = os.path.join(self.dirLocal, self.archivoTemp)
                     if self.__copiar(origen, destino):
                         self.dirEncontrado = origen
+                        print 'Se copia %s a %s' % (origen, destino)
                         break
                     else:
                         raise IOError('Error al copiar')
+                
     
     def llevar(self):
         if len(self.dirEncontrado) is not 0:
             destino = self.dirEncontrado
             origen = os.path.join(self.dirLocal, self.archivoTemp)
-            if os.path.isdir(destino) and os.path.isfile(origen):
-                self.copiar(origen, destino)
+            if os.path.isdir(os.path.split(destino)[0]) and os.path.isfile(origen):
+                self.__copiar(origen, destino)
+                print 'Se copia %s a %s' % (origen, destino)
+                os.remove(origen)
+                print 'Se elimina %s' % origen
         else:
             arbol = self.__getNodos()
             if arbol is None or len(arbol) is 0:
@@ -61,6 +68,9 @@ class USBSync(object):
                         if os.path.isfile(origen):
                             if self.__copiar(origen, destino):
                                 self.dirEncontrado = temp
+                                print 'Se copia %s a %s' % (origen, destino)
+                                os.remove(origen)
+                                print 'Se elimina %s' % origen
                                 break
                             else:
                                 raise IOError('Error al copiar')
@@ -110,4 +120,3 @@ class NoDeviceError(Exception):
         
     def __str__(self):
         return 'Error %s' % str(self.valor)
-USBSync().llevar()

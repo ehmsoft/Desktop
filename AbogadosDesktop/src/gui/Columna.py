@@ -8,7 +8,7 @@ from PySide.QtCore import *
 
 
 class ColumnaWidget(QWidget):
-    def __init__(self, centralWidget,parent=None):
+    def __init__(self, centralWidget, searchField = None,parent=None):
         super(ColumnaWidget, self).__init__(parent)
         self.__centralWidget = centralWidget
         layout = QVBoxLayout()
@@ -16,6 +16,8 @@ class ColumnaWidget(QWidget):
         btnLayout.addStretch()
         self.btnAgregar = QPushButton('+')
         btnLayout.addWidget(self.btnAgregar)
+        if searchField is not None:
+            layout.addWidget(searchField)
         layout.addWidget(self.__centralWidget)
         #layout.addStretch()
         layout.addLayout(btnLayout)
