@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'nuevaPlantilla.ui'
 #
-# Created: Tue Feb 14 14:44:40 2012
+# Created: Mon Mar 19 22:53:17 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_NuevaPlantilla(object):
     def setupUi(self, NuevaPlantilla):
         NuevaPlantilla.setObjectName("NuevaPlantilla")
-        NuevaPlantilla.resize(337, 455)
+        NuevaPlantilla.resize(339, 433)
         self.gridLayout_2 = QtGui.QGridLayout(NuevaPlantilla)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.line = QtGui.QFrame(NuevaPlantilla)
@@ -107,13 +107,16 @@ class Ui_NuevaPlantilla(object):
         self.sbPrioridad = QtGui.QSpinBox(self.groupBox)
         self.sbPrioridad.setObjectName("sbPrioridad")
         self.formLayout.setWidget(9, QtGui.QFormLayout.FieldRole, self.sbPrioridad)
+        self.gridLayout.addLayout(self.formLayout, 0, 0, 1, 1)
+        self.formLayout_2 = QtGui.QFormLayout()
+        self.formLayout_2.setObjectName("formLayout_2")
         self.label_11 = QtGui.QLabel(self.groupBox)
         self.label_11.setObjectName("label_11")
-        self.formLayout.setWidget(10, QtGui.QFormLayout.LabelRole, self.label_11)
+        self.formLayout_2.setWidget(0, QtGui.QFormLayout.LabelRole, self.label_11)
         self.txtNotas = QtGui.QTextEdit(self.groupBox)
         self.txtNotas.setObjectName("txtNotas")
-        self.formLayout.setWidget(10, QtGui.QFormLayout.FieldRole, self.txtNotas)
-        self.gridLayout.addLayout(self.formLayout, 0, 0, 1, 1)
+        self.formLayout_2.setWidget(0, QtGui.QFormLayout.FieldRole, self.txtNotas)
+        self.gridLayout.addLayout(self.formLayout_2, 1, 0, 1, 1)
         self.btnAdd = QtGui.QPushButton(self.groupBox)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -122,7 +125,7 @@ class Ui_NuevaPlantilla(object):
         self.btnAdd.setSizePolicy(sizePolicy)
         self.btnAdd.setLayoutDirection(QtCore.Qt.RightToLeft)
         self.btnAdd.setObjectName("btnAdd")
-        self.gridLayout.addWidget(self.btnAdd, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.btnAdd, 2, 0, 1, 1)
         self.horizontalLayout.addWidget(self.groupBox)
         self.gridLayout_2.addLayout(self.horizontalLayout, 0, 0, 1, 1)
 

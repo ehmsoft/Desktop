@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>337</width>
-    <height>455</height>
+    <height>472</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -125,13 +125,6 @@
               </property>
              </widget>
             </item>
-            <item row="10" column="0">
-             <widget class="QLabel" name="label_11">
-              <property name="text">
-               <string>Notas:</string>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="1">
              <widget class="QLabel" name="lblDemandante">
               <property name="cursor">
@@ -229,12 +222,23 @@
             <item row="9" column="1">
              <widget class="QDateTimeEdit" name="dteFecha"/>
             </item>
-            <item row="10" column="1">
+           </layout>
+          </item>
+          <item row="1" column="0">
+           <layout class="QFormLayout" name="formLayout_2">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_11">
+              <property name="text">
+               <string>Notas:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
              <widget class="QTextEdit" name="txtNotas"/>
             </item>
            </layout>
           </item>
-          <item row="1" column="0">
+          <item row="2" column="0">
            <widget class="QPushButton" name="btnAdd">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -274,7 +278,7 @@
             <x>0</x>
             <y>0</y>
             <width>307</width>
-            <height>341</height>
+            <height>356</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_5">

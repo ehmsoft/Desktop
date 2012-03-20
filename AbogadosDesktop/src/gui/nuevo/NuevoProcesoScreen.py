@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'nuevoProceso.ui'
 #
-# Created: Wed Feb 15 20:56:43 2012
+# Created: Mon Mar 19 22:53:04 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_NuevoProceso(object):
     def setupUi(self, NuevoProceso):
         NuevoProceso.setObjectName("NuevoProceso")
-        NuevoProceso.resize(337, 455)
+        NuevoProceso.resize(337, 472)
         self.gridLayout_2 = QtGui.QGridLayout(NuevoProceso)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.buttonBox = QtGui.QDialogButtonBox(NuevoProceso)
@@ -69,9 +69,6 @@ class Ui_NuevoProceso(object):
         self.label_10 = QtGui.QLabel(self.groupBox)
         self.label_10.setObjectName("label_10")
         self.formLayout.setWidget(9, QtGui.QFormLayout.LabelRole, self.label_10)
-        self.label_11 = QtGui.QLabel(self.groupBox)
-        self.label_11.setObjectName("label_11")
-        self.formLayout.setWidget(10, QtGui.QFormLayout.LabelRole, self.label_11)
         self.lblDemandante = QtGui.QLabel(self.groupBox)
         self.lblDemandante.setCursor(QtCore.Qt.PointingHandCursor)
         self.lblDemandante.setFocusPolicy(QtCore.Qt.ClickFocus)
@@ -115,10 +112,16 @@ class Ui_NuevoProceso(object):
         self.dteFecha = QtGui.QDateTimeEdit(self.groupBox)
         self.dteFecha.setObjectName("dteFecha")
         self.formLayout.setWidget(9, QtGui.QFormLayout.FieldRole, self.dteFecha)
+        self.gridLayout.addLayout(self.formLayout, 0, 0, 1, 1)
+        self.formLayout_2 = QtGui.QFormLayout()
+        self.formLayout_2.setObjectName("formLayout_2")
+        self.label_11 = QtGui.QLabel(self.groupBox)
+        self.label_11.setObjectName("label_11")
+        self.formLayout_2.setWidget(0, QtGui.QFormLayout.LabelRole, self.label_11)
         self.txtNotas = QtGui.QTextEdit(self.groupBox)
         self.txtNotas.setObjectName("txtNotas")
-        self.formLayout.setWidget(10, QtGui.QFormLayout.FieldRole, self.txtNotas)
-        self.gridLayout.addLayout(self.formLayout, 0, 0, 1, 1)
+        self.formLayout_2.setWidget(0, QtGui.QFormLayout.FieldRole, self.txtNotas)
+        self.gridLayout.addLayout(self.formLayout_2, 1, 0, 1, 1)
         self.btnAdd = QtGui.QPushButton(self.groupBox)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -127,7 +130,7 @@ class Ui_NuevoProceso(object):
         self.btnAdd.setSizePolicy(sizePolicy)
         self.btnAdd.setLayoutDirection(QtCore.Qt.RightToLeft)
         self.btnAdd.setObjectName("btnAdd")
-        self.gridLayout.addWidget(self.btnAdd, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.btnAdd, 2, 0, 1, 1)
         self.gridLayout_3.addWidget(self.groupBox, 0, 0, 1, 1)
         self.tabWidget.addTab(self.Proceso, "")
         self.Actuaciones = QtGui.QWidget()
@@ -138,7 +141,7 @@ class Ui_NuevoProceso(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 307, 341))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 307, 356))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.gridLayout_5 = QtGui.QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_5.setObjectName("gridLayout_5")
@@ -178,7 +181,6 @@ class Ui_NuevoProceso(object):
         self.label_8.setText(QtGui.QApplication.translate("NuevoProceso", "Categoría:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_9.setText(QtGui.QApplication.translate("NuevoProceso", "Prioridad:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_10.setText(QtGui.QApplication.translate("NuevoProceso", "Fecha de creación:", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_11.setText(QtGui.QApplication.translate("NuevoProceso", "Notas:", None, QtGui.QApplication.UnicodeUTF8))
         self.lblDemandante.setToolTip(QtGui.QApplication.translate("NuevoProceso", "Click derecho para más opciones", None, QtGui.QApplication.UnicodeUTF8))
         self.lblDemandante.setText(QtGui.QApplication.translate("NuevoProceso", "vacío", None, QtGui.QApplication.UnicodeUTF8))
         self.lblDemandado.setToolTip(QtGui.QApplication.translate("NuevoProceso", "Click derecho para más opciones", None, QtGui.QApplication.UnicodeUTF8))
@@ -187,6 +189,7 @@ class Ui_NuevoProceso(object):
         self.lblJuzgado.setText(QtGui.QApplication.translate("NuevoProceso", "vacío", None, QtGui.QApplication.UnicodeUTF8))
         self.lblCategoria.setToolTip(QtGui.QApplication.translate("NuevoProceso", "Click derecho para más opciones", None, QtGui.QApplication.UnicodeUTF8))
         self.lblCategoria.setText(QtGui.QApplication.translate("NuevoProceso", "Ninguna", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_11.setText(QtGui.QApplication.translate("NuevoProceso", "Notas:", None, QtGui.QApplication.UnicodeUTF8))
         self.btnAdd.setToolTip(QtGui.QApplication.translate("NuevoProceso", "Agregar un campo personalizado", None, QtGui.QApplication.UnicodeUTF8))
         self.btnAdd.setText(QtGui.QApplication.translate("NuevoProceso", "+", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.Proceso), QtGui.QApplication.translate("NuevoProceso", "Proceso", None, QtGui.QApplication.UnicodeUTF8))
