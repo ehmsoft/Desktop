@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'verPlantilla.ui'
 #
-# Created: Sat Jan 28 10:38:20 2012
-#      by: pyside-uic 0.2.13 running on PySide 1.0.7
+# Created: Mon Mar 19 22:45:40 2012
+#      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_VerPlantilla(object):
     def setupUi(self, VerPlantilla):
         VerPlantilla.setObjectName("VerPlantilla")
-        VerPlantilla.resize(323, 364)
+        VerPlantilla.resize(292, 292)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -32,6 +32,10 @@ class Ui_VerPlantilla(object):
         self.lbl0 = QtGui.QLabel(self.groupBox)
         self.lbl0.setObjectName("lbl0")
         self.formLayout.setWidget(0, QtGui.QFormLayout.LabelRole, self.lbl0)
+        self.lblNombre = QtGui.QLabel(self.groupBox)
+        self.lblNombre.setText("")
+        self.lblNombre.setObjectName("lblNombre")
+        self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.lblNombre)
         self.lbl1 = QtGui.QLabel(self.groupBox)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -113,30 +117,23 @@ class Ui_VerPlantilla(object):
         self.lblTipo.setText("")
         self.lblTipo.setObjectName("lblTipo")
         self.formLayout.setWidget(8, QtGui.QFormLayout.FieldRole, self.lblTipo)
-        self.lbl10 = QtGui.QLabel(self.groupBox)
-        self.lbl10.setObjectName("lbl10")
-        self.formLayout.setWidget(9, QtGui.QFormLayout.LabelRole, self.lbl10)
-        self.lblNotas = QtGui.QLabel(self.groupBox)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.lblNotas.sizePolicy().hasHeightForWidth())
-        self.lblNotas.setSizePolicy(sizePolicy)
-        self.lblNotas.setText("")
-        self.lblNotas.setObjectName("lblNotas")
-        self.formLayout.setWidget(9, QtGui.QFormLayout.FieldRole, self.lblNotas)
         self.lbl11 = QtGui.QLabel(self.groupBox)
         self.lbl11.setObjectName("lbl11")
-        self.formLayout.setWidget(10, QtGui.QFormLayout.LabelRole, self.lbl11)
+        self.formLayout.setWidget(9, QtGui.QFormLayout.LabelRole, self.lbl11)
         self.lblPrioridad = QtGui.QLabel(self.groupBox)
         self.lblPrioridad.setText("")
         self.lblPrioridad.setObjectName("lblPrioridad")
-        self.formLayout.setWidget(10, QtGui.QFormLayout.FieldRole, self.lblPrioridad)
-        self.lblNombre = QtGui.QLabel(self.groupBox)
-        self.lblNombre.setText("")
-        self.lblNombre.setObjectName("lblNombre")
-        self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.lblNombre)
+        self.formLayout.setWidget(9, QtGui.QFormLayout.FieldRole, self.lblPrioridad)
         self.gridLayout_2.addLayout(self.formLayout, 0, 0, 1, 1)
+        self.formLayout_2 = QtGui.QFormLayout()
+        self.formLayout_2.setObjectName("formLayout_2")
+        self.lbl10 = QtGui.QLabel(self.groupBox)
+        self.lbl10.setObjectName("lbl10")
+        self.formLayout_2.setWidget(0, QtGui.QFormLayout.LabelRole, self.lbl10)
+        self.lblNotas = QtGui.QTextBrowser(self.groupBox)
+        self.lblNotas.setObjectName("lblNotas")
+        self.formLayout_2.setWidget(0, QtGui.QFormLayout.FieldRole, self.lblNotas)
+        self.gridLayout_2.addLayout(self.formLayout_2, 1, 0, 1, 1)
         self.gridLayout.addWidget(self.groupBox, 0, 0, 1, 1)
 
         self.retranslateUi(VerPlantilla)
@@ -145,6 +142,8 @@ class Ui_VerPlantilla(object):
     def retranslateUi(self, VerPlantilla):
         VerPlantilla.setWindowTitle(QtGui.QApplication.translate("VerPlantilla", "Ver Plantilla", None, QtGui.QApplication.UnicodeUTF8))
         self.lbl0.setText(QtGui.QApplication.translate("VerPlantilla", "Nombre:", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblNombre.setToolTip(QtGui.QApplication.translate("VerPlantilla", "Nombre descriptivo para la plantilla", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblNombre.setStatusTip(QtGui.QApplication.translate("VerPlantilla", "Nombre descriptivo para la plantilla", None, QtGui.QApplication.UnicodeUTF8))
         self.lbl1.setText(QtGui.QApplication.translate("VerPlantilla", "Demandante:", None, QtGui.QApplication.UnicodeUTF8))
         self.lblDemandante.setToolTip(QtGui.QApplication.translate("VerPlantilla", "El nombre del demandante", None, QtGui.QApplication.UnicodeUTF8))
         self.lblDemandante.setStatusTip(QtGui.QApplication.translate("VerPlantilla", "El nombre del demandante", None, QtGui.QApplication.UnicodeUTF8))
@@ -169,12 +168,8 @@ class Ui_VerPlantilla(object):
         self.lbl9.setText(QtGui.QApplication.translate("VerPlantilla", "Tipo:", None, QtGui.QApplication.UnicodeUTF8))
         self.lblTipo.setToolTip(QtGui.QApplication.translate("VerPlantilla", "El tipo de proceso", None, QtGui.QApplication.UnicodeUTF8))
         self.lblTipo.setStatusTip(QtGui.QApplication.translate("VerPlantilla", "El tipo de proceso", None, QtGui.QApplication.UnicodeUTF8))
-        self.lbl10.setText(QtGui.QApplication.translate("VerPlantilla", "Notas:", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblNotas.setToolTip(QtGui.QApplication.translate("VerPlantilla", "Las notas sobre el proceso", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblNotas.setStatusTip(QtGui.QApplication.translate("VerPlantilla", "Las notas sobre el proceso", None, QtGui.QApplication.UnicodeUTF8))
         self.lbl11.setText(QtGui.QApplication.translate("VerPlantilla", "Prioridad:", None, QtGui.QApplication.UnicodeUTF8))
         self.lblPrioridad.setToolTip(QtGui.QApplication.translate("VerPlantilla", "La prioridad del proceso", None, QtGui.QApplication.UnicodeUTF8))
         self.lblPrioridad.setStatusTip(QtGui.QApplication.translate("VerPlantilla", "La prioridad del proceso", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblNombre.setToolTip(QtGui.QApplication.translate("VerPlantilla", "Nombre descriptivo para la plantilla", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblNombre.setStatusTip(QtGui.QApplication.translate("VerPlantilla", "Nombre descriptivo para la plantilla", None, QtGui.QApplication.UnicodeUTF8))
+        self.lbl10.setText(QtGui.QApplication.translate("VerPlantilla", "Notas:", None, QtGui.QApplication.UnicodeUTF8))
 

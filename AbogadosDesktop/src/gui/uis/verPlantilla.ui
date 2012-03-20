@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>323</width>
-    <height>364</height>
+    <width>292</width>
+    <height>292</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -38,6 +38,19 @@
          <widget class="QLabel" name="lbl0">
           <property name="text">
            <string>Nombre:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLabel" name="lblNombre">
+          <property name="toolTip">
+           <string>Nombre descriptivo para la plantilla</string>
+          </property>
+          <property name="statusTip">
+           <string>Nombre descriptivo para la plantilla</string>
+          </property>
+          <property name="text">
+           <string/>
           </property>
          </widget>
         </item>
@@ -232,39 +245,13 @@
          </widget>
         </item>
         <item row="9" column="0">
-         <widget class="QLabel" name="lbl10">
-          <property name="text">
-           <string>Notas:</string>
-          </property>
-         </widget>
-        </item>
-        <item row="9" column="1">
-         <widget class="QLabel" name="lblNotas">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Las notas sobre el proceso</string>
-          </property>
-          <property name="statusTip">
-           <string>Las notas sobre el proceso</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="10" column="0">
          <widget class="QLabel" name="lbl11">
           <property name="text">
            <string>Prioridad:</string>
           </property>
          </widget>
         </item>
-        <item row="10" column="1">
+        <item row="9" column="1">
          <widget class="QLabel" name="lblPrioridad">
           <property name="toolTip">
            <string>La prioridad del proceso</string>
@@ -277,18 +264,19 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QLabel" name="lblNombre">
-          <property name="toolTip">
-           <string>Nombre descriptivo para la plantilla</string>
-          </property>
-          <property name="statusTip">
-           <string>Nombre descriptivo para la plantilla</string>
-          </property>
+       </layout>
+      </item>
+      <item row="1" column="0">
+       <layout class="QFormLayout" name="formLayout_2">
+        <item row="0" column="0">
+         <widget class="QLabel" name="lbl10">
           <property name="text">
-           <string/>
+           <string>Notas:</string>
           </property>
          </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QTextBrowser" name="lblNotas"/>
         </item>
        </layout>
       </item>
