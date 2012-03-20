@@ -92,7 +92,7 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
                     if self.__tipo is 1:
                         p.guardarCampoDemandante(campoPersonalizado = campo, id_demandante = self.__persona.getId_persona())
                     else:
-                        p.guardarCampoDemandado(campoPersonalizado = campo, id_demandante = self.__persona.getId_persona())
+                        p.guardarCampoDemandado(campoPersonalizado = campo, id_demandado = self.__persona.getId_persona())
                 self.__persona.setNombre(self.txtNombre.text())
                 self.__persona.setId(self.txtCedula.text())
                 self.__persona.setTelefono(self.txtTelefono.text())
