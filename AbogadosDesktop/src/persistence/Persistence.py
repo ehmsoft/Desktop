@@ -1083,6 +1083,7 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
+        actuacion.setJuzgado(self.consultarJuzgado(actuacion.getJuzgado().getId_juzgado()))
         actuacion.setCampos(self.consultarCamposActuacion(actuacion))
         return actuacion
     
