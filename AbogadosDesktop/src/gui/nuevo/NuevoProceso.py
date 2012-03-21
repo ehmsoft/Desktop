@@ -50,7 +50,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             self.setWindowTitle("Editar proceso")
             
         self.__proceso = proceso
-        self.connect(self.btnAdd_2, QtCore.SIGNAL("clicked()"), self.__addActuacion)
+        self.connect(self.btnAdd_2, QtCore.SIGNAL("clicked()"), self.addActuacion)
         campos = []
         self.__actuaciones = []
         self.__demandante = None
@@ -98,7 +98,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         else:
             self.dteFecha.setDateTime(datetime.today())
             
-        self.__cargarActuaciones()
+        self.cargarActuaciones()
         
         self.__dialogo = DialogoAuxiliar(self)
                 
@@ -108,30 +108,30 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         self.__clickCategoria()
         self.__clickFecha()
         
-        cambiar = self.__createAction("Cambiar", self.__cambiarJuzgado)
+        cambiar = self.createAction("Cambiar", self.__cambiarJuzgado)
         cambiar.setData(self.lblJuzgado)
-        editar = self.__createAction("Editar", self.__editarJuzgado)
+        editar = self.createAction("Editar", self.__editarJuzgado)
         editar.setData(self.lblJuzgado)
         
         self.lblJuzgado.addActions([cambiar, editar])
         
-        cambiar = self.__createAction("Cambiar", self.__cambiarDemandante)
+        cambiar = self.createAction("Cambiar", self.__cambiarDemandante)
         cambiar.setData(self.lblDemandante)
-        editar = self.__createAction("Editar", self.__editarDemandante)
+        editar = self.createAction("Editar", self.__editarDemandante)
         editar.setData(self.lblDemandante)
         
         self.lblDemandante.addActions([cambiar, editar])
         
-        cambiar = self.__createAction("Cambiar", self.__cambiarDemandado)
+        cambiar = self.createAction("Cambiar", self.__cambiarDemandado)
         cambiar.setData(self.lblDemandado)
-        editar = self.__createAction("Editar", self.__editarDemandado)
+        editar = self.createAction("Editar", self.__editarDemandado)
         editar.setData(self.lblDemandado)
         
         self.lblDemandado.addActions([cambiar, editar])
         
-        cambiar = self.__createAction("Cambiar", self.__cambiarCategoria)
+        cambiar = self.createAction("Cambiar", self.__cambiarCategoria)
         cambiar.setData(self.lblCategoria)
-        editar = self.__createAction("Editar", self.__editarCategoria)
+        editar = self.createAction("Editar", self.__editarCategoria)
         editar.setData(self.lblCategoria)
         
         self.lblCategoria.addActions([cambiar, editar])
@@ -329,7 +329,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     def __guardar(self):
         del(self.__dialogo)
         try:
-            self.__organizarActuaciones()
+            self.organizarActuaciones()
             p = Persistence()
             demandante = self.__demandante
             demandado = self.__demandado
@@ -380,13 +380,13 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     def getProceso(self):
         return self.__proceso
     
-    def __createAction(self, text, slot = None):
+    def createAction(self, text, slot = None):
         action = QtGui.QAction(text, self)
         if slot is not None:
             self.connect(action, QtCore.SIGNAL("triggered()"), slot)
         return action 
     
-    def __organizarActuaciones(self):
+    def organizarActuaciones(self):
         if self.__proceso is not None:
             actuacionesOriginales = self.__proceso.getActuaciones()
             actuaciones = self.__actuaciones
@@ -400,9 +400,9 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
                     if viejaActuacion not in actuaciones:
                         p.borrarActuacion(viejaActuacion)
             except Exception, e:
-                print "__organizarActuaciones -> %s" % e                    
+                print "organizarActuaciones -> %s" % e                    
                 
-    def __editarActuacion(self):
+    def editarActuacion(self):
         index = self.verticalLayout.indexOf(self.sender().data())
         dialogo = NuevaActuacion(actuacion = self.__actuaciones[index], parent = self)
         if dialogo.exec_():
@@ -414,7 +414,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         del(dialogo)
             
     
-    def __eliminarActuacion(self):
+    def eliminarActuacion(self):
         index = self.verticalLayout.indexOf(self.sender().data())
         actuacion = self.__actuaciones[index]
         message = QtGui.QMessageBox()
@@ -431,31 +431,31 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             self.__dirty = True       
         del(message)         
                 
-    def __cargarActuaciones(self):
+    def cargarActuaciones(self):
         if len(self.__actuaciones) is not 0:
             for actuacion in self.__actuaciones:
                 vista = VerActuacion(actuacion = actuacion, parent = self)
                 vista.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-                editar = self.__createAction("Editar", self.__editarActuacion)
+                editar = self.createAction("Editar", self.editarActuacion)
                 editar.setData(vista)
-                eliminar = self.__createAction("Eliminar", self.__eliminarActuacion)
+                eliminar = self.createAction("Eliminar", self.eliminarActuacion)
                 eliminar.setData(vista)
                 vista.addActions([editar, eliminar])
                 self.verticalLayout.addWidget(vista)
     
-    def __addActuacion(self, actuacion = None):
+    def addActuacion(self, actuacion = None):
         if actuacion is None:
             dialogo = NuevaActuacion(parent = self)
             if dialogo.exec_():
                 actuacion = dialogo.getActuacion()
-                self.__addActuacion(actuacion)
+                self.addActuacion(actuacion)
             del(dialogo)
         else:
             vista = VerActuacion(actuacion = actuacion, parent = self)
             vista.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-            editar = self.__createAction("Editar", self.__editarActuacion)
+            editar = self.createAction("Editar", self.editarActuacion)
             editar.setData(vista)
-            eliminar = self.__createAction("Eliminar", self.__eliminarActuacion)
+            eliminar = self.createAction("Eliminar", self.eliminarActuacion)
             eliminar.setData(vista)
             vista.addActions([editar, eliminar])
             self.verticalLayout.addWidget(vista)
