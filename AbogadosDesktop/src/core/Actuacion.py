@@ -118,7 +118,7 @@ class Actuacion(object):
             raise TypeError('Tipo de dato no admitido')
     
     def __str__(self):
-        return self.getDescripcion()
+        return unicode("{0}\n  Fecha:{1}\n  Pr—xima:{2}\n  {0}").format(self.getDescripcion(), self.getFecha(),self.getFechaProxima(), self.getJuzgado())
     
     def __eq__(self, other):
         if other is None:
