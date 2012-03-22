@@ -13,6 +13,7 @@ from core.Categoria import Categoria
 from core.Juzgado import Juzgado
 from core.Plantilla import Plantilla
 from core.Archivo import Archivo
+from core.ActuacionCritica import ActuacionCritica
 
 class Persistence(object):
     '''
@@ -1098,12 +1099,13 @@ class Persistence(object):
             for row in c:
                 id_actuacion = str(row['id_actuacion'])
                 id_juzgado = str(row['id_juzgado'])
+                id_proceso = str(row['id_proceso'])
                 fecha_creacion = row['fecha_creacion']
                 fecha_proxima = row['fecha_proxima']
                 descripcion = row['descripcion']
                 uid = row['uid']
                 juzgado = Juzgado(id_juzgado = id_juzgado)
-                actuacion = Actuacion(juzgado = juzgado, fecha = fecha_creacion, fechaProxima = fecha_proxima, descripcion = descripcion, id_actuacion = id_actuacion, uid = uid)
+                actuacion = ActuacionCritica(juzgado = juzgado, fecha = fecha_creacion, fechaProxima = fecha_proxima, descripcion = descripcion, id_proceso=id_proceso, id_actuacion = id_actuacion, uid = uid)
                 actuaciones.append(actuacion)
         except Exception as e:
             raise e
