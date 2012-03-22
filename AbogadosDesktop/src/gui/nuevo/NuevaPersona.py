@@ -120,11 +120,9 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
             message.setDefaultButton(QtGui.QMessageBox.No)
             message.setText(unicode("¿Desea guardar sin agregar un teléfono?"))
             ret = message.exec_()
-            if ret == QtGui.QMessageBox.Yes:
-                self.__guardar()
-            else:
-                self.txtTelefono.setFocus()            
-        elif self.__gestor.organizarCampos():
+            if ret == QtGui.QMessageBox.No:
+                self.txtTelefono.setFocus()          
+        if self.__gestor.organizarCampos():
             self.__guardar()
             
     def reject(self):
