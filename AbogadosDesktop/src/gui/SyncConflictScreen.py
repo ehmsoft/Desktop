@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'syncConflictDialog.ui'
+# Form implementation generated from reading ui file 'uis/syncConflictDialog.ui'
 #
-# Created: Wed Mar 21 16:07:54 2012
+# Created: Wed Mar 21 19:19:00 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -52,6 +52,14 @@ class Ui_SyncConflictDialog(object):
         self.btnSeleccionMovil = QtGui.QPushButton(SyncConflictDialog)
         self.btnSeleccionMovil.setObjectName("btnSeleccionMovil")
         self.gridLayout.addWidget(self.btnSeleccionMovil, 3, 3, 1, 1)
+        self.lblFechaLocal = QtGui.QLabel(SyncConflictDialog)
+        self.lblFechaLocal.setText("")
+        self.lblFechaLocal.setObjectName("lblFechaLocal")
+        self.gridLayout.addWidget(self.lblFechaLocal, 1, 1, 1, 1)
+        self.lblFechaMovil = QtGui.QLabel(SyncConflictDialog)
+        self.lblFechaMovil.setText("")
+        self.lblFechaMovil.setObjectName("lblFechaMovil")
+        self.gridLayout.addWidget(self.lblFechaMovil, 1, 3, 1, 1)
 
         self.retranslateUi(SyncConflictDialog)
         QtCore.QMetaObject.connectSlotsByName(SyncConflictDialog)

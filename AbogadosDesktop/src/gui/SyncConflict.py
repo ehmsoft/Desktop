@@ -23,7 +23,7 @@ from gui.ver.VerActuacion import VerActuacion
 from gui.SyncConflictScreen import Ui_SyncConflictDialog
 
 class SyncConflict(QDialog, Ui_SyncConflictDialog):
-    def __init__(self, local, movil, parent = None):
+    def __init__(self, local, movil, fechaLocal=None, fechaMovil=None,parent = None):
         super(SyncConflict, self).__init__(parent)
         self.setupUi(self)
         if isinstance(local, Proceso):
@@ -68,7 +68,10 @@ class SyncConflict(QDialog, Ui_SyncConflictDialog):
             self.gridLayout.setColumnMinimumWidth(0,self.verLocal.sizeHint().width())
             self.gridLayout.setColumnMinimumWidth(2,self.verLocal.sizeHint().width())
             self.gridLayout.setRowMinimumHeight(2, self.verMovil.sizeHint().height())
-        
+        if fechaLocal:
+            self.lblFechaLocal.setText(unicode(fechaLocal))
+        if fechaMovil:
+            self.lblFechaMovil.setText(unicode(fechaMovil))
         self.gridLayout.addWidget(self.verLocal, 2, 0, 1, 2)
         self.gridLayout.addWidget(self.verMovil, 2, 2, 1, 2)
         self.__seleccionado = True
