@@ -313,7 +313,7 @@ class SyncManager(object):
                     if modificado:
                         demandante_local = Persistence().consultarPersona(id_demandante, 1)
                         demandante_movil = Persona(tipo=1, id=cedula, nombre=nombre, telefono=telefono, direccion=direccion, correo=correo, notas=notas, id_persona=unicode(id_demandante))
-                        if not SyncConflict(demandante_local, demandante_movil).getSeleccionado():
+                        if not SyncConflict(local=demandante_local, movil=demandante_movil, fechaLocal=fecha_modLocal, fechaMovil=fecha_mod).getSeleccionado():
                             cLocal.execute('''UPDATE demandantes SET cedula = ?, nombre = ?, telefono = ?, direccion = ?, correo = ?, notas = ? WHERE id_demandante = ?''', (cedula, nombre, telefono, direccion, correo, notas, id_demandante,))
                     else:
                         cLocal.execute('''UPDATE demandantes SET cedula = ?, nombre = ?, telefono = ?, direccion = ?, correo = ?, notas = ? WHERE id_demandante = ?''', (cedula, nombre, telefono, direccion, correo, notas, id_demandante,))
@@ -340,7 +340,7 @@ class SyncManager(object):
                     if modificado:
                         demandado_local = Persistence().consultarPersona(id_demandado, 2)
                         demandado_movil = Persona(tipo=2, id=cedula, nombre=nombre, telefono=telefono, direccion=direccion, correo=correo, notas=notas, id_persona=unicode(id_demandado))
-                        if not SyncConflict(local=demandado_local, movil=demandado_movil).getSeleccionado():
+                        if not SyncConflict(local=demandado_local, movil=demandado_movil, fechaLocal=fecha_modLocal, fechaMovil=fecha_mod).getSeleccionado():
                             cLocal.execute('''UPDATE demandados SET cedula = ?, nombre = ?, telefono = ?, direccion = ?, correo = ?, notas = ? WHERE id_demandado = ?''', (cedula, nombre, telefono, direccion, correo, notas, id_demandado,))
                     else:
                         cLocal.execute('''UPDATE demandados SET cedula = ?, nombre = ?, telefono = ?, direccion = ?, correo = ?, notas = ? WHERE id_demandado = ?''', (cedula, nombre, telefono, direccion, correo, notas, id_demandado,))
@@ -366,7 +366,7 @@ class SyncManager(object):
                     if modificado:
                         juzgado_local = Persistence().consultarJuzgado(id_juzgado)
                         juzgado_movil = Juzgado(nombre=nombre, ciudad=ciudad, direccion=direccion, telefono=telefono, tipo=tipo, id_juzgado=unicode(id_juzgado))
-                        if not SyncConflict(local=juzgado_local, movil=juzgado_movil).getSeleccionado():
+                        if not SyncConflict(local=juzgado_local, movil=juzgado_movil, fechaLocal=fecha_modLocal, fechaMovil=fecha_mod).getSeleccionado():
                             cLocal.execute('''UPDATE juzgados SET nombre = ?, ciudad = ?, telefono = ?, direccion = ?, tipo = ? WHERE id_juzgado = ?''', (nombre, ciudad, telefono, direccion, tipo, id_juzgado,))
                     else:
                         cLocal.execute('''UPDATE juzgados SET nombre = ?, ciudad = ?, telefono = ?, direccion = ?, tipo = ? WHERE id_juzgado = ?''', (nombre, ciudad, telefono, direccion, tipo, id_juzgado,))
@@ -388,7 +388,7 @@ class SyncManager(object):
                     if modificado:
                         categoria_local = Persistence().consultarCategoria(id_categoria)
                         categoria_movil = Categoria(descripcion=descripcion, id_categoria=unicode(id_categoria))
-                        if not SyncConflict(local=categoria_local, movil=categoria_movil).getSeleccionado():
+                        if not SyncConflict(local=categoria_local, movil=categoria_movil, fechaLocal=fecha_modLocal, fechaMovil=fecha_mod).getSeleccionado():
                             cLocal.execute('''UPDATE categorias SET descripcion = ? WHERE id_categoria = ?''', (descripcion, id_categoria,))
                     else:
                         cLocal.execute('''UPDATE categorias SET descripcion = ? WHERE id_categoria = ?''', (descripcion, id_categoria,))
@@ -417,7 +417,7 @@ class SyncManager(object):
                         else:
                             ob = False
                         atributo_movil = CampoPersonalizado(nombre=nombre, obligatorio=ob, longitudMax= longitud_max, longitudMin= longitud_min, id_atributo=unicode(id_atributo))
-                        if not SyncConflict(local=atributo_local, movil=atributo_movil).getSeleccionado():
+                        if not SyncConflict(local=atributo_local, movil=atributo_movil, fechaLocal=fecha_modLocal, fechaMovil=fecha_mod).getSeleccionado():
                             cLocal.execute('''UPDATE atributos SET nombre = ?, obligatorio = ?, longitud_max = ?, longitud_min = ? WHERE id_atributo = ?''', (nombre, obligatorio, longitud_max, longitud_min, id_atributo,))
                     else:
                         cLocal.execute('''UPDATE atributos SET nombre = ?, obligatorio = ?, longitud_max = ?, longitud_min = ? WHERE id_atributo = ?''', (nombre, obligatorio, longitud_max, longitud_min, id_atributo,))
@@ -454,7 +454,7 @@ class SyncManager(object):
                         juzgado = p.consultarJuzgado(id_juzgado)
                         categoria = p.consultarCategoria(id_categoria)
                         proceso_movil = Proceso(demandante=demandante, demandado=demandado, fecha=fecha_creacion, juzgado=juzgado, radicado=radicado, radicadoUnico=radicado_unico, actuaciones=[],estado=estado, categoria=categoria, tipo=tipo, notas=notas, prioridad=int(prioridad), id_proceso=unicode(id_proceso))
-                        if not SyncConflict(local=proceso_local, movil=proceso_movil).getSeleccionado():
+                        if not SyncConflict(local=proceso_local, movil=proceso_movil, fechaLocal=fecha_modLocal, fechaMovil=fecha_mod).getSeleccionado():
                             cLocal.execute('''UPDATE procesos SET id_demandante = ?, id_demandado = ?, fecha_creacion = ?, radicado = ?, radicado_unico = ?, estado = ?, tipo = ?, notas = ?, prioridad = ?, id_juzgado = ?, id_categoria = ?  WHERE id_proceso = ?''', (id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, id_proceso,))
                         del p
                     else:
@@ -492,7 +492,7 @@ class SyncManager(object):
                         juzgado = p.consultarJuzgado(id_juzgado)
                         categoria = p.consultarCategoria(id_categoria)
                         plantilla_movil = Plantilla(nombre=nombre,demandante=demandante, demandado=demandado, juzgado=juzgado, radicado=radicado, radicadoUnico=radicado_unico, estado=estado, categoria=categoria, tipo=tipo, notas=notas, campos = [],prioridad=int(prioridad), id_plantilla=unicode(id_plantilla))
-                        if not SyncConflict(local=plantilla_local, movil=plantilla_movil).getSeleccionado():
+                        if not SyncConflict(local=plantilla_local, movil=plantilla_movil, fechaLocal=fecha_modLocal, fechaMovil=fecha_mod).getSeleccionado():
                             cLocal.execute('''UPDATE plantillas SET nombre = ?, id_demandante = ?, id_demandado = ?, radicado = ?, radicado_unico = ?, estado = ?, tipo = ?, notas = ?, prioridad = ?, id_juzgado = ?, id_categoria = ?  WHERE id_plantilla = ?''', (nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, id_plantilla,))
                         del p
                     else:
@@ -521,7 +521,7 @@ class SyncManager(object):
                         actuacion_local = p.consultarActuacion(id_actuacion)
                         juzgado = p.consultarJuzgado(id_juzgado)
                         actuacion_movil = Actuacion(juzgado=juzgado, fecha=fecha_creacion, fechaProxima=fecha_proxima, descripcion=descripcion, id_actuacion=unicode(id_actuacion))
-                        if not SyncConflict(local=actuacion_local, movil=actuacion_movil).getSeleccionado():
+                        if not SyncConflict(local=actuacion_local, movil=actuacion_movil, fechaLocal=fecha_modLocal, fechaMovil=fecha_mod).getSeleccionado():
                             cLocal.execute('''UPDATE actuaciones SET id_proceso = ?, id_juzgado = ?, fecha_creacion = ?, fecha_proxima = ?, descripcion = ?, uid = ? WHERE id_actuacion = ?''', (id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid, id_actuacion,))
                         del p
                     else:
@@ -545,10 +545,11 @@ class SyncManager(object):
                     if modificado:
                         p = Persistence()
                         atributo_local = p.consultarCampo(id_atributo_proceso)
-                        atributo_movil = p.consultarCampo(id_atributo_proceso)
-                        atributo_movil.setValor(valor)
-                        if not SyncConflict(local=atributo_local, movil=atributo_movil).getSeleccionado():
-                            cLocal.execute('''UPDATE atributos_proceso SET id_atributo = ?, id_proceso = ?, valor = ? WHERE id_atributo_proceso = ?''', (id_atributo, id_proceso, valor, id_atributo_proceso,))
+                        if valor != atributo_local.getValor():
+                            atributo_movil = p.consultarCampo(id_atributo_proceso)
+                            atributo_movil.setValor(valor)
+                            if not SyncConflict(local=atributo_local, movil=atributo_movil, fechaLocal=fecha_modLocal, fechaMovil=fecha_mod).getSeleccionado():
+                                cLocal.execute('''UPDATE atributos_proceso SET id_atributo = ?, id_proceso = ?, valor = ? WHERE id_atributo_proceso = ?''', (id_atributo, id_proceso, valor, id_atributo_proceso,))
                         del p
                     else:
                         cLocal.execute('''UPDATE atributos_proceso SET id_atributo = ?, id_proceso = ?, valor = ? WHERE id_atributo_proceso = ?''', (id_atributo, id_proceso, valor, id_atributo_proceso,))
@@ -571,10 +572,11 @@ class SyncManager(object):
                     if modificado:
                         p = Persistence()
                         atributo_local = p.consultarCampoPlantilla(id_atributo_plantilla)
-                        atributo_movil = p.consultarCampoPlantilla(id_atributo_plantilla)
-                        atributo_movil.setValor(valor)
-                        if not SyncConflict(local=atributo_local, movil=atributo_movil).getSeleccionado():
-                            cLocal.execute('''UPDATE atributos_plantilla SET id_atributo = ?, id_plantilla = ?, valor = ? WHERE id_atributo_plantilla = ?''', (id_atributo, id_plantilla, valor, id_atributo_plantilla,))
+                        if valor != atributo_local.getValor():
+                            atributo_movil = p.consultarCampoPlantilla(id_atributo_plantilla)
+                            atributo_movil.setValor(valor)
+                            if not SyncConflict(local=atributo_local, movil=atributo_movil, fechaLocal=fecha_modLocal, fechaMovil=fecha_mod).getSeleccionado():
+                                cLocal.execute('''UPDATE atributos_plantilla SET id_atributo = ?, id_plantilla = ?, valor = ? WHERE id_atributo_plantilla = ?''', (id_atributo, id_plantilla, valor, id_atributo_plantilla,))
                         del p
                     else:
                         cLocal.execute('''UPDATE atributos_plantilla SET id_atributo = ?, id_plantilla = ?, valor = ? WHERE id_atributo_plantilla = ?''', (id_atributo, id_plantilla, valor, id_atributo_plantilla,))
