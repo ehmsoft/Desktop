@@ -4,8 +4,7 @@ Created on 16/03/2012
 
 @author: elfotografo007
 '''
-from PySide.QtCore import *
-from PySide.QtGui import *
+from PySide import QtCore, QtGui
 from core.CampoPersonalizado import CampoPersonalizado
 from core.Categoria import Categoria
 from core.Juzgado import Juzgado
@@ -22,61 +21,41 @@ from gui.ver.VerCampoPersonalizado import VerCampoPersonalizado
 from gui.ver.VerActuacion import VerActuacion
 from gui.SyncConflictScreen import Ui_SyncConflictDialog
 
-class SyncConflict(QDialog, Ui_SyncConflictDialog):
+class SyncConflict(QtGui.QDialog, Ui_SyncConflictDialog):
     def __init__(self, local, movil, fechaLocal=None, fechaMovil=None,parent = None):
         super(SyncConflict, self).__init__(parent)
         self.setupUi(self)
         if isinstance(local, Proceso):
             self.verLocal = VerProceso(local)
             self.verMovil = VerProceso(movil)
-            self.gridLayout.setColumnMinimumWidth(0,self.verLocal.size().width())
-            self.gridLayout.setColumnMinimumWidth(2,self.verLocal.size().width())
-            self.gridLayout.setRowMinimumHeight(2, self.verMovil.size().height())
         elif isinstance(local, Plantilla):
             self.verLocal = VerPlantilla(local)
             self.verMovil = VerPlantilla(movil)
-            self.gridLayout.setColumnMinimumWidth(0,self.verLocal.sizeHint().width())
-            self.gridLayout.setColumnMinimumWidth(2,self.verLocal.sizeHint().width())
-            self.gridLayout.setRowMinimumHeight(2, self.verMovil.sizeHint().height())
         elif isinstance(local, Persona):
             self.verLocal = VerPersona(local)
             self.verMovil = VerPersona(movil)
-            self.gridLayout.setColumnMinimumWidth(0,self.verLocal.sizeHint().width())
-            self.gridLayout.setColumnMinimumWidth(2,self.verLocal.sizeHint().width())
-            self.gridLayout.setRowMinimumHeight(2, self.verMovil.sizeHint().height())
         elif isinstance(local, Juzgado):
             self.verLocal = VerJuzgado(local)
             self.verMovil = VerJuzgado(movil)
-            self.gridLayout.setColumnMinimumWidth(0,self.verLocal.sizeHint().width())
-            self.gridLayout.setColumnMinimumWidth(2,self.verLocal.sizeHint().width())
-            self.gridLayout.setRowMinimumHeight(2, self.verMovil.sizeHint().height())
         elif isinstance(local, Categoria):
             self.verLocal = VerCategoria(local)
             self.verMovil = VerCategoria(movil)
-            self.gridLayout.setColumnMinimumWidth(0,self.verLocal.sizeHint().width())
-            self.gridLayout.setColumnMinimumWidth(2,self.verLocal.sizeHint().width())
-            self.gridLayout.setRowMinimumHeight(2, self.verMovil.sizeHint().height())
         elif isinstance(local, CampoPersonalizado):
             self.verLocal = VerCampoPersonalizado(local)
             self.verMovil = VerCampoPersonalizado(movil)
-            self.gridLayout.setColumnMinimumWidth(0,self.verLocal.sizeHint().width())
-            self.gridLayout.setColumnMinimumWidth(2,self.verLocal.sizeHint().width())
-            self.gridLayout.setRowMinimumHeight(2, self.verMovil.sizeHint().height())
         elif isinstance(local, Actuacion):
             self.verLocal = VerActuacion(local)
             self.verMovil = VerActuacion(movil)
-            self.gridLayout.setColumnMinimumWidth(0,self.verLocal.sizeHint().width())
-            self.gridLayout.setColumnMinimumWidth(2,self.verLocal.sizeHint().width())
-            self.gridLayout.setRowMinimumHeight(2, self.verMovil.sizeHint().height())
         if fechaLocal:
             self.lblFechaLocal.setText(unicode(fechaLocal))
         if fechaMovil:
             self.lblFechaMovil.setText(unicode(fechaMovil))
-        self.gridLayout.addWidget(self.verLocal, 2, 0, 1, 2)
-        self.gridLayout.addWidget(self.verMovil, 2, 2, 1, 2)
+        self.localLayout.addWidget(self.verLocal)
+        self.mobileLayout.addWidget(self.verMovil)
         self.__seleccionado = True
-        self.connect(self.btnSeleccionLocal, SIGNAL("clicked()"), self.btnSeleccionLocalClicked)
-        self.connect(self.btnSeleccionMovil, SIGNAL("clicked()"), self.btnSeleccionMovilClicked)
+        self.connect(self.btnSeleccionLocal, QtCore.SIGNAL("clicked()"), self.btnSeleccionLocalClicked)
+        self.connect(self.btnSeleccionMovil, QtCore.SIGNAL("clicked()"), self.btnSeleccionMovilClicked)
+        self.updateGeometry()
         
     def btnSeleccionLocalClicked(self):
         self.__seleccionado = True
