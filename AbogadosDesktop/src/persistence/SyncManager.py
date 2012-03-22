@@ -44,6 +44,7 @@ class SyncManager(object):
             cMovil.execute('''DELETE FROM plantillas WHERE nuevo = 1 AND eliminado = 1''')
             cMovil.execute('''DELETE FROM atributos_proceso WHERE nuevo = 1 AND eliminado = 1''')
             cMovil.execute('''DELETE FROM atributos_plantilla WHERE nuevo = 1 AND eliminado = 1''')
+            cMovil.execute('''DELETE FROM citas WHERE nuevo = 1 AND eliminado = 1''')
             
             #Agregar +n y -e
             #Seccion demandantes
@@ -187,6 +188,15 @@ class SyncManager(object):
                 valor = row['valor']
                 cLocal.execute('''INSERT INTO atributos_plantilla(id_atributo, id_plantilla, valor, nuevo) VALUES (?,?,?,0)''', (id_atributo, id_plantilla, valor,))
             
+            #Seccion Citas
+            cMovil.execute('''SELECT  id_cita, uid,fecha as "fecha [timestamp]", anticipacion,id_actuacion FROM citas WHERE nuevo = 1 AND eliminado = 0''')
+            for row in cMovil:
+                id_actuacion = str(row['id_actuacion'])
+                fecha = row['fecha']
+                anticipacion = row['anticipacion']
+                uid = row['uid']
+                cLocal.execute('''INSERT INTO citas (id_cita,uid, fecha,anticipacion,id_actuacion, nuevo) VALUES( NULL,?,?,?,?,0)''', (uid,fecha,anticipacion,id_actuacion))
+                               
             #Bajar Flag +n -me
             cMovil.execute('''UPDATE demandantes SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')     
             cMovil.execute('''UPDATE demandados SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')   
@@ -198,6 +208,7 @@ class SyncManager(object):
             cMovil.execute('''UPDATE actuaciones SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')   
             cMovil.execute('''UPDATE atributos_proceso SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')   
             cMovil.execute('''UPDATE atributos_plantilla SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')
+            cMovil.execute('''UPDATE citas SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')  
               
             #Bajar Flag +nm -e
             cMovil.execute('''UPDATE demandantes SET nuevo = 0, modificado = 0 WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')     
@@ -210,6 +221,7 @@ class SyncManager(object):
             cMovil.execute('''UPDATE actuaciones SET nuevo = 0, modificado = 0 WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')   
             cMovil.execute('''UPDATE atributos_proceso SET nuevo = 0, modificado = 0 WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')   
             cMovil.execute('''UPDATE atributos_plantilla SET nuevo = 0, modificado = 0 WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')
+            cMovil.execute('''UPDATE citas SET nuevo = 0, modificado = 0 WHERE nuevo = 1 AND modificado = 1 AND eliminado = 0''')
             
             #Eliminar +e
             #Demandantes
@@ -309,6 +321,14 @@ class SyncManager(object):
                 id_atributo_plantilla = row['id_atributo_plantilla']
                 cLocal.execute('''DELETE FROM atributos_plantilla WHERE id_atributo_plantilla = ?''', (id_atributo_plantilla,))
             cMovil.execute('''DELETE FROM atributos_plantilla WHERE eliminado = 1''')
+            
+            #Citas
+            cMovil.execute('''SELECT id_cita FROM citas WHERE eliminado = 1''')
+            listaMovil = cMovil.fetchall()
+            for row in listaMovil:
+                id_cita = row['id_cita']
+                cLocal.execute('''DELETE FROM citas WHERE id_cita = ?''', (id_cita,))  
+            cMovil.execute('''DELETE FROM citas WHERE eliminado = 1''')
             
             #Actualizar +m 
             #Seccion demandantes
@@ -600,6 +620,30 @@ class SyncManager(object):
                         cLocal.execute('''UPDATE atributos_plantilla SET id_atributo = ?, id_plantilla = ?, valor = ? WHERE id_atributo_plantilla = ?''', (id_atributo, id_plantilla, valor, id_atributo_plantilla,))
                 else:
                     raise Exception('registro No encontrado')
+                
+            #Seccion Citas
+            cMovil.execute('''SELECT  fecha_mod as "fecha_mod [timestamp]",id_cita, uid,fecha as "fecha [timestamp]", anticipacion,id_actuacion FROM citas WHERE modificado = 1''')
+            listaCMovil = cMovil.fetchall()
+            for row in listaCMovil:
+                fecha_mod = row['fecha_mod']
+                id_actuacion = str(row['id_actuacion'])
+                id_cita = str(row['id_cita'])
+                fecha = row['fecha']
+                anticipacion = row['anticipacion']
+                uid = row['uid']
+                cLocal.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", modificado FROM citas WHERE id_cita = ? ''', (id_cita,))
+                row = cLocal.fetchone()
+                if row:
+                    modificado = row['modificado']
+                    fecha_modLocal = row['fecha_mod']
+                    if modificado:
+                        if fecha_mod > fecha_modLocal:
+                            cLocal.execute('''UPDATE citas SET uid=?, fecha=?,anticipacion=?,id_actuacion=?,WHERE id_cita=?''', (uid,fecha,anticipacion,id_actuacion,id_cita,))
+                    else:
+                        cLocal.execute('''UPDATE citas SET uid=?, fecha=?,anticipacion=?,id_actuacion=?,WHERE id_cita=?''', (uid,fecha,anticipacion,id_actuacion,id_cita,))
+                else:
+                    raise Exception('registro No encontrado')
+                
             #Bajar Flags +m
             cMovil.execute('''UPDATE demandantes SET modificado = 0 WHERE modificado = 1''')     
             cMovil.execute('''UPDATE demandados SET modificado = 0 WHERE modificado = 1''')   
@@ -611,6 +655,7 @@ class SyncManager(object):
             cMovil.execute('''UPDATE actuaciones SET modificado = 0 WHERE modificado = 1''')   
             cMovil.execute('''UPDATE atributos_proceso SET modificado = 0 WHERE modificado = 1''')   
             cMovil.execute('''UPDATE atributos_plantilla SET modificado = 0 WHERE modificado = 1''')
+            cMovil.execute('''UPDATE citas SET modificado = 0 WHERE modificado = 1''')
             connMovil.commit()
             connLocal.commit()
             print 'sincronizacion terminada'         
@@ -643,6 +688,7 @@ class SyncManager(object):
             cLocal.execute('''DELETE FROM plantillas WHERE eliminado = 1''')
             cLocal.execute('''DELETE FROM atributos_proceso WHERE  eliminado = 1''')
             cLocal.execute('''DELETE FROM atributos_plantilla WHERE  eliminado = 1''')
+            cLocal.execute('''DELETE FROM citas WHERE  eliminado = 1''')
             
             #Vaciar tablas
             cMovil.execute('''DELETE FROM demandantes WHERE id_demandante <> 1''')
@@ -655,6 +701,7 @@ class SyncManager(object):
             cMovil.execute('''DELETE FROM actuaciones WHERE id_actuacion <> 0''')
             cMovil.execute('''DELETE FROM atributos_proceso WHERE id_atributo_proceso <> 0''')
             cMovil.execute('''DELETE FROM atributos_plantilla WHERE id_atributo_plantilla <> 0''')
+            cMovil.execute('''DELETE FROM citas WHERE id_cita <> 0''')
             
             #Copiar demandantes
             cLocal.execute('''SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes WHERE id_demandante <> 1''')
@@ -772,6 +819,16 @@ class SyncManager(object):
                 valor = row['valor']
                 cMovil.execute('''INSERT INTO atributos_plantilla(id_atributo_plantilla, id_atributo, id_plantilla, valor, nuevo) VALUES (?,?,?,?,0)''', (id_atributo_plantilla, id_atributo, id_plantilla, valor,))
             
+            #Copiar Citas
+            cLocal.execute('''SELECT  id_cita, uid,fecha as "fecha [timestamp]", anticipacion,id_actuacion FROM citas WHERE id_cita <> 0''')
+            for row in cLocal:
+                id_actuacion = str(row['id_actuacion'])
+                id_cita = str(row['id_cita'])
+                fecha = row['fecha']
+                anticipacion = row['anticipacion']
+                uid = row['uid']
+                cMovil.execute('''INSERT INTO citas (id_cita,uid, fecha,anticipacion,id_actuacion, nuevo) VALUES( ?,?,?,?,?,0)''', (id_cita,uid,fecha,anticipacion,id_actuacion))
+            
             #Bajar Flags de la base de datos de escritorio
             cLocal.execute('''UPDATE demandantes SET nuevo = 0, modificado = 0''')     
             cLocal.execute('''UPDATE demandados SET nuevo = 0, modificado = 0''')   
@@ -783,7 +840,7 @@ class SyncManager(object):
             cLocal.execute('''UPDATE actuaciones SET nuevo = 0, modificado = 0''')   
             cLocal.execute('''UPDATE atributos_proceso SET nuevo = 0, modificado = 0''')   
             cLocal.execute('''UPDATE atributos_plantilla SET nuevo = 0, modificado = 0''')
-            
+            cLocal.execute('''UPDATE citas SET nuevo = 0, modificado = 0''')
             
             #Insertar preferencia de sincronizacion
             cMovil.execute(''' INSERT OR IGNORE INTO preferencias(id_preferencia, valor) VALUES(997, datetime('now', 'localtime'))''')
@@ -958,6 +1015,14 @@ class SyncManager(object):
                     id_plantilla = row['id_plantilla']
                     valor = row['valor']
                     cLocal.execute('''INSERT INTO atributos_plantilla(id_atributo, id_plantilla, valor, nuevo) VALUES (?,?,?,0)''', (id_atributo, id_plantilla, valor,))
+                
+                cMovil.execute('''SELECT id_cita, uid,fecha as "fecha [timestamp]", anticipacion,id_actuacion FROM citas''')
+                for row in cMovil:
+                    id_actuacion = str(row['id_actuacion'])
+                    fecha = row['fecha']
+                    anticipacion = row['anticipacion']
+                    uid = row['uid']
+                    cLocal.execute('''INSERT INTO citas (id_cita,uid, fecha,anticipacion,id_actuacion, nuevo) VALUES( NULL,?,?,?,?,0)''', (uid,fecha,anticipacion,id_actuacion))
                 ret = False
                 print 'Copiado desde el movil al Escritorio'  
                 connMovil.commit()
