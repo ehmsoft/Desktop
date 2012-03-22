@@ -43,11 +43,11 @@ class CitaCalendario(object):
     def getFecha(self):
         return self.__fecha
     def getId_actuacion(self):
-        return self.__id_cita
+        return self.__id_actuacion
     def getUid(self):
         return self.__uid
     def getId_cita(self):
-        return self.__id_actuacion
+        return self.__id_cita
     def getAnticipacion(self):
         return self.__anticipacion
     #Setters      
