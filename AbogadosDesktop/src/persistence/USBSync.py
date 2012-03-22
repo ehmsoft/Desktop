@@ -27,7 +27,8 @@ class USBSync(object):
         if len(self.dirEncontrado) is 0:
             raise NoDeviceError
         else:
-            return self.dirEncontrado
+            return os.path.join(self.dirLocal, self.archivoTemp)
+    
     
     def traer(self):
         arbol = self.__getNodos()
