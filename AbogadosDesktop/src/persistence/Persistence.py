@@ -40,6 +40,17 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
+        if persona.getTipo() == 1:
+            campos = persona.getCampos()
+            for campo in campos:
+                self.actualizarCampoDemandante(campo)
+        elif persona.getTipo() == 2:
+            campos = persona.getCampos()
+            for campo in campos:
+                self.actualizarCampoDemandado(campo)
+        else:
+            raise Exception('el tipo de persona no existe') 
+            
     def guardarPersona(self, persona):
         try:
             self.__conMgr.prepararBD()
@@ -68,7 +79,7 @@ class Persistence(object):
             for campo in campos:
                 self.guardarCampoDemandado(campo, persona.getId_persona())
         else:
-            print("eso no es asi")
+            raise Exception('el tipo de persona no existe') 
          
         
     def borrarPersona(self, persona):
@@ -80,12 +91,14 @@ class Persistence(object):
                 c.execute('''UPDATE demandantes SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_demandante = ?''', (persona.getId_persona(),))
                 c.execute('''UPDATE procesos SET id_demandante = 1 WHERE id_demandante = ?''', (persona.getId_persona(),))
                 c.execute('''UPDATE plantillas SET id_demandante = 1 WHERE id_demandante = ?''', (persona.getId_persona(),))
+                c.execute('''UPDATE atributos_demandante SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_demandante = ?''', (persona.getId_persona(),))
 
             elif persona.getTipo() == 2:
                 c.execute('''UPDATE demandados SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_demandado = ?''', (persona.getId_persona(),))
                 c.execute('''UPDATE procesos SET id_demandado = 1 WHERE id_demandado = ?''', (persona.getId_persona(),))
                 c.execute('''UPDATE plantillas SET id_demandado = 1 WHERE id_demandado = ?''', (persona.getId_persona(),))
-
+                c.execute('''UPDATE atributos_demandado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_demandado = ?''', (persona.getId_persona(),))
+                
             else:
                 raise Exception('el tipo de persona no existe')
             conn.commit()            
@@ -105,6 +118,9 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
+        campos = juzgado.getCampos()
+        for campo in campos:
+            self.actualizarCampoJuzgado(campo)
     def guardarJuzgado(self, juzgado):
         try:
             self.__conMgr.prepararBD()
@@ -130,6 +146,7 @@ class Persistence(object):
             c.execute('''UPDATE procesos SET id_juzgado = 1 WHERE id_juzgado = ?''', (juzgado.getId_juzgado(),))
             c.execute('''UPDATE actuaciones SET id_juzgado = 1 WHERE id_juzgado = ?''', (juzgado.getId_juzgado(),))
             c.execute('''UPDATE plantillas SET id_juzgado = 1 WHERE id_juzgado = ?''', (juzgado.getId_juzgado(),))
+            c.execute('''UPDATE atributos_juzgados SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_juzgado = ?''', (juzgado.getId_juzgado(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -147,6 +164,9 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
+        campos = actuacion.getCampos()
+        for campo in campos:
+            self.actualizarCampoActuacion(campo)
     def guardarActuacion(self, actuacion, id_proceso):
         try:
             self.__conMgr.prepararBD()
@@ -170,6 +190,8 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
             c.execute('''UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''', (actuacion.getId_actuacion(),))
+            c.execute('''UPDATE atributos_actuaciones SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''', (actuacion.getId_actuacion(),))
+            
             conn.commit()            
         except Exception as e:
             raise e
