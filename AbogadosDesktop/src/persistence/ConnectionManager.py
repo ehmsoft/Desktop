@@ -62,8 +62,8 @@ class ConnectionManager(object):
             c.execute('''CREATE TABLE 'plantillas'('id_plantilla' INTEGER PRIMARY KEY,'nombre' TEXT,'id_demandante' INTEGER,'id_demandado' INTEGER,'radicado' TEXT,'radicado_unico' TEXT,'estado' TEXT,'tipo' TEXT,'notas' TEXT,'prioridad' TEXT,'id_juzgado' INTEGER,'id_categoria' INTEGER, 'nuevo' BOOLEAN DEFAULT 1, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')), FOREIGN KEY(id_demandante) REFERENCES demandantes(id_demandante),FOREIGN KEY(id_demandado) REFERENCES demandados(id_demandado),FOREIGN KEY(id_juzgado) REFERENCES juzgados(id_juzgado),FOREIGN KEY(id_categoria) REFERENCES categorias(id_categoria), UNIQUE('id_demandante','id_demandado','radicado','radicado_unico','id_juzgado'))''')
             #Crear tabla Atributos por Plantilla
             c.execute('''CREATE TABLE 'atributos_plantilla'('id_atributo_plantilla' INTEGER PRIMARY KEY,'id_atributo' INTEGER,'id_plantilla' INTEGER,'valor' TEXT, 'nuevo' BOOLEAN DEFAULT 1, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')), FOREIGN KEY(id_atributo) REFERENCES atributos(id_atributo),FOREIGN KEY(id_plantilla) REFERENCES plantillas(id_plantilla),UNIQUE('id_atributo','id_plantilla','valor'))''')
-            #Crear tabla Usuarios
-            c.execute('''CREATE TABLE 'usuarios'('id_usuario' INTEGER PRIMARY KEY, 'nombre_usuario' TEXT, 'permisos' INTEGER, 'password' TEXT, 'telefono' TEXT, 'direccion' TEXT, 'correo' TEXT)''')
+            #Crear tabla Citas
+            c.execute('''CREATE TABLE 'citas'('id_cita' INTEGER PRIMARY KEY,'uid' TEXT,'fecha' DATE,'anticipacion' INTEGER,'id_actuacion' INTEGER, 'nuevo' BOOLEAN DEFAULT 1, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')), UNIQUE('uid','id_actuacion'))''')
             #Crear tabla Preferencias
             c.execute('''CREATE TABLE 'preferencias'('id_preferencia' INTEGER PRIMARY KEY,'valor' INTEGER)''')
             #Crear Categorias
@@ -72,7 +72,6 @@ class ConnectionManager(object):
             c.execute('''INSERT INTO demandantes(id_demandante, cedula, nombre, telefono, direccion, correo, notas) VALUES(1, 'No id', 'vacio', 'vacio', 'vacio', 'vacio', 'vacio')''')
             c.execute('''INSERT INTO demandados(id_demandado, cedula, nombre, telefono, direccion, correo, notas) VALUES(1, 'No id', 'vacio', 'vacio', 'vacio', 'vacio', 'vacio')''')
             c.execute('''INSERT INTO juzgados(id_juzgado, nombre, ciudad, telefono, direccion, tipo) VALUES(1,'vacio','vacio', 'vacio','vacio', 'vacio')''')
-            c.execute('''INSERT INTO usuarios(id_usuario, nombre_usuario, permisos, password, telefono, direccion, correo) VALUES(1, 'Administrador', 1,?, 'vacio', 'vacio', 'vacio')''', (hashlib.sha1('admin').hexdigest(),))
             #Insertar la version de la base de datos
             c.execute('''INSERT INTO 'preferencias' VALUES(999,1)''')
             conn.commit()
