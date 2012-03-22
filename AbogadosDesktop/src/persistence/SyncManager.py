@@ -218,6 +218,7 @@ class SyncManager(object):
             for row in listaMovil:
                 id_demandante = row['id_demandante']
                 cLocal.execute('''DELETE FROM demandantes WHERE id_demandante = ?''', (id_demandante,))
+                cLocal.execute('''DELETE FROM atributos_demandante WHERE id_demandante = ?''', (id_demandante,))
                 cLocal.execute('''UPDATE procesos SET id_demandante = 1 WHERE id_demandante = ?''', (id_demandante,))
                 cLocal.execute('''UPDATE plantillas SET id_demandante = 1 WHERE id_demandante = ?''', (id_demandante,))
             cMovil.execute('''DELETE FROM demandantes WHERE eliminado = 1''')
@@ -228,6 +229,7 @@ class SyncManager(object):
             for row in listaMovil:
                 id_demandado = row['id_demandado']
                 cLocal.execute('''DELETE FROM demandados WHERE id_demandado = ?''', (id_demandado,))
+                cLocal.execute('''DELETE FROM atributos_demandado WHERE id_demandado = ?''', (id_demandado,))
                 cLocal.execute('''UPDATE procesos SET id_demandado = 1 WHERE id_demandado = ?''', (id_demandado,))
                 cLocal.execute('''UPDATE plantillas SET id_demandado = 1 WHERE id_demandado = ?''', (id_demandado,))
             cMovil.execute('''DELETE FROM demandados WHERE eliminado = 1''')
@@ -238,6 +240,7 @@ class SyncManager(object):
             for row in listaMovil:
                 id_juzgado = row['id_juzgado']
                 cLocal.execute('''DELETE FROM juzgados WHERE id_juzgado = ?''', (id_juzgado,))
+                cLocal.execute('''DELETE FROM atributos_juzgado WHERE id_juzgado = ?''', (id_juzgado,))
                 cLocal.execute('''UPDATE procesos SET id_juzgado = 1 WHERE id_juzgado = ?''', (id_juzgado,))
                 cLocal.execute('''UPDATE actuaciones SET id_juzgado = 1 WHERE id_juzgado = ?''', (id_juzgado,))
                 cLocal.execute('''UPDATE plantillas SET id_juzgado = 1 WHERE id_juzgado = ?''', (id_juzgado,))
@@ -279,6 +282,7 @@ class SyncManager(object):
             for row in listaMovil:
                 id_actuacion = row['id_actuacion']
                 cLocal.execute('''DELETE FROM actuaciones WHERE id_actuacion = ?''', (id_actuacion,))
+                cLocal.execute('''DELETE FROM atributos_actuacion WHERE id_actuacion = ?''', (id_actuacion,))
             cMovil.execute('''DELETE FROM actuaciones WHERE eliminado = 1''')
             
             #Plantillas
