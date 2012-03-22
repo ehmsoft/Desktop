@@ -59,7 +59,7 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
         self.txtCedula.textEdited.connect(self.setDirty)
         self.txtCorreo.textEdited.connect(self.setDirty)
         self.txtDireccion.textEdited.connect(self.setDirty)
-        self.txtNotas.textEdited.connect(self.setDirty)
+        self.txtNotas.textChanged.connect(self.setDirty)
         self.txtTelefono.textEdited.connect(self.setDirty)
                         
     def getPersona(self):
@@ -75,7 +75,7 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
                 persona.setTelefono(self.txtTelefono.text())
                 persona.setDireccion(self.txtDireccion.text())
                 persona.setCorreo(self.txtCorreo.text())
-                persona.setNotas(self.txtNotas.text())
+                persona.setNotas(self.txtNotas.toPlainText())
                 persona.setCampos(self.__gestor.getCampos())
                                 
                 p.guardarPersona(persona)
@@ -98,7 +98,7 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
                 self.__persona.setTelefono(self.txtTelefono.text())
                 self.__persona.setDireccion(self.txtDireccion.text())
                 self.__persona.setCorreo(self.txtCorreo.text())
-                self.__persona.setNotas(self.txtNotas.text())
+                self.__persona.setNotas(self.txtNotas.toPlainText())
                 self.__persona.setCampos(self.__gestor.getCampos())
                 p.actualizarPersona(self.__persona)
         except Exception, e:
