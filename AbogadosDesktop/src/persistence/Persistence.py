@@ -13,6 +13,7 @@ from core.Categoria import Categoria
 from core.Juzgado import Juzgado
 from core.Plantilla import Plantilla
 from core.Archivo import Archivo
+from core.CitaCalendario import CitaCalendario
 
 class Persistence(object):
     '''
@@ -815,6 +816,30 @@ class Persistence(object):
         finally:
             conn.close()
     
+    def actualizarCitaCalendario(self, cita):
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''UPDATE citas SET uid=?, fecha=datetime(?),anticipacion=?,id_actuacion=?,modificado=1, fecha_mod = datetime('now','localtime') WHERE id_cita=?''', (cita.getUid(),cita.getFecha(),cita.getAnticipacion(),cita.getId_actuacion(),cita.getId_cita(),))
+            conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close   
+        
+    def guardarCitaCalendario(self, cita):
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()
+            c.execute('''INSERT INTO citas (id_cita,uid, fecha,anticipacion,id_actuacion, fecha_mod) VALUES( NULL,?,datetime(?),?,?,datetime('now','localtime'))''', (cita.getUid(), cita.getFecha(),cita.getAnticipacion(),cita.getId_actuacion()))
+            conn.commit()
+            cita.setId_cita(str(c.lastrowid))         
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     #Metodos de Cargado
     
     def consultarDemandantes(self):
@@ -1824,3 +1849,47 @@ class Persistence(object):
         finally:
             conn.close()
         return archivo
+    
+    def consultarCitasCalendario(self):
+        citas = []
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''SELECT  id_cita, uid,fecha as "fecha [timestamp]", anticipacion,id_actuacion FROM citas WHERE eliminado = 0 ORDER BY fecha''')
+            for row in c:
+                id_actuacion = str(row['id_actuacion'])
+                id_cita = str(row['id_cita'])
+                fecha = row['fecha']
+                anticipacion = row['anticipacion']
+                uid = row['uid']
+                cita = CitaCalendario(fecha=fecha, anticipacion=anticipacion, id_cita=id_cita, id_actuacion=id_actuacion, uid=uid)
+                citas.append(cita)
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        return citas
+        
+    def consultarCitaCalendario(self, id_cita):
+        cita = []
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''SELECT  id_cita, uid,fecha as "fecha [timestamp]", anticipacion,id_actuacion FROM citas WHERE id_cita = ? AND eliminado = 0 ORDER BY fecha''', (id_cita,))
+            row = c.fetchone()
+            if row:
+                id_actuacion = str(row['id_actuacion'])
+                id_cita = str(row['id_cita'])
+                fecha = row['fecha']
+                anticipacion = row['anticipacion']
+                uid = row['uid']
+                cita = CitaCalendario(fecha=fecha, anticipacion=anticipacion, id_cita=id_cita, id_actuacion=id_actuacion, uid=uid)
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        return cita
