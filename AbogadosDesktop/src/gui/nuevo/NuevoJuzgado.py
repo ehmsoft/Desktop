@@ -104,7 +104,7 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
             message.setIcon(QtGui.QMessageBox.Question)
             message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
             message.setDefaultButton(QtGui.QMessageBox.No)
-            message.setText(unicode("¿Desea __guardar sin agregar un teléfono?"))
+            message.setText(unicode("¿Desea guardar sin agregar un teléfono?"))
             ret = message.exec_()
             if ret == QtGui.QMessageBox.Yes:
                 self.__guardar()
