@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on 04/08/2011
 
@@ -118,7 +119,7 @@ class Actuacion(object):
             raise TypeError('Tipo de dato no admitido')
     
     def __str__(self):
-        return self.getDescripcion()
+        return unicode("{0}\n  Creado: {1}\n  Vence: {2}\n  {3}").format(self.getDescripcion(), '{:%d/%m/%Y %I:%M %p}'.format(self.getFecha()),'{:%d/%m/%Y %I:%M %p}'.format(self.getFechaProxima()), self.getJuzgado())
     
     def __eq__(self, other):
         if other is None:

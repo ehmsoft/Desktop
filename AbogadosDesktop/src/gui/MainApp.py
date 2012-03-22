@@ -33,6 +33,7 @@ from gui.ListadoDialogo import ListadoDialogo
 from gui.ListadoBusqueda import ListadoBusqueda
 import resources
 from gui.ColumnaSync import ColumnaSync
+from core.ActuacionCritica import ActuacionCritica
 
 class MainApp(QtGui.QMainWindow, Ui_mainApp):
     #Constantes para elementos  del menu listaIzquierda
@@ -46,11 +47,14 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
     TXTCAMPOS = 'Campos Personalizados'
     TXTSINCRONIZAR = 'Sincronizar'
     TXTAJUSTES = 'Ajustes'
+    TXTEVENTOS = unicode('Eventos Próximos')
+    CANTEVENTOS = 10
+    
     def __init__(self, parent = None):
         super(MainApp, self).__init__(parent)
         self.setupUi(self)
         #Crear menu izquierdo
-        self.lista = [MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES, MainApp.TXTCATEGORIAS, MainApp.TXTCAMPOS, MainApp.TXTSINCRONIZAR, MainApp.TXTAJUSTES]
+        self.lista = [MainApp.TXTEVENTOS,MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES, MainApp.TXTCATEGORIAS, MainApp.TXTCAMPOS, MainApp.TXTSINCRONIZAR, MainApp.TXTAJUSTES]
         self.centralSplitter = QtGui.QSplitter(QtCore.Qt.Horizontal)
         #El elemento de la izquierda es un splitter para pantallas pequenas
         self.scrollArea.setWidget(self.centralSplitter)
@@ -97,6 +101,16 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         
     def elementClicked(self, item):
         #Metodo que maneja el click en la lista izquierda
+        if item.text() == MainApp.TXTEVENTOS:
+            if not self.centralSplitter.count() == 1:
+                self.columna1.setParent(None)
+            p = Persistence()
+            listado = ListadoBusqueda(p.consultarActuacionesCriticas(MainApp.CANTEVENTOS))
+            self.columna1 = ColumnaWidget(listado, addbutton=False)
+            self.centralSplitter.addWidget(self.columna1)
+            self.__restablecerElementoDerecho()
+            del p
+        
         if item.text() == MainApp.TXTPROCESOS:
             if not self.centralSplitter.count() == 1:
                 self.columna1.setParent(None)
@@ -243,7 +257,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         elif item.text() == MainApp.TXTAJUSTES:     
             #TODO: Acciones para el menu Ajustes
             self.__restablecerElementoDerecho()
-        if item.text() in [MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES, MainApp.TXTCATEGORIAS]:
+        if item.text() in [MainApp.TXTEVENTOS,MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES, MainApp.TXTCATEGORIAS]:
             self.connect(self.columna1, QtCore.SIGNAL('clicked()'), self.columna1AgregarClicked)
             self.connect(self.columna1.getCentralWidget(), QtCore.SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
             self.connect(self.columna1.getCentralWidget(), QtCore.SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
@@ -310,6 +324,21 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         #Manejar cuando se da click a un elemento en la columna1
         if hasattr(item, 'getObjeto'):
             #Se va por aqui si columna1 tiene una lista
+            if isinstance(item.getObjeto(), ActuacionCritica):
+                #Borrar el elemento derecho
+                elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
+                self.gridLayout.removeWidget(elementoGrid)
+                elementoGrid.setParent(None)
+                actuacion =item.getObjeto()
+                proc = Persistence().consultarProceso(actuacion.getId_proceso())
+                proceso = VerProceso(proc)
+                #Agregar elemento derecho y ponerle un tamano maximo
+                nuevoElemento = ColumnaDerecha(titulo = False, centralWidget = proceso)
+                nuevoElemento.setMaximumWidth(340)
+                nuevoElemento.setMinimumWidth(310)
+                self.gridLayout.addWidget(nuevoElemento, 0, 1, 1, 1)
+                self.connect(nuevoElemento.btnEditar, QtCore.SIGNAL('clicked()'), self.procesoEditarClicked)
+                self.connect(nuevoElemento.btnEliminar, QtCore.SIGNAL('clicked()'), self.procesoEliminarClicked)
             if isinstance(item.getObjeto(), Proceso):
                 #Borrar el elemento derecho
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
@@ -519,18 +548,37 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             del campoVentana
     
     def procesoEditarClicked(self):
-        proceso = self.columna1.getCentralWidget().currentItem().getObjeto()
-        procesoVentana = NuevoProceso(proceso)
-        if procesoVentana.exec_():
-            self.columna1.getCentralWidget().replace(procesoVentana.getProceso())
-        self.columna1ElementChanged()
-        del procesoVentana
+        elemento = self.columna1.getCentralWidget().currentItem().getObjeto()
+        if isinstance(elemento, Proceso):
+            proceso = elemento
+            procesoVentana = NuevoProceso(proceso)
+            if procesoVentana.exec_():
+                self.columna1.getCentralWidget().replace(procesoVentana.getProceso())
+            self.columna1ElementChanged()
+            del procesoVentana
+        else:
+            #Se viene por aqui si es una ActuacionCritica
+            proceso = Persistence().consultarProceso(elemento.getId_proceso())
+            procesoVentana = NuevoProceso(proceso)
+            if procesoVentana.exec_():
+                self.elementChanged()
+            del procesoVentana
+        
+            
         
     def procesoEliminarClicked(self):
-        proceso = self.columna1.getCentralWidget().getSelectedItem()
-        if self.columna1.getCentralWidget().remove():
+        elemento = self.columna1.getCentralWidget().getSelectedItem()
+        if self.columna1.getCentralWidget().remove():            
+            if isinstance(elemento, Proceso):
+                proceso = elemento
+            else:   
+                #Si es una actuacion critica, debe cargar el proceso desde la base de datos
+                proceso = Persistence().consultarProceso(elemento.getId_proceso())
             p = Persistence()
-            p.borrarProceso(proceso)
+            p.borrarProceso(proceso)           
+            if not isinstance(elemento, Proceso):
+                #Si es la seccion actuacion critica, debe recargar la lista
+                self.elementChanged()
             del p
             elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
             if self.columna1.getCentralWidget().count() == 0:
@@ -942,5 +990,6 @@ app.setOrganizationDomain("ehmsoft.com")
 app.setApplicationName("Procesos Judiciales")
 app.setWindowIcon(QtGui.QIcon(":/images/icono.png"))
 theapp = MainApp()
+theapp.listaIzquierda.setCurrentRow(0)
 theapp.show()
 sys.exit(app.exec_())
