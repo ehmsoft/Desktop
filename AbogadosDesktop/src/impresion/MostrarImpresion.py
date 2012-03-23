@@ -37,8 +37,7 @@ class MostrarImpresion(QDialog):
         dialog = QPrintDialog(self.printer, self)
         if dialog.exec_():
             self.browser.print_(self.printer)
-            self.accept()
-    
+            self.accept()    
     def imprimirPdf(self):
         self.printer.setOutputFormat(QPrinter.PdfFormat)
         name = QFileDialog.getSaveFileName(self,'Guardar PDF')[0]
