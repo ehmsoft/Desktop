@@ -172,6 +172,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
             c.execute('''UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''', (actuacion.getId_actuacion(),))
+            c.execute('''DELETE FROM citas WHERE id_actuacion = ?''',(actuacion.getId_actuacion(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -319,7 +320,8 @@ class Persistence(object):
             c.execute('''UPDATE procesos SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''', (proceso.getId_proceso(),))
             c.execute('''UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''', (proceso.getId_proceso(),))
             c.execute('''UPDATE atributos_proceso SET eliminado = 1,fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''', (proceso.getId_proceso(),))
-            proceso.setId_proceso = str(c.lastrowid)
+            for actuacion in proceso.getActuaciones():
+                c.execute('''DELETE FROM citas WHERE id_actuacion = ?''',(actuacion.getId_actuacion(),))
             conn.commit()
                 
         except Exception as e:
