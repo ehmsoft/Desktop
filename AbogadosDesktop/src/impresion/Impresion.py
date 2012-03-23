@@ -39,13 +39,14 @@ class Impresion(object):
         return html
 
     def imprimirPersonas(self,tipo,personas=None):
+        html = self.imprimirLogo()
         if tipo == 1:
-            html = "<HEAD><TITLE>LISTA DE DEMANDANTES</TITLE></HEAD><BODY><BR><FONT SIZE= '+2'><B>Lista de Demandantes:</B></FONT><BR><BR>"
+            html += "<HEAD><TITLE>LISTA DE DEMANDANTES</TITLE></HEAD><BODY><BR><FONT SIZE= '+2'><B>Lista de Demandantes:</B></FONT><BR><BR>"
             if personas is None:
                 p = Persistence()
                 personas = p.consultarDemandantes()            
         elif tipo == 2:
-            html = "<HEAD><TITLE>LISTA DE DEMANDADOS</TITLE></HEAD><BODY><BR><FONT SIZE= '+2'><B>Lista de Demandos:</B></FONT><BR><BR>"
+            html += "<HEAD><TITLE>LISTA DE DEMANDADOS</TITLE></HEAD><BODY><BR><FONT SIZE= '+2'><B>Lista de Demandos:</B></FONT><BR><BR>"
             if personas is None:
                 p = Persistence()
                 personas = p.consultarDemandados()
@@ -65,7 +66,8 @@ class Impresion(object):
         return html
 
     def imprimirProcesos(self,procesos=None):
-        html =("<HEAD><TITLE>LISTA DE PROCESOS </TITLE></HEAD><BODY><BR><FONT SIZE='+2'><B>Lista de Procesos: </B></FONT><BR><BR>")
+        html = self.imprimirLogo()
+        html +=("<HEAD><TITLE>LISTA DE PROCESOS </TITLE></HEAD><BODY><BR><FONT SIZE='+2'><B>Lista de Procesos: </B></FONT><BR><BR>")
         html += ("<TABLE BORDER =1 CELLSPACING = 0 WIDTH ='98%'><TR><TH>Radicado</TH><TH>Radicado Unico</TH><TH>Demandante</TH><TH>Demandado</TH><TH>Juzgado</TH><TH>Fecha</TH><TH>Estado</TH><TH>Categoria</TH><TH>Tipo</TH><TH>Notas</TH>")
         if procesos is None:
             p = Persistence()
@@ -87,8 +89,8 @@ class Impresion(object):
         return html
     
     def imprimirActuaciones(self, actuaciones=None):
-        
-        html =("<HEAD><TITLE>LISTA DE ACTUACIONES </TITLE></HEAD><BODY><BR><FONT SIZE='+2'><B>Lista de Actuaciones: </B></FONT><BR><BR>")
+        html = self.imprimirLogo()
+        html +=("<HEAD><TITLE>LISTA DE ACTUACIONES </TITLE></HEAD><BODY><BR><FONT SIZE='+2'><B>Lista de Actuaciones: </B></FONT><BR><BR>")
         html += ("<TABLE BORDER =1 CELLSPACING = 0 WIDTH ='98%'  ><TR><TH><B>Descripcion</B></TH><TH><B>Juzgado</B></TH><TH><B>Fecha Proxima</B></TH><TH><B>Fecha de creacion</B></TH></TR>")
         if actuaciones is None:
             p = Persistence()
@@ -106,7 +108,8 @@ class Impresion(object):
     def imprimirEventosProximos(self):
         cantidad = QInputDialog.getInt(None,'Ingrese un valor','Ingrese la cantidad de eventos proximos a imprimir')
         if cantidad[1] == True:
-            html =("<HEAD><TITLE>EVENTOS PROXIMOS </TITLE></HEAD><BODY><BR><FONT SIZE='+2'><B>Eventos Proximos: </B></FONT><BR><BR>")
+            html = self.imprimirLogo()
+            html +=("<HEAD><TITLE>EVENTOS PROXIMOS </TITLE></HEAD><BODY><BR><FONT SIZE='+2'><B>Eventos Proximos: </B></FONT><BR><BR>")
             html += ("<TABLE BORDER =1 CELLSPACING = 0 WIDTH ='95%'  ><TR><TH><B>Descripcion</B></TH><TH><B>Juzgado</B></TH><TH><B>Fecha Proxima</B></TH><TH><B>Fecha de creacion</B></TH></TR>")
             p = Persistence()
             actuaciones = p.consultarActuacionesCriticas(cantidad[0])
@@ -121,8 +124,8 @@ class Impresion(object):
             return html
     
     def imprimirJuzgado(self, juzgado):    
-               
-        html ="<HEAD><TITLE>"+ juzgado.getNombre() + "</TITLE></HEAD><BODY><BR><FONT SIZE='+1'><B>" + juzgado.getNombre() + "</B></FONT>"
+        html = self.imprimirLogo()      
+        html +="<HEAD><TITLE>"+ juzgado.getNombre() + "</TITLE></HEAD><BODY><BR><FONT SIZE='+1'><B>" + juzgado.getNombre() + "</B></FONT>"
         if juzgado.getTelefono() != "":
             html += "<FONT SIZE='+1'><B>, </B></FONT>" + juzgado.getTelefono() + "<BR>"
         else:
@@ -144,7 +147,8 @@ class Impresion(object):
         return html
         
     def imprimirPersona(self, persona):
-        html ="<HEAD><TITLE>"+ persona.getNombre() + "</TITLE></HEAD><BODY><BR><FONT SIZE='+1'><B>" + persona.getNombre() + "</B></FONT>"
+        html = self.imprimirLogo()
+        html +="<HEAD><TITLE>"+ persona.getNombre() + "</TITLE></HEAD><BODY><BR><FONT SIZE='+1'><B>" + persona.getNombre() + "</B></FONT>"
         if persona.getId_persona() != "":
             html += "<FONT SIZE='+1'><B>, </B></FONT>"+ persona.getId() +"<BR>"
         else:
@@ -174,7 +178,8 @@ class Impresion(object):
         return html      
              
     def imprimirProceso(self, proceso):
-        html = "<HEAD><TITLE>INFORMACION DEL PROCESO</TITLE></HEAD><BODY><BR><FONT SIZE= '+2'><B>Informacion del Proceso:</B></FONT><BR><BR>"
+        html = self.imprimirLogo()
+        html += "<HEAD><TITLE>INFORMACION DEL PROCESO</TITLE></HEAD><BODY><BR><FONT SIZE= '+2'><B>Informacion del Proceso:</B></FONT><BR><BR>"
         if proceso.getRadicado() != "":
             html += "Radicado: " + proceso.getRadicado() + "<BR>"
             if proceso.getRadicadoUnico() != "":
