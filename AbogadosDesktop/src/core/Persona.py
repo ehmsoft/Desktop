@@ -239,3 +239,16 @@ class Persona(object):
             return False
         else:
             return True
+        
+    @classmethod
+    def getHeaders(self):
+        #Devuelve una lista de strings con los encabezados del CSV
+        return ['nombre','telefono', 'direccion','correo','notas','campos']
+    
+    def toCSV(self):
+        #Devuelve una lista con los valores de los atributos para CSV
+        listaReturn = [self.__nombre,self.__telefono,self.__direccion,self.__correo, self.__notas]
+        for campo in self.__campos:
+            listaReturn.append(['{0}:{1}'.format(campo.getNombre(), campo.getValor())])
+        return listaReturn
+        

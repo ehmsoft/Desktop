@@ -34,6 +34,7 @@ from gui.ListadoBusqueda import ListadoBusqueda
 import resources
 from gui.ColumnaSync import ColumnaSync
 from core.ActuacionCritica import ActuacionCritica
+from gui.ExportarCSVDialog import ExportarCSVDialog
 
 class MainApp(QtGui.QMainWindow, Ui_mainApp):
     #Constantes para elementos  del menu listaIzquierda
@@ -95,6 +96,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         self.connect(self.actionNuevoCampo_Juzgado, QtCore.SIGNAL('triggered()'), self.menuNuevoCampoJuzgadoClicked)
         self.connect(self.actionNuevoCampo_Actuacion, QtCore.SIGNAL('triggered()'), self.menuNuevoCampoActuacionClicked)
         self.connect(self.actionNuevoProceso_a_partir_de_Plantilla, QtCore.SIGNAL('triggered()'), self.menuNuevoProcesoPlantillaClicked)
+        self.connect(self.actionExportar, QtCore.SIGNAL('triggered()'), self.menuExportarClicked)
         
     def elementChanged(self):
         self.elementClicked(self.listaIzquierda.currentItem())
@@ -968,6 +970,10 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.elementChanged()
             del procesoVentana
         del plantillaSelect
+        
+    def menuExportarClicked(self):
+        exportarDialog = ExportarCSVDialog()
+        exportarDialog.exec_()
     
     def __createAction(self, text, slot = None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
         action = QtGui.QAction(text, self)
