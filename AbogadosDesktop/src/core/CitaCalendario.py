@@ -4,7 +4,7 @@ Created on 22/03/2012
 @author: elfotografo007
 '''
 from datetime import datetime
-from types import NoneType, IntType
+from types import NoneType, IntType, BooleanType
 
 class CitaCalendario(object):
     '''
@@ -12,7 +12,7 @@ class CitaCalendario(object):
     '''
 
 
-    def __init__(self, fecha, anticipacion, id_cita=None, id_actuacion = None, uid = None):
+    def __init__(self, fecha, anticipacion , descripcion, alarma=False, id_cita=None, id_actuacion = None, uid = None):
         
         if isinstance(fecha, datetime):
             self.__fecha = fecha
@@ -26,6 +26,16 @@ class CitaCalendario(object):
         
         if isinstance(id_cita, basestring) or isinstance(id_cita, NoneType):
             self.__id_cita = id_cita
+        else:
+            raise TypeError('Tipo de dato no admitido')
+        
+        if isinstance(descripcion, basestring):
+            self.__descripcion = descripcion
+        else:
+            raise TypeError('Tipo de dato no admitido')    
+        
+        if isinstance(alarma, BooleanType):
+            self.__alarma = alarma
         else:
             raise TypeError('Tipo de dato no admitido')
         
@@ -50,6 +60,11 @@ class CitaCalendario(object):
         return self.__id_cita
     def getAnticipacion(self):
         return self.__anticipacion
+    def getDescripcion(self):
+        return self.__descripcion
+    def isAlarma(self):
+        return self.__alarma
+    
     #Setters      
     def setFecha(self, fecha):
         if isinstance(fecha, datetime):
@@ -80,6 +95,16 @@ class CitaCalendario(object):
             self.__anticipacion = anticipacion
         else:
             raise TypeError('Tipo de dato no admitido')
+    def setDescripcion(self, descripcion):
+        if isinstance(descripcion, basestring):
+            self.__descripcion = descripcion
+        else:
+            raise TypeError('Tipo de dato no admitido')
+    def setAlarma(self, alarma):
+        if isinstance(alarma, BooleanType):
+            self.__alarma = alarma
+        else:
+            raise TypeError('Tipo de dato no admitido')
     
     def __eq__(self, other):
         if other is None:
@@ -94,6 +119,10 @@ class CitaCalendario(object):
             if self.__id_cita != other.getId_cita():
                 return False
             if self.__uid != other.getUid():
+                return False
+            if self.__descripcion != other.getDescripcion():
+                return False
+            if self.__alarma != other.isAlarma():
                 return False
             return True
         else:
@@ -112,6 +141,10 @@ class CitaCalendario(object):
             if self.__id_cita != other.getId_cita():
                 return True
             if self.__uid != other.getUid():
+                return True
+            if self.__descripcion != other.getDescripcion():
+                return True
+            if self.__alarma != other.isAlarma():
                 return True
             return False
         else:
