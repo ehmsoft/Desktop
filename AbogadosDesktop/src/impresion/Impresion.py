@@ -13,6 +13,7 @@ from MostrarImpresion import MostrarImpresion
 import sys
 from PySide.QtCore import *
 from PySide.QtGui import *
+import gui.resources
 
 
 class Impresion(object):
@@ -202,7 +203,7 @@ class Impresion(object):
         return html
         
     def imprimirLogo(self):
-        html = "<BR><BR><p align=right><img src=':logoB100.png' WIDTH = '85' HEIGHT = '26'></p><P align=right><FONT SIZE='-2'>Procesos Judiciales</FONT></P> "
+        html = "<BR><BR><p align=right><img src=':/images/logoB100.png' WIDTH = '85' HEIGHT = '26'></p><P align=right><FONT SIZE='-2'>Procesos Judiciales</FONT></P> "
 
         return html
             
