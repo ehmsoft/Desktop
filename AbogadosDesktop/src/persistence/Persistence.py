@@ -842,7 +842,7 @@ class Persistence(object):
             alarma = 0
             if cita.isAlarma():
                 alarma = 1
-            c.execute('''INSERT INTO citas (id_cita,uid,fecha,descripcion,anticipacion,alarma,id_actuacion, fecha_mod) VALUES( NULL,?,datetime(?),?,?,datetime('now','localtime'))''', (cita.getUid(), cita.getFecha(),cita.getDescripcion(),cita.getAnticipacion(),alarma,cita.getId_actuacion(),))
+            c.execute('''INSERT INTO citas (id_cita,uid,fecha,descripcion,anticipacion,alarma,id_actuacion, fecha_mod) VALUES( NULL,?,datetime(?),?,?,?,?,datetime('now','localtime'))''', (cita.getUid(), cita.getFecha(),cita.getDescripcion(),cita.getAnticipacion(),alarma,cita.getId_actuacion(),))
             conn.commit()
             cita.setId_cita(str(c.lastrowid))         
         except Exception as e:
