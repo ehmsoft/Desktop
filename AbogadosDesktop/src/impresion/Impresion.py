@@ -29,13 +29,14 @@ class Impresion(object):
             juzgados = p.consultarJuzgados()
              
         for juzgado in juzgados:
-            html +=("<TR>")
-            html = html + "<TD>"+ juzgado.getNombre() + "</TD>"
-            html = html + "<TD>"+ juzgado.getTelefono() + "</TD>"
-            html = html + "<TD>"+ juzgado.getDireccion() + "</TD>"
-            html = html + "<TD>"+ juzgado.getCiudad() + "</TD>"
-            html = html + "<TD>"+ juzgado.getTipo() + "</TD>"
-            html +=("</TR>")
+            if juzgado.getId_juzgado() != "1":
+                html +=("<TR>")
+                html = html + "<TD>"+ juzgado.getNombre() + "</TD>"
+                html = html + "<TD>"+ juzgado.getTelefono() + "</TD>"
+                html = html + "<TD>"+ juzgado.getDireccion() + "</TD>"
+                html = html + "<TD>"+ juzgado.getCiudad() + "</TD>"
+                html = html + "<TD>"+ juzgado.getTipo() + "</TD>"
+                html +=("</TR>")
         html +=("</TABLE></BODY>")
         return html
 
@@ -55,14 +56,15 @@ class Impresion(object):
             raise Exception('el tipo de persona no existe') 
         html += ("<TABLE BORDER =1 CELLSPACING = 0 WIDTH ='98%'  ><TR><TH><B>Nombre</B></TH><TH><B>Cedula</B></TH><TH><B>Telefono</B></TH><TH><B>Direccion</B></TH><TH><B>Correo</B></TH><TH><B>Notas</B></TH></TR>")
         for persona in personas:
-            html +=("<TR>")
-            html = html + "<TD>"+ persona.getNombre() + "</TD>"
-            html = html + "<TD>"+ persona.getId() + "</TD>"
-            html = html + "<TD>"+ persona.getTelefono() + "</TD>"
-            html = html + "<TD>"+ persona.getDireccion() + "</TD>"
-            html = html + "<TD>"+ persona.getCorreo() + "</TD>"
-            html = html + "<TD>"+ persona.getNotas() + "</TD>"
-            html +=("</TR>")
+            if persona.getId_persona() != "1":
+                html +=("<TR>")
+                html = html + "<TD>"+ persona.getNombre() + "</TD>"
+                html = html + "<TD>"+ persona.getId() + "</TD>"
+                html = html + "<TD>"+ persona.getTelefono() + "</TD>"
+                html = html + "<TD>"+ persona.getDireccion() + "</TD>"
+                html = html + "<TD>"+ persona.getCorreo() + "</TD>"
+                html = html + "<TD>"+ persona.getNotas() + "</TD>"
+                html +=("</TR>")
         html +=("</TABLE></BODY>")
         return html
 
@@ -208,7 +210,9 @@ class Impresion(object):
         return html
         
     def imprimirLogo(self):
-        html = "<BR><BR><p align=right><img src=':/images/logoB100.png' WIDTH = '85' HEIGHT = '26'></p><P align=right><FONT SIZE='-2'>Procesos Judiciales</FONT></P> "
+        
+        html = "<BR><p align=right><TABLE ><TR><TH><img src=':/images/logoB100.png' WIDTH = '85' HEIGHT = '26'></TH><TH><PRE>     </PRE></TH></TR></TABLE></P>"
+        html += "<p align=right><TABLE ><TR><TD><FONT SIZE = '-2'><I>Procesos Judiciales</I></FONT></TD><TD><PRE>     </PRE></TD></TR></TABLE></P>"
 
         return html
             
