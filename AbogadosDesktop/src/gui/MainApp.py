@@ -305,10 +305,12 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         elif item.text() == MainApp.TXTACTUACIONES:
             if self.columna1.getCentralWidget().currentItem() is not None:
                 proceso = self.columna1.getCentralWidget().getSelectedItem()
-                actuacionVentana = NuevaActuacion(id_proceso = proceso.getId_proceso())
+                actuacionVentana = NuevaActuacion()
                 if actuacionVentana.exec_():
                     p = Persistence()
                     proceso = p.consultarProceso(proceso.getId_proceso())
+                    proceso.addActuacion(actuacionVentana.getActuacion())
+                    p.actualizarProceso(proceso)
                     self.columna1.getCentralWidget().replace(proceso)
                     del p
                     self.columna1ElementChanged()
