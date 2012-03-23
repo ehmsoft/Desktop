@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'cita.ui'
 #
-# Created: Thu Mar 22 17:12:47 2012
+# Created: Thu Mar 22 18:07:00 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -45,6 +45,7 @@ class Ui_Cita(object):
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.spinAnticipacion = QtGui.QSpinBox(self.groupBox)
+        self.spinAnticipacion.setProperty("value", 5)
         self.spinAnticipacion.setObjectName("spinAnticipacion")
         self.horizontalLayout.addWidget(self.spinAnticipacion)
         self.comboAnticipacion = QtGui.QComboBox(self.groupBox)
