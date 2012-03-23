@@ -63,7 +63,7 @@ class ConnectionManager(object):
             #Crear tabla Atributos por Plantilla
             c.execute('''CREATE TABLE 'atributos_plantilla'('id_atributo_plantilla' INTEGER PRIMARY KEY,'id_atributo' INTEGER,'id_plantilla' INTEGER,'valor' TEXT, 'nuevo' BOOLEAN DEFAULT 1, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')), FOREIGN KEY(id_atributo) REFERENCES atributos(id_atributo),FOREIGN KEY(id_plantilla) REFERENCES plantillas(id_plantilla),UNIQUE('id_atributo','id_plantilla','valor'))''')
             #Crear tabla Citas
-            c.execute('''CREATE TABLE 'citas'('id_cita' INTEGER PRIMARY KEY,'uid' TEXT,'fecha' DATE,'anticipacion' INTEGER,'id_actuacion' INTEGER, 'nuevo' BOOLEAN DEFAULT 1, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')),FOREIGN KEY(id_actuacion) REFERENCES actuaciones(id_actuacion), UNIQUE('uid','id_actuacion','eliminado','fecha_mod'))''')
+            c.execute('''CREATE TABLE 'citas'('id_cita' INTEGER PRIMARY KEY,'uid' TEXT,'fecha' DATE,'descripcion' TEXT,'anticipacion' INTEGER,'alarma' BOOLEAN,'id_actuacion' INTEGER, 'nuevo' BOOLEAN DEFAULT 1, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')),FOREIGN KEY(id_actuacion) REFERENCES actuaciones(id_actuacion), UNIQUE('uid','id_actuacion','eliminado','fecha_mod', 'descripcion', 'alarma'))''')
             #Crear tabla Preferencias
             c.execute('''CREATE TABLE 'preferencias'('id_preferencia' INTEGER PRIMARY KEY,'valor' INTEGER)''')
             #Crear Categorias
