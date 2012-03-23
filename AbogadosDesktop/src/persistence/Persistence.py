@@ -824,7 +824,10 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE citas SET uid=?, fecha=datetime(?),anticipacion=?,id_actuacion=?,modificado=1, fecha_mod = datetime('now','localtime') WHERE id_cita=?''', (cita.getUid(),cita.getFecha(),cita.getAnticipacion(),cita.getId_actuacion(),cita.getId_cita(),))
+            alarma = 0
+            if cita.isAlarma():
+                alarma = 1
+            c.execute('''UPDATE citas SET uid=?, fecha=datetime(?),descripcion=?,anticipacion=?, alarma=?,id_actuacion=?,modificado=1, fecha_mod = datetime('now','localtime') WHERE id_cita=?''', (cita.getUid(),cita.getFecha(), cita.getDescripcion(),cita.getAnticipacion(), alarma,cita.getId_actuacion(),cita.getId_cita(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -836,7 +839,10 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''INSERT INTO citas (id_cita,uid, fecha,anticipacion,id_actuacion, fecha_mod) VALUES( NULL,?,datetime(?),?,?,datetime('now','localtime'))''', (cita.getUid(), cita.getFecha(),cita.getAnticipacion(),cita.getId_actuacion()))
+            alarma = 0
+            if cita.isAlarma():
+                alarma = 1
+            c.execute('''INSERT INTO citas (id_cita,uid,fecha,descripcion,anticipacion,alarma,id_actuacion, fecha_mod) VALUES( NULL,?,datetime(?),?,?,datetime('now','localtime'))''', (cita.getUid(), cita.getFecha(),cita.getDescripcion(),cita.getAnticipacion(),alarma,cita.getId_actuacion(),))
             conn.commit()
             cita.setId_cita(str(c.lastrowid))         
         except Exception as e:
@@ -1874,14 +1880,21 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT  id_cita, uid,fecha as "fecha [timestamp]", anticipacion,id_actuacion FROM citas WHERE eliminado = 0 ORDER BY fecha''')
+            c.execute('''SELECT  id_cita, uid,fecha as "fecha [timestamp]", descripcion,anticipacion,alarma,id_actuacion FROM citas WHERE eliminado = 0 ORDER BY fecha''')
             for row in c:
                 id_actuacion = str(row['id_actuacion'])
                 id_cita = str(row['id_cita'])
                 fecha = row['fecha']
+                descripcion = row['descripcion']
                 anticipacion = row['anticipacion']
+                al = row['alarma']
                 uid = row['uid']
-                cita = CitaCalendario(fecha=fecha, anticipacion=anticipacion, id_cita=id_cita, id_actuacion=id_actuacion, uid=uid)
+                #Pasar alarma a Boolean:
+                if al == 1:
+                    alarma = True
+                else:
+                    alarma = False 
+                cita = CitaCalendario(fecha=fecha, descripcion=descripcion, anticipacion=anticipacion, alarma=alarma,id_cita=id_cita, id_actuacion=id_actuacion, uid=uid)
                 citas.append(cita)
         except Exception as e:
             raise e
@@ -1902,9 +1915,16 @@ class Persistence(object):
                 id_actuacion = str(row['id_actuacion'])
                 id_cita = str(row['id_cita'])
                 fecha = row['fecha']
+                descripcion = row['descripcion']
                 anticipacion = row['anticipacion']
+                al = row['alarma']
                 uid = row['uid']
-                cita = CitaCalendario(fecha=fecha, anticipacion=anticipacion, id_cita=id_cita, id_actuacion=id_actuacion, uid=uid)
+                #Pasar alarma a Boolean:
+                if al == 1:
+                    alarma = True
+                else:
+                    alarma = False 
+                cita = CitaCalendario(fecha=fecha, descripcion=descripcion, anticipacion=anticipacion, alarma=alarma,id_cita=id_cita, id_actuacion=id_actuacion, uid=uid)
         except Exception as e:
             raise e
         finally:
