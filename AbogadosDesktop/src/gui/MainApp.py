@@ -100,6 +100,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         self.connect(self.actionNuevoProceso_a_partir_de_Plantilla, QtCore.SIGNAL('triggered()'), self.menuNuevoProcesoPlantillaClicked)
         self.connect(self.actionArchivo_CSV, QtCore.SIGNAL('triggered()'), self.menuExportarCSVClicked)
         self.connect(self.actionArchivo_de_Copia_de_Seguridad, QtCore.SIGNAL('triggered()'), self.menuExportarArchivoClicked)
+        self.connect(self.actionImportar, QtCore.SIGNAL('triggered()'), self.menuImportarArchivoClicked)
         
     def elementChanged(self):
         self.elementClicked(self.listaIzquierda.currentItem())
@@ -985,7 +986,11 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         if fname != '':
             fname = fname + '.bk'
             shutil.copy(ConnectionManager().getDbLocation(), fname)
-            
+    
+    def menuImportarArchivoClicked(self):
+        fname = QtGui.QFileDialog.getOpenFileName(self, 'Importar Archivo')[0]
+        if fname != '':
+            shutil.copy(fname, ConnectionManager().getDbLocation())
     
     def __createAction(self, text, slot = None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
         action = QtGui.QAction(text, self)
