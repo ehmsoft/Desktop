@@ -33,6 +33,7 @@ from gui.ListadoDialogo import ListadoDialogo
 from gui.ListadoBusqueda import ListadoBusqueda
 import resources
 from gui.ColumnaSync import ColumnaSync
+from gui.AsistenteImpresion import AsistenteImpresion
 
 class MainApp(QtGui.QMainWindow, Ui_mainApp):
     #Constantes para elementos  del menu listaIzquierda
@@ -91,6 +92,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         self.connect(self.actionNuevoCampo_Juzgado, QtCore.SIGNAL('triggered()'), self.menuNuevoCampoJuzgadoClicked)
         self.connect(self.actionNuevoCampo_Actuacion, QtCore.SIGNAL('triggered()'), self.menuNuevoCampoActuacionClicked)
         self.connect(self.actionNuevoProceso_a_partir_de_Plantilla, QtCore.SIGNAL('triggered()'), self.menuNuevoProcesoPlantillaClicked)
+        self.connect(self.actionImprimir, QtCore.SIGNAL('triggered()'), self.menuImpresionClicked)
         
     def elementChanged(self):
         self.elementClicked(self.listaIzquierda.currentItem())
@@ -921,6 +923,11 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             del procesoVentana
         del plantillaSelect
     
+    
+    
+    def menuImpresionClicked(self):
+        AsistenteImpresion().exec_()
+    
     def __createAction(self, text, slot = None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
         action = QtGui.QAction(text, self)
         if icon is not None:
@@ -935,6 +942,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         if checkable:
             action.setCheckable(True)
         return action
+    
 import sys
 app = QtGui.QApplication(sys.argv)
 app.setOrganizationName("ehmSoftware")
