@@ -91,9 +91,16 @@
      <addaction name="menuCampo_Personalizado"/>
      <addaction name="actionNuevoProceso_a_partir_de_Plantilla"/>
     </widget>
+    <widget class="QMenu" name="menuExportar">
+     <property name="title">
+      <string>Exportar</string>
+     </property>
+     <addaction name="actionArchivo_CSV"/>
+     <addaction name="actionArchivo_de_Copia_de_Seguridad"/>
+    </widget>
     <addaction name="menu_Nuevo"/>
     <addaction name="actionImprimir"/>
-    <addaction name="actionExportar"/>
+    <addaction name="menuExportar"/>
     <addaction name="actionImportar"/>
    </widget>
    <widget class="QMenu" name="menuEditar">
@@ -199,14 +206,6 @@
     <string>Meta+P, Ctrl+P</string>
    </property>
   </action>
-  <action name="actionExportar">
-   <property name="text">
-    <string>Exportar</string>
-   </property>
-   <property name="shortcut">
-    <string>Meta+E, Ctrl+E</string>
-   </property>
-  </action>
   <action name="actionImportar">
    <property name="text">
     <string>Importar</string>
@@ -218,6 +217,16 @@
   <action name="actionNuevoProceso_a_partir_de_Plantilla">
    <property name="text">
     <string>Proceso a partir de Plantilla</string>
+   </property>
+  </action>
+  <action name="actionArchivo_CSV">
+   <property name="text">
+    <string>Archivo CSV</string>
+   </property>
+  </action>
+  <action name="actionArchivo_de_Copia_de_Seguridad">
+   <property name="text">
+    <string>Archivo de Copia de Seguridad</string>
    </property>
   </action>
  </widget>
