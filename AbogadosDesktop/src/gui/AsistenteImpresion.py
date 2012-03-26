@@ -11,12 +11,14 @@ from gui.ListadoDialogoMultipleSeleccion import ListadoDialogoMultipleSeleccion
 from gui.ListadoDialogo import ListadoDialogo
 from impresion.MostrarImpresion import MostrarImpresion
 from impresion.Impresion import Impresion
+import qrcode
 
 class AsistenteImpresion(QDialog, Ui_AsistenteImpresionDialog):
     def __init__(self, parent=None):
         super(AsistenteImpresion, self).__init__(parent)
         self.setupUi(self)
-        
+        self.printer = QPrinter(QPrinter.HighResolution)
+        self.printer.setPageSize(QPrinter.Letter)
     
     def accept(self):
         QDialog.accept(self)
@@ -53,8 +55,26 @@ class AsistenteImpresion(QDialog, Ui_AsistenteImpresionDialog):
             del dialogo
             
         elif self.rdQR.isChecked():
-            pass
-        
+            dialogo = ListadoDialogo(ListadoDialogo.PROCESO)
+            if dialogo.exec_():
+                proceso = dialogo.getSelected()
+                self.printer = QPrinter(QPrinter.HighResolution)
+                self.printer.setPageSize(QPrinter.Letter)
+                dialog = QPrintDialog(self.printer, self)
+                if proceso:
+                    if dialog.exec_():
+                        qr = qrcode.make('id_proceso:'+proceso.getId_proceso())
+                        image = QImage()
+                        image.loadFromData(QByteArray(qr.tobitmap()), "XBM")
+                        image.invertPixels()
+                        painter = QPainter(self.printer)
+                        width = image.width() *5
+                        height = image.height() * 5
+                        painter.drawImage(0, 0, image.scaled(width, height))
+                del proceso
+                del dialog
+            del dialogo
+            
         elif self.rdListadoProcesos.isChecked():
             dialogo = ListadoDialogoMultipleSeleccion(ListadoDialogoMultipleSeleccion.PROCESO)
             if dialogo.exec_():
@@ -95,7 +115,6 @@ class AsistenteImpresion(QDialog, Ui_AsistenteImpresionDialog):
             dialogo = ListadoDialogo(ListadoDialogo.PROCESO)
             if dialogo.exec_():
                 proceso = dialogo.getSelected()
-                print proceso
                 MostrarImpresion(html=Impresion().imprimirActuaciones(proceso=proceso), landscape=True).exec_()
                 del proceso
             del dialogo
