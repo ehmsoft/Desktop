@@ -24,7 +24,7 @@ class AsistenteImpresion(QDialog, Ui_AsistenteImpresionDialog):
             dialogo = ListadoDialogo(ListadoDialogo.PROCESO)
             if dialogo.exec_():
                 proceso = dialogo.getSelected()
-                Impresion().imprimirProceso(proceso=proceso)
+                MostrarImpresion(html=Impresion().imprimirProceso(proceso=proceso)).exec_()
                 del proceso
             del dialogo
             
@@ -32,7 +32,7 @@ class AsistenteImpresion(QDialog, Ui_AsistenteImpresionDialog):
             dialogo = ListadoDialogo(ListadoDialogo.JUZGADO)
             if dialogo.exec_():
                 juzgado = dialogo.getSelected()
-                Impresion().imprimirJuzgado(juzgado=juzgado)
+                MostrarImpresion(html=Impresion().imprimirJuzgado(juzgado=juzgado)).exec_()
                 del juzgado
             del dialogo
             
@@ -40,7 +40,7 @@ class AsistenteImpresion(QDialog, Ui_AsistenteImpresionDialog):
             dialogo = ListadoDialogo(ListadoDialogo.DEMANDANTE)
             if dialogo.exec_():
                 demandante = dialogo.getSelected()
-                Impresion().imprimirPersona(persona=demandante)
+                MostrarImpresion(html=Impresion().imprimirPersona(persona=demandante)).exec_()
                 del demandante
             del dialogo
             
@@ -48,7 +48,7 @@ class AsistenteImpresion(QDialog, Ui_AsistenteImpresionDialog):
             dialogo = ListadoDialogo(ListadoDialogo.DEMANDADO)
             if dialogo.exec_():
                 demandado = dialogo.getSelected()
-                Impresion().imprimirPersona(persona=demandado)
+                MostrarImpresion(html=Impresion().imprimirPersona(persona=demandado)).exec_()
                 del demandado
             del dialogo
             
@@ -60,7 +60,7 @@ class AsistenteImpresion(QDialog, Ui_AsistenteImpresionDialog):
             if dialogo.exec_():
                 procesos = dialogo.getSelected()
                 if len(procesos) > 0:
-                    Impresion().imprimirProcesos(procesos=procesos)
+                    MostrarImpresion(html=Impresion().imprimirProcesos(procesos=procesos), landscape=True).exec_()
                 del procesos
             del dialogo
             
@@ -69,7 +69,7 @@ class AsistenteImpresion(QDialog, Ui_AsistenteImpresionDialog):
             if dialogo.exec_():
                 juzgados = dialogo.getSelected()
                 if len(juzgados) > 0:
-                    Impresion().imprimirJuzgados(juzgados=juzgados)
+                    MostrarImpresion(html=Impresion().imprimirJuzgados(juzgados=juzgados), landscape=True).exec_()
                 del juzgados
             del dialogo
             
@@ -78,7 +78,7 @@ class AsistenteImpresion(QDialog, Ui_AsistenteImpresionDialog):
             if dialogo.exec_():
                 demandantes = dialogo.getSelected()
                 if len(demandantes) > 0:
-                    Impresion().imprimirPersonas(tipo=1, personas=demandantes)
+                    MostrarImpresion(html=Impresion().imprimirPersonas(tipo=1, personas=demandantes), landscape=True).exec_()
                 del demandantes
             del dialogo
             
@@ -87,7 +87,7 @@ class AsistenteImpresion(QDialog, Ui_AsistenteImpresionDialog):
             if dialogo.exec_():
                 demandados = dialogo.getSelected()
                 if len(demandados) > 0:
-                    Impresion().imprimirPersonas(tipo=2, personas=demandados)
+                    MostrarImpresion(html=Impresion().imprimirPersonas(tipo=2, personas=demandados), landscape=True).exec_()
                 del demandados
             del dialogo
             
@@ -96,9 +96,9 @@ class AsistenteImpresion(QDialog, Ui_AsistenteImpresionDialog):
             if dialogo.exec_():
                 proceso = dialogo.getSelected()
                 print proceso
-                Impresion().imprimirActuaciones(proceso=proceso)
+                MostrarImpresion(html=Impresion().imprimirActuaciones(proceso=proceso), landscape=True).exec_()
                 del proceso
             del dialogo
             
         elif self.rdEventosProximos.isChecked():
-            Impresion().imprimirEventosProximos()
+            MostrarImpresion(html=Impresion().imprimirEventosProximos(), landscape=True).exec_()
