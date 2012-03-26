@@ -33,7 +33,7 @@ class Impresion(object):
                 html = html + "<TD>"+ juzgado.getTipo() + "</TD>"
                 html +=("</TR>")
         html +=("</TABLE></BODY>")
-        MostrarImpresion(html =html, landscape = True)
+        MostrarImpresion(html =html, landscape = True).exec_()
         
 
     def imprimirPersonas(self,tipo,personas=None):
@@ -62,7 +62,7 @@ class Impresion(object):
                 html = html + "<TD>"+ persona.getNotas() + "</TD>"
                 html +=("</TR>")
         html +=("</TABLE></BODY>")
-        MostrarImpresion(html =html, landscape = True)
+        MostrarImpresion(html =html, landscape = True).exec_()
 
     def imprimirProcesos(self,procesos=None):
         html = self.imprimirLogo()
@@ -85,7 +85,7 @@ class Impresion(object):
             html = html + "<TD>"+ proceso.getNotas() + "</TD>"
             html +=("</TR>")
         html +=("</TABLE></BODY>")
-        MostrarImpresion(html =html, landscape = True)
+        MostrarImpresion(html =html, landscape = True).exec_()
     
     def imprimirActuaciones(self,proceso= None ,actuaciones=None):
         
@@ -107,7 +107,7 @@ class Impresion(object):
             html = html + "<TD>"+ '{:%d-%m-%Y}'.format(actuacion.getFecha()) + "</TD>"
             html +=("</TR>")
         html +=("</TABLE></BODY>")
-        MostrarImpresion(html =html, landscape = True)
+        MostrarImpresion(html =html, landscape = True).exec_()
     
     def imprimirEventosProximos(self):
         cantidad = QInputDialog.getInt(None,'Ingrese un valor','Ingrese la cantidad de eventos proximos a imprimir')
@@ -125,7 +125,7 @@ class Impresion(object):
                 html = html + "<TD>"+ '{:%d-%m-%Y}'.format(actuacion.getFecha()) + "</TD>"
                 html +=("</TR>")
             html +=("</TABLE></BODY>")
-            MostrarImpresion(html =html, landscape = True)
+            MostrarImpresion(html =html, landscape = True).exec_().exec_()
     
     def imprimirJuzgado(self, juzgado):    
         html = self.imprimirLogo()      
@@ -148,7 +148,7 @@ class Impresion(object):
         for campo in juzgado.getCampos():
             html += campo.getNombre() + ": " + campo.getValor() + "<BR>"
         html +=("</TABLE></BODY>")
-        MostrarImpresion(html =html)
+        MostrarImpresion(html =html).exec_().exec_()
         
     def imprimirPersona(self, persona):
         html = self.imprimirLogo()
@@ -179,7 +179,7 @@ class Impresion(object):
         for campo in persona.getCampos():
             html += campo.getNombre() + ": " + campo.getValor() + "<BR>"
         html +=("</TABLE></BODY>")
-        MostrarImpresion(html =html)    
+        MostrarImpresion(html =html).exec_()    
              
     def imprimirProceso(self, proceso):
         html = self.imprimirLogo()
@@ -204,7 +204,7 @@ class Impresion(object):
             html+=self.imprimirActuaciones(actuaciones = proceso.getActuaciones())
         html += "<HEAD><TITLE>INFORMACION DEL PROCESO</TITLE></HEAD>"
         html +=("</TABLE></BODY>")
-        MostrarImpresion(html =html)
+        MostrarImpresion(html =html).exec_()
         
     def imprimirLogo(self):
         
