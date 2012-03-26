@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AsistenteImpresionDialog</class>
+ <widget class="QDialog" name="AsistenteImpresionDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>573</width>
+    <height>307</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Asistente de impresión</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_3">
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>¿Qué desea imprimir?</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QRadioButton" name="rdProceso">
+          <property name="toolTip">
+           <string>Imprime un proceso con toda su información detallada</string>
+          </property>
+          <property name="statusTip">
+           <string>Imprime un proceso con toda su información detallada</string>
+          </property>
+          <property name="text">
+           <string>Un proceso con toda su información</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="rdDemandante">
+          <property name="toolTip">
+           <string>Imprime un demandante con toda su información detallada</string>
+          </property>
+          <property name="statusTip">
+           <string>Imprime un demandante con toda su información detallada</string>
+          </property>
+          <property name="text">
+           <string>Un demandante con toda su información</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="rdDemandado">
+          <property name="toolTip">
+           <string>Imprime un demandado con toda su información detallada</string>
+          </property>
+          <property name="statusTip">
+           <string>Imprime un demandado con toda su información detallada</string>
+          </property>
+          <property name="text">
+           <string>Un demandado con toda su información</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="rdJuzgado">
+          <property name="toolTip">
+           <string>Imprime un juzgado con toda su información detallada</string>
+          </property>
+          <property name="statusTip">
+           <string>Imprime un juzgado con toda su información detallada</string>
+          </property>
+          <property name="text">
+           <string>Un juzgado con toda la información</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="rdQR">
+          <property name="toolTip">
+           <string>Imprime un código QR que podrá ser escaneado desde la aplicación móvil para rápida referencia</string>
+          </property>
+          <property name="statusTip">
+           <string>Imprime un código QR que podrá ser escaneado desde la aplicación móvil para rápida referencia</string>
+          </property>
+          <property name="text">
+           <string>El código QR de un proceso</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QRadioButton" name="rdListadoProcesos">
+          <property name="toolTip">
+           <string>Imprime una lista de procesos con información general de cada uno.</string>
+          </property>
+          <property name="statusTip">
+           <string>Imprime una lista de procesos con información general de cada uno.</string>
+          </property>
+          <property name="text">
+           <string>Listado de procesos</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="rdListadoDemandantes">
+          <property name="toolTip">
+           <string>Imprime una lista de demandantes con información general de cada uno.</string>
+          </property>
+          <property name="statusTip">
+           <string>Imprime una lista de demandantes con información general de cada uno.</string>
+          </property>
+          <property name="text">
+           <string>Listado de demandantes</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="rdListadoDemandados">
+          <property name="toolTip">
+           <string>Imprime una lista de demandados con información general de cada uno.</string>
+          </property>
+          <property name="statusTip">
+           <string>Imprime una lista de demandados con información general de cada uno.</string>
+          </property>
+          <property name="text">
+           <string>Listado de demandados</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="rdListadoActuaciones">
+          <property name="toolTip">
+           <string>Imprime la lista de actuaciones de un proceso</string>
+          </property>
+          <property name="statusTip">
+           <string>Imprime la lista de actuaciones de un proceso</string>
+          </property>
+          <property name="text">
+           <string>Listado de actuaciones</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="rdEventosProximos">
+          <property name="toolTip">
+           <string>Imprime la lista de los eventos próximos de su calendario</string>
+          </property>
+          <property name="statusTip">
+           <string>Imprime la lista de los eventos próximos de su calendario</string>
+          </property>
+          <property name="text">
+           <string>Listado de Eventos Próximos</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="rdListadoJuzgados">
+          <property name="toolTip">
+           <string>Imprime una lista de juzgados con información general de cada uno.</string>
+          </property>
+          <property name="statusTip">
+           <string>Imprime una lista de juzgados con información general de cada uno.</string>
+          </property>
+          <property name="text">
+           <string>Listado de juzgados</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>AsistenteImpresionDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>AsistenteImpresionDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
