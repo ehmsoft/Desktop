@@ -125,7 +125,7 @@ class Impresion(object):
                 html = html + "<TD>"+ '{:%d-%m-%Y}'.format(actuacion.getFecha()) + "</TD>"
                 html +=("</TR>")
             html +=("</TABLE></BODY>")
-            MostrarImpresion(html =html, landscape = True).exec_().exec_()
+            MostrarImpresion(html =html, landscape = True).exec_()
     
     def imprimirJuzgado(self, juzgado):    
         html = self.imprimirLogo()      
@@ -148,7 +148,7 @@ class Impresion(object):
         for campo in juzgado.getCampos():
             html += campo.getNombre() + ": " + campo.getValor() + "<BR>"
         html +=("</TABLE></BODY>")
-        MostrarImpresion(html =html).exec_().exec_()
+        MostrarImpresion(html =html).exec_()
         
     def imprimirPersona(self, persona):
         html = self.imprimirLogo()
