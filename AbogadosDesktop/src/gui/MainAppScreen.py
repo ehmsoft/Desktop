@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'mainApp.ui'
 #
-# Created: Thu Feb 23 10:30:14 2012
-#      by: pyside-uic 0.2.13 running on PySide 1.0.7
+# Created: Tue Mar 27 00:19:49 2012
+#      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -28,13 +28,13 @@ class Ui_mainApp(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 664, 531))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 682, 545))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.gridLayout.addWidget(self.scrollArea, 0, 0, 1, 1)
         mainApp.setCentralWidget(self.centralwidget)
-        self.menubar = QtGui.QMenuBar()
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 22))
+        self.menubar = QtGui.QMenuBar(mainApp)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
         self.menubar.setObjectName("menubar")
         self.menu_Archivo = QtGui.QMenu(self.menubar)
         self.menu_Archivo.setObjectName("menu_Archivo")
@@ -42,6 +42,8 @@ class Ui_mainApp(object):
         self.menu_Nuevo.setObjectName("menu_Nuevo")
         self.menuCampo_Personalizado = QtGui.QMenu(self.menu_Nuevo)
         self.menuCampo_Personalizado.setObjectName("menuCampo_Personalizado")
+        self.menuExportar = QtGui.QMenu(self.menu_Archivo)
+        self.menuExportar.setObjectName("menuExportar")
         self.menuEditar = QtGui.QMenu(self.menubar)
         self.menuEditar.setObjectName("menuEditar")
         self.menuSincronizar = QtGui.QMenu(self.menubar)
@@ -78,12 +80,16 @@ class Ui_mainApp(object):
         self.actionNuevoCampo_Actuacion.setObjectName("actionNuevoCampo_Actuacion")
         self.actionImprimir = QtGui.QAction(mainApp)
         self.actionImprimir.setObjectName("actionImprimir")
-        self.actionExportar = QtGui.QAction(mainApp)
-        self.actionExportar.setObjectName("actionExportar")
         self.actionImportar = QtGui.QAction(mainApp)
         self.actionImportar.setObjectName("actionImportar")
         self.actionNuevoProceso_a_partir_de_Plantilla = QtGui.QAction(mainApp)
         self.actionNuevoProceso_a_partir_de_Plantilla.setObjectName("actionNuevoProceso_a_partir_de_Plantilla")
+        self.actionArchivo_CSV = QtGui.QAction(mainApp)
+        self.actionArchivo_CSV.setObjectName("actionArchivo_CSV")
+        self.actionArchivo_de_Copia_de_Seguridad = QtGui.QAction(mainApp)
+        self.actionArchivo_de_Copia_de_Seguridad.setObjectName("actionArchivo_de_Copia_de_Seguridad")
+        self.actionCerrar = QtGui.QAction(mainApp)
+        self.actionCerrar.setObjectName("actionCerrar")
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Proceso)
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Plantilla)
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Demandante)
@@ -99,10 +105,14 @@ class Ui_mainApp(object):
         self.menu_Nuevo.addAction(self.actionNuevaCategoria)
         self.menu_Nuevo.addAction(self.menuCampo_Personalizado.menuAction())
         self.menu_Nuevo.addAction(self.actionNuevoProceso_a_partir_de_Plantilla)
+        self.menuExportar.addAction(self.actionArchivo_CSV)
+        self.menuExportar.addAction(self.actionArchivo_de_Copia_de_Seguridad)
         self.menu_Archivo.addAction(self.menu_Nuevo.menuAction())
         self.menu_Archivo.addAction(self.actionImprimir)
-        self.menu_Archivo.addAction(self.actionExportar)
+        self.menu_Archivo.addAction(self.menuExportar.menuAction())
         self.menu_Archivo.addAction(self.actionImportar)
+        self.menu_Archivo.addSeparator()
+        self.menu_Archivo.addAction(self.actionCerrar)
         self.menubar.addAction(self.menu_Archivo.menuAction())
         self.menubar.addAction(self.menuEditar.menuAction())
         self.menubar.addAction(self.menuSincronizar.menuAction())
@@ -115,6 +125,7 @@ class Ui_mainApp(object):
         self.menu_Archivo.setTitle(QtGui.QApplication.translate("mainApp", "&Archivo", None, QtGui.QApplication.UnicodeUTF8))
         self.menu_Nuevo.setTitle(QtGui.QApplication.translate("mainApp", "&Nuevo", None, QtGui.QApplication.UnicodeUTF8))
         self.menuCampo_Personalizado.setTitle(QtGui.QApplication.translate("mainApp", "Campo Personalizado", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuExportar.setTitle(QtGui.QApplication.translate("mainApp", "Exportar", None, QtGui.QApplication.UnicodeUTF8))
         self.menuEditar.setTitle(QtGui.QApplication.translate("mainApp", "Editar", None, QtGui.QApplication.UnicodeUTF8))
         self.menuSincronizar.setTitle(QtGui.QApplication.translate("mainApp", "Sincronizar", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevoProceso.setText(QtGui.QApplication.translate("mainApp", "Proceso", None, QtGui.QApplication.UnicodeUTF8))
@@ -137,9 +148,11 @@ class Ui_mainApp(object):
         self.actionNuevoCampo_Actuacion.setToolTip(QtGui.QApplication.translate("mainApp", "Nuevo Campo Actuacion", None, QtGui.QApplication.UnicodeUTF8))
         self.actionImprimir.setText(QtGui.QApplication.translate("mainApp", "Imprimir", None, QtGui.QApplication.UnicodeUTF8))
         self.actionImprimir.setShortcut(QtGui.QApplication.translate("mainApp", "Meta+P, Ctrl+P", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionExportar.setText(QtGui.QApplication.translate("mainApp", "Exportar", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionExportar.setShortcut(QtGui.QApplication.translate("mainApp", "Meta+E, Ctrl+E", None, QtGui.QApplication.UnicodeUTF8))
         self.actionImportar.setText(QtGui.QApplication.translate("mainApp", "Importar", None, QtGui.QApplication.UnicodeUTF8))
         self.actionImportar.setShortcut(QtGui.QApplication.translate("mainApp", "Meta+I, Ctrl+I", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevoProceso_a_partir_de_Plantilla.setText(QtGui.QApplication.translate("mainApp", "Proceso a partir de Plantilla", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionArchivo_CSV.setText(QtGui.QApplication.translate("mainApp", "Archivo CSV", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionArchivo_de_Copia_de_Seguridad.setText(QtGui.QApplication.translate("mainApp", "Archivo de Copia de Seguridad", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionCerrar.setText(QtGui.QApplication.translate("mainApp", "Cerrar", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionCerrar.setToolTip(QtGui.QApplication.translate("mainApp", "Cierra la aplicación", None, QtGui.QApplication.UnicodeUTF8))
 

@@ -197,3 +197,14 @@ class Juzgado(object):
             return False
         else:
             return True
+    @classmethod
+    def getHeaders(self):
+        #Devuelve una lista de strings con los encabezados del CSV
+        return ['nombre','telefono', 'direccion','ciudad','tipo','campos']
+    
+    def toCSV(self):
+        #Devuelve una lista con los valores de los atributos para CSV
+        listaReturn = [self.__nombre,self.__telefono,self.__direccion,self.__ciudad, self.__tipo]
+        for campo in self.__campos:
+            listaReturn.append(['{0}:{1}'.format(campo.getNombre(), campo.getValor())])
+        return listaReturn

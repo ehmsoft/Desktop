@@ -44,8 +44,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>664</width>
-         <height>531</height>
+         <width>682</width>
+         <height>545</height>
         </rect>
        </property>
       </widget>
@@ -59,7 +59,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Archivo">
@@ -91,10 +91,19 @@
      <addaction name="menuCampo_Personalizado"/>
      <addaction name="actionNuevoProceso_a_partir_de_Plantilla"/>
     </widget>
+    <widget class="QMenu" name="menuExportar">
+     <property name="title">
+      <string>Exportar</string>
+     </property>
+     <addaction name="actionArchivo_CSV"/>
+     <addaction name="actionArchivo_de_Copia_de_Seguridad"/>
+    </widget>
     <addaction name="menu_Nuevo"/>
     <addaction name="actionImprimir"/>
-    <addaction name="actionExportar"/>
+    <addaction name="menuExportar"/>
     <addaction name="actionImportar"/>
+    <addaction name="separator"/>
+    <addaction name="actionCerrar"/>
    </widget>
    <widget class="QMenu" name="menuEditar">
     <property name="title">
@@ -199,14 +208,6 @@
     <string>Meta+P, Ctrl+P</string>
    </property>
   </action>
-  <action name="actionExportar">
-   <property name="text">
-    <string>Exportar</string>
-   </property>
-   <property name="shortcut">
-    <string>Meta+E, Ctrl+E</string>
-   </property>
-  </action>
   <action name="actionImportar">
    <property name="text">
     <string>Importar</string>
@@ -218,6 +219,24 @@
   <action name="actionNuevoProceso_a_partir_de_Plantilla">
    <property name="text">
     <string>Proceso a partir de Plantilla</string>
+   </property>
+  </action>
+  <action name="actionArchivo_CSV">
+   <property name="text">
+    <string>Archivo CSV</string>
+   </property>
+  </action>
+  <action name="actionArchivo_de_Copia_de_Seguridad">
+   <property name="text">
+    <string>Archivo de Copia de Seguridad</string>
+   </property>
+  </action>
+  <action name="actionCerrar">
+   <property name="text">
+    <string>Cerrar</string>
+   </property>
+   <property name="toolTip">
+    <string>Cierra la aplicación</string>
    </property>
   </action>
  </widget>

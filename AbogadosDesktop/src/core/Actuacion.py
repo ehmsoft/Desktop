@@ -168,3 +168,14 @@ class Actuacion(object):
             return False
         else:
             return True
+        
+    @classmethod
+    def getHeaders(self):
+        #Devuelve una lista de strings con los encabezados del CSV
+        return ['descripcion', 'fechaCreacion','fechaVencimiento','juzgado', 'campos']
+    def toCSV(self):
+        #Devuelve una lista con los valores de los atributos para CSV
+        listaReturn = [self.__descripcion, self.__fecha,self.__fechaProxima, self.__juzgado.getNombre(),]
+        for campo in self.__campos:
+            listaReturn.append(['{0}:{1}'.format(campo.getNombre(), campo.getValor())])
+        return listaReturn
