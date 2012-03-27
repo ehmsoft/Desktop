@@ -152,7 +152,7 @@ class Impresion(object):
     def imprimirPersona(self, persona):
         html = self.imprimirLogo()
         html +="<HEAD><TITLE>"+ persona.getNombre() + "</TITLE></HEAD><BODY><BR><FONT SIZE='+1'><B>" + persona.getNombre() + "</B></FONT>"
-        if persona.getId_persona() != "":
+        if persona.getId() != "":
             html += "<FONT SIZE='+1'><B>, </B></FONT>"+ persona.getId() +"<BR>"
         else:
             html += "<BR>"
