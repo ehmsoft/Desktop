@@ -13,8 +13,9 @@ from datetime import datetime
 from CalendarScreen import Ui_Calendar
 from CitaScreen import Ui_Cita
 from gui.ListadoDialogo import ListadoDialogo
-from gui.Listado import Listado
+from Listado import Listado
 from types import NoneType
+import copy
 
 class QCalendar(QtGui.QCalendarWidget):
     def __init__(self, citas,*args, **kwargs):
@@ -41,10 +42,13 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         super(Calendar, self).__init__(parent)
         self.setupUi(self)
         self.__citas = self.crearCitas()
+        self.__citasDia = self.citasDia(self.__citas)
         for cita in self.__citas:
             self.lista.addItem(cita)
+        for cita in self.__citasDia:
+            self.lista2.addItem(cita)
         self.calendario = QCalendar(self.__citas)
-        self.horizontalLayout_4.addWidget(self.calendario)
+        self.horizontalLayout_2.addWidget(self.calendario)
         
         self.connect(self.calendario, QtCore.SIGNAL('selectionChanged()'), self.calendarSelection)
         self.connect(self.lista, QtCore.SIGNAL('itemSelectionChanged()'), self.listSelection)
@@ -55,6 +59,37 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         
         self.lista.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.ActionsContextMenu)
         self.lista.addActions([editar,eliminar])
+        
+    def crearCitas(self):
+        try:
+            p = Persistence()
+            citas = p.consultarCitasCalendario()
+            r = []
+            for cita in citas:
+                item = ItemListas(cita, None)
+                r.append(item)
+            return r
+        except Exception, e:
+            print e
+        
+    def citasDia(self, citas, dia = None):
+        if len(citas) == 0:
+            dia = datetime.today()
+            self.tabWidget.setTabText(1,'{:%d/%m/%Y}'.format(dia))
+            return []
+        else:
+            if dia is None:
+                dia = citas[0].getObjeto().getFecha().date()
+            self.tabWidget.setTabText(1,'{:%d/%m/%Y}'.format(dia))
+            return [copy.copy(x) for x in citas if self.filtroPorDia(x, dia)]
+            
+                
+    def filtroPorDia(self, item, dia):
+        diaItem = item.getObjeto().getFecha().date()
+        if diaItem == dia:
+            return True
+        else:
+            return False            
     
     def eliminar(self):
         message = QtGui.QMessageBox()
@@ -113,11 +148,11 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
                 index = self.__citas.index(c)
                 break
         if index == len(self.__citas):
-            item = ItemListas(Cita(cita),self.lista)
+            item = ItemListas(cita,self.lista)
             self.__citas.append(item)
             self.lista.addItem(item)
         else:
-            item = ItemListas(Cita(cita),self.lista)
+            item = ItemListas(cita,self.lista)
             self.__citas.insert(index, item)
             while self.lista.count() != 0:
                 self.lista.takeItem(0)
@@ -127,11 +162,13 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         
     def calendarSelection(self):
         selectedDate = self.calendario.selectedDate().toPython()
-        for cita in self.__citas:
-            date = cita.getObjeto().getFecha().date()
-            if selectedDate == date:
-                self.lista.setCurrentItem(cita)
-                break
+        currentDate = self.lista.currentItem().getObjeto().getFecha().date()
+        if selectedDate != currentDate:
+            for cita in self.__citas:
+                date = cita.getObjeto().getFecha().date()
+                if selectedDate == date:
+                    self.lista.setCurrentItem(cita)
+                    break
             
     def listSelection(self):
         item = self.lista.currentItem()
@@ -139,19 +176,6 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
             selectedDate = item.getObjeto().getFecha().date()
             if selectedDate != self.calendario.selectedDate().toPython():
                 self.calendario.setSelectedDate(selectedDate)        
-        
-    def crearCitas(self):
-        try:
-            p = Persistence()
-            citas = p.consultarCitasCalendario()
-            r = []
-            for cita in citas:
-                c = Cita(cita)
-                item = ItemListas(c, self.lista)
-                r.append(item)
-            return r
-        except Exception, e:
-            print e
             
 class DialogoActuaciones(QtGui.QDialog):
     def __init__(self, proceso,parent = None):
@@ -171,53 +195,6 @@ class DialogoActuaciones(QtGui.QDialog):
         
     def getSelected(self):
         return self.selected
-        
-        
-class Cita(object):
-    def __init__(self, cita):
-        actuacion = None
-        try:
-            p = Persistence()
-            actuacion = p.consultarActuacion(cita.getId_actuacion())
-        except Exception, e:
-            print e, e.args, e.message
-            
-        self.__descripcion = actuacion.getDescripcion()
-        self.__fecha = cita.getFecha()
-        self.__anticipacion = cita.getAnticipacion()
-        self.__cita = cita
-        
-    def getCita(self):
-        return self.__cita
-        
-    def getDescripcion(self):
-        return self.__descripcion
-    
-    def getFecha(self):
-        return self.__fecha
-    
-    def getAnticipacion(self):
-        return self.__anticipacion
-    
-    def transAnticipacion(self, ant):
-        if ant < 3600:
-            if ant == 60:
-                return '1 minuto'
-            else:
-                return '%i minutos' % (ant / 60)
-        elif ant < 86400:
-            if ant == 3600:
-                return '1 hora'
-            else:
-                return '%i horas' % (ant / 3600)
-        else:
-            if ant == 86400:
-                return '1 día'
-            else:
-                return '%i días' % (ant / 86400)
-    
-    def __str__(self):
-        return 'Descripción: %s\nFecha: %s\nAnticipación: %s' % (self.__descripcion, '{:%d/%m/%Y %I:%M %p}'.format(self.__fecha), self.transAnticipacion(self.__anticipacion))
 
 class CitaScreen(QtGui.QDialog, Ui_Cita):
     def __init__(self,actuacion = None, cita = None,parent = None):
@@ -226,27 +203,37 @@ class CitaScreen(QtGui.QDialog, Ui_Cita):
         self.cita = cita
         self.fecha.setDateTime(datetime.today())
         self.actuacion = actuacion
+        self.checkBox.stateChanged.connect(self.checkBoxChanged)
         
-        if cita == None:        
+        if cita == None:
+            self.checkBox.setChecked(False)
+            self.checkBoxChanged(False)        
             self.fecha.setDateTime(self.actuacion.getFechaProxima())
+            self.descripcion.setText(self.actuacion.getDescripcion())
         else:
-            try:
-                p = Persistence()
-                self.actuacion = p.consultarActuacion(self.cita.getId_actuacion())
-            except Exception, e:
-                print e
+            self.checkBox.setChecked(cita.isAlarma())
+            self.checkBoxChanged(cita.isAlarma())
+            self.descripcion.setText(self.cita.getDescripcion())
             self.fecha.setDateTime(self.cita.getFecha())
             ant = self.transAnticipacion(self.cita.getAnticipacion())
             self.comboAnticipacion.setCurrentIndex(self.comboAnticipacion.findText(ant[1]))
             self.spinAnticipacion.setValue(ant[0])
         self.calendar.setSelectedDate(self.fecha.date())
-        self.descripcion.setText(self.actuacion.getDescripcion())        
         
         self.connect(self.calendar, QtCore.SIGNAL('selectionChanged()'), self.calendarSelection)
         self.connect(self.fecha, QtCore.SIGNAL('dateChanged(QDate)'), self.fechaSelection)
         
+    def checkBoxChanged(self, check):
+        if not check:
+            self.spinAnticipacion.setEnabled(False)
+            self.comboAnticipacion.setEnabled(False)
+        else:
+            self.spinAnticipacion.setEnabled(True)
+            self.comboAnticipacion.setEnabled(True)            
+        
     def calendarSelection(self):
-        self.fecha.setDate(self.calendar.selectedDate())
+        if self.calendar.selectedDate() != self.fecha.date():
+            self.fecha.setDate(self.calendar.selectedDate())
         
     def fechaSelection(self, selected):
         if self.calendar.selectedDate() != self.fecha.date():
@@ -275,12 +262,17 @@ class CitaScreen(QtGui.QDialog, Ui_Cita):
     def guardar(self):
         fecha = self.fecha.dateTime().toPython()
         anticipacion = self.getAnticipacion()
+        descripcion = self.descripcion.text()
+        alarma = self.checkBox.isChecked()
         if self.cita == None:
-            self.cita = CitaCalendario(fecha = fecha, anticipacion = anticipacion, id_cita = None, 
-                              id_actuacion = self.actuacion.getId_actuacion(),uid = '')
+            self.cita = CitaCalendario(fecha = fecha, anticipacion = anticipacion, 
+                                       descripcion = descripcion, alarma = alarma, 
+                                       id_cita = None, id_actuacion = self.actuacion.getId_actuacion(), uid = '')
         else:
             self.cita.setFecha(fecha)
             self.cita.setAnticipacion(anticipacion)
+            self.cita.setAlarma(alarma)
+            self.cita.setDescripcion(descripcion)
         try:
             p = Persistence()
             if self.cita.getId_cita() == None:

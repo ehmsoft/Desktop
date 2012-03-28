@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on 22/03/2012
 
@@ -105,6 +106,26 @@ class CitaCalendario(object):
             self.__alarma = alarma
         else:
             raise TypeError('Tipo de dato no admitido')
+        
+    def transAnticipacion(self, ant):
+        if ant < 3600:
+            if ant == 60:
+                return '1 minuto'
+            else:
+                return '%i minutos' % (ant / 60)
+        elif ant < 86400:
+            if ant == 3600:
+                return '1 hora'
+            else:
+                return '%i horas' % (ant / 3600)
+        else:
+            if ant == 86400:
+                return '1 día'
+            else:
+                return '%i días' % (ant / 86400)
+        
+    def __str__(self):
+        return 'Descripción: %s\nFecha: %s\nAnticipación: %s' % (self.getDescripcion(), '{:%d/%m/%Y %I:%M %p}'.format(self.getFecha()), self.transAnticipacion(self.getAnticipacion()))
     
     def __eq__(self, other):
         if other is None:

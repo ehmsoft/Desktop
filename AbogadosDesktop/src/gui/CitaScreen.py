@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'cita.ui'
 #
-# Created: Thu Mar 22 18:07:00 2012
+# Created: Fri Mar 23 03:20:00 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_Cita(object):
     def setupUi(self, Cita):
         Cita.setObjectName("Cita")
-        Cita.resize(552, 152)
+        Cita.resize(557, 177)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -35,7 +35,7 @@ class Ui_Cita(object):
         self.formLayout.setWidget(1, QtGui.QFormLayout.LabelRole, self.label_2)
         self.label_3 = QtGui.QLabel(self.groupBox)
         self.label_3.setObjectName("label_3")
-        self.formLayout.setWidget(2, QtGui.QFormLayout.LabelRole, self.label_3)
+        self.formLayout.setWidget(3, QtGui.QFormLayout.LabelRole, self.label_3)
         self.descripcion = QtGui.QLineEdit(self.groupBox)
         self.descripcion.setObjectName("descripcion")
         self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.descripcion)
@@ -54,7 +54,10 @@ class Ui_Cita(object):
         self.comboAnticipacion.addItem("")
         self.comboAnticipacion.addItem("")
         self.horizontalLayout.addWidget(self.comboAnticipacion)
-        self.formLayout.setLayout(2, QtGui.QFormLayout.FieldRole, self.horizontalLayout)
+        self.formLayout.setLayout(3, QtGui.QFormLayout.FieldRole, self.horizontalLayout)
+        self.checkBox = QtGui.QCheckBox(self.groupBox)
+        self.checkBox.setObjectName("checkBox")
+        self.formLayout.setWidget(2, QtGui.QFormLayout.LabelRole, self.checkBox)
         self.verticalLayout.addLayout(self.formLayout)
         self.buttonBox = QtGui.QDialogButtonBox(self.groupBox)
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
@@ -79,4 +82,5 @@ class Ui_Cita(object):
         self.comboAnticipacion.setItemText(0, QtGui.QApplication.translate("Cita", "minutos", None, QtGui.QApplication.UnicodeUTF8))
         self.comboAnticipacion.setItemText(1, QtGui.QApplication.translate("Cita", "horas", None, QtGui.QApplication.UnicodeUTF8))
         self.comboAnticipacion.setItemText(2, QtGui.QApplication.translate("Cita", "días", None, QtGui.QApplication.UnicodeUTF8))
+        self.checkBox.setText(QtGui.QApplication.translate("Cita", "alarma", None, QtGui.QApplication.UnicodeUTF8))
 
