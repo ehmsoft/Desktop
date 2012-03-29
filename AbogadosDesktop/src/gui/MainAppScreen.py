@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'uis/mainApp.ui'
 #
-# Created: Mon Mar 26 15:34:04 2012
+# Created: Thu Mar 29 15:05:16 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -48,6 +48,8 @@ class Ui_mainApp(object):
         self.menuEditar.setObjectName("menuEditar")
         self.menuSincronizar = QtGui.QMenu(self.menubar)
         self.menuSincronizar.setObjectName("menuSincronizar")
+        self.menuAyuda = QtGui.QMenu(self.menubar)
+        self.menuAyuda.setObjectName("menuAyuda")
         mainApp.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(mainApp)
         self.statusbar.setObjectName("statusbar")
@@ -88,6 +90,12 @@ class Ui_mainApp(object):
         self.actionArchivo_CSV.setObjectName("actionArchivo_CSV")
         self.actionArchivo_de_Copia_de_Seguridad = QtGui.QAction(mainApp)
         self.actionArchivo_de_Copia_de_Seguridad.setObjectName("actionArchivo_de_Copia_de_Seguridad")
+        self.actionAcerca_de_Procesos_Judiciales = QtGui.QAction(mainApp)
+        self.actionAcerca_de_Procesos_Judiciales.setMenuRole(QtGui.QAction.AboutRole)
+        self.actionAcerca_de_Procesos_Judiciales.setObjectName("actionAcerca_de_Procesos_Judiciales")
+        self.actionAcerca_de_Qt = QtGui.QAction(mainApp)
+        self.actionAcerca_de_Qt.setMenuRole(QtGui.QAction.AboutQtRole)
+        self.actionAcerca_de_Qt.setObjectName("actionAcerca_de_Qt")
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Proceso)
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Plantilla)
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Demandante)
@@ -109,9 +117,12 @@ class Ui_mainApp(object):
         self.menu_Archivo.addAction(self.actionImprimir)
         self.menu_Archivo.addAction(self.menuExportar.menuAction())
         self.menu_Archivo.addAction(self.actionImportar)
+        self.menuAyuda.addAction(self.actionAcerca_de_Procesos_Judiciales)
+        self.menuAyuda.addAction(self.actionAcerca_de_Qt)
         self.menubar.addAction(self.menu_Archivo.menuAction())
         self.menubar.addAction(self.menuEditar.menuAction())
         self.menubar.addAction(self.menuSincronizar.menuAction())
+        self.menubar.addAction(self.menuAyuda.menuAction())
 
         self.retranslateUi(mainApp)
         QtCore.QMetaObject.connectSlotsByName(mainApp)
@@ -124,6 +135,7 @@ class Ui_mainApp(object):
         self.menuExportar.setTitle(QtGui.QApplication.translate("mainApp", "Exportar", None, QtGui.QApplication.UnicodeUTF8))
         self.menuEditar.setTitle(QtGui.QApplication.translate("mainApp", "Editar", None, QtGui.QApplication.UnicodeUTF8))
         self.menuSincronizar.setTitle(QtGui.QApplication.translate("mainApp", "Sincronizar", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuAyuda.setTitle(QtGui.QApplication.translate("mainApp", "Ayuda", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevoProceso.setText(QtGui.QApplication.translate("mainApp", "Proceso", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevaPlantilla.setText(QtGui.QApplication.translate("mainApp", "Plantilla", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevoDemandante.setText(QtGui.QApplication.translate("mainApp", "Demandante", None, QtGui.QApplication.UnicodeUTF8))
@@ -149,4 +161,6 @@ class Ui_mainApp(object):
         self.actionNuevoProceso_a_partir_de_Plantilla.setText(QtGui.QApplication.translate("mainApp", "Proceso a partir de Plantilla", None, QtGui.QApplication.UnicodeUTF8))
         self.actionArchivo_CSV.setText(QtGui.QApplication.translate("mainApp", "Archivo CSV", None, QtGui.QApplication.UnicodeUTF8))
         self.actionArchivo_de_Copia_de_Seguridad.setText(QtGui.QApplication.translate("mainApp", "Archivo de Copia de Seguridad", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionAcerca_de_Procesos_Judiciales.setText(QtGui.QApplication.translate("mainApp", "Acerca de Procesos Judiciales", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionAcerca_de_Qt.setText(QtGui.QApplication.translate("mainApp", "Acerca de Qt", None, QtGui.QApplication.UnicodeUTF8))
 

@@ -5,6 +5,7 @@ Created on 30/01/2012
 
 @author: elfotografo007
 '''
+import PySide
 from PySide import QtCore, QtGui
 from MainAppScreen import Ui_mainApp
 from gui.Columna import ColumnaWidget
@@ -37,6 +38,9 @@ from core.ActuacionCritica import ActuacionCritica
 from gui.ExportarCSVDialog import ExportarCSVDialog
 import shutil
 from persistence.ConnectionManager import ConnectionManager
+import platform
+
+__version__ = '1.0'
 
 class MainApp(QtGui.QMainWindow, Ui_mainApp):
     #Constantes para elementos  del menu listaIzquierda
@@ -56,6 +60,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
     def __init__(self, parent = None):
         super(MainApp, self).__init__(parent)
         self.setupUi(self)
+        self.setTrayIcon()
         #Crear menu izquierdo
         self.lista = [MainApp.TXTEVENTOS,MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES, MainApp.TXTCATEGORIAS, MainApp.TXTCAMPOS, MainApp.TXTSINCRONIZAR, MainApp.TXTAJUSTES]
         self.centralSplitter = QtGui.QSplitter(QtCore.Qt.Horizontal)
@@ -101,9 +106,52 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         self.connect(self.actionArchivo_CSV, QtCore.SIGNAL('triggered()'), self.menuExportarCSVClicked)
         self.connect(self.actionArchivo_de_Copia_de_Seguridad, QtCore.SIGNAL('triggered()'), self.menuExportarArchivoClicked)
         self.connect(self.actionImportar, QtCore.SIGNAL('triggered()'), self.menuImportarArchivoClicked)
+        #self.connect(self.actionCerrar, QtCore.SIGNAL('triggered()'), self.cerrar)
+        self.connect(self.actionAcerca_de_Procesos_Judiciales, QtCore.SIGNAL('triggered()'), self.about)
+        self.connect(self.actionAcerca_de_Qt, QtCore.SIGNAL('triggered()'), self.aboutQt)
         
     def elementChanged(self):
         self.elementClicked(self.listaIzquierda.currentItem())
+        
+    def setTrayIcon(self):
+        self.tray = QtGui.QSystemTrayIcon(self)
+        self.tray.setIcon(QtGui.QIcon(':/images/icono.png'))
+        calendario = self.__createAction('Calendario', self.mostrarCalendario)
+        cerrar = self.__createAction('Cerrar', self.cerrar)
+        menu = QtGui.QMenu(self)
+        #menu.addAction(QtGui.QIcon(':/images/bolita.png'),'Calendario',self.mostrarCalendario)
+        menu.addAction(calendario)
+        menu.addSeparator()
+        menu.addAction(cerrar)
+        self.tray.setContextMenu(menu)
+        self.tray.activated.connect(self.trayClicked)
+        self.tray.show()
+        
+    def cerrar(self):
+        message = QtGui.QMessageBox()
+        message.setIcon(QtGui.QMessageBox.Question)
+        message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        message.setDefaultButton(QtGui.QMessageBox.No)
+        message.setText(unicode("¿Desea cerrar la aplicación, no obtendrá notificaciones de sus citas?"))
+        ret = message.exec_()
+        if ret == QtGui.QMessageBox.Yes:
+            import sys
+            sys.exit(0)
+        
+    def mostrarCalendario(self):
+        print 'Calendario'
+        
+    def trayClicked(self, reason):
+        if reason == QtGui.QSystemTrayIcon.ActivationReason.Trigger:
+            if self.isHidden():
+                self.show()
+            else:
+                self.hide()
+                
+    def closeEvent(self, event):
+        self.hide()
+        event.ignore()
+        #return QtGui.QMainWindow.closeEvent(self, *args, **kwargs)
         
     def elementClicked(self, item):
         #Metodo que maneja el click en la lista izquierda
@@ -990,7 +1038,23 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
     def menuImportarArchivoClicked(self):
         fname = QtGui.QFileDialog.getOpenFileName(self, 'Importar Archivo')[0]
         if fname != '':
-            shutil.copy(fname, ConnectionManager().getDbLocation())
+            if QtGui.QMessageBox.question(self,"Restaurar Archivo", u"Si continúa, se borrará toda la información que tiene en el programa y se reemplazará por la información del arhivo que está importando. ¿Seguro que desea Continuar?", QtGui.QMessageBox.Yes | QtGui.QMessageBox.No) == QtGui.QMessageBox.Yes:
+                shutil.copy(fname, ConnectionManager().getDbLocation())
+    
+    def about(self):
+        QtGui.QMessageBox.about(self, "Acerca de Procesos Judiciales",
+                """<b>Procesos Judiciales</b> v %s
+                <p>Copyright &copy; 2012 ehmSoftware. 
+                <a href='http://www.ehmsoft.com'>www.ehmsoft.com</a>
+                <p>soporte@ehmsoft.com
+                <p>&Iacute;conos por <a href='http://www.iconleak.com'>www.iconleak.com</a>, concedidos bajo licencia Tauriest Studio Free License
+                <p>Python %s -  PySide version %s - Qt version %s on %s""" % (__version__, 
+                platform.python_version(), PySide.__version__,  QtCore.__version__,
+                platform.system()))
+        
+    def aboutQt(self):
+        QtGui.QMessageBox.aboutQt(self)
+
     
     def __createAction(self, text, slot = None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
         action = QtGui.QAction(text, self)

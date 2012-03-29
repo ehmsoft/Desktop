@@ -113,9 +113,17 @@
      <string>Sincronizar</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuAyuda">
+    <property name="title">
+     <string>Ayuda</string>
+    </property>
+    <addaction name="actionAcerca_de_Procesos_Judiciales"/>
+    <addaction name="actionAcerca_de_Qt"/>
+   </widget>
    <addaction name="menu_Archivo"/>
    <addaction name="menuEditar"/>
    <addaction name="menuSincronizar"/>
+   <addaction name="menuAyuda"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionNuevoProceso">
@@ -227,6 +235,22 @@
   <action name="actionArchivo_de_Copia_de_Seguridad">
    <property name="text">
     <string>Archivo de Copia de Seguridad</string>
+   </property>
+  </action>
+  <action name="actionAcerca_de_Procesos_Judiciales">
+   <property name="text">
+    <string>Acerca de Procesos Judiciales</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutRole</enum>
+   </property>
+  </action>
+  <action name="actionAcerca_de_Qt">
+   <property name="text">
+    <string>Acerca de Qt</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutQtRole</enum>
    </property>
   </action>
  </widget>
