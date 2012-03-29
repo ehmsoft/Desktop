@@ -1049,7 +1049,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 <p><TABLE><TR><TH><p><a href='http://www.ehmsoft.com'>www.ehmsoft.com</a><p>soporte@ehmsoft.com</TH><TH><PRE>      </PRE><img src=':/images/logoB100.png'></TH></TR></TABLE>
                 <p>Copyright &copy; 2012 ehmSoftware. 
                 <p>&Iacute;conos por <a href='http://www.iconleak.com'>www.iconleak.com</a>, concedidos bajo licencia Tauriest Studio Free License
-                <p>Python %s -  PySide version %s - Qt version %s on %s""" % (__version__, 
+                <p>Python %s -  PySide version %s - Qt version %s en %s""" % (__version__, 
                 platform.python_version(), PySide.__version__,  QtCore.__version__,
                 platform.system()))
         
