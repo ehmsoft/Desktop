@@ -8,90 +8,85 @@ Created on 22/03/2012
 from PySide import QtGui, QtCore
 from persistence.Persistence import Persistence
 from ItemListas import ItemListas
-from core.CitaCalendario import CitaCalendario
 from datetime import datetime
+from datetime import date as DATE
 from CalendarScreen import Ui_Calendar
-from CitaScreen import Ui_Cita
+from gui.nuevo.NuevaCita import NuevaCita
 from gui.ListadoDialogo import ListadoDialogo
 from Listado import Listado
 from types import NoneType
-import copy
+from copy import deepcopy
 
 class QCalendar(QtGui.QCalendarWidget):
-    def __init__(self, citas,*args, **kwargs):
+    def __init__(self, citas = [],*args, **kwargs):
         self.__citas = citas
         QtGui.QCalendarWidget.__init__(self, *args, **kwargs)
     
     def paintCell(self, painter, rect, date):
         #painter.background().setColor(QtGui.QColor('red'))
         QtGui.QCalendarWidget.paintCell(self, painter, rect, date)
-        if self.en(date.toPython(), self.__citas):
-            painter.setPen(QtGui.QPen(QtCore.Qt.red))
+        pen = self.__en(date.toPython())
+        if pen != None:
+            painter.setPen(pen)
             painter.setBrush(QtGui.QBrush(QtCore.Qt.transparent))
-            painter.drawRect(rect.adjusted(0,0,-1,-1))
+            painter.drawRect(rect.adjusted(1,1 ,-1,-1))
             
-    def en(self, date, citas):
-        for cita in citas:
-            dateCita = cita.getObjeto().getFecha().date()
+    def __en(self, date):
+        cuantas = 0
+        for cita in self.__citas:
+            dateCita = cita.getFecha().date()
             if dateCita == date:
-                return True
-        return False
+                cuantas += 1
+        if cuantas == 1:
+            return QtGui.QPen(QtCore.Qt.red)
+        elif cuantas > 1:
+            return QtGui.QPen(QtCore.Qt.blue)
+        else:
+            return None  
+    
+    def setCitas(self, citas):
+        self.__citas = citas
+        self.repaint()
             
 class Calendar(QtGui.QDialog, Ui_Calendar):
     def __init__(self, parent = None):
         super(Calendar, self).__init__(parent)
         self.setupUi(self)
-        self.__citas = self.crearCitas()
-        self.__citasDia = self.citasDia(self.__citas)
-        for cita in self.__citas:
-            self.lista.addItem(cita)
-        for cita in self.__citasDia:
-            self.lista2.addItem(cita)
-        self.calendario = QCalendar(self.__citas)
-        self.horizontalLayout_2.addWidget(self.calendario)
+        self.__calendar = QCalendar()
+        self.horizontalLayout_2.addWidget(self.__calendar)
+        self.__citas = self.__cargarCitas()
+        self.__dia = datetime.today().date()
+        if len(self.__citas) != 0:
+            self.__calendar.setSelectedDate(self.__citas[0].getFecha().date())
+        self.__montarTodas()
+        self.__montarDia()
+        self.__calendar.setCitas(self.__citas)
         
-        self.connect(self.calendario, QtCore.SIGNAL('selectionChanged()'), self.calendarSelection)
-        self.connect(self.lista, QtCore.SIGNAL('itemSelectionChanged()'), self.listSelection)
-        self.connect(self.btnAgregar, QtCore.SIGNAL('clicked()'), self.click)
+        self.__calendar.clicked.connect(self.__clickCalendar)
+        self.btnAgregar.clicked.connect(self.__clickBtn)
+        self.btnAgregar2.clicked.connect(self.__clickBtn)
+        self.tabWidget.currentChanged.connect(self.__tabClicked)
+        self.lista.currentItemChanged.connect(self.__clickLista)
         
-        eliminar = self.createAction('Eliminar', self.eliminar)
-        editar = self.createAction('Editar', self.editar)
+        actionEliminar = QtGui.QAction('Eliminar',self)
+        actionEliminar.setToolTip('Elimina definitivamente la cita')
+        self.connect(actionEliminar, QtCore.SIGNAL('triggered()'), self.__eliminar)
+        actionEditar = QtGui.QAction('Editar', self)
+        actionEditar.setToolTip('Lanza la ventana de edición de la cita seleccionada')
+        self.connect(actionEditar, QtCore.SIGNAL('triggered()'), self.__editar)
         
-        self.lista.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.ActionsContextMenu)
-        self.lista.addActions([editar,eliminar])
+        self.lista.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+        self.lista.addActions([actionEliminar, actionEditar])
         
-    def crearCitas(self):
-        try:
-            p = Persistence()
-            citas = p.consultarCitasCalendario()
-            r = []
-            for cita in citas:
-                item = ItemListas(cita, None)
-                r.append(item)
-            return r
-        except Exception, e:
-            print e
+        self.lista2.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+        self.lista2.addActions([actionEliminar, actionEditar])
         
-    def citasDia(self, citas, dia = None):
-        if len(citas) == 0:
-            dia = datetime.today()
-            self.tabWidget.setTabText(1,'{:%d/%m/%Y}'.format(dia))
-            return []
-        else:
-            if dia is None:
-                dia = citas[0].getObjeto().getFecha().date()
-            self.tabWidget.setTabText(1,'{:%d/%m/%Y}'.format(dia))
-            return [copy.copy(x) for x in citas if self.filtroPorDia(x, dia)]
-            
-                
-    def filtroPorDia(self, item, dia):
-        diaItem = item.getObjeto().getFecha().date()
-        if diaItem == dia:
-            return True
-        else:
-            return False            
-    
-    def eliminar(self):
+    def __clickLista(self,current, previous):
+        if current is not None:
+            fecha = current.getObjeto().getFecha().date()
+            self.__calendar.setSelectedDate(fecha)
+        
+    def __eliminar(self):
         message = QtGui.QMessageBox()
         message.setIcon(QtGui.QMessageBox.Question)
         message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
@@ -99,83 +94,106 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         message.setText(unicode("¿Desea eliminar la cita?"))
         ret = message.exec_()
         if ret == QtGui.QMessageBox.Yes:
-            index = self.lista.currentRow()
-            item = self.lista.takeItem(index)
-            del self.__citas[index]
+            if self.tabWidget.currentIndex() == 0:
+                cita = self.lista.currentItem().getObjeto()
+            else:
+                cita = self.lista2.currentItem().getObjeto()
             try:
                 p = Persistence()
-                p.borrarCitaCalendario(item.getObjeto().getCita())
-            except Exception, e:
+                p.borrarCitaCalendario(cita)
+                self.__citas.remove(cita)
+                self.__montarTodas()
+                self.__montarDia(self.__dia)
+                self.__redibujar()
+            except Exception as e:
                 print e
     
-    def editar(self):
-        item = self.lista.currentItem()
-        index = self.lista.currentRow()
-        dialog = CitaScreen(cita = item.getObjeto().getCita(), parent = self)
-        if dialog.exec_():
-            cita = dialog.getCita()
-            self.lista.takeItem(index)
-            del self.__citas[index]
-            self.ubicarCita(cita)            
+    def __editar(self):
+        if self.tabWidget.currentIndex() == 0:
+            cita = self.lista.currentItem().getObjeto()
+        else:
+            cita = self.lista2.currentItem().getObjeto()
+        editar = NuevaCita(cita = cita, parent = self)
+        if editar.exec_():
+            self.__montarTodas()
+            self.__montarDia(self.__dia)
+            self.__redibujar()
         
-    def createAction(self, text, slot = None):
-        action = QtGui.QAction(text, self)
-        if slot is not None:
-            self.connect(action, QtCore.SIGNAL("triggered()"), slot)
-        return action
+    def __tabClicked(self, index):
+        if index == 1:
+            self.__calendar.setSelectedDate(self.__dia)
         
-    def click(self):
+    def __clickBtn(self):
         procesos = ListadoDialogo(ListadoDialogo.PROCESO, self)
         if procesos.exec_():
             proceso = procesos.getSelected()
             actuaciones = DialogoActuaciones(proceso, self)
             if actuaciones.exec_():
                 actuacion = actuaciones.getSelected()
-                dialogo = CitaScreen(actuacion = actuacion, parent = self)
+                dialogo = NuevaCita(actuacion = actuacion, parent = self)
                 if dialogo.exec_():
                     cita = dialogo.getCita()
-                    self.ubicarCita(cita)
+                    self.__ubicarCita(cita)
+                    self.__redibujar()
                 dialogo.setParent(None)
-                actuaciones.setParent(None)
-                procesos.setParent(None)
-                
-    def ubicarCita(self, cita):
-        dateCita = cita.getFecha()
-        index = len(self.__citas)
+            actuaciones.setParent(None)
+        procesos.setParent(None)
+                    
+    def __ubicarCita(self, cita):
         for c in self.__citas:
-            dateCitas = c.getObjeto().getFecha()
-            if dateCita < dateCitas:
+            if cita <= c:
                 index = self.__citas.index(c)
+                self.__citas.insert(index, cita)
                 break
-        if index == len(self.__citas):
-            item = ItemListas(cita,self.lista)
-            self.__citas.append(item)
-            self.lista.addItem(item)
         else:
-            item = ItemListas(cita,self.lista)
-            self.__citas.insert(index, item)
-            while self.lista.count() != 0:
-                self.lista.takeItem(0)
-            for cita in self.__citas:
-                self.lista.addItem(cita)
-            
+            self.__citas.append(cita) 
+    
+    def __redibujar(self):
+        self.__montarTodas()
+        self.__montarDia(self.__dia)
         
-    def calendarSelection(self):
-        selectedDate = self.calendario.selectedDate().toPython()
-        currentDate = self.lista.currentItem().getObjeto().getFecha().date()
-        if selectedDate != currentDate:
-            for cita in self.__citas:
-                date = cita.getObjeto().getFecha().date()
-                if selectedDate == date:
-                    self.lista.setCurrentItem(cita)
-                    break
+    def __clickCalendar(self):
+        date = self.__calendar.selectedDate().toPython()
+        for cita in self.__citas:
+            if date == cita.getFecha().date():
+                self.__montarDia(date)
+                self.tabWidget.setCurrentIndex(1)
+                break
+        
+    def __cargarCitas(self):
+        try:
+            p = Persistence()
+            citas = p.consultarCitasCalendario()
+            return citas
+        except Exception as e:
+            print e
             
-    def listSelection(self):
-        item = self.lista.currentItem()
-        if not isinstance(item, NoneType):
-            selectedDate = item.getObjeto().getFecha().date()
-            if selectedDate != self.calendario.selectedDate().toPython():
-                self.calendario.setSelectedDate(selectedDate)        
+    def __montarTodas(self):
+        while self.lista.count() > 0:
+            self.lista.takeItem(0)
+        for cita in self.__citas:
+            self.lista.addItem(ItemListas(cita, self.lista))
+    
+    def __montarDia(self, date = None):
+        while self.lista2.count() > 0:
+            self.lista2.takeItem(0)
+        if date == None:
+            if len(self.__citas) != 0:
+                self.__dia = date = self.__citas[0].getFecha().date()
+            else:
+                date = self.__dia
+        else:
+            if not isinstance(date, DATE):
+                self.__dia = date.date()
+            else:
+                self.__dia = date
+        self.tabWidget.setTabText(1,'{:%d/%m/%Y}'.format(date))
+        for cita in self.__citas:
+            dateCita = cita.getFecha().date()
+            if date == dateCita:
+                c = deepcopy(cita)
+                c.setConFecha(False)
+                self.lista2.addItem(ItemListas(c,self.lista2))
             
 class DialogoActuaciones(QtGui.QDialog):
     def __init__(self, proceso,parent = None):
@@ -195,101 +213,6 @@ class DialogoActuaciones(QtGui.QDialog):
         
     def getSelected(self):
         return self.selected
-
-class CitaScreen(QtGui.QDialog, Ui_Cita):
-    def __init__(self,actuacion = None, cita = None,parent = None):
-        super(CitaScreen, self).__init__(parent)
-        self.setupUi(self)
-        self.cita = cita
-        self.fecha.setDateTime(datetime.today())
-        self.actuacion = actuacion
-        self.checkBox.stateChanged.connect(self.checkBoxChanged)
-        
-        if cita == None:
-            self.checkBox.setChecked(False)
-            self.checkBoxChanged(False)        
-            self.fecha.setDateTime(self.actuacion.getFechaProxima())
-            self.descripcion.setText(self.actuacion.getDescripcion())
-        else:
-            self.checkBox.setChecked(cita.isAlarma())
-            self.checkBoxChanged(cita.isAlarma())
-            self.descripcion.setText(self.cita.getDescripcion())
-            self.fecha.setDateTime(self.cita.getFecha())
-            ant = self.transAnticipacion(self.cita.getAnticipacion())
-            self.comboAnticipacion.setCurrentIndex(self.comboAnticipacion.findText(ant[1]))
-            self.spinAnticipacion.setValue(ant[0])
-        self.calendar.setSelectedDate(self.fecha.date())
-        
-        self.connect(self.calendar, QtCore.SIGNAL('selectionChanged()'), self.calendarSelection)
-        self.connect(self.fecha, QtCore.SIGNAL('dateChanged(QDate)'), self.fechaSelection)
-        
-    def checkBoxChanged(self, check):
-        if not check:
-            self.spinAnticipacion.setEnabled(False)
-            self.comboAnticipacion.setEnabled(False)
-        else:
-            self.spinAnticipacion.setEnabled(True)
-            self.comboAnticipacion.setEnabled(True)            
-        
-    def calendarSelection(self):
-        if self.calendar.selectedDate() != self.fecha.date():
-            self.fecha.setDate(self.calendar.selectedDate())
-        
-    def fechaSelection(self, selected):
-        if self.calendar.selectedDate() != self.fecha.date():
-            self.calendar.setSelectedDate(selected)
-            
-    def getAnticipacion(self):
-        escala = self.comboAnticipacion.currentText()
-        ant = self.spinAnticipacion.value()
-        if escala == 'minutos':
-            return ant * 60
-        elif escala == 'horas':
-            return ant * 3600
-        elif escala == 'días':
-            return ant * 86400
-        else:
-            raise TypeError('Error en valores')
-        
-    def transAnticipacion(self, ant):
-        if ant < 3600:
-            return (ant / 60, 'minutos')
-        elif ant < 86400:
-            return (ant / 3600, 'horas')
-        else:
-            return (ant / 86400, 'días')
-        
-    def guardar(self):
-        fecha = self.fecha.dateTime().toPython()
-        anticipacion = self.getAnticipacion()
-        descripcion = self.descripcion.text()
-        alarma = self.checkBox.isChecked()
-        if self.cita == None:
-            self.cita = CitaCalendario(fecha = fecha, anticipacion = anticipacion, 
-                                       descripcion = descripcion, alarma = alarma, 
-                                       id_cita = None, id_actuacion = self.actuacion.getId_actuacion(), uid = '')
-        else:
-            self.cita.setFecha(fecha)
-            self.cita.setAnticipacion(anticipacion)
-            self.cita.setAlarma(alarma)
-            self.cita.setDescripcion(descripcion)
-        try:
-            p = Persistence()
-            if self.cita.getId_cita() == None:
-                p.guardarCitaCalendario(self.cita)
-            else:
-                p.actualizarCitaCalendario(self.cita)
-            return QtGui.QDialog.accept(self)
-        except Exception, e:
-            print e
-            return QtGui.QDialog.reject(self)
-
-            
-    def accept(self):
-        self.guardar()
-            
-    def getCita(self):
-        return self.cita
     
 import sys
         

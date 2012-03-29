@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'cita.ui'
 #
-# Created: Fri Mar 23 03:20:00 2012
+# Created: Wed Mar 28 22:56:31 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,15 +12,15 @@ from PySide import QtCore, QtGui
 class Ui_Cita(object):
     def setupUi(self, Cita):
         Cita.setObjectName("Cita")
-        Cita.resize(557, 177)
+        Cita.resize(294, 181)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Cita.sizePolicy().hasHeightForWidth())
         Cita.setSizePolicy(sizePolicy)
         Cita.setSizeGripEnabled(True)
-        self.horizontalLayout_3 = QtGui.QHBoxLayout(Cita)
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
+        self.verticalLayout_2 = QtGui.QVBoxLayout(Cita)
+        self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.groupBox = QtGui.QGroupBox(Cita)
         self.groupBox.setObjectName("groupBox")
         self.verticalLayout = QtGui.QVBoxLayout(self.groupBox)
@@ -40,6 +40,7 @@ class Ui_Cita(object):
         self.descripcion.setObjectName("descripcion")
         self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.descripcion)
         self.fecha = QtGui.QDateTimeEdit(self.groupBox)
+        self.fecha.setCalendarPopup(True)
         self.fecha.setObjectName("fecha")
         self.formLayout.setWidget(1, QtGui.QFormLayout.FieldRole, self.fecha)
         self.horizontalLayout = QtGui.QHBoxLayout()
@@ -63,10 +64,7 @@ class Ui_Cita(object):
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout.addWidget(self.buttonBox)
-        self.horizontalLayout_3.addWidget(self.groupBox)
-        self.calendar = QtGui.QCalendarWidget(Cita)
-        self.calendar.setObjectName("calendar")
-        self.horizontalLayout_3.addWidget(self.calendar)
+        self.verticalLayout_2.addWidget(self.groupBox)
 
         self.retranslateUi(Cita)
         QtCore.QObject.connect(self.buttonBox, QtCore.SIGNAL("accepted()"), Cita.accept)

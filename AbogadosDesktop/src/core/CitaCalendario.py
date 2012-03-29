@@ -13,8 +13,12 @@ class CitaCalendario(object):
     '''
 
 
-    def __init__(self, fecha, anticipacion , descripcion, alarma=False, id_cita=None, id_actuacion = None, uid = None):
+    def __init__(self, fecha, anticipacion , descripcion, alarma=False, id_cita=None, id_actuacion = None, uid = None, conFecha = True):
         
+        if isinstance(conFecha, BooleanType):
+            self.__conFecha = conFecha
+        else:
+            raise TypeError('Tipo de dato no admitido')
         if isinstance(fecha, datetime):
             self.__fecha = fecha
         else:
@@ -123,9 +127,18 @@ class CitaCalendario(object):
                 return '1 día'
             else:
                 return '%i días' % (ant / 86400)
+            
+    def setConFecha(self, fecha):
+        if isinstance(fecha, BooleanType):
+            self.__conFecha = fecha
+        else:
+            raise TypeError('Tipo de dato no admitido')
         
     def __str__(self):
-        return 'Descripción: %s\nFecha: %s\nAnticipación: %s' % (self.getDescripcion(), '{:%d/%m/%Y %I:%M %p}'.format(self.getFecha()), self.transAnticipacion(self.getAnticipacion()))
+        if self.__conFecha:
+            return 'Descripción: %s\nFecha: %s\nAnticipación: %s' % (self.getDescripcion(), '{:%d/%m/%Y %I:%M %p}'.format(self.getFecha()), self.transAnticipacion(self.getAnticipacion()))
+        else:
+            return 'Descripción: %s\nAnticipación: %s' % (self.getDescripcion(), self.transAnticipacion(self.getAnticipacion()))
     
     def __eq__(self, other):
         if other is None:
@@ -145,6 +158,34 @@ class CitaCalendario(object):
                 return False
             if self.__alarma != other.isAlarma():
                 return False
+            return True
+        else:
+            return False
+    
+    #>=
+    def __gt__(self, other):
+        if self.__fecha >= other.getFecha():
+            return True
+        else:
+            return False
+    
+    #>
+    def __ge__(self, other):
+        if self.__fecha > other.getFecha():
+            return True
+        else:
+            return False
+    
+    #<=
+    def __lt__(self, other):
+        if self.__fecha <= other.getFecha():
+            return True
+        else:
+            return False
+    
+    #<
+    def __le__(self, other):
+        if self.__fecha < other.getFecha():
             return True
         else:
             return False

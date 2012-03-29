@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>557</width>
-    <height>177</height>
+    <width>278</width>
+    <height>181</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,7 +22,7 @@
   <property name="sizeGripEnabled">
    <bool>true</bool>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout_3">
+  <layout class="QVBoxLayout" name="verticalLayout_2">
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
@@ -56,7 +56,20 @@
          <widget class="QLineEdit" name="descripcion"/>
         </item>
         <item row="1" column="1">
-         <widget class="QDateTimeEdit" name="fecha"/>
+         <widget class="QDateTimeEdit" name="fecha">
+          <property name="currentSection">
+           <enum>QDateTimeEdit::DaySection</enum>
+          </property>
+          <property name="displayFormat">
+           <string>d MMM yyyy hh:mm:ss a</string>
+          </property>
+          <property name="calendarPopup">
+           <bool>true</bool>
+          </property>
+          <property name="timeSpec">
+           <enum>Qt::LocalTime</enum>
+          </property>
+         </widget>
         </item>
         <item row="3" column="1">
          <layout class="QHBoxLayout" name="horizontalLayout">
@@ -106,9 +119,6 @@
       </item>
      </layout>
     </widget>
-   </item>
-   <item>
-    <widget class="QCalendarWidget" name="calendar"/>
    </item>
   </layout>
  </widget>

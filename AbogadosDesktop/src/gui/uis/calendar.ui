@@ -108,7 +108,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="btnAgregar2">
            <property name="text">
             <string>Agregar</string>
            </property>
