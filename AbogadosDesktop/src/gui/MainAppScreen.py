@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'mainApp.ui'
+# Form implementation generated from reading ui file 'uis/mainApp.ui'
 #
-# Created: Tue Mar 27 00:19:49 2012
+# Created: Mon Mar 26 15:34:04 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,13 +28,13 @@ class Ui_mainApp(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 682, 545))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 664, 531))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.gridLayout.addWidget(self.scrollArea, 0, 0, 1, 1)
         mainApp.setCentralWidget(self.centralwidget)
-        self.menubar = QtGui.QMenuBar(mainApp)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
+        self.menubar = QtGui.QMenuBar()
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 22))
         self.menubar.setObjectName("menubar")
         self.menu_Archivo = QtGui.QMenu(self.menubar)
         self.menu_Archivo.setObjectName("menu_Archivo")
@@ -88,8 +88,6 @@ class Ui_mainApp(object):
         self.actionArchivo_CSV.setObjectName("actionArchivo_CSV")
         self.actionArchivo_de_Copia_de_Seguridad = QtGui.QAction(mainApp)
         self.actionArchivo_de_Copia_de_Seguridad.setObjectName("actionArchivo_de_Copia_de_Seguridad")
-        self.actionCerrar = QtGui.QAction(mainApp)
-        self.actionCerrar.setObjectName("actionCerrar")
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Proceso)
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Plantilla)
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Demandante)
@@ -111,8 +109,6 @@ class Ui_mainApp(object):
         self.menu_Archivo.addAction(self.actionImprimir)
         self.menu_Archivo.addAction(self.menuExportar.menuAction())
         self.menu_Archivo.addAction(self.actionImportar)
-        self.menu_Archivo.addSeparator()
-        self.menu_Archivo.addAction(self.actionCerrar)
         self.menubar.addAction(self.menu_Archivo.menuAction())
         self.menubar.addAction(self.menuEditar.menuAction())
         self.menubar.addAction(self.menuSincronizar.menuAction())
@@ -153,6 +149,4 @@ class Ui_mainApp(object):
         self.actionNuevoProceso_a_partir_de_Plantilla.setText(QtGui.QApplication.translate("mainApp", "Proceso a partir de Plantilla", None, QtGui.QApplication.UnicodeUTF8))
         self.actionArchivo_CSV.setText(QtGui.QApplication.translate("mainApp", "Archivo CSV", None, QtGui.QApplication.UnicodeUTF8))
         self.actionArchivo_de_Copia_de_Seguridad.setText(QtGui.QApplication.translate("mainApp", "Archivo de Copia de Seguridad", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionCerrar.setText(QtGui.QApplication.translate("mainApp", "Cerrar", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionCerrar.setToolTip(QtGui.QApplication.translate("mainApp", "Cierra la aplicación", None, QtGui.QApplication.UnicodeUTF8))
 
