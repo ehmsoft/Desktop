@@ -5,6 +5,8 @@ Created on 30/01/2012
 
 @author: elfotografo007
 '''
+import shutil
+import platform
 import PySide
 from PySide import QtCore, QtGui
 from MainAppScreen import Ui_mainApp
@@ -32,13 +34,12 @@ from gui.nuevo.NuevoProceso import NuevoProceso
 from gui.nuevo.NuevaPlantilla import NuevaPlantilla
 from gui.ListadoDialogo import ListadoDialogo
 from gui.ListadoBusqueda import ListadoBusqueda
-import resources
+from gui.AsistenteImpresion import AsistenteImpresion
 from gui.ColumnaSync import ColumnaSync
 from core.ActuacionCritica import ActuacionCritica
 from gui.ExportarCSVDialog import ExportarCSVDialog
-import shutil
+import resources
 from persistence.ConnectionManager import ConnectionManager
-import platform
 
 __version__ = '1.0'
 
@@ -109,6 +110,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         #self.connect(self.actionCerrar, QtCore.SIGNAL('triggered()'), self.cerrar)
         self.connect(self.actionAcerca_de_Procesos_Judiciales, QtCore.SIGNAL('triggered()'), self.about)
         self.connect(self.actionAcerca_de_Qt, QtCore.SIGNAL('triggered()'), self.aboutQt)
+        self.connect(self.actionImprimir, QtCore.SIGNAL('triggered()'), self.menuImpresionClicked)
         
     def elementChanged(self):
         self.elementClicked(self.listaIzquierda.currentItem())
@@ -1056,6 +1058,11 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         QtGui.QMessageBox.aboutQt(self)
 
     
+    
+    
+    def menuImpresionClicked(self):
+        AsistenteImpresion().exec_()
+    
     def __createAction(self, text, slot = None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
         action = QtGui.QAction(text, self)
         if icon is not None:
@@ -1070,6 +1077,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         if checkable:
             action.setCheckable(True)
         return action
+    
 import sys
 app = QtGui.QApplication(sys.argv)
 app.setOrganizationName("ehmSoftware")

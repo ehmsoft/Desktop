@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
+    <file>images/logoB100.png</file>
     <file>images/bolita.png</file>
     <file>images/bolita_marcaAgua.png</file>
     <file>images/icono.png</file>
