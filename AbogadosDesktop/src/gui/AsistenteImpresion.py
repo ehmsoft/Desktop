@@ -68,8 +68,8 @@ class AsistenteImpresion(QDialog, Ui_AsistenteImpresionDialog):
                         image.loadFromData(QByteArray(qr.tobitmap()), "XBM")
                         image.invertPixels()
                         painter = QPainter(self.printer)
-                        width = image.width() *5
-                        height = image.height() * 5
+                        width = image.width() *6
+                        height = image.height() *6
                         painter.drawImage(0, 0, image.scaled(width, height))
                 del proceso
                 del dialog
