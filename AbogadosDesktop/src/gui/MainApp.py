@@ -624,7 +624,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if procesoVentana.exec_():
                 self.elementChanged()
             del procesoVentana
-
+        self.columna1.getCentralWidget().buscar.llenarCombo()
         
     def procesoEliminarClicked(self):
         elemento = self.columna1.getCentralWidget().getSelectedItem()
@@ -647,6 +647,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.label = QtGui.QLabel() 
                 self.label.setPixmap(QtGui.QPixmap.fromImage(self.image))
                 self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
+        self.columna1.getCentralWidget().buscar.llenarCombo()
     
     def personaEditarClicked(self):
         persona = self.columna1.getCentralWidget().currentItem().getObjeto()

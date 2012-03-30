@@ -193,10 +193,14 @@ class CampoBusqueda(QtGui.QWidget):
         return self.comboBuscar
     
     def llenarCombo(self):
-        items = ['Todas']
+        if self.comboBuscar.count():
+            items = []
+        else:
+            items = ['Todas']
         categorias = Persistence().consultarCategorias()
         items += [categoria.getDescripcion() for categoria in categorias]
-        while(self.comboBuscar.count()):
-            self.comboBuscar.removeItem(0)
+        while self.comboBuscar.count():
+            self.comboBuscar.removeItem(1)
+            if self.comboBuscar.count() == 1:
+                break
         self.comboBuscar.addItems(items)
-        self.comboBuscar.setCurrentIndex(0)
