@@ -327,11 +327,13 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if procesoVentana.exec_():
                 proceso = procesoVentana.getProceso()
                 self.columna1.getCentralWidget().add(proceso)
+            self.columna1.getCentralWidget().buscar.llenarCombo()
         elif item.text() == MainApp.TXTPLANTILLAS:
             plantillaVentana = NuevaPlantilla()
             if plantillaVentana.exec_():
                 plantilla = plantillaVentana.getPlantilla()
                 self.columna1.getCentralWidget().add(plantilla)
+            self.columna1.getCentralWidget().buscar.llenarCombo()
                 
         elif item.text() == MainApp.TXTDEMANDANTES:
             personaVentana = NuevaPersona(tipo = 1)
@@ -707,6 +709,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             self.columna1.getCentralWidget().replace(plantillaVentana.getPlantilla())
         self.columna1ElementChanged()
         del plantillaVentana
+        self.columna1.getCentralWidget().buscar.llenarCombo()
     
     def plantillaEliminarClicked(self):
         plantilla = self.columna1.getCentralWidget().getSelectedItem()
@@ -721,6 +724,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.label = QtGui.QLabel() 
                 self.label.setPixmap(QtGui.QPixmap.fromImage(self.image))
                 self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
+        self.columna1.getCentralWidget().buscar.llenarCombo()
     
     def categoriaEditarClicked(self):
         categoria = self.columna1.getCentralWidget().currentItem().getObjeto()
