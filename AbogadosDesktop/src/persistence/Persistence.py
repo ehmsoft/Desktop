@@ -15,11 +15,13 @@ from core.Plantilla import Plantilla
 from core.Archivo import Archivo
 from core.CitaCalendario import CitaCalendario
 from core.ActuacionCritica import ActuacionCritica
+from core.Singleton import Singleton
 
 class Persistence(object):
     '''
     Clase Persistence
     '''
+    __metaclass__ = Singleton
 
 
     def __init__(self):
