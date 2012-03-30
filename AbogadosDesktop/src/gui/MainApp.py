@@ -37,6 +37,7 @@ from core.ActuacionCritica import ActuacionCritica
 from gui.ExportarCSVDialog import ExportarCSVDialog
 import shutil
 from persistence.ConnectionManager import ConnectionManager
+from gui.GestorCitas import GestorCitas
 
 class MainApp(QtGui.QMainWindow, Ui_mainApp):
     #Constantes para elementos  del menu listaIzquierda
@@ -56,6 +57,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
     def __init__(self, parent = None):
         super(MainApp, self).__init__(parent)
         self.setupUi(self)
+        self.__gestor = GestorCitas(self)
         self.setTrayIcon()
         #Crear menu izquierdo
         self.lista = [MainApp.TXTEVENTOS,MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES, MainApp.TXTCATEGORIAS, MainApp.TXTCAMPOS, MainApp.TXTSINCRONIZAR, MainApp.TXTAJUSTES]

@@ -14,8 +14,8 @@ from CalendarScreen import Ui_Calendar
 from gui.nuevo.NuevaCita import NuevaCita
 from gui.ListadoDialogo import ListadoDialogo
 from Listado import Listado
-from types import NoneType
 from copy import deepcopy
+from gui.GestorCitas import GestorCitas
 
 class QCalendar(QtGui.QCalendarWidget):
     def __init__(self, citas = [],*args, **kwargs):
@@ -37,12 +37,15 @@ class QCalendar(QtGui.QCalendarWidget):
             dateCita = cita.getFecha().date()
             if dateCita == date:
                 cuantas += 1
-        if cuantas == 1:
-            return QtGui.QPen(QtCore.Qt.red)
-        elif cuantas > 1:
-            return QtGui.QPen(QtCore.Qt.blue)
-        else:
-            return None  
+        if cuantas >= 1:
+            if date < datetime.today().date():
+                return QtGui.QPen(QtCore.Qt.gray)
+            elif cuantas == 1:
+                return QtGui.QPen(QtCore.Qt.red)
+            elif cuantas > 1:
+                return QtGui.QPen(QtCore.Qt.blue)
+            else:
+                return None  
     
     def setCitas(self, citas):
         self.__citas = citas
@@ -52,12 +55,15 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
     def __init__(self, parent = None):
         super(Calendar, self).__init__(parent)
         self.setupUi(self)
+        self.__dia = datetime.today()
         self.__calendar = QCalendar()
         self.horizontalLayout_2.addWidget(self.__calendar)
         self.__citas = self.__cargarCitas()
-        self.__dia = datetime.today().date()
-        if len(self.__citas) != 0:
-            self.__calendar.setSelectedDate(self.__citas[0].getFecha().date())
+        for cita in self.__citas:
+            if cita.getFecha() > datetime.today():
+                self.__calendar.setSelectedDate(cita.getFecha().date())
+        else:
+            self.__calendar.setSelectedDate(datetime.today().date())
         self.__montarTodas()
         self.__montarDia()
         self.__calendar.setCitas(self.__citas)
@@ -104,7 +110,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
                 self.__citas.remove(cita)
                 self.__montarTodas()
                 self.__montarDia(self.__dia)
-                self.__redibujar()
+                self.__redibujar()          
             except Exception as e:
                 print e
     
@@ -149,6 +155,8 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
             self.__citas.append(cita) 
     
     def __redibujar(self):
+        gestor = GestorCitas(self)
+        gestor.actualizarCitas() 
         self.__montarTodas()
         self.__montarDia(self.__dia)
         
@@ -169,19 +177,22 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
             print e
             
     def __montarTodas(self):
+        self.__citas = self.__cargarCitas()
         while self.lista.count() > 0:
             self.lista.takeItem(0)
         for cita in self.__citas:
             self.lista.addItem(ItemListas(cita, self.lista))
     
     def __montarDia(self, date = None):
+        self.__citas = self.__cargarCitas()
         while self.lista2.count() > 0:
             self.lista2.takeItem(0)
         if date == None:
-            if len(self.__citas) != 0:
-                self.__dia = date = self.__citas[0].getFecha().date()
+            for cita in self.__citas:
+                if cita.getFecha() > datetime.today():
+                    self.__dia = date = cita.getFecha().date()
             else:
-                date = self.__dia
+                date = datetime.today().date()
         else:
             if not isinstance(date, DATE):
                 self.__dia = date.date()
