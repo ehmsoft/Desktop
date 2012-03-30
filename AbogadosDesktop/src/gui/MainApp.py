@@ -317,6 +317,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             self.connect(self.columna1, QtCore.SIGNAL('clicked()'), self.columna1AgregarClicked)
             self.connect(self.columna1.getCentralWidget(), QtCore.SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)
             self.connect(self.columna1.getCentralWidget(), QtCore.SIGNAL('customContextMenuRequested(QPoint)'), self.columna1ContextMenu)
+            self.connect(self.columna1.getCentralWidget(), QtCore.SIGNAL('listaCeros()'), self.__restablecerElementoDerecho)
             
     def columna1AgregarClicked(self):
         #Manejar el evento de agregar un item en la columna1
@@ -548,6 +549,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             self.connect(listado, QtCore.SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
             self.connect(columna, QtCore.SIGNAL('clicked()'), self.columnaCamposAgregarClicked)    
 
+            
+
     def columnaCamposElementChanged(self):
         if hasattr(self.columna1, 'count'):
             #Se maneja la seleccion de una campo personalizado en la tercera columna
@@ -621,8 +624,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if procesoVentana.exec_():
                 self.elementChanged()
             del procesoVentana
-        
-            
+
         
     def procesoEliminarClicked(self):
         elemento = self.columna1.getCentralWidget().getSelectedItem()
@@ -645,7 +647,6 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.label = QtGui.QLabel() 
                 self.label.setPixmap(QtGui.QPixmap.fromImage(self.image))
                 self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
-            
     
     def personaEditarClicked(self):
         persona = self.columna1.getCentralWidget().currentItem().getObjeto()
