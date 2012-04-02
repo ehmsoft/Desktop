@@ -38,6 +38,7 @@ from gui.ExportarCSVDialog import ExportarCSVDialog
 import shutil
 from persistence.ConnectionManager import ConnectionManager
 from gui.GestorCitas import GestorCitas
+from gui.Calendar import Calendar
 
 class MainApp(QtGui.QMainWindow, Ui_mainApp):
     #Constantes para elementos  del menu listaIzquierda
@@ -143,17 +144,22 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             sys.exit(0)
         
     def mostrarCalendario(self):
-        print 'Calendario'
+        calendar = Calendar(self)
+        calendar.exec_()
         
     def trayClicked(self, reason):
-        if reason == QtGui.QSystemTrayIcon.ActivationReason.Trigger:
+        import sys
+        if reason == QtGui.QSystemTrayIcon.ActivationReason.Trigger and sys.platform.lower() != 'darwin':
             if self.isHidden():
                 self.show()
             else:
                 self.hide()
                 
     def closeEvent(self, event):
-        self.hide()
+        if sys.platform.lower() != 'darwin':
+            self.hide()
+        else:
+            self.showMinimized()
         event.ignore()
         #return QtGui.QMainWindow.closeEvent(self, *args, **kwargs)
         
