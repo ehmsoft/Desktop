@@ -5,7 +5,6 @@ Created on 27/02/2012
 @author: harold
 '''
 from PySide import QtGui, QtCore
-from Listado import Listado
 from core.Proceso import Proceso
 from core.Plantilla import Plantilla
 from core.Persona import Persona
@@ -17,7 +16,7 @@ import resources
 from gui.ItemListas import ItemListas
 from persistence.Persistence import Persistence
 
-class ListadoBusqueda(Listado):
+class ListadoBusqueda(QtGui.QListWidget):
     '''
     classdocs
     '''
@@ -26,7 +25,27 @@ class ListadoBusqueda(Listado):
         '''
         Constructor
         '''
-        super(ListadoBusqueda, self).__init__(listado, parent)
+        super(ListadoBusqueda, self).__init__(parent)
+        if listado is None or len(listado) is 0:
+            listado = [] 
+              
+        elif isinstance(listado[0], Persona):            
+            try:
+                p = Persistence()
+                vacio = p.consultarPersona("1", listado[0].getTipo())                
+                listado.remove(vacio)
+            except Exception, e:
+                print e
+        elif isinstance(listado[0], Juzgado):
+            try:
+                p = Persistence()
+                vacio = p.consultarJuzgado("1")                
+                listado.remove(vacio)
+            except Exception, e:
+                print e
+        
+        self.setMouseTracking(True)       
+        self.addItems(listado)
         self.listaRespaldo = listado
         self.listaOriginal = listado
         self.listadoActual = self.listaOriginal
@@ -42,7 +61,22 @@ class ListadoBusqueda(Listado):
         self.buscar.getTextEdit().textChanged.connect(self.__changed)
         self.buscar.getButton().clicked.connect(self.__click)
         self.buscar.getCombo().currentIndexChanged.connect(self.__comboChanged)
+    
+    def addItems(self, items):                              
+        for objeto in items:
+            item = ItemListas(objeto)
+            item.setToolTip(unicode(objeto))
+            item.setStatusTip(unicode(objeto))
+            self.addItem(item)
+            
+    def replace(self, new):
+        item = self.currentItem()
+        item.setObjeto(new)
         
+    def getSelectedItem(self):
+        return self.currentItem().getObjeto()
+    
+      
     def __filtro(self, elemento, filtrarCategoria = False):
         for key in self.__getKeyWords(elemento, filtrarCategoria):
             if key is not None and self.texto in key.lower():
@@ -147,7 +181,10 @@ class ListadoBusqueda(Listado):
         
         
     def add(self, objeto):
-        Listado.add(self, objeto)
+        item = ItemListas(objeto)
+        item.setToolTip(unicode(objeto))
+        item.setStatusTip(unicode(objeto))
+        self.addItem(item)
         self.listaOriginal.append(objeto)
         self.listaRespaldo.append(objeto)
         
