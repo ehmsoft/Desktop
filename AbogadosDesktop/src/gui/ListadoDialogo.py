@@ -2,7 +2,7 @@
 from PySide.QtCore import *
 from PySide.QtGui import *
 from persistence.Persistence import Persistence
-from gui.Listado import Listado
+from gui.ListadoBusqueda import ListadoBusqueda
 
         
 class ListadoDialogo (QDialog):
@@ -61,12 +61,13 @@ class ListadoDialogo (QDialog):
             self.setWindowTitle('Seleccione una plantilla')
             
         groupBox = QGroupBox("Seleccione un elemento")           
-        self.lista = Listado(objetos)
+        self.lista = ListadoBusqueda(objetos)
         btnAgregar = QPushButton('+')
         layout = QVBoxLayout()
         layoutBox = QVBoxLayout() 
         buttonlayout = QHBoxLayout()
         buttonlayout.addStretch()
+        layout.addWidget(self.lista.getSearchField())
         layout.addWidget(self.lista)
         buttonlayout.addWidget(btnAgregar)
         groupBox.setLayout(layout)
