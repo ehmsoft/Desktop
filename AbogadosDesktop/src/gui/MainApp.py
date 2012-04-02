@@ -155,11 +155,16 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             else:
                 self.hide()
                 
+    def event(self, event):
+        if event.type() == QtCore.QEvent.Type.MenubarUpdated:
+            if self.isHidden():
+                self.show()
+        elif event.type() == QtCore.QEvent.Type.Close:
+            self.closeEvent(event)
+        return QtCore.QObject.event(self, event)
+                
     def closeEvent(self, event):
-        if sys.platform.lower() != 'darwin':
-            self.hide()
-        else:
-            self.showMinimized()
+        self.hide()
         event.ignore()
         #return QtGui.QMainWindow.closeEvent(self, *args, **kwargs)
         
