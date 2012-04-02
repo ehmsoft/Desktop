@@ -16,6 +16,7 @@ from gui.ListadoDialogo import ListadoDialogo
 from Listado import Listado
 from copy import deepcopy
 from gui.GestorCitas import GestorCitas
+from datetime import timedelta
 
 class QCalendar(QtGui.QCalendarWidget):
     def __init__(self, citas = [],*args, **kwargs):
@@ -60,13 +61,13 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         self.horizontalLayout_2.addWidget(self.__calendar)
         self.__citas = self.__cargarCitas()
         for cita in self.__citas:
-            if cita.getFecha() > datetime.today():
+            if cita.getFecha() + timedelta(cita.getAnticipacion()) > datetime.today():
                 self.__calendar.setSelectedDate(cita.getFecha().date())
+                break
         else:
             self.__calendar.setSelectedDate(datetime.today().date())
         self.__montarTodas()
         self.__montarDia()
-        self.__calendar.setCitas(self.__citas)
         
         self.__calendar.clicked.connect(self.__clickCalendar)
         self.btnAgregar.clicked.connect(self.__clickBtn)
@@ -172,6 +173,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         try:
             p = Persistence()
             citas = p.consultarCitasCalendario()
+            self.__calendar.setCitas(citas)
             return citas
         except Exception as e:
             print e
@@ -189,8 +191,9 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
             self.lista2.takeItem(0)
         if date == None:
             for cita in self.__citas:
-                if cita.getFecha() > datetime.today():
+                if cita.getFecha() + timedelta(cita.getAnticipacion()) > datetime.today():
                     self.__dia = date = cita.getFecha().date()
+                    break
             else:
                 date = datetime.today().date()
         else:
@@ -224,10 +227,3 @@ class DialogoActuaciones(QtGui.QDialog):
         
     def getSelected(self):
         return self.selected
-    
-import sys
-        
-app = QtGui.QApplication(sys.argv)
-form = Calendar()
-form.show()
-app.exec_()

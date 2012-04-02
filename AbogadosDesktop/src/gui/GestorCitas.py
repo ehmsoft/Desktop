@@ -8,6 +8,7 @@ from core.Singleton import Singleton
 from PySide import QtGui, QtCore
 from persistence.Persistence import Persistence
 from datetime import datetime
+from datetime import timedelta
 class GestorCitas(object):
     __metaclass__ = Singleton
     
@@ -29,14 +30,13 @@ class GestorCitas(object):
             p = Persistence()
             citas = p.consultarCitasCalendario()
             for cita in citas:
-                if cita.getFecha() > datetime.today():
+                if cita.getFecha() + timedelta(cita.getAnticipacion()) > datetime.today():
                     t = QtCore.QTimer(self.parent)
                     self.timer.append(t)
                     t.setSingleShot(True)
                     t.timeout.connect(lambda : self.__seCumpleCita(cita))
-                    date = cita.getFecha()
-                    delta = date - datetime.today()
-                    tiempo = delta.seconds * 1000 + delta.microseconds / 1000
+                    delta = cita.getFecha() - datetime.today()
+                    tiempo = (delta.total_seconds() - cita.getAnticipacion()) * 1000
                     t.start(tiempo)
         except Exception as e:
             print e
