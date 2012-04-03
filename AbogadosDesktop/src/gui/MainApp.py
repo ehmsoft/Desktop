@@ -114,7 +114,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         self.connect(self.actionArchivo_CSV, QtCore.SIGNAL('triggered()'), self.menuExportarCSVClicked)
         self.connect(self.actionArchivo_de_Copia_de_Seguridad, QtCore.SIGNAL('triggered()'), self.menuExportarArchivoClicked)
         self.connect(self.actionImportar, QtCore.SIGNAL('triggered()'), self.menuImportarArchivoClicked)
-        self.connect(self.actionCerrar, QtCore.SIGNAL('triggered()'), self.cerrar)
+        self.connect(self.actionCerrar, QtCore.SIGNAL('triggered()'), self.close)
         
     def elementChanged(self):
         self.elementClicked(self.listaIzquierda.currentItem())
@@ -123,17 +123,28 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         self.tray = QtGui.QSystemTrayIcon(self)
         self.tray.setIcon(QtGui.QIcon(':/images/icono.png'))
         calendario = self.__createAction('Calendario', self.mostrarCalendario)
-        cerrar = self.__createAction('Cerrar', self.cerrar)
+        cerrar = self.__createAction('Cerrar', self.close)
+        ocultar = QtGui.QAction('Ocultar', self)
+        ocultar.triggered.connect(lambda : self.ocultar(ocultar))
         menu = QtGui.QMenu(self)
         #menu.addAction(QtGui.QIcon(':/images/bolita.png'),'Calendario',self.mostrarCalendario)
         menu.addAction(calendario)
         menu.addSeparator()
+        menu.addAction(ocultar)
         menu.addAction(cerrar)
         self.tray.setContextMenu(menu)
-        self.tray.activated.connect(self.trayClicked)
         self.tray.show()
+    
+    def ocultar(self, action):
+        if self.isHidden():
+            self.show()
+            action.setText('Ocultar')
+        else:
+            self.hide()
+            action.setText('Mostrar')
         
-    def cerrar(self):
+    def closeEvent(self, event):
+        self.raise_()
         message = QtGui.QMessageBox()
         message.setIcon(QtGui.QMessageBox.Question)
         message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
@@ -141,41 +152,16 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         message.setText(unicode("¿Desea cerrar la aplicación, no obtendrá notificaciones de sus citas?"))
         ret = message.exec_()
         if ret == QtGui.QMessageBox.Yes:
-            import sys
-            sys.exit(0)
+            event.accept()
+        else:
+            event.ignore()
         
     def mostrarCalendario(self):
+        self.raise_()
         calendar = Calendar(self)
         if self.isHidden():
             self.show()
         calendar.exec_()
-        
-    def trayClicked(self, reason):
-        import sys
-        if reason == QtGui.QSystemTrayIcon.ActivationReason.Trigger and sys.platform.lower() != 'darwin':
-            if self.isHidden():
-                self.show()
-            else:
-                self.hide()
-                
-    def event(self, event):
-        if self.last == QtCore.QEvent.Type.Close and event.type() == QtCore.QEvent.Type.MenubarUpdated and self.last != QtCore.QEvent.Type.MenubarUpdated:
-            if self.isHidden():
-                self.show()
-            self.last = event
-            return QtCore.QObject.event(self, event) 
-        elif event.type() == QtCore.QEvent.Type.Close:
-            self.closeEvent(event)
-            self.last = event
-            return True
-        else:
-            self.last = event
-            return QtCore.QObject.event(self, event)      
-                
-    def closeEvent(self, event):
-        self.hide()
-        event.ignore()
-        #return QtGui.QMainWindow.closeEvent(self, *args, **kwargs)
         
     def elementClicked(self, item):
         #Metodo que maneja el click en la lista izquierda
@@ -1059,4 +1045,5 @@ app.setWindowIcon(QtGui.QIcon(":/images/icono.png"))
 theapp = MainApp()
 theapp.listaIzquierda.setCurrentRow(0)
 theapp.show()
+theapp.raise_()
 sys.exit(app.exec_())
