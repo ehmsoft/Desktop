@@ -61,7 +61,9 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         self.horizontalLayout_2.addWidget(self.__calendar)
         self.__citas = self.__cargarCitas()
         for cita in self.__citas:
-            if cita.getFecha() + timedelta(cita.getAnticipacion()) > datetime.today():
+            fechamas = cita.getFecha() + timedelta(0,cita.getAnticipacion())
+            toda = datetime.today()
+            if fechamas > toda:
                 self.__calendar.setSelectedDate(cita.getFecha().date())
                 break
         else:
@@ -81,12 +83,44 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         actionEditar = QtGui.QAction('Editar', self)
         actionEditar.setToolTip('Lanza la ventana de edición de la cita seleccionada')
         self.connect(actionEditar, QtCore.SIGNAL('triggered()'), self.__editar)
+        self.btnEliminar.clicked.connect(self.__clickEliminar)
         
         self.lista.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
         self.lista.addActions([actionEliminar, actionEditar])
         
         self.lista2.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
         self.lista2.addActions([actionEliminar, actionEditar])
+        
+    def __clickEliminar(self):
+        items = self.lista3.selectedItems()
+        if len(items) != 0:
+            message = QtGui.QMessageBox()
+            message.setIcon(QtGui.QMessageBox.Question)
+            message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+            message.setDefaultButton(QtGui.QMessageBox.No)
+            message.setText(unicode("¿Desea eliminar las citas seleccionadas?"))
+            ret = message.exec_()
+            if ret == QtGui.QMessageBox.Yes:
+                p = Persistence()
+                for item in items:
+                    p.borrarCitaCalendario(item.getObjeto())
+                    self.__citas.remove(item.getObjeto())
+                self.__redibujar()
+        else:
+            message = QtGui.QMessageBox()
+            message.setIcon(QtGui.QMessageBox.Question)
+            message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+            message.setDefaultButton(QtGui.QMessageBox.No)
+            message.setText(unicode("¿Desea eliminar todas las citas vencidas?"))
+            ret = message.exec_()
+            if ret == QtGui.QMessageBox.Yes:
+                p = Persistence()
+                while self.lista3.count() > 0:
+                    item = self.lista3.takeItem(0)
+                    p.borrarCitaCalendario(item.getObjeto())
+                    self.__citas.remove(item.getObjeto())
+                self.__redibujar()          
+                    
         
     def __clickLista(self,current, previous):
         if current is not None:
@@ -109,8 +143,6 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
                 p = Persistence()
                 p.borrarCitaCalendario(cita)
                 self.__citas.remove(cita)
-                self.__montarTodas()
-                self.__montarDia(self.__dia)
                 self.__redibujar()          
             except Exception as e:
                 print e
@@ -122,8 +154,6 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
             cita = self.lista2.currentItem().getObjeto()
         editar = NuevaCita(cita = cita, parent = self)
         if editar.exec_():
-            self.__montarTodas()
-            self.__montarDia(self.__dia)
             self.__redibujar()
         
     def __tabClicked(self, index):
@@ -182,8 +212,16 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         self.__citas = self.__cargarCitas()
         while self.lista.count() > 0:
             self.lista.takeItem(0)
+        while self.lista3.count() > 0:
+            self.lista3.takeItem(0)
         for cita in self.__citas:
-            self.lista.addItem(ItemListas(cita, self.lista))
+            if cita.getFecha() + timedelta(0,cita.getAnticipacion()) > datetime.today():
+                item = ItemListas(cita, self.lista)
+                self.lista.addItem(item)
+                self.lista.setCurrentItem(item)
+            else:
+                item = ItemListas(cita, self.lista3)
+                self.lista3.addItem(item)
     
     def __montarDia(self, date = None):
         self.__citas = self.__cargarCitas()
@@ -191,7 +229,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
             self.lista2.takeItem(0)
         if date == None:
             for cita in self.__citas:
-                if cita.getFecha() + timedelta(cita.getAnticipacion()) > datetime.today():
+                if cita.getFecha() + timedelta(0,cita.getAnticipacion()) > datetime.today():
                     self.__dia = date = cita.getFecha().date()
                     break
             else:

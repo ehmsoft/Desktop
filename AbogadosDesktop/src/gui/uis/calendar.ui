@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>258</width>
-    <height>250</height>
+    <height>266</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -36,6 +36,9 @@
      </property>
      <property name="tabsClosable">
       <bool>false</bool>
+     </property>
+     <property name="movable">
+      <bool>true</bool>
      </property>
      <widget class="QWidget" name="tab">
       <attribute name="title">
@@ -111,6 +114,44 @@
           <widget class="QPushButton" name="btnAgregar2">
            <property name="text">
             <string>Agregar</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_3">
+      <attribute name="title">
+       <string>Vencidas</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QListWidget" name="lista3">
+         <property name="selectionMode">
+          <enum>QAbstractItemView::MultiSelection</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnEliminar">
+           <property name="text">
+            <string>Eliminar</string>
            </property>
           </widget>
          </item>

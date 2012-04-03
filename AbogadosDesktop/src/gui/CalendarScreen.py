@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'calendar.ui'
 #
-# Created: Wed Mar 28 21:49:46 2012
+# Created: Tue Apr  3 09:31:17 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_Calendar(object):
     def setupUi(self, Calendar):
         Calendar.setObjectName("Calendar")
-        Calendar.resize(258, 250)
+        Calendar.resize(258, 266)
         self.horizontalLayout_2 = QtGui.QHBoxLayout(Calendar)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.tabWidget = QtGui.QTabWidget(Calendar)
@@ -24,6 +24,7 @@ class Ui_Calendar(object):
         self.tabWidget.setMinimumSize(QtCore.QSize(250, 0))
         self.tabWidget.setTabShape(QtGui.QTabWidget.Rounded)
         self.tabWidget.setTabsClosable(False)
+        self.tabWidget.setMovable(True)
         self.tabWidget.setObjectName("tabWidget")
         self.tab = QtGui.QWidget()
         self.tab.setObjectName("tab")
@@ -60,6 +61,23 @@ class Ui_Calendar(object):
         self.horizontalLayout.addWidget(self.btnAgregar2)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.tabWidget.addTab(self.tab_2, "")
+        self.tab_3 = QtGui.QWidget()
+        self.tab_3.setObjectName("tab_3")
+        self.verticalLayout_3 = QtGui.QVBoxLayout(self.tab_3)
+        self.verticalLayout_3.setObjectName("verticalLayout_3")
+        self.lista3 = QtGui.QListWidget(self.tab_3)
+        self.lista3.setSelectionMode(QtGui.QAbstractItemView.MultiSelection)
+        self.lista3.setObjectName("lista3")
+        self.verticalLayout_3.addWidget(self.lista3)
+        self.horizontalLayout_4 = QtGui.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
+        spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_4.addItem(spacerItem2)
+        self.btnEliminar = QtGui.QPushButton(self.tab_3)
+        self.btnEliminar.setObjectName("btnEliminar")
+        self.horizontalLayout_4.addWidget(self.btnEliminar)
+        self.verticalLayout_3.addLayout(self.horizontalLayout_4)
+        self.tabWidget.addTab(self.tab_3, "")
         self.horizontalLayout_2.addWidget(self.tabWidget)
 
         self.retranslateUi(Calendar)
@@ -73,4 +91,6 @@ class Ui_Calendar(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QtGui.QApplication.translate("Calendar", "Todas", None, QtGui.QApplication.UnicodeUTF8))
         self.btnAgregar2.setText(QtGui.QApplication.translate("Calendar", "Agregar", None, QtGui.QApplication.UnicodeUTF8))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), QtGui.QApplication.translate("Calendar", "Tab 2", None, QtGui.QApplication.UnicodeUTF8))
+        self.btnEliminar.setText(QtGui.QApplication.translate("Calendar", "Eliminar", None, QtGui.QApplication.UnicodeUTF8))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), QtGui.QApplication.translate("Calendar", "Vencidas", None, QtGui.QApplication.UnicodeUTF8))
 
