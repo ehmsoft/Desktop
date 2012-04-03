@@ -118,7 +118,6 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         self.connect(self.actionArchivo_CSV, QtCore.SIGNAL('triggered()'), self.menuExportarCSVClicked)
         self.connect(self.actionArchivo_de_Copia_de_Seguridad, QtCore.SIGNAL('triggered()'), self.menuExportarArchivoClicked)
         self.connect(self.actionImportar, QtCore.SIGNAL('triggered()'), self.menuImportarArchivoClicked)
-        self.connect(self.actionCerrar, QtCore.SIGNAL('triggered()'), self.close)
         #self.connect(self.actionCerrar, QtCore.SIGNAL('triggered()'), self.cerrar)
         self.connect(self.actionAcerca_de_Procesos_Judiciales, QtCore.SIGNAL('triggered()'), self.about)
         self.connect(self.actionAcerca_de_Qt, QtCore.SIGNAL('triggered()'), self.aboutQt)

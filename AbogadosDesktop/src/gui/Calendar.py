@@ -13,7 +13,6 @@ from datetime import date as DATE
 from CalendarScreen import Ui_Calendar
 from gui.nuevo.NuevaCita import NuevaCita
 from gui.ListadoDialogo import ListadoDialogo
-from Listado import Listado
 from copy import deepcopy
 from gui.GestorCitas import GestorCitas
 from datetime import timedelta
