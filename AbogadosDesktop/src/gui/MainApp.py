@@ -57,6 +57,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
     
     def __init__(self, parent = None):
         super(MainApp, self).__init__(parent)
+        self.last = None
         self.setupUi(self)
         self.__gestor = GestorCitas(self)
         try:
@@ -145,6 +146,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         
     def mostrarCalendario(self):
         calendar = Calendar(self)
+        if self.isHidden():
+            self.show()
         calendar.exec_()
         
     def trayClicked(self, reason):
@@ -156,12 +159,18 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.hide()
                 
     def event(self, event):
-        if event.type() == QtCore.QEvent.Type.MenubarUpdated:
+        if self.last == QtCore.QEvent.Type.Close and event.type() == QtCore.QEvent.Type.MenubarUpdated and self.last != QtCore.QEvent.Type.MenubarUpdated:
             if self.isHidden():
                 self.show()
+            self.last = event
+            return QtCore.QObject.event(self, event) 
         elif event.type() == QtCore.QEvent.Type.Close:
             self.closeEvent(event)
-        return QtCore.QObject.event(self, event)
+            self.last = event
+            return True
+        else:
+            self.last = event
+            return QtCore.QObject.event(self, event)      
                 
     def closeEvent(self, event):
         self.hide()
