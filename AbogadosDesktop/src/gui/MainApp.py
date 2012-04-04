@@ -374,7 +374,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                     p = Persistence()
                     proceso = p.consultarProceso(proceso.getId_proceso())
                     proceso.addActuacion(actuacionVentana.getActuacion())
-                    p.actualizarProceso(proceso)
+                    p.guardarActuacion(actuacionVentana.getActuacion(), proceso.getId_proceso())
                     self.columna1.getCentralWidget().replace(proceso)
                     self.columna1ElementChanged()
                 del actuacionVentana
