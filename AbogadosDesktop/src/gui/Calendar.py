@@ -16,9 +16,10 @@ from gui.ListadoDialogo import ListadoDialogo
 from copy import deepcopy
 from gui.GestorCitas import GestorCitas
 from datetime import timedelta
+from gui.ListadoBusqueda import ListadoBusqueda
 
 class QCalendar(QtGui.QCalendarWidget):
-    def __init__(self, citas = [],*args, **kwargs):
+    def __init__(self, citas=[], *args, **kwargs):
         self.__citas = citas
         QtGui.QCalendarWidget.__init__(self, *args, **kwargs)
     
@@ -29,7 +30,7 @@ class QCalendar(QtGui.QCalendarWidget):
         if pen != None:
             painter.setPen(pen)
             painter.setBrush(QtGui.QBrush(QtCore.Qt.transparent))
-            painter.drawRect(rect.adjusted(1,1 ,-1,-1))
+            painter.drawRect(rect.adjusted(1, 1 , -1, -1))
             
     def __en(self, date):
         cuantas = 0
@@ -52,7 +53,7 @@ class QCalendar(QtGui.QCalendarWidget):
         self.repaint()
             
 class Calendar(QtGui.QDialog, Ui_Calendar):
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         super(Calendar, self).__init__(parent)
         self.setupUi(self)
         self.__dia = datetime.today()
@@ -60,7 +61,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         self.horizontalLayout_2.addWidget(self.__calendar)
         self.__citas = self.__cargarCitas()
         for cita in self.__citas:
-            fechamas = cita.getFecha() + timedelta(0,cita.getAnticipacion())
+            fechamas = cita.getFecha() + timedelta(0, cita.getAnticipacion())
             toda = datetime.today()
             if fechamas > toda:
                 self.__calendar.setSelectedDate(cita.getFecha().date())
@@ -76,7 +77,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         self.tabWidget.currentChanged.connect(self.__tabClicked)
         self.lista.currentItemChanged.connect(self.__clickLista)
         
-        actionEliminar = QtGui.QAction('Eliminar',self)
+        actionEliminar = QtGui.QAction('Eliminar', self)
         actionEliminar.setToolTip('Elimina definitivamente la cita')
         self.connect(actionEliminar, QtCore.SIGNAL('triggered()'), self.__eliminar)
         actionEditar = QtGui.QAction('Editar', self)
@@ -121,7 +122,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
                 self.__redibujar()          
                     
         
-    def __clickLista(self,current, previous):
+    def __clickLista(self, current, previous):
         if current is not None:
             fecha = current.getObjeto().getFecha().date()
             self.__calendar.setSelectedDate(fecha)
@@ -151,7 +152,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
             cita = self.lista.currentItem().getObjeto()
         else:
             cita = self.lista2.currentItem().getObjeto()
-        editar = NuevaCita(cita = cita, parent = self)
+        editar = NuevaCita(cita=cita, parent=self)
         if editar.exec_():
             self.__redibujar()
         
@@ -166,7 +167,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
             actuaciones = DialogoActuaciones(proceso, self)
             if actuaciones.exec_():
                 actuacion = actuaciones.getSelected()
-                dialogo = NuevaCita(actuacion = actuacion, parent = self)
+                dialogo = NuevaCita(actuacion=actuacion, parent=self)
                 if dialogo.exec_():
                     cita = dialogo.getCita()
                     self.__ubicarCita(cita)
@@ -214,7 +215,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         while self.lista3.count() > 0:
             self.lista3.takeItem(0)
         for cita in self.__citas:
-            if cita.getFecha() + timedelta(0,cita.getAnticipacion()) > datetime.today():
+            if cita.getFecha() + timedelta(0, cita.getAnticipacion()) > datetime.today():
                 item = ItemListas(cita, self.lista)
                 self.lista.addItem(item)
                 self.lista.setCurrentItem(item)
@@ -222,13 +223,13 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
                 item = ItemListas(cita, self.lista3)
                 self.lista3.addItem(item)
     
-    def __montarDia(self, date = None):
+    def __montarDia(self, date=None):
         self.__citas = self.__cargarCitas()
         while self.lista2.count() > 0:
             self.lista2.takeItem(0)
         if date == None:
             for cita in self.__citas:
-                if cita.getFecha() + timedelta(0,cita.getAnticipacion()) > datetime.today():
+                if cita.getFecha() + timedelta(0, cita.getAnticipacion()) > datetime.today():
                     self.__dia = date = cita.getFecha().date()
                     break
             else:
@@ -238,18 +239,18 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
                 self.__dia = date.date()
             else:
                 self.__dia = date
-        self.tabWidget.setTabText(1,'{:%d/%m/%Y}'.format(date))
+        self.tabWidget.setTabText(1, '{:%d/%m/%Y}'.format(date))
         for cita in self.__citas:
             dateCita = cita.getFecha().date()
             if date == dateCita:
                 c = deepcopy(cita)
                 c.setConFecha(False)
-                self.lista2.addItem(ItemListas(c,self.lista2))
+                self.lista2.addItem(ItemListas(c, self.lista2))
             
 class DialogoActuaciones(QtGui.QDialog):
-    def __init__(self, proceso,parent = None):
+    def __init__(self, proceso, parent=None):
         super(DialogoActuaciones, self).__init__(parent)
-        listado = Listado(proceso.getActuaciones())
+        listado = ListadoBusqueda(proceso.getActuaciones())
         layout = QtGui.QVBoxLayout()
         layout.addWidget(listado)
         self.setLayout(layout)

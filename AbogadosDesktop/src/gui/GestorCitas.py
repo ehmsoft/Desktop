@@ -12,7 +12,7 @@ from datetime import timedelta
 class GestorCitas(object):
     __metaclass__ = Singleton
     
-    def __init__(self, parent = None):
+    def __init__(self, parent=None):
         self.timer = []
         self.parent = parent
         
@@ -30,7 +30,7 @@ class GestorCitas(object):
             p = Persistence()
             citas = p.consultarCitasCalendario()
             for cita in citas:
-                if cita.getFecha() + timedelta(0,cita.getAnticipacion()) > datetime.today():
+                if cita.isAlarma() and cita.getFecha() + timedelta(0, cita.getAnticipacion()) > datetime.today():
                     t = QtCore.QTimer(self.parent)
                     self.timer.append(t)
                     t.setSingleShot(True)

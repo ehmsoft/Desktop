@@ -4,34 +4,40 @@ Created on 27/03/2012
 
 @author: harold
 '''
-from PySide import QtCore, QtGui
+from PySide import QtGui
 from NuevaCitaScreen import Ui_Cita
-from datetime import datetime
 from core.CitaCalendario import CitaCalendario
 from persistence.Persistence import Persistence
+from gui.GestorCitas import GestorCitas
 
 class NuevaCita(QtGui.QDialog, Ui_Cita):
-    def __init__(self,actuacion = None, cita = None,parent = None):
+    def __init__(self, actuacion=None, cita=None, fecha=None, parent=None):
         super(NuevaCita, self).__init__(parent)
         self.setupUi(self)
         self.cita = cita
-        self.fecha.setDateTime(datetime.today())
         self.actuacion = actuacion
         self.checkBox.stateChanged.connect(self.checkBoxChanged)
-        
-        if cita == None:
-            self.checkBox.setChecked(False)
-            self.checkBoxChanged(False)        
-            self.fecha.setDateTime(self.actuacion.getFechaProxima())
-            self.descripcion.setText(self.actuacion.getDescripcion())
-        else:
+          
+        if cita != None:
             self.checkBox.setChecked(cita.isAlarma())
             self.checkBoxChanged(cita.isAlarma())
             self.descripcion.setText(self.cita.getDescripcion())
             self.fecha.setDateTime(self.cita.getFecha())
             ant = self.transAnticipacion(self.cita.getAnticipacion())
             self.comboAnticipacion.setCurrentIndex(self.comboAnticipacion.findText(ant[1]))
-            self.spinAnticipacion.setValue(ant[0])
+            self.spinAnticipacion.setValue(ant[0])        
+        elif actuacion != None:
+            self.checkBox.setChecked(False)
+            self.checkBoxChanged(False)        
+            self.fecha.setDateTime(self.actuacion.getFechaProxima())
+            self.descripcion.setText(self.actuacion.getDescripcion())
+        elif fecha != None:
+            self.fecha.setDateTime(fecha)
+            self.checkBox.setChecked(False)
+            self.checkBoxChanged(False) 
+        else:
+            raise TypeError('Todos los argumentos no pueden ser vacíos')
+
         
     def checkBoxChanged(self, check):
         if not check:
@@ -70,9 +76,9 @@ class NuevaCita(QtGui.QDialog, Ui_Cita):
         descripcion = self.descripcion.text()
         alarma = self.checkBox.isChecked()
         if self.cita == None:
-            self.cita = CitaCalendario(fecha = fecha, anticipacion = anticipacion, 
-                                       descripcion = descripcion, alarma = alarma, 
-                                       id_cita = None, id_actuacion = self.actuacion.getId_actuacion(), uid = '')
+            self.cita = CitaCalendario(fecha=fecha, anticipacion=anticipacion,
+                                       descripcion=descripcion, alarma=alarma,
+                                       id_cita=None, id_actuacion=self.actuacion.getId_actuacion(), uid='')
         else:
             self.cita.setFecha(fecha)
             self.cita.setAnticipacion(anticipacion)
@@ -85,6 +91,8 @@ class NuevaCita(QtGui.QDialog, Ui_Cita):
             else:
                 p.actualizarCitaCalendario(self.cita)
             return QtGui.QDialog.accept(self)
+            gestor = GestorCitas()
+            gestor.actualizarCitas()
         except Exception, e:
             print e
             return QtGui.QDialog.reject(self)

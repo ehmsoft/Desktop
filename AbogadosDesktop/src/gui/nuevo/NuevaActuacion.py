@@ -17,12 +17,14 @@ from gui.GestorCampos import GestorCampos
 from persistence.Persistence import Persistence
 from gui.DialogoAuxiliar import DialogoAuxiliar
 from gui import Util
+from gui.nuevo.NuevaCita import NuevaCita
+from gui.GestorCitas import GestorCitas
 
 class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
     '''
     classdocs
     '''
-    def __init__(self, actuacion = None, parent = None):
+    def __init__(self, actuacion=None, parent=None):
         super(NuevaActuacion, self).__init__(parent)
         self.__dirty = False
         
@@ -43,16 +45,25 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             self.lblJuzgado.setText(unicode(self.__juzgado.getNombre()))
             self.dteFecha.setDateTime(actuacion.getFecha())
             self.dteFechaProxima.setDateTime(actuacion.getFechaProxima())
+            p = Persistence()
+            citas = p.consultarCitasCalendario()
+            for cita in citas:
+                if cita.getId_actuacion() == actuacion.getId_actuacion():
+                    self.__cita = cita
+                    self.checkCita.setChecked(True)
+                    break
+            else:
+                self.__cita = None
+                self.checkCita.setChecked(False)
         else:
             self.dteFecha.setDateTime(datetime.today())
             self.dteFechaProxima.setDateTime(datetime.today())
             self.lblJuzgado.setText(unicode("vacío"))
+            self.__cita = None
             
         self.__dialogo = DialogoAuxiliar(self)
         
         self.__clickJuzgado()
-        self.__clickFecha()
-        self.__clickFechaProxima()
         
         cambiar = self.__createAction("Cambiar", self.__cambiarJuzgado)
         cambiar.setData(self.lblJuzgado)
@@ -61,18 +72,59 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         
         self.lblJuzgado.addActions([cambiar, editar])
         
-        self.__gestor = GestorCampos(campos = campos, formLayout = self.formLayout, parent = self,
-                                     constante_de_edicion = NuevoCampo.ACTUACION, constante_de_creacion = ListadoDialogo.CAMPOACTUACION)
+        self.__gestor = GestorCampos(campos=campos, formLayout=self.formLayout, parent=self,
+                                     constante_de_edicion=NuevoCampo.ACTUACION, constante_de_creacion=ListadoDialogo.CAMPOACTUACION)
         self.btnAdd.clicked.connect(self.__gestor.addCampo)
         
         self.txtDescripcion.textChanged.connect(self.setDirty)
         self.dteFecha.dateTimeChanged.connect(self.setDirty)
         self.dteFechaProxima.dateTimeChanged.connect(self.setDirty)
+        self.checkCita.stateChanged.connect(self.setCita)
+        
+        self.actionEditarCita = self.__createAction('Editar cita', self.editarCita)
+        self.checkCita.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+        self.setActionCita()
+        
+    def setActionCita(self):
+        if self.__cita == None:
+            self.checkCita.removeAction(self.actionEditarCita)
+        else:
+            self.checkCita.addAction(self.actionEditarCita)
+        
+    def editarCita(self):
+        editar = NuevaCita(cita=self.__cita, parent=self)
+        if editar.exec_():
+            gestor = GestorCitas()
+            gestor.actualizarCitas()
+        
+    def setCita(self, boolean):
+        if boolean:
+            nueva = NuevaCita(actuacion=self.__actuacion, cita=None, fecha=self.dteFechaProxima.dateTime(), parent=self)
+            if nueva.exec_():
+                self.__cita = nueva.getCita()
+            else:
+                self.checkCita.setChecked(False)
+            nueva.setParent(None)
+        else:
+            message = QtGui.QMessageBox()
+            message.setIcon(QtGui.QMessageBox.Question)
+            message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+            message.setDefaultButton(QtGui.QMessageBox.No)
+            message.setText(unicode("¿Desea eliminar la cita?"))
+            if message.exec_() == QtGui.QMessageBox.Yes:
+                p = Persistence()
+                p.borrarCitaCalendario(self.__cita)
+                self.__cita = None
+                gestor = GestorCitas()
+                gestor.actualizarCitas()
+            else:
+                self.checkCita.setChecked(True)
+        self.setActionCita()
         
     def getActuacion(self):
         return self.__actuacion
     
-    def __createAction(self, text, slot = None):
+    def __createAction(self, text, slot=None):
         action = QtGui.QAction(text, self)
         if slot is not None:
             self.connect(action, QtCore.SIGNAL("triggered()"), slot)
@@ -119,9 +171,9 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         fechaProxima = self.dteFechaProxima.dateTime().toPython()
         descripcion = self.txtDescripcion.text()
         if self.__actuacion is None:
-            self.__actuacion = Actuacion(juzgado = self.__juzgado, fecha = fecha,
-                                         fechaProxima = fechaProxima, descripcion = descripcion,
-                                         campos = self.__gestor.getCampos())
+            self.__actuacion = Actuacion(juzgado=self.__juzgado, fecha=fecha,
+                                         fechaProxima=fechaProxima, descripcion=descripcion,
+                                         campos=self.__gestor.getCampos())
         else:
             if self.__actuacion.getId_actuacion() is not None:
                 camposNuevos = self.__gestor.getCamposNuevos()
@@ -156,49 +208,6 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             return QtGui.QLabel.mousePressEvent(lblJuzgado, self)
             
         self.lblJuzgado.mousePressEvent = mousePressEvent
-    
-    def __clickFecha(self):
-        dialogo = self.__dialogo 
-        dteFecha = self.dteFecha
-        
-        def focusInEvent(self):     
-            calendar = QtGui.QCalendarWidget()
-            calendar.setSelectedDate(dteFecha.dateTime().date())
-            dialogo.setWidget(calendar)  
-            
-            selectionChanged = lambda:dteFecha.setDate(calendar.selectedDate())           
-            calendar.selectionChanged.connect(selectionChanged)
-                  
-            return QtGui.QDateTimeEdit.focusInEvent(dteFecha, self)
-        
-        def dateChanged(date):
-            calendar = dialogo.getWidget()
-            calendar.setSelectedDate(date)        
-            
-        dteFecha.focusInEvent = focusInEvent
-        dteFecha.dateChanged.connect(dateChanged)
-        
-    
-    def __clickFechaProxima(self):
-        dialogo = self.__dialogo
-        dteFecha = self.dteFechaProxima
-        
-        def focusInEvent(self):     
-            calendar = QtGui.QCalendarWidget()
-            calendar.setSelectedDate(dteFecha.dateTime().date())
-            dialogo.setWidget(calendar) 
-            
-            selectionChanged = lambda:dteFecha.setDate(calendar.selectedDate())           
-            calendar.selectionChanged.connect(selectionChanged)
-                 
-            return QtGui.QDateTimeEdit.focusInEvent(dteFecha, self)
-        
-        def dateChanged(date):
-            calendar = dialogo.getWidget()
-            calendar.setSelectedDate(date)        
-            
-        dteFecha.focusInEvent = focusInEvent
-        dteFecha.dateChanged.connect(dateChanged)
         
     def reject(self):
         del(self.__dialogo)

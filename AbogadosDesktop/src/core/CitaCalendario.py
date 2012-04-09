@@ -13,7 +13,7 @@ class CitaCalendario(object):
     '''
 
 
-    def __init__(self, fecha, anticipacion , descripcion, alarma=False, id_cita=None, id_actuacion = None, uid = None, conFecha = True):
+    def __init__(self, fecha, anticipacion , descripcion, alarma=False, id_cita=None, id_actuacion=None, uid=None, conFecha=True):
         
         if isinstance(conFecha, BooleanType):
             self.__conFecha = conFecha
@@ -138,7 +138,7 @@ class CitaCalendario(object):
         if self.__conFecha:
             return 'Descripción: %s\nFecha: %s\nAnticipación: %s' % (self.getDescripcion(), '{:%d/%m/%Y %I:%M %p}'.format(self.getFecha()), self.transAnticipacion(self.getAnticipacion()))
         else:
-            return 'Descripción: %s\nAnticipación: %s' % (self.getDescripcion(), self.transAnticipacion(self.getAnticipacion()))
+            return 'Descripción: %s\nHora: %s\nAnticipación: %s' % (self.getDescripcion(), '{:%I:%M %p}'.format(self.getFecha()), self.transAnticipacion(self.getAnticipacion()))
     
     def __eq__(self, other):
         if other is None:
