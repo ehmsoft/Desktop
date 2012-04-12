@@ -21,7 +21,7 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
     classdocs
     '''
     
-    def __init__(self, juzgado = None, parent = None):
+    def __init__(self, juzgado=None, parent=None):
         '''
         Constructor
         '''
@@ -46,8 +46,8 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
             self.txtTelefono.setText(self.__juzgado.getTelefono())
             self.txtTipo.setText(self.__juzgado.getTipo())
             
-        self.__gestor = GestorCampos(campos = campos, formLayout = self.formLayout, parent = self,
-                                     constante_de_edicion = NuevoCampo.JUZGADO, constante_de_creacion = ListadoDialogo.CAMPOJUZGADO)
+        self.__gestor = GestorCampos(campos=campos, formLayout=self.formLayout, parent=self,
+                                     constante_de_edicion=NuevoCampo.JUZGADO, constante_de_creacion=ListadoDialogo.CAMPOJUZGADO)
         self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.__gestor.addCampo)
         
         self.txtNombre.textChanged.connect(self.setDirty)
@@ -62,17 +62,15 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
     def __guardar(self):
         try:
             p = Persistence()
-            if self.__juzgado is None:
-                juzgado = Juzgado()
-                juzgado.setNombre(self.txtNombre.text())
-                juzgado.setDireccion(self.txtDireccion.text())
-                juzgado.setCiudad(self.txtCiudad.text())
-                juzgado.setTelefono(self.txtTelefono.text())
-                juzgado.setTipo(self.txtTipo.text())
-                juzgado.setCampos(self.__gestor.getCampos())
-                
-                p.guardarJuzgado(juzgado)
-                self.__juzgado = juzgado
+            nombre = self.txtNombre.text()
+            direccion = self.txtDireccion.text()
+            telefono = self.txtTelefono.text()
+            ciudad = self.txtCiudad.text()
+            tipo = self.txtTipo.text()
+            campos = self.__gestor.getCampos()
+            if not self.__juzgado:
+                self.__juzgado = Juzgado(nombre=nombre, ciudad=ciudad, direccion=direccion, telefono=telefono, tipo=tipo, campos=campos)                
+                p.guardarJuzgado(self.__juzgado)
             else:
                 camposNuevos = self.__gestor.getCamposNuevos()
                 camposEliminados = self.__gestor.getCamposEliminados()
@@ -80,12 +78,12 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
                     p.borrarCampoJuzgado(campo)
                 for campo in camposNuevos:
                     p.guardarCampoJuzgado(campo, self.__juzgado.getId_juzgado())
-                self.__juzgado.setNombre(self.txtNombre.text())
-                self.__juzgado.setDireccion(self.txtDireccion.text())
-                self.__juzgado.setCiudad(self.txtCiudad.text())
-                self.__juzgado.setTelefono(self.txtTelefono.text())
-                self.__juzgado.setTipo(self.txtTipo.text())
-                self.__juzgado.setCampos(self.__gestor.getCampos())
+                self.__juzgado.setNombre(nombre)
+                self.__juzgado.setDireccion(direccion)
+                self.__juzgado.setCiudad(ciudad)
+                self.__juzgado.setTelefono(telefono)
+                self.__juzgado.setTipo(tipo)
+                self.__juzgado.setCampos(campos)
                 p.actualizarJuzgado(self.__juzgado)                    
         except Exception, e:
             print e
@@ -94,21 +92,15 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
             
     def accept(self):
         if self.txtNombre.text().__len__() == 0 or self.txtNombre.text() == " ":
-            message = QtGui.QMessageBox()
-            message.setIcon(QtGui.QMessageBox.Warning)
-            message.setText("El nombre se considera obligatorio")
-            message.exec_()
+            QtGui.QMessageBox.warning(self, 'Cambo obligatorio', 'El nombre se considera obligatorio')
             self.txtNombre.setFocus()
         elif self.txtTelefono.text().__len__() == 0 or self.txtTelefono.text() == " ":
-            message = QtGui.QMessageBox()
-            message.setIcon(QtGui.QMessageBox.Question)
-            message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-            message.setDefaultButton(QtGui.QMessageBox.No)
-            message.setText(unicode("¿Desea guardar sin agregar un teléfono?"))
-            ret = message.exec_()
+            ret = QtGui.QMessageBox.question(self, 'Pregunta', '¿Desea guardar sin agregar un teléfono?', QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
             if ret == QtGui.QMessageBox.No:
-                self.txtTelefono.setFocus()            
-        if self.__gestor.organizarCampos():
+                self.txtTelefono.setFocus()
+            elif self.__gestor.organizarCampos():
+                self.__guardar            
+        elif self.__gestor.organizarCampos():
             self.__guardar()
             
     def reject(self):

@@ -10,7 +10,7 @@ from gui.ListadoDialogo import ListadoDialogo
 from gui import Util
 
 class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
-    def __init__(self, persona = None, tipo = None, parent = None):
+    def __init__(self, persona=None, tipo=None, parent=None):
         super(NuevaPersona, self).__init__(parent)
         
         self.__dirty = False
@@ -52,7 +52,7 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
                 self.setWindowTitle("Editar demandado")
                 self.groupBox.setTitle("Ingrese los datos del demandado:")
                 
-        self.__gestor = GestorCampos(campos = campos, formLayout = self.formLayout, parent = self, constante_de_edicion = NuevoCampo.PERSONA, constante_de_creacion = constante)
+        self.__gestor = GestorCampos(campos=campos, formLayout=self.formLayout, parent=self, constante_de_edicion=NuevoCampo.PERSONA, constante_de_creacion=constante)
         self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.__gestor.addCampo)
         
         self.txtNombre.textEdited.connect(self.setDirty)
@@ -68,18 +68,17 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
     def __guardar(self):
         try:
             p = Persistence()
-            if self.__persona is None:
-                persona = Persona(self.__tipo)
-                persona.setNombre(self.txtNombre.text())
-                persona.setId(self.txtCedula.text())
-                persona.setTelefono(self.txtTelefono.text())
-                persona.setDireccion(self.txtDireccion.text())
-                persona.setCorreo(self.txtCorreo.text())
-                persona.setNotas(self.txtNotas.toPlainText())
-                persona.setCampos(self.__gestor.getCampos())
-                                
-                p.guardarPersona(persona)
-                self.__persona = persona
+            tipo = self.__tipo
+            nombre = self.txtNombre.text()
+            cedula = self.txtCedula.text()
+            telefono = self.txtTelefono.text()
+            direccion = self.txtDireccion.text()
+            correo = self.txtCorreo.text()
+            notas = self.txtNotas.toPlainText()
+            campos = self.__gestor.getCampos()
+            if not self.__persona:
+                self.__persona = Persona(tipo=tipo, id=cedula, nombre=nombre, telefono=telefono, direccion=direccion, correo=correo, notas=notas, campos=campos)                                
+                p.guardarPersona(self.__persona)
             else:
                 camposNuevos = self.__gestor.getCamposNuevos()
                 camposEliminados = self.__gestor.getCamposEliminados()
@@ -90,16 +89,16 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
                         p.borrarCampoDemandado(campo)
                 for campo in camposNuevos:
                     if self.__tipo is 1:
-                        p.guardarCampoDemandante(campoPersonalizado = campo, id_demandante = self.__persona.getId_persona())
+                        p.guardarCampoDemandante(campoPersonalizado=campo, id_demandante=self.__persona.getId_persona())
                     else:
-                        p.guardarCampoDemandado(campoPersonalizado = campo, id_demandado = self.__persona.getId_persona())
-                self.__persona.setNombre(self.txtNombre.text())
-                self.__persona.setId(self.txtCedula.text())
-                self.__persona.setTelefono(self.txtTelefono.text())
-                self.__persona.setDireccion(self.txtDireccion.text())
-                self.__persona.setCorreo(self.txtCorreo.text())
-                self.__persona.setNotas(self.txtNotas.toPlainText())
-                self.__persona.setCampos(self.__gestor.getCampos())
+                        p.guardarCampoDemandado(campoPersonalizado=campo, id_demandado=self.__persona.getId_persona())
+                self.__persona.setNombre(nombre)
+                self.__persona.setId(cedula)
+                self.__persona.setTelefono(telefono)
+                self.__persona.setDireccion(direccion)
+                self.__persona.setCorreo(correo)
+                self.__persona.setNotas(notas)
+                self.__persona.setCampos(campos)
                 p.actualizarPersona(self.__persona)
         except Exception, e:
             print e
@@ -107,22 +106,16 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
             return QtGui.QDialog.accept(self)
             
     def accept(self):
-        if self.txtNombre.text().__len__() == 0 or self.txtNombre.text() == " ":
-            message = QtGui.QMessageBox()
-            message.setIcon(QtGui.QMessageBox.Warning)
-            message.setText("El nombre se considera obligatorio")
-            message.exec_()
+        if not len(self.txtNombre.text()):
+            QtGui.QMessageBox.warning(self, 'Cambo obligatorio', 'El nombre se considera obligatorio')
             self.txtNombre.setFocus()
         elif self.txtTelefono.text().__len__() == 0 or self.txtTelefono.text() == " ":
-            message = QtGui.QMessageBox()
-            message.setIcon(QtGui.QMessageBox.Question)
-            message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-            message.setDefaultButton(QtGui.QMessageBox.No)
-            message.setText(unicode("¿Desea guardar sin agregar un teléfono?"))
-            ret = message.exec_()
+            ret = QtGui.QMessageBox.question(self, 'Pregunta', '¿Desea guardar sin agregar un teléfono?', QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
             if ret == QtGui.QMessageBox.No:
-                self.txtTelefono.setFocus()          
-        if self.__gestor.organizarCampos():
+                self.txtTelefono.setFocus()
+            elif self.__gestor.organizarCampos():
+                self.__guardar         
+        elif self.__gestor.organizarCampos():
             self.__guardar()
             
     def reject(self):
