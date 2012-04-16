@@ -103,16 +103,6 @@
     <addaction name="menuExportar"/>
     <addaction name="actionImportar"/>
    </widget>
-   <widget class="QMenu" name="menuEditar">
-    <property name="title">
-     <string>Editar</string>
-    </property>
-   </widget>
-   <widget class="QMenu" name="menuSincronizar">
-    <property name="title">
-     <string>Sincronizar</string>
-    </property>
-   </widget>
    <widget class="QMenu" name="menuAyuda">
     <property name="title">
      <string>Ayuda</string>
@@ -120,9 +110,14 @@
     <addaction name="actionAcerca_de_Procesos_Judiciales"/>
     <addaction name="actionAcerca_de_Qt"/>
    </widget>
+   <widget class="QMenu" name="menuCalendario">
+    <property name="title">
+     <string>Calendario</string>
+    </property>
+    <addaction name="actionMostrarCalendario"/>
+   </widget>
    <addaction name="menu_Archivo"/>
-   <addaction name="menuEditar"/>
-   <addaction name="menuSincronizar"/>
+   <addaction name="menuCalendario"/>
    <addaction name="menuAyuda"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -251,6 +246,11 @@
    </property>
    <property name="menuRole">
     <enum>QAction::AboutQtRole</enum>
+   </property>
+  </action>
+  <action name="actionMostrarCalendario">
+   <property name="text">
+    <string>Mostrar Calendario</string>
    </property>
   </action>
  </widget>

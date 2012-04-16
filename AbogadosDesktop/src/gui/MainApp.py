@@ -123,6 +123,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         self.connect(self.actionAcerca_de_Procesos_Judiciales, QtCore.SIGNAL('triggered()'), self.about)
         self.connect(self.actionAcerca_de_Qt, QtCore.SIGNAL('triggered()'), self.aboutQt)
         self.connect(self.actionImprimir, QtCore.SIGNAL('triggered()'), self.menuImpresionClicked)
+        self.connect(self.actionMostrarCalendario, QtCore.SIGNAL('triggered()'), self.mostrarCalendario)
         
     def elementChanged(self):
         self.elementClicked(self.listaIzquierda.currentItem())
