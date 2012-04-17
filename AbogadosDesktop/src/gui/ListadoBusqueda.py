@@ -98,6 +98,7 @@ class ListadoBusqueda(QtGui.QListWidget):
             else:
                 return [demandante, demandado, juzgado, radicado, radicadoUnido, categoria, notas]
         elif isinstance(elemento, Plantilla):
+            nombre = elemento.getNombre()
             demandante = elemento.getDemandante().getNombre()
             demandado = elemento.getDemandado().getNombre()
             juzgado = elemento.getJuzgado().getNombre()
@@ -108,7 +109,7 @@ class ListadoBusqueda(QtGui.QListWidget):
             if filtrarCategoria:
                 return [categoria]
             else:
-                return [demandante, demandado, juzgado, radicado, radicadoUnido, categoria, notas]
+                return [nombre, demandante, demandado, juzgado, radicado, radicadoUnido, categoria, notas]
         elif isinstance(elemento, Persona):
             nombre = elemento.getNombre()
             telefono = elemento.getTelefono()
@@ -193,7 +194,6 @@ class ListadoBusqueda(QtGui.QListWidget):
         if QtGui.QMessageBox.question(self,"Eliminar","Desea eliminar "+objeto.text()+" ?",QtGui.QMessageBox.Yes|QtGui.QMessageBox.No) == QtGui.QMessageBox.Yes:
             self.takeItem(self.currentRow())
             del self.listaOriginal[self.listaOriginal.index(objeto.getObjeto())]
-            del self.listaRespaldo[self.listaRespaldo.index(objeto.getObjeto())]
             self.__click()
             return True
         else:
