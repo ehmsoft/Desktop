@@ -7,7 +7,6 @@ Created on 4/04/2012
 from PreferenciasScreen import Ui_Form
 from PySide import QtGui, QtCore
 from core.Preferencias import Preferencias
-import MainApp
 
 class Preferencias_GUI(QtGui.QWidget, Ui_Form):
     def __init__(self, parent=None):
@@ -82,7 +81,7 @@ class Preferencias_GUI(QtGui.QWidget, Ui_Form):
         
         
     def restablecerLista(self):
-        lista = [MainApp.MainApp.TXTEVENTOS,MainApp.MainApp.TXTPROCESOS, MainApp.MainApp.TXTPLANTILLAS, MainApp.MainApp.TXTDEMANDANTES, MainApp.MainApp.TXTDEMANDADOS, MainApp.MainApp.TXTJUZGADOS, MainApp.MainApp.TXTACTUACIONES, MainApp.MainApp.TXTCATEGORIAS, MainApp.MainApp.TXTCAMPOS, MainApp.MainApp.TXTSINCRONIZAR, MainApp.MainApp.TXTAJUSTES]
+        lista = [Preferencias.TXTEVENTOS,Preferencias.TXTPROCESOS, Preferencias.TXTPLANTILLAS, Preferencias.TXTDEMANDANTES, Preferencias.TXTDEMANDADOS, Preferencias.TXTJUZGADOS, Preferencias.TXTACTUACIONES, Preferencias.TXTCATEGORIAS, Preferencias.TXTCAMPOS, Preferencias.TXTSINCRONIZAR, Preferencias.TXTAJUSTES]
         for i in range(len(lista)):
             self.listaMainApp.takeItem(0)
         for i in lista:
@@ -115,46 +114,46 @@ class Preferencias_GUI(QtGui.QWidget, Ui_Form):
     def OrdenarListaMainApp(self):
         for item in self.preferencia.getListaMainApp():
             if item == 20111:
-                elemento = QtGui.QListWidgetItem(MainApp.MainApp.TXTEVENTOS)
+                elemento = QtGui.QListWidgetItem(Preferencias.TXTEVENTOS)
                 elemento.codigo = 20111
                 self.listaMainApp.addItem(elemento)
             elif item == 20105:
-                elemento = QtGui.QListWidgetItem(MainApp.MainApp.TXTPROCESOS)
+                elemento = QtGui.QListWidgetItem(Preferencias.TXTPROCESOS)
                 elemento.codigo = 20105
                 self.listaMainApp.addItem(elemento)
             elif item == 20115:
-                elemento = QtGui.QListWidgetItem(MainApp.MainApp.TXTPLANTILLAS)
+                elemento = QtGui.QListWidgetItem(Preferencias.TXTPLANTILLAS)
                 elemento.codigo = 20115
                 self.listaMainApp.addItem(elemento)
             elif item == 20114:
-                elemento = QtGui.QListWidgetItem(MainApp.MainApp.TXTDEMANDANTES)
+                elemento = QtGui.QListWidgetItem(Preferencias.TXTDEMANDANTES)
                 elemento.codigo = 20114
                 self.listaMainApp.addItem(elemento)
             elif item == 20124:
-                elemento = QtGui.QListWidgetItem(MainApp.MainApp.TXTDEMANDADOS)
+                elemento = QtGui.QListWidgetItem(Preferencias.TXTDEMANDADOS)
                 elemento.codigo = 20124
                 self.listaMainApp.addItem(elemento)
             elif item == 20103:
-                elemento = QtGui.QListWidgetItem(MainApp.MainApp.TXTJUZGADOS)
+                elemento = QtGui.QListWidgetItem(Preferencias.TXTJUZGADOS)
                 elemento.codigo = 20103
                 self.listaMainApp.addItem(elemento)
             elif item == 20101:
-                elemento = QtGui.QListWidgetItem(MainApp.MainApp.TXTACTUACIONES)
+                elemento = QtGui.QListWidgetItem(Preferencias.TXTACTUACIONES)
                 elemento.codigo = 20101
                 self.listaMainApp.addItem(elemento)
             elif item == 20107:
-                elemento = QtGui.QListWidgetItem(MainApp.MainApp.TXTCATEGORIAS)
+                elemento = QtGui.QListWidgetItem(Preferencias.TXTCATEGORIAS)
                 elemento.codigo = 20107
                 self.listaMainApp.addItem(elemento)
             elif item == 20102:
-                elemento = QtGui.QListWidgetItem(MainApp.MainApp.TXTCAMPOS)
+                elemento = QtGui.QListWidgetItem(Preferencias.TXTCAMPOS)
                 elemento.codigo = 20102
                 self.listaMainApp.addItem(elemento)
             elif item == 20108:
-                elemento = QtGui.QListWidgetItem(MainApp.MainApp.TXTSINCRONIZAR)
+                elemento = QtGui.QListWidgetItem(Preferencias.TXTSINCRONIZAR)
                 elemento.codigo = 20108
                 self.listaMainApp.addItem(elemento)
             elif item == 20109:
-                elemento = QtGui.QListWidgetItem(MainApp.MainApp.TXTAJUSTES)
+                elemento = QtGui.QListWidgetItem(Preferencias.TXTAJUSTES)
                 elemento.codigo = 20109
                 self.listaMainApp.addItem(elemento)

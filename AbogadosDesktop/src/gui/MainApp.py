@@ -42,22 +42,24 @@ import resources
 from persistence.ConnectionManager import ConnectionManager
 from gui.GestorCitas import GestorCitas
 from gui.Calendar import Calendar
+from gui.Preferencias_GUI import Preferencias_GUI
+from core.Preferencias import Preferencias
 __version__ = '1.0'
 
 class MainApp(QtGui.QMainWindow, Ui_mainApp):
     #Constantes para elementos  del menu listaIzquierda
-    TXTPROCESOS = 'Procesos'
-    TXTPLANTILLAS = 'Plantillas'
-    TXTDEMANDANTES = 'Demandantes'
-    TXTDEMANDADOS = 'Demandados'
-    TXTJUZGADOS = 'Juzgados'
-    TXTACTUACIONES = 'Actuaciones'
-    TXTCATEGORIAS = unicode('Categorías')
-    TXTCAMPOS = 'Campos Personalizados'
-    TXTSINCRONIZAR = 'Sincronizar'
-    TXTAJUSTES = 'Ajustes'
-    TXTEVENTOS = unicode('Eventos Próximos')
-    CANTEVENTOS = 10
+    TXTPROCESOS = Preferencias.TXTPROCESOS
+    TXTPLANTILLAS = Preferencias.TXTPLANTILLAS
+    TXTDEMANDANTES = Preferencias.TXTDEMANDANTES
+    TXTDEMANDADOS = Preferencias.TXTDEMANDADOS
+    TXTJUZGADOS = Preferencias.TXTJUZGADOS
+    TXTACTUACIONES = Preferencias.TXTACTUACIONES
+    TXTCATEGORIAS = Preferencias.TXTCATEGORIAS
+    TXTCAMPOS = Preferencias.TXTCAMPOS
+    TXTSINCRONIZAR = Preferencias.TXTSINCRONIZAR
+    TXTAJUSTES = Preferencias.TXTAJUSTES
+    TXTEVENTOS = Preferencias.TXTEVENTOS
+    CANTEVENTOS = Preferencias.CANTEVENTOS
     
     def __init__(self, parent=None):
         super(MainApp, self).__init__(parent)
@@ -320,8 +322,19 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.__restablecerElementoDerecho()
             #self.__restablecerElementoDerecho()
         elif item.text() == MainApp.TXTAJUSTES:     
-            #TODO: Acciones para el menu Ajustes
-            self.__restablecerElementoDerecho()
+            if self.centralSplitter.count() == 1:
+                #Agregar la segunda columna si no existe
+                self.columna1 = Preferencias_GUI()
+                #self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+                self.centralSplitter.addWidget(self.columna1)
+                self.__restablecerElementoDerecho()
+            else:
+                #Borrar la segunda columna y poner una nueva
+                self.columna1.hide()
+                self.columna1 = Preferencias_GUI()
+                #self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+                self.centralSplitter.addWidget(self.columna1)
+                self.__restablecerElementoDerecho()
         if item.text() in [MainApp.TXTEVENTOS, MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES, MainApp.TXTCATEGORIAS]:
             self.connect(self.columna1, QtCore.SIGNAL('clicked()'), self.columna1AgregarClicked)
             self.connect(self.columna1.getCentralWidget(), QtCore.SIGNAL('itemSelectionChanged()'), self.columna1ElementChanged)

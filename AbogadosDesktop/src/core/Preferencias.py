@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on 29/03/2012
 
@@ -13,6 +14,19 @@ class Preferencias(object):
         Clase Preferencias
         tipo alarma mensaje emerjento, correo electronico,icono notificacion, eliminar citas
     '''
+    TXTPROCESOS = 'Procesos'
+    TXTPLANTILLAS = 'Plantillas'
+    TXTDEMANDANTES = 'Demandantes'
+    TXTDEMANDADOS = 'Demandados'
+    TXTJUZGADOS = 'Juzgados'
+    TXTACTUACIONES = 'Actuaciones'
+    TXTCATEGORIAS = unicode('Categorías')
+    TXTCAMPOS = 'Campos Personalizados'
+    TXTSINCRONIZAR = 'Sincronizar'
+    TXTAJUSTES = 'Ajustes'
+    TXTEVENTOS = unicode('Eventos Próximos')
+    CANTEVENTOS = 10
+    
     def __init__(self):
         self.p= Persistence()
         preferencias = self.p.consultarPreferencias()
