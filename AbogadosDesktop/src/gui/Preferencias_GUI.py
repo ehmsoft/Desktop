@@ -33,7 +33,7 @@ class Preferencias_GUI(QtGui.QWidget, Ui_Form):
             self.alarmaMenEmergente.setChecked(False)
             self.alarmaIcono.setChecked(True)
         self.cantCopiaSegSpin.setValue(self.preferencia.getCantCopiaSeg())
-        
+        self.OrdenarListaMainApp()
         
     def borrarEventos(self):
         
