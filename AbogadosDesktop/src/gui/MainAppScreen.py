@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'uis/mainApp.ui'
 #
-# Created: Thu Mar 29 15:05:16 2012
+# Created: Mon Apr 16 15:47:47 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -44,12 +44,10 @@ class Ui_mainApp(object):
         self.menuCampo_Personalizado.setObjectName("menuCampo_Personalizado")
         self.menuExportar = QtGui.QMenu(self.menu_Archivo)
         self.menuExportar.setObjectName("menuExportar")
-        self.menuEditar = QtGui.QMenu(self.menubar)
-        self.menuEditar.setObjectName("menuEditar")
-        self.menuSincronizar = QtGui.QMenu(self.menubar)
-        self.menuSincronizar.setObjectName("menuSincronizar")
         self.menuAyuda = QtGui.QMenu(self.menubar)
         self.menuAyuda.setObjectName("menuAyuda")
+        self.menuCalendario = QtGui.QMenu(self.menubar)
+        self.menuCalendario.setObjectName("menuCalendario")
         mainApp.setMenuBar(self.menubar)
         self.statusbar = QtGui.QStatusBar(mainApp)
         self.statusbar.setObjectName("statusbar")
@@ -96,6 +94,8 @@ class Ui_mainApp(object):
         self.actionAcerca_de_Qt = QtGui.QAction(mainApp)
         self.actionAcerca_de_Qt.setMenuRole(QtGui.QAction.AboutQtRole)
         self.actionAcerca_de_Qt.setObjectName("actionAcerca_de_Qt")
+        self.actionMostrarCalendario = QtGui.QAction(mainApp)
+        self.actionMostrarCalendario.setObjectName("actionMostrarCalendario")
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Proceso)
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Plantilla)
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Demandante)
@@ -119,9 +119,9 @@ class Ui_mainApp(object):
         self.menu_Archivo.addAction(self.actionImportar)
         self.menuAyuda.addAction(self.actionAcerca_de_Procesos_Judiciales)
         self.menuAyuda.addAction(self.actionAcerca_de_Qt)
+        self.menuCalendario.addAction(self.actionMostrarCalendario)
         self.menubar.addAction(self.menu_Archivo.menuAction())
-        self.menubar.addAction(self.menuEditar.menuAction())
-        self.menubar.addAction(self.menuSincronizar.menuAction())
+        self.menubar.addAction(self.menuCalendario.menuAction())
         self.menubar.addAction(self.menuAyuda.menuAction())
 
         self.retranslateUi(mainApp)
@@ -133,9 +133,8 @@ class Ui_mainApp(object):
         self.menu_Nuevo.setTitle(QtGui.QApplication.translate("mainApp", "&Nuevo", None, QtGui.QApplication.UnicodeUTF8))
         self.menuCampo_Personalizado.setTitle(QtGui.QApplication.translate("mainApp", "Campo Personalizado", None, QtGui.QApplication.UnicodeUTF8))
         self.menuExportar.setTitle(QtGui.QApplication.translate("mainApp", "Exportar", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuEditar.setTitle(QtGui.QApplication.translate("mainApp", "Editar", None, QtGui.QApplication.UnicodeUTF8))
-        self.menuSincronizar.setTitle(QtGui.QApplication.translate("mainApp", "Sincronizar", None, QtGui.QApplication.UnicodeUTF8))
         self.menuAyuda.setTitle(QtGui.QApplication.translate("mainApp", "Ayuda", None, QtGui.QApplication.UnicodeUTF8))
+        self.menuCalendario.setTitle(QtGui.QApplication.translate("mainApp", "Calendario", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevoProceso.setText(QtGui.QApplication.translate("mainApp", "Proceso", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevaPlantilla.setText(QtGui.QApplication.translate("mainApp", "Plantilla", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevoDemandante.setText(QtGui.QApplication.translate("mainApp", "Demandante", None, QtGui.QApplication.UnicodeUTF8))
@@ -163,4 +162,5 @@ class Ui_mainApp(object):
         self.actionArchivo_de_Copia_de_Seguridad.setText(QtGui.QApplication.translate("mainApp", "Archivo de Copia de Seguridad", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAcerca_de_Procesos_Judiciales.setText(QtGui.QApplication.translate("mainApp", "Acerca de Procesos Judiciales", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAcerca_de_Qt.setText(QtGui.QApplication.translate("mainApp", "Acerca de Qt", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionMostrarCalendario.setText(QtGui.QApplication.translate("mainApp", "Mostrar Calendario", None, QtGui.QApplication.UnicodeUTF8))
 

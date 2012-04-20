@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'nuevaActuacion.ui'
 #
-# Created: Wed Feb 15 11:37:56 2012
+# Created: Sun Apr  8 22:40:03 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,15 +12,13 @@ from PySide import QtCore, QtGui
 class Ui_NuevaActuacion(object):
     def setupUi(self, NuevaActuacion):
         NuevaActuacion.setObjectName("NuevaActuacion")
-        NuevaActuacion.resize(302, 205)
+        NuevaActuacion.resize(291, 209)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(NuevaActuacion.sizePolicy().hasHeightForWidth())
         NuevaActuacion.setSizePolicy(sizePolicy)
-        self.horizontalLayout_3 = QtGui.QHBoxLayout(NuevaActuacion)
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.verticalLayout = QtGui.QVBoxLayout()
+        self.verticalLayout = QtGui.QVBoxLayout(NuevaActuacion)
         self.verticalLayout.setObjectName("verticalLayout")
         self.groupBox = QtGui.QGroupBox(NuevaActuacion)
         self.groupBox.setObjectName("groupBox")
@@ -48,15 +46,23 @@ class Ui_NuevaActuacion(object):
         self.lblFecha.setObjectName("lblFecha")
         self.formLayout.setWidget(2, QtGui.QFormLayout.LabelRole, self.lblFecha)
         self.dteFecha = QtGui.QDateTimeEdit(self.groupBox)
+        self.dteFecha.setCalendarPopup(True)
         self.dteFecha.setObjectName("dteFecha")
         self.formLayout.setWidget(2, QtGui.QFormLayout.FieldRole, self.dteFecha)
         self.lblFechaProxima = QtGui.QLabel(self.groupBox)
         self.lblFechaProxima.setObjectName("lblFechaProxima")
         self.formLayout.setWidget(3, QtGui.QFormLayout.LabelRole, self.lblFechaProxima)
         self.dteFechaProxima = QtGui.QDateTimeEdit(self.groupBox)
+        self.dteFechaProxima.setCalendarPopup(True)
         self.dteFechaProxima.setObjectName("dteFechaProxima")
         self.formLayout.setWidget(3, QtGui.QFormLayout.FieldRole, self.dteFechaProxima)
         self.gridLayout_2.addLayout(self.formLayout, 0, 0, 1, 1)
+        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout.setSizeConstraint(QtGui.QLayout.SetMinimumSize)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.checkCita = QtGui.QCheckBox(self.groupBox)
+        self.checkCita.setObjectName("checkCita")
+        self.horizontalLayout.addWidget(self.checkCita)
         self.btnAdd = QtGui.QPushButton(self.groupBox)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
@@ -65,7 +71,8 @@ class Ui_NuevaActuacion(object):
         self.btnAdd.setSizePolicy(sizePolicy)
         self.btnAdd.setLayoutDirection(QtCore.Qt.RightToLeft)
         self.btnAdd.setObjectName("btnAdd")
-        self.gridLayout_2.addWidget(self.btnAdd, 1, 0, 1, 1)
+        self.horizontalLayout.addWidget(self.btnAdd)
+        self.gridLayout_2.addLayout(self.horizontalLayout, 1, 0, 1, 1)
         self.verticalLayout.addWidget(self.groupBox)
         self.line = QtGui.QFrame(NuevaActuacion)
         self.line.setFrameShape(QtGui.QFrame.HLine)
@@ -77,7 +84,6 @@ class Ui_NuevaActuacion(object):
         self.buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel|QtGui.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout.addWidget(self.buttonBox)
-        self.horizontalLayout_3.addLayout(self.verticalLayout)
         self.lblDescripcion.setBuddy(self.txtDescripcion)
         self.lblFecha.setBuddy(self.dteFecha)
         self.lblFechaProxima.setBuddy(self.dteFechaProxima)
@@ -95,5 +101,6 @@ class Ui_NuevaActuacion(object):
         self.lblJuzgado.setText(QtGui.QApplication.translate("NuevaActuacion", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.lblFecha.setText(QtGui.QApplication.translate("NuevaActuacion", "Fecha:", None, QtGui.QApplication.UnicodeUTF8))
         self.lblFechaProxima.setText(QtGui.QApplication.translate("NuevaActuacion", "Fecha próxima:", None, QtGui.QApplication.UnicodeUTF8))
+        self.checkCita.setText(QtGui.QApplication.translate("NuevaActuacion", "Cita", None, QtGui.QApplication.UnicodeUTF8))
         self.btnAdd.setText(QtGui.QApplication.translate("NuevaActuacion", "+", None, QtGui.QApplication.UnicodeUTF8))
 

@@ -7,7 +7,7 @@ Created on 26/03/2012
 from PySide.QtCore import *
 from PySide.QtGui import *
 from persistence.Persistence import Persistence
-from gui.Listado import Listado
+from gui.ListadoBusqueda import ListadoBusqueda
 
         
 class ListadoDialogoMultipleSeleccion(QDialog):
@@ -66,7 +66,7 @@ class ListadoDialogoMultipleSeleccion(QDialog):
             self.setWindowTitle('Seleccione plantillas')
             
         groupBox = QGroupBox("Seleccione uno o varios elementos")           
-        self.lista = Listado(objetos)
+        self.lista = ListadoBusqueda(objetos)
         self.lista.setSelectionMode(QListWidget.MultiSelection)
         layout = QVBoxLayout()
         layoutBox = QVBoxLayout()
@@ -76,6 +76,7 @@ class ListadoDialogoMultipleSeleccion(QDialog):
         self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Ok)
         buttonlayout = QHBoxLayout()
         buttonlayout.addStretch()
+        layout.addWidget(self.lista.getSearchField())
         layout.addWidget(self.lista)
         buttonlayout.addWidget(btnSelTodo)
         buttonlayout.addWidget(self.buttonBox)

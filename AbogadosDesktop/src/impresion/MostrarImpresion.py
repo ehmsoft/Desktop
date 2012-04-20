@@ -15,6 +15,7 @@ class MostrarImpresion(QDialog):
         self.printer.setPageSize(QPrinter.Letter)
         if landscape:
             self.printer.setOrientation(QPrinter.Landscape)
+        self.landscape = landscape
         layout = QVBoxLayout()
         self.browser = QTextBrowser()
         self.browser.setHtml(html)
@@ -34,11 +35,19 @@ class MostrarImpresion(QDialog):
         self.showMaximized()
     
     def imprimir(self):
+        self.printer = QPrinter(QPrinter.HighResolution)
+        self.printer.setPageSize(QPrinter.Letter)
+        if self.landscape:
+            self.printer.setOrientation(QPrinter.Landscape)
         dialog = QPrintDialog(self.printer, self)
         if dialog.exec_():
             self.browser.print_(self.printer)
             self.accept()    
     def imprimirPdf(self):
+        self.printer = QPrinter(QPrinter.HighResolution)
+        self.printer.setPageSize(QPrinter.Letter)
+        if self.landscape:
+            self.printer.setOrientation(QPrinter.Landscape)
         self.printer.setOutputFormat(QPrinter.PdfFormat)
         name = QFileDialog.getSaveFileName(self,'Guardar PDF')[0]
         if name != '' :
