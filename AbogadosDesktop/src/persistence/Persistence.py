@@ -15,6 +15,7 @@ from core.Plantilla import Plantilla
 from core.Archivo import Archivo
 from core.ActuacionCritica import ActuacionCritica
 
+
 class Persistence(object):
     '''
     Clase Persistence
@@ -41,17 +42,6 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
-        if persona.getTipo() == 1:
-            campos = persona.getCampos()
-            for campo in campos:
-                self.actualizarCampoDemandante(campo)
-        elif persona.getTipo() == 2:
-            campos = persona.getCampos()
-            for campo in campos:
-                self.actualizarCampoDemandado(campo)
-        else:
-            raise Exception('el tipo de persona no existe') 
-            
     def guardarPersona(self, persona):
         try:
             self.__conMgr.prepararBD()
@@ -80,9 +70,7 @@ class Persistence(object):
             for campo in campos:
                 self.guardarCampoDemandado(campo, persona.getId_persona())
         else:
-            raise Exception('el tipo de persona no existe') 
-         
-        
+            print("eso no es asi")
     def borrarPersona(self, persona):
         try:
             self.__conMgr.prepararBD()
@@ -92,14 +80,12 @@ class Persistence(object):
                 c.execute('''UPDATE demandantes SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_demandante = ?''', (persona.getId_persona(),))
                 c.execute('''UPDATE procesos SET id_demandante = 1 WHERE id_demandante = ?''', (persona.getId_persona(),))
                 c.execute('''UPDATE plantillas SET id_demandante = 1 WHERE id_demandante = ?''', (persona.getId_persona(),))
-                c.execute('''UPDATE atributos_demandante SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_demandante = ?''', (persona.getId_persona(),))
 
             elif persona.getTipo() == 2:
                 c.execute('''UPDATE demandados SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_demandado = ?''', (persona.getId_persona(),))
                 c.execute('''UPDATE procesos SET id_demandado = 1 WHERE id_demandado = ?''', (persona.getId_persona(),))
                 c.execute('''UPDATE plantillas SET id_demandado = 1 WHERE id_demandado = ?''', (persona.getId_persona(),))
-                c.execute('''UPDATE atributos_demandado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_demandado = ?''', (persona.getId_persona(),))
-                
+
             else:
                 raise Exception('el tipo de persona no existe')
             conn.commit()            
@@ -119,9 +105,6 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
-        campos = juzgado.getCampos()
-        for campo in campos:
-            self.actualizarCampoJuzgado(campo)
     def guardarJuzgado(self, juzgado):
         try:
             self.__conMgr.prepararBD()
@@ -147,7 +130,6 @@ class Persistence(object):
             c.execute('''UPDATE procesos SET id_juzgado = 1 WHERE id_juzgado = ?''', (juzgado.getId_juzgado(),))
             c.execute('''UPDATE actuaciones SET id_juzgado = 1 WHERE id_juzgado = ?''', (juzgado.getId_juzgado(),))
             c.execute('''UPDATE plantillas SET id_juzgado = 1 WHERE id_juzgado = ?''', (juzgado.getId_juzgado(),))
-            c.execute('''UPDATE atributos_juzgados SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_juzgado = ?''', (juzgado.getId_juzgado(),))
             conn.commit()            
         except Exception as e:
             raise e
@@ -165,9 +147,6 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
-        campos = actuacion.getCampos()
-        for campo in campos:
-            self.actualizarCampoActuacion(campo)
     def guardarActuacion(self, actuacion, id_proceso):
         try:
             self.__conMgr.prepararBD()
@@ -191,8 +170,6 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
             c.execute('''UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''', (actuacion.getId_actuacion(),))
-            c.execute('''UPDATE atributos_actuaciones SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''', (actuacion.getId_actuacion(),))
-            
             conn.commit()            
         except Exception as e:
             raise e
@@ -248,7 +225,6 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
-        
     def guardarAtributo(self, campoPersonalizado):
         try:
             self.__conMgr.prepararBD()
@@ -265,7 +241,6 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
-       
     def borrarAtributo(self, campoPersonalizado):
         try:
             self.__conMgr.prepararBD()
@@ -330,8 +305,6 @@ class Persistence(object):
         actuaciones = proceso.getActuaciones()
         for actuacion in actuaciones:
             self.guardarActuacion(actuacion, proceso.getId_proceso())   
-        
-        
     def borrarProceso(self, proceso):
         try:
             self.__conMgr.prepararBD()
@@ -412,7 +385,6 @@ class Persistence(object):
         campos = plantilla.getCampos()
         for campo in campos:
             self.actualizarCampoPlantilla(campo, plantilla.getId_proceso())
-
     def guardarPlantilla(self, plantilla):
         try:
             self.__conMgr.prepararBD()
@@ -448,7 +420,6 @@ class Persistence(object):
             plantilla.setDemandado(self.consultarPersona('1', 2))
         if not plantilla.getJuzgado():
             plantilla.setJuzgado(self.consultarJuzgado('1'))
-        
     def borrarPlantilla(self, plantilla):
         try:
             self.__conMgr.prepararBD()
@@ -500,22 +471,101 @@ class Persistence(object):
         finally:
             conn.close()
     
-    def actualizarPreferencia(self, id_preferencia, valor):
-        pass
-    
+    def actualizarPreferencia(self, id, valor):
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()          
+            # Orden Mainapp 
+            if id == 10101:
+                lista = ''
+                for x in valor:
+                    lista += ','+ str(x)
+                c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 10101''',(lista.lstrip(','),))
+            #actualizar Preferencias: correo
+            elif id == 10402:
+                c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 10402''',(valor,))
+            #actualizar Preferencias: Cantidad Evventos Proximos 
+            elif id == 10501:
+                c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 10501''',(valor,))
+            #actualizar Preferencias: Tipo Alarma 0 ninguni, 1 correo y alerta, 2 solo correo, 3 solo alerta
+            elif id == 10601:
+                c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 10601''',(valor,))
+            #actualizar Preferencias: Cantidad Maxima Copias de Seguridad 
+            elif id == 10701:
+                c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 10701''',(valor,))
+            #actualizar Preferencias: llave 
+            elif id == 998:
+                c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 998''',(valor,))
+            #actualizar Preferencias: Version 
+            elif id == 999:
+                c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 999''',(valor,))
+            #actualizar Preferencias: Ultima sincronizacion 
+            elif id == 997:
+                c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 997''',(valor,))
+            conn.commit()  
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
     def borrarPreferencia(self, id_preferencia):
-      
-    
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE preferencias SET valor=20001 WHERE id_preferencia = 10101''')
-            c.execute('''UPDATE preferencias SET valor=1 WHERE id_preferencia = 10102''')
-            c.execute('''UPDATE preferencias SET valor=0 WHERE id_preferencia =10201''')
-            c.execute('''UPDATE preferencias SET valor=1 WHERE id_preferencia = 10301''')
-            c.execute('''UPDATE preferencias SET valor= 'Usuario' WHERE id_preferencia = 10401''')
+            # Orden Mainapp 
+            if id_preferencia == 10101:
+                c.execute('''UPDATE preferencias SET valor= '20111,20105,20115,20114,20124,20123,20101,20107,20102,20108,20109' WHERE id_preferencia = 10101''')
+                #borrar Preferencias: Correo 
+            elif id_preferencia == 10402:
+                c.execute('''UPDATE preferencias SET valor= ' ' WHERE id_preferencia = 10402''')
+            
+            #borrar Preferencias: Cantidad Eventos Proximos 
+            elif id_preferencia == 10501:
+                c.execute('''UPDATE preferencias SET valor=10 WHERE id_preferencia = 10501''')
+            
+            #borrar Preferencias: Tipo Alarma 0 ninguni, 1 correo y alerta, 2 solo correo, 3 solo alerta
+            elif id_preferencia == 10601:
+                c.execute('''UPDATE preferencias SET valor=1 WHERE id_preferencia = 10601''')
+            #borrar Preferencias: Cantidad Maxima Copias de Seguridad 
+            elif id_preferencia == 10701:
+                c.execute('''UPDATE preferencias SET valor= 5 WHERE id_preferencia = 10701''')
+            #borrar Preferencias: llave 
+            elif id_preferencia == 998:
+                c.execute('''UPDATE preferencias SET valor= 0000 WHERE id_preferencia = 998''')
+            #borrar Preferencias: Version 
+            elif id_preferencia == 999:
+                c.execute('''UPDATE preferencias SET valor= 1 WHERE id_preferencia = 999''')
+            #borrar Preferencias: Ultima sincronizacion 
+            elif id_preferencia == 997:
+                c.execute('''UPDATE preferencias SET valor= 0000 WHERE id_preferencia = 997''')
+           
+            conn.commit()  
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+    def borrarPreferencias(self):
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation())
+            c = conn.cursor()          
+            #borrar Preferencias: Orden Mainapp 
+            c.execute('''UPDATE preferencias SET valor= '20111,20105,20115,20114,20124,20123,20101,20107,20102,20108,20109' WHERE id_preferencia = 10101''')
+            #borrar Preferencias: borrar correo
+            c.execute('''UPDATE preferencias SET valor=' ' WHERE id_preferencia = 10402''')
+            #borrar Preferencias: Cantidad Eventos Proximos 
             c.execute('''UPDATE preferencias SET valor=10 WHERE id_preferencia = 10501''')
+            #borrar Preferencias: Tipo Alarma 0 ninguni, 1 correo y alerta, 2 solo correo, 3 solo alerta
+            c.execute('''UPDATE preferencias SET valor=1 WHERE id_preferencia = 10601''')
+            #borrar Preferencias: Cantidad Maxima Copias de Seguridad 
+            c.execute('''UPDATE preferencias SET valor= 5 WHERE id_preferencia = 10701''')
+            #borrar Preferencias: llave 
+            c.execute('''UPDATE preferencias SET valor= 0000 WHERE id_preferencia = 998''')
+            #borrar Preferencias: Version 
+            c.execute('''UPDATE preferencias SET valor= 1 WHERE id_preferencia = 999''')
+            #borrar Preferencias: Ultima sincronizacion 
+            c.execute('''UPDATE preferencias SET valor= 0000 WHERE id_preferencia = 997''')
             conn.commit()            
         except Exception as e:
             raise e
@@ -602,7 +652,6 @@ class Persistence(object):
         finally:
             conn.close()
     
-    
     def actualizarCampoDemandado(self, campoPersonalizado):
         try:
             self.__conMgr.prepararBD()
@@ -637,7 +686,6 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
-    
     
     def actualizarAtributoJuzgado(self, campoPersonalizado):
         try:
@@ -683,7 +731,6 @@ class Persistence(object):
         finally:
             conn.close()
     
-    
     def actualizarCampoJuzgado(self, campoPersonalizado):
         try:
             self.__conMgr.prepararBD()
@@ -719,7 +766,6 @@ class Persistence(object):
             raise e
         finally:
             conn.close()
-    
     
     def actualizarAtributoActuacion(self, campoPersonalizado):
         try:
@@ -765,7 +811,6 @@ class Persistence(object):
         finally:
             conn.close()
     
-    
     def actualizarCampoActuacion(self, campoPersonalizado):
         try:
             self.__conMgr.prepararBD()
@@ -801,7 +846,6 @@ class Persistence(object):
         finally:
             conn.close()
     
-    
     def actualizarArchivoProceso(self, archivo):
         try:
             self.__conMgr.prepararBD()
@@ -833,6 +877,17 @@ class Persistence(object):
             c = conn.cursor()
             c.execute('''UPDATE archivo_proceso SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_archivo_proceso = ?''', (archivo.getId_archivo_proceso(),))
             conn.commit()            
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+    
+    def borrarEventosVencidos(self, cantidad):
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            c = conn.cursor()
+            c.execute('''UPDATE citas SET eliminado = 1 WHERE fecha_proxima < date() AND eliminado = 0 ''')
         except Exception as e:
             raise e
         finally:
@@ -1488,6 +1543,45 @@ class Persistence(object):
         finally:
             conn.close()
         return valor
+    
+    def consultarPreferencias(self):
+        try:
+            self.__conMgr.prepararBD()
+            conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''SELECT id_preferencia, valor FROM preferencias''')
+            preferencias = {10101:None, 10501:None, 10502:None, 10601:None, 10701:None, 998:None, 999:None, 997:None}         
+            for row in c:
+                if row['id_preferencia'] == 10101:
+                    listaEnteros = [int(x) for x in row['valor'].split(',')]
+                    preferencias[10101]=listaEnteros
+                #consultar Preferencias: Cantidad Eventos Proximos 
+                elif row['id_preferencia'] == 10501:
+                    preferencias[10501]=row['valor']
+                #consultar Preferencias: eliminar eventos vencidos 
+                elif row['id_preferencia'] == 10502:
+                    preferencias[10502]=row['valor']
+                #consultar Preferencias: Tipo Alarma 0 ninguni, 1 correo y alerta, 2 solo correo, 3 solo alerta
+                elif row['id_preferencia'] == 10601:
+                    preferencias[10601]=row['valor']                    
+                #consultar Preferencias: Cantidad Maxima Copias de Seguridad 
+                elif row['id_preferencia'] == 10701:
+                    preferencias[10701]=row['valor']
+                #consultar Preferencias: llave 
+                elif row['id_preferencia'] == 998:
+                    preferencias[998]=row['valor']
+                #consultar Preferencias: Version 
+                elif row['id_preferencia'] == 999:
+                    preferencias[999]=row['valor']
+                #consultar Preferencias: Ultima sincronizacion 
+                elif row['id_preferencia'] == 997:
+                    preferencias[997]=row['valor']
+        except Exception as e:
+            raise e
+        finally:
+            conn.close()
+        return preferencias
     
     #Campos personalizados para las personas    
     def consultarAtributosPersona(self):
