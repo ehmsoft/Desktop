@@ -3,7 +3,6 @@ Created on 06/08/2011
 
 @author: elfotografo007
 '''
-import hashlib
 import sqlite3
 from os.path import exists
 
@@ -72,8 +71,23 @@ class ConnectionManager(object):
             c.execute('''INSERT INTO demandantes(id_demandante, cedula, nombre, telefono, direccion, correo, notas) VALUES(1, 'No id', 'vacio', 'vacio', 'vacio', 'vacio', 'vacio')''')
             c.execute('''INSERT INTO demandados(id_demandado, cedula, nombre, telefono, direccion, correo, notas) VALUES(1, 'No id', 'vacio', 'vacio', 'vacio', 'vacio', 'vacio')''')
             c.execute('''INSERT INTO juzgados(id_juzgado, nombre, ciudad, telefono, direccion, tipo) VALUES(1,'vacio','vacio', 'vacio','vacio', 'vacio')''')
+            #Insertar preferencias en la base de datos
+                #Insertar orden lista mainapp
+            c.execute('''INSERT INTO 'preferencias' VALUES(10101,'20111,20105,20115,20114,20124,20103,20101,20107,20102,20108,20109') ''')
+                #Insertar cantidad de eventos proximos
+            c.execute('''INSERT INTO 'preferencias' VALUES(10501,10)''')
+                #Insertar correo
+            c.execute('''INSERT INTO 'preferencias' VALUES(10402,' ')''')    
+                #Insertar Preferencias: Tipo Alarma 0 ningun0, 1 mensaje emerjente e icono de notificacion, 2 solo mensaje emergente, 3 solo iconode notificacion
+            c.execute('''INSERT INTO 'preferencias' VALUES(10601,1) ''')
+                #Insertar cantidad maxima de copias de seguridad
+            c.execute('''INSERT INTO 'preferencias' VALUES(10701,5)''')
+                #Insertar llave
+            c.execute('''INSERT INTO 'preferencias' VALUES(998,0000) ''')
             #Insertar la version de la base de datos
             c.execute('''INSERT INTO 'preferencias' VALUES(999,1)''')
+                #Insertar ultima sincronizacion
+            c.execute('''INSERT INTO 'preferencias' VALUES(997,0000) ''')
             conn.commit()
         except Exception as e:
             raise e
