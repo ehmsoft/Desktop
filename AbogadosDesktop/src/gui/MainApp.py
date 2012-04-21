@@ -92,6 +92,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         self.connect(self.listaIzquierda, QtCore.SIGNAL('customContextMenuRequested(QPoint)'), self.listaIzquierdaContextMenu)        
         self.listaIzquierda.setMouseTracking(True)
         for row in self.lista:
+            
             #Recorre cada elemento de la lista izquierda y le establece la fuente por defecto
             item = QtGui.QListWidgetItem(row)
             fuente = item.font()

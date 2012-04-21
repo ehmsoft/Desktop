@@ -26,6 +26,7 @@ class Preferencias_GUI(QtGui.QWidget, Ui_Form):
         elif alarma == 1:
             self.alarmaMenEmergente.setChecked(True)
             self.alarmaIcono.setChecked(True)
+        
         elif alarma == 2:
             self.alarmaMenEmergente.setChecked(True)
             self.alarmaIcono.setChecked(False)
