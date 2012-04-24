@@ -102,6 +102,7 @@
     <addaction name="actionImprimir"/>
     <addaction name="menuExportar"/>
     <addaction name="actionImportar"/>
+    <addaction name="actionSalir_de_Procesos_Judiciales"/>
    </widget>
    <widget class="QMenu" name="menuAyuda">
     <property name="title">
@@ -251,6 +252,14 @@
   <action name="actionMostrarCalendario">
    <property name="text">
     <string>Mostrar Calendario</string>
+   </property>
+  </action>
+  <action name="actionSalir_de_Procesos_Judiciales">
+   <property name="text">
+    <string>Salir de Procesos Judiciales</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::QuitRole</enum>
    </property>
   </action>
  </widget>

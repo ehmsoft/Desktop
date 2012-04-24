@@ -13,7 +13,6 @@ class MyTranslator(QtCore.QTranslator):
         super(MyTranslator, self).__init__(parent)
         
     def translate(self,context, sourceText, disambiguation, n=0):
-        print sourceText
         if sourceText == 'OK':
             return 'Aceptar'
         elif sourceText == 'Cancel':
