@@ -187,7 +187,7 @@ class ListadoBusqueda(QtGui.QListWidget):
         item.setStatusTip(unicode(objeto))
         self.addItem(item)
         self.listaOriginal.append(objeto)
-        self.listaRespaldo.append(objeto)
+
         
     def remove(self):
         objeto = self.currentItem()
