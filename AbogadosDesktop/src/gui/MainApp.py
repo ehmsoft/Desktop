@@ -44,6 +44,7 @@ from gui.GestorCitas import GestorCitas
 from gui.Calendar import Calendar
 from gui.Preferencias_GUI import Preferencias_GUI
 from core.Preferencias import Preferencias
+from gui.MyTranslator import MyTranslator
 __version__ = '1.0'
 
 class MainApp(QtGui.QMainWindow, Ui_mainApp):
@@ -1084,7 +1085,9 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         return action
     
 import sys
+translator = MyTranslator()
 app = QtGui.QApplication(sys.argv)
+app.installTranslator(translator)
 app.setOrganizationName("ehmSoftware")
 app.setOrganizationDomain("ehmsoft.com")
 app.setApplicationName("Procesos Judiciales")
