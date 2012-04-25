@@ -888,7 +888,7 @@ class Persistence(object):
         finally:
             conn.close()
     
-    def borrarEventosVencidos(self, cantidad):
+    def borrarEventosVencidos(self):
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)

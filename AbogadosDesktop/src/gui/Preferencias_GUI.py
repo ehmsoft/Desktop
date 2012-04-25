@@ -7,7 +7,7 @@ Created on 4/04/2012
 from PreferenciasScreen import Ui_Form
 from PySide import QtGui, QtCore
 from core.Preferencias import Preferencias
-
+from persistence.Persistence import Persistence
 class Preferencias_GUI(QtGui.QWidget, Ui_Form):
     def __init__(self, parent=None):
         self.preferencia = Preferencias()
@@ -37,8 +37,8 @@ class Preferencias_GUI(QtGui.QWidget, Ui_Form):
         self.OrdenarListaMainApp()
         
     def borrarEventos(self):
-        
-        print 'borrado'
+        p = Persistence()
+        p.borrarEventosVencidos()
         
     def listaArriba(self):
         flag = False
@@ -82,7 +82,30 @@ class Preferencias_GUI(QtGui.QWidget, Ui_Form):
         
         
     def restablecerLista(self):
-        lista = [Preferencias.TXTEVENTOS,Preferencias.TXTPROCESOS, Preferencias.TXTPLANTILLAS, Preferencias.TXTDEMANDANTES, Preferencias.TXTDEMANDADOS, Preferencias.TXTJUZGADOS, Preferencias.TXTACTUACIONES, Preferencias.TXTCATEGORIAS, Preferencias.TXTCAMPOS, Preferencias.TXTSINCRONIZAR, Preferencias.TXTAJUSTES]
+        eventos = QtGui.QListWidgetItem(Preferencias.TXTEVENTOS)
+        eventos.codigo = 20111
+        procesos = QtGui.QListWidgetItem(Preferencias.TXTPROCESOS)
+        procesos.codigo = 20105
+        plantillas = QtGui.QListWidgetItem(Preferencias.TXTPLANTILLAS)
+        plantillas.codigo = 20115
+        demandantes = QtGui.QListWidgetItem(Preferencias.TXTDEMANDANTES)
+        demandantes.codigo = 20114
+        demandados = QtGui.QListWidgetItem(Preferencias.TXTDEMANDADOS)
+        demandados.codigo = 20124
+        juzgados = QtGui.QListWidgetItem(Preferencias.TXTJUZGADOS)
+        juzgados.codigo = 20103
+        actuaciones = QtGui.QListWidgetItem(Preferencias.TXTACTUACIONES)
+        actuaciones.codigo = 20101
+        categorias = QtGui.QListWidgetItem(Preferencias.TXTCATEGORIAS)
+        categorias.codigo = 20107
+        campos = QtGui.QListWidgetItem(Preferencias.TXTCAMPOS)
+        campos.codigo = 20102
+        sincronizar = QtGui.QListWidgetItem(Preferencias.TXTSINCRONIZAR)
+        sincronizar.codigo = 20108
+        ajustes = QtGui.QListWidgetItem(Preferencias.TXTAJUSTES)
+        ajustes.codigo = 20109
+        
+        lista = [eventos, procesos, plantillas, demandantes, demandados,juzgados, actuaciones,categorias,campos, sincronizar, ajustes]
         for i in range(len(lista)):
             self.listaMainApp.takeItem(0)
         for i in lista:
