@@ -44,6 +44,7 @@ from gui.GestorCitas import GestorCitas
 from gui.Calendar import Calendar
 from gui.Preferencias_GUI import Preferencias_GUI
 from core.Preferencias import Preferencias
+from gui.MyTranslator import MyTranslator
 __version__ = '1.0'
 
 class MainApp(QtGui.QMainWindow, Ui_mainApp):
@@ -122,11 +123,12 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         self.connect(self.actionArchivo_CSV, QtCore.SIGNAL('triggered()'), self.menuExportarCSVClicked)
         self.connect(self.actionArchivo_de_Copia_de_Seguridad, QtCore.SIGNAL('triggered()'), self.menuExportarArchivoClicked)
         self.connect(self.actionImportar, QtCore.SIGNAL('triggered()'), self.menuImportarArchivoClicked)
-        #self.connect(self.actionCerrar, QtCore.SIGNAL('triggered()'), self.cerrar)
+        self.connect(self.actionSalir_de_Procesos_Judiciales, QtCore.SIGNAL('triggered()'), self.close)
         self.connect(self.actionAcerca_de_Procesos_Judiciales, QtCore.SIGNAL('triggered()'), self.about)
         self.connect(self.actionAcerca_de_Qt, QtCore.SIGNAL('triggered()'), self.aboutQt)
         self.connect(self.actionImprimir, QtCore.SIGNAL('triggered()'), self.menuImpresionClicked)
         self.connect(self.actionMostrarCalendario, QtCore.SIGNAL('triggered()'), self.mostrarCalendario)
+        
         
     def elementChanged(self):
         self.elementClicked(self.listaIzquierda.currentItem())
@@ -1084,7 +1086,9 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         return action
     
 import sys
+translator = MyTranslator()
 app = QtGui.QApplication(sys.argv)
+app.installTranslator(translator)
 app.setOrganizationName("ehmSoftware")
 app.setOrganizationDomain("ehmsoft.com")
 app.setApplicationName("Procesos Judiciales")

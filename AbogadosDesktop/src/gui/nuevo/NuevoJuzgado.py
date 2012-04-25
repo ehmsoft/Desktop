@@ -94,12 +94,12 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
         if self.txtNombre.text().__len__() == 0 or self.txtNombre.text() == " ":
             QtGui.QMessageBox.warning(self, 'Cambo obligatorio', 'El nombre se considera obligatorio')
             self.txtNombre.setFocus()
-        elif self.txtTelefono.text().__len__() == 0 or self.txtTelefono.text() == " ":
-            ret = QtGui.QMessageBox.question(self, 'Pregunta', '¿Desea guardar sin agregar un teléfono?', QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
+        elif not len(self.txtTelefono.text()):
+            ret = QtGui.QMessageBox.question(self, 'Pregunta', u'¿Desea guardar sin agregar un teléfono?', QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
             if ret == QtGui.QMessageBox.No:
                 self.txtTelefono.setFocus()
             elif self.__gestor.organizarCampos():
-                self.__guardar            
+                self.__guardar()            
         elif self.__gestor.organizarCampos():
             self.__guardar()
             

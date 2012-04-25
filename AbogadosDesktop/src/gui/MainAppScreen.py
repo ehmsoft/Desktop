@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'uis/mainApp.ui'
 #
-# Created: Mon Apr 16 15:47:47 2012
+# Created: Tue Apr 24 18:36:16 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -96,6 +96,9 @@ class Ui_mainApp(object):
         self.actionAcerca_de_Qt.setObjectName("actionAcerca_de_Qt")
         self.actionMostrarCalendario = QtGui.QAction(mainApp)
         self.actionMostrarCalendario.setObjectName("actionMostrarCalendario")
+        self.actionSalir_de_Procesos_Judiciales = QtGui.QAction(mainApp)
+        self.actionSalir_de_Procesos_Judiciales.setMenuRole(QtGui.QAction.QuitRole)
+        self.actionSalir_de_Procesos_Judiciales.setObjectName("actionSalir_de_Procesos_Judiciales")
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Proceso)
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Plantilla)
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Demandante)
@@ -117,6 +120,7 @@ class Ui_mainApp(object):
         self.menu_Archivo.addAction(self.actionImprimir)
         self.menu_Archivo.addAction(self.menuExportar.menuAction())
         self.menu_Archivo.addAction(self.actionImportar)
+        self.menu_Archivo.addAction(self.actionSalir_de_Procesos_Judiciales)
         self.menuAyuda.addAction(self.actionAcerca_de_Procesos_Judiciales)
         self.menuAyuda.addAction(self.actionAcerca_de_Qt)
         self.menuCalendario.addAction(self.actionMostrarCalendario)
@@ -163,4 +167,5 @@ class Ui_mainApp(object):
         self.actionAcerca_de_Procesos_Judiciales.setText(QtGui.QApplication.translate("mainApp", "Acerca de Procesos Judiciales", None, QtGui.QApplication.UnicodeUTF8))
         self.actionAcerca_de_Qt.setText(QtGui.QApplication.translate("mainApp", "Acerca de Qt", None, QtGui.QApplication.UnicodeUTF8))
         self.actionMostrarCalendario.setText(QtGui.QApplication.translate("mainApp", "Mostrar Calendario", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSalir_de_Procesos_Judiciales.setText(QtGui.QApplication.translate("mainApp", "Salir de Procesos Judiciales", None, QtGui.QApplication.UnicodeUTF8))
 
