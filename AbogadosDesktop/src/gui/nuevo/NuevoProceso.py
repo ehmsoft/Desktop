@@ -32,7 +32,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     '''
 
 
-    def __init__(self, proceso = None, plantilla = None, parent = None):
+    def __init__(self, proceso=None, plantilla=None, parent=None):
         '''
         Constructor
         '''
@@ -136,8 +136,8 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         
         self.lblCategoria.addActions([cambiar, editar])
         
-        self.__gestor = GestorCampos(campos = campos, formLayout = self.formLayout, parent = self,
-                                     constante_de_edicion = NuevoCampo.PROCESO, constante_de_creacion = ListadoDialogo.CAMPOPROCESOP)
+        self.__gestor = GestorCampos(campos=campos, formLayout=self.formLayout, parent=self,
+                                     constante_de_edicion=NuevoCampo.PROCESO, constante_de_creacion=ListadoDialogo.CAMPOPROCESOP)
         self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.__gestor.addCampo)
         self.txtRadicado.textChanged.connect(self.setDirty)
         self.txtRadicadoUnico.textChanged.connect(self.setDirty)
@@ -266,7 +266,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             
     def __editarDemandante(self):
         if self.__demandante is not None and self.__demandante.getId_persona() is not "1":
-            dialogo = NuevaPersona(persona = self.__demandante, parent = self)
+            dialogo = NuevaPersona(persona=self.__demandante, parent=self)
             if dialogo.exec_():
                 self.lblDemandante.setText(self.__demandante.getNombre())
                 if (isinstance(self.__dialogo.getWidget(), VerPersona)):
@@ -276,7 +276,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     
     def __editarDemandado(self):
         if self.__demandado is not None and self.__demandado.getId_persona() is not "1":
-            dialogo = NuevaPersona(persona = self.__demandado, parent = self)
+            dialogo = NuevaPersona(persona=self.__demandado, parent=self)
             if dialogo.exec_():
                 self.lblDemandado.setText(self.__demandado.getNombre())
                 if (isinstance(self.__dialogo.getWidget(), VerPersona)):
@@ -286,7 +286,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     
     def __editarJuzgado(self):
         if self.__juzgado is not None and self.__juzgado.getId_juzgado() is not "1":
-            dialogo = NuevoJuzgado(juzgado = self.__juzgado, parent = self)
+            dialogo = NuevoJuzgado(juzgado=self.__juzgado, parent=self)
             if dialogo.exec_():
                 self.lblJuzgado.setText(self.__juzgado.getNombre())
                 if (isinstance(self.__dialogo.getWidget(), VerJuzgado)):
@@ -345,10 +345,10 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             prioridad = self.sbPrioridad.value()
             campos = self.__gestor.getCampos()
             if self.__proceso is None:
-                proceso = Proceso(demandante = demandante, demandado = demandado, fecha = fecha, juzgado = juzgado,
-                                  radicado = radicado, radicadoUnico = radicadoUnico, actuaciones = actuaciones,
-                                  estado = estado, categoria = categoria, tipo = tipo, notas = notas,
-                                  prioridad = prioridad, campos = campos)
+                proceso = Proceso(demandante=demandante, demandado=demandado, fecha=fecha, juzgado=juzgado,
+                                  radicado=radicado, radicadoUnico=radicadoUnico, actuaciones=actuaciones,
+                                  estado=estado, categoria=categoria, tipo=tipo, notas=notas,
+                                  prioridad=prioridad, campos=campos)
                 p.guardarProceso(proceso)
                 self.__proceso = proceso
             else:
@@ -380,7 +380,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     def getProceso(self):
         return self.__proceso
     
-    def createAction(self, text, slot = None):
+    def createAction(self, text, slot=None):
         action = QtGui.QAction(text, self)
         if slot is not None:
             self.connect(action, QtCore.SIGNAL("triggered()"), slot)
@@ -404,7 +404,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
                 
     def editarActuacion(self):
         index = self.verticalLayout.indexOf(self.sender().data())
-        dialogo = NuevaActuacion(actuacion = self.__actuaciones[index], parent = self)
+        dialogo = NuevaActuacion(actuacion=self.__actuaciones[index], parent=self)
         if dialogo.exec_():
             self.verticalLayout.itemAt(index).widget().deleteLater()
             vista = VerActuacion(dialogo.getActuacion(), self)
@@ -421,7 +421,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         message.setIcon(QtGui.QMessageBox.Question)
         message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         message.setDefaultButton(QtGui.QMessageBox.No)
-        message.setText(unicode("¿Desea eliminar la actuación %s?" % unicode(actuacion)))
+        message.setText(u'¿Desea eliminar la actuación {0}?'.format(actuacion))
         ret = message.exec_()
         if ret == QtGui.QMessageBox.Yes:
             item = self.verticalLayout.takeAt(index)
@@ -434,7 +434,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     def cargarActuaciones(self):
         if len(self.__actuaciones) is not 0:
             for actuacion in self.__actuaciones:
-                vista = VerActuacion(actuacion = actuacion, parent = self)
+                vista = VerActuacion(actuacion=actuacion, parent=self)
                 vista.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
                 editar = self.createAction("Editar", self.editarActuacion)
                 editar.setData(vista)
@@ -443,15 +443,15 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
                 vista.addActions([editar, eliminar])
                 self.verticalLayout.addWidget(vista)
     
-    def addActuacion(self, actuacion = None):
+    def addActuacion(self, actuacion=None):
         if actuacion is None:
-            dialogo = NuevaActuacion(parent = self)
+            dialogo = NuevaActuacion(parent=self)
             if dialogo.exec_():
                 actuacion = dialogo.getActuacion()
                 self.addActuacion(actuacion)
             del(dialogo)
         else:
-            vista = VerActuacion(actuacion = actuacion, parent = self)
+            vista = VerActuacion(actuacion=actuacion, parent=self)
             vista.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
             editar = self.createAction("Editar", self.editarActuacion)
             editar.setData(vista)

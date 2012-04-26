@@ -8,7 +8,7 @@ from VerActuacionScreen import Ui_VerActuacion
 
 
 class VerActuacion(QtGui.QWidget, Ui_VerActuacion):
-    def __init__(self, actuacion = None, parent = None):
+    def __init__(self, actuacion=None, parent=None):
         super(VerActuacion, self).__init__(parent)
         self.__actuacion = actuacion
         self.setupUi(self)
@@ -19,7 +19,7 @@ class VerActuacion(QtGui.QWidget, Ui_VerActuacion):
             self.dteFechaProxima.setDateTime(self.__actuacion.getFechaProxima())
             for campo in self.__actuacion.getCampos():
                 label = QtGui.QLabel()
-                label.setText('%s:' % campo.getNombre())
+                label.setText(u'{0}:'.format(campo.getNombre()))
                 lblBox = QtGui.QLabel()
                 lblBox.setText(campo.getValor())
-                self.formLayout.addRow(label,lblBox)
+                self.formLayout.addRow(label, lblBox)

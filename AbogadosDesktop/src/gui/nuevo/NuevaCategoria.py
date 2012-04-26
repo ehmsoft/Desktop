@@ -14,14 +14,14 @@ from gui import Util
 
 
 class NuevaCategoria(QDialog, Ui_NuevaCategoria):
-    def __init__(self, categoria = None, parent = None):
+    def __init__(self, categoria=None, parent=None):
         super(NuevaCategoria, self).__init__(parent)
         self.__dirty = False
         self.__categoria = categoria
         self.setupUi(self)        
         if self.__categoria is not None:
-            self.setWindowTitle(unicode("Editar categoría"))
-            self.groupBox.setTitle(unicode("Datos de la categoría:"))
+            self.setWindowTitle(u"Editar categoría")
+            self.groupBox.setTitle(u"Datos de la categoría:")
             self.txtCategoria.setText(self.__categoria.getDescripcion())
             
         self.txtCategoria.textChanged.connect(self.setDirty)
@@ -50,10 +50,7 @@ class NuevaCategoria(QDialog, Ui_NuevaCategoria):
     
     def accept(self):
         if self.txtCategoria.text().__len__() == 0 :
-            message = QMessageBox()
-            message.setIcon(QMessageBox.Warning)
-            message.setText("La descripcion se considera obligatoria")
-            message.exec_()
+            QMessageBox.warning(self, 'Campo obligatorio', u'La descripción se considera obligatoria')
             self.txtCategoria.setFocus()                 
         else:
             self.__guardar()

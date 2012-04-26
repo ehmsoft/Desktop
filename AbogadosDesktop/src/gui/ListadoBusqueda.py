@@ -21,7 +21,7 @@ class ListadoBusqueda(QtGui.QListWidget):
     classdocs
     '''
 
-    def __init__(self, listado = [], parent = None):
+    def __init__(self, listado=[], parent=None):
         '''
         Constructor
         '''
@@ -51,7 +51,7 @@ class ListadoBusqueda(QtGui.QListWidget):
         self.listadoActual = self.listaOriginal
         if len(listado) != 0:
             if isinstance(listado[0], Proceso) or isinstance(listado[0], Plantilla):
-                self.buscar= CampoBusqueda(self, combo=True)
+                self.buscar = CampoBusqueda(self, combo=True)
             else:
                 self.buscar = CampoBusqueda(self)
         else:
@@ -77,14 +77,14 @@ class ListadoBusqueda(QtGui.QListWidget):
         return self.currentItem().getObjeto()
     
       
-    def __filtro(self, elemento, filtrarCategoria = False):
+    def __filtro(self, elemento, filtrarCategoria=False):
         for key in self.__getKeyWords(elemento, filtrarCategoria):
             if key is not None and self.texto in key.lower():
                 return True
             
         return False
     
-    def __getKeyWords(self, elemento, filtrarCategoria = False):
+    def __getKeyWords(self, elemento, filtrarCategoria=False):
         if isinstance(elemento, Proceso):
             demandante = elemento.getDemandante().getNombre()
             demandado = elemento.getDemandado().getNombre()
@@ -154,11 +154,11 @@ class ListadoBusqueda(QtGui.QListWidget):
         
     def __comboChanged(self, index):
         itemtext = self.buscar.getCombo().itemText(index)
-        if ( itemtext == 'Todas'):
+        if (itemtext == 'Todas'):
             self.listaOriginal = self.listaRespaldo
             self.__click()
         else:
-            self.texto=itemtext.lower()
+            self.texto = itemtext.lower()
             self.listaOriginal = [x for x  in self.listaRespaldo if self.__filtro(x, filtrarCategoria=True)]
             self.listadoActual = self.listaOriginal
             self.__click()
@@ -191,7 +191,7 @@ class ListadoBusqueda(QtGui.QListWidget):
         
     def remove(self):
         objeto = self.currentItem()
-        if QtGui.QMessageBox.question(self,"Eliminar","Desea eliminar "+objeto.text()+" ?",QtGui.QMessageBox.Yes|QtGui.QMessageBox.No) == QtGui.QMessageBox.Yes:
+        if QtGui.QMessageBox.question(self, "Eliminar", u'¿Desea eliminar {0}?'.format(objeto.text()), QtGui.QMessageBox.Yes | QtGui.QMessageBox.No) == QtGui.QMessageBox.Yes:
             self.takeItem(self.currentRow())
             del self.listaOriginal[self.listaOriginal.index(objeto.getObjeto())]
             self.__click()
@@ -200,7 +200,7 @@ class ListadoBusqueda(QtGui.QListWidget):
             return False
         
 class CampoBusqueda(QtGui.QWidget):
-    def __init__(self, parent = None, combo= False):
+    def __init__(self, parent=None, combo=False):
         '''
         Constructor
         '''

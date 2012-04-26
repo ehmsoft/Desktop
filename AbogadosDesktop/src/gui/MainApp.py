@@ -73,7 +73,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         except Exception:
             message = QtGui.QMessageBox()
             message.setIcon(QtGui.QMessageBox.Warning)
-            message.setText("Ocurrió un error al cargar la base de datos")
+            message.setText(u'Ocurrió un error al cargar la base de datos')
             message.exec_()
             
         self.setTrayIcon()
@@ -163,7 +163,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         message.setIcon(QtGui.QMessageBox.Question)
         message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         message.setDefaultButton(QtGui.QMessageBox.No)
-        message.setText(unicode("¿Desea cerrar la aplicación, no obtendrá notificaciones de sus citas?"))
+        message.setText(u'¿Desea cerrar la aplicación, no obtendrá notificaciones de sus citas?')
         ret = message.exec_()
         if ret == QtGui.QMessageBox.Yes:
             event.accept()
@@ -397,7 +397,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                     self.columna1ElementChanged()
                 del actuacionVentana
             else:
-                QtGui.QMessageBox.warning(self, 'Advertencia', unicode('Debe seleccionar un proceso para poder agregar una actuación'))
+                QtGui.QMessageBox.warning(self, 'Advertencia', u'Debe seleccionar un proceso para poder agregar una actuación')
                 
     def columna1ElementChanged(self):
         if hasattr(self.columna1, 'getCentralWidget'):
@@ -751,7 +751,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
     def categoriaEliminarClicked(self):
         categoria = self.columna1.getCentralWidget().getSelectedItem()
         if categoria.getId_categoria() == '1':
-            QtGui.QMessageBox.warning(self, 'No se puede borrar', unicode('La categoría Ninguna es por defecto y no se puede eliminar'))
+            QtGui.QMessageBox.warning(self, 'No se puede borrar', u'La categoría Ninguna es por defecto y no se puede eliminar')
         elif self.columna1.getCentralWidget().remove():
             p = Persistence()
             p.borrarCategoria(categoria)

@@ -7,7 +7,7 @@ from PySide import QtGui
 from VerPlantillaScreen import Ui_VerPlantilla
 
 class VerPlantilla(QtGui.QWidget, Ui_VerPlantilla):
-    def __init__(self, plantilla = None, parent = None):
+    def __init__(self, plantilla=None, parent=None):
         super(VerPlantilla, self).__init__(parent)
         self.__plantilla = plantilla
         self.setupUi(self)
@@ -27,7 +27,7 @@ class VerPlantilla(QtGui.QWidget, Ui_VerPlantilla):
             
             for campo in self.__plantilla.getCampos():
                 label = QtGui.QLabel()
-                label.setText('%s:' % campo.getNombre())
+                label.setText(u'{0}:'.format(campo.getNombre()))
                 lblBox = QtGui.QLabel()
                 lblBox.setText(campo.getValor())
-                self.formLayout.addRow(label,lblBox)
+                self.formLayout.addRow(label, lblBox)

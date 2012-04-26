@@ -8,7 +8,7 @@ from gui.ver.VerJuzgadoScreen import Ui_VerJuzgado
 
 
 class VerJuzgado(QtGui.QWidget, Ui_VerJuzgado):
-    def __init__(self, juzgado = None, parent = None):
+    def __init__(self, juzgado=None, parent=None):
         super(VerJuzgado, self).__init__(parent)
         self.__juzgado = juzgado
         self.setupUi(self)
@@ -21,8 +21,8 @@ class VerJuzgado(QtGui.QWidget, Ui_VerJuzgado):
             self.lblTipo.setText(self.__juzgado.getTipo())
             for campo in self.__juzgado.getCampos():
                 label = QtGui.QLabel()
-                label.setText('%s:' % campo.getNombre())
+                label.setText(u'{0}:'.format(campo.getNombre()))
                 lblBox = QtGui.QLabel()
                 lblBox.setText(campo.getValor())
-                self.formLayout.addRow(label,lblBox)
+                self.formLayout.addRow(label, lblBox)
 

@@ -4,9 +4,8 @@ Created on 29/03/2012
 
 @author: esteban
 '''
-from types import NoneType, ListType
-from Categoria import Categoria
-from types import IntType, NoneType, BooleanType
+from types import  ListType
+from types import IntType
 from persistence.Persistence import Persistence
 
 class Preferencias(object):
@@ -14,21 +13,21 @@ class Preferencias(object):
         Clase Preferencias
         tipo alarma mensaje emerjento, correo electronico,icono notificacion, eliminar citas
     '''
-    TXTPROCESOS = 'Procesos'
-    TXTPLANTILLAS = 'Plantillas'
-    TXTDEMANDANTES = 'Demandantes'
-    TXTDEMANDADOS = 'Demandados'
-    TXTJUZGADOS = 'Juzgados'
-    TXTACTUACIONES = 'Actuaciones'
-    TXTCATEGORIAS = unicode('Categorías')
+    TXTPROCESOS = u'Procesos'
+    TXTPLANTILLAS = u'Plantillas'
+    TXTDEMANDANTES = u'Demandantes'
+    TXTDEMANDADOS = u'Demandados'
+    TXTJUZGADOS = u'Juzgados'
+    TXTACTUACIONES = u'Actuaciones'
+    TXTCATEGORIAS = u'Categorías'
     TXTCAMPOS = 'Campos Personalizados'
     TXTSINCRONIZAR = 'Sincronizar'
     TXTAJUSTES = 'Ajustes'
-    TXTEVENTOS = unicode('Eventos Próximos')
+    TXTEVENTOS = u'Eventos Próximos'
     CANTEVENTOS = 10
     
     def __init__(self):
-        self.p= Persistence()
+        self.p = Persistence()
         preferencias = self.p.consultarPreferencias()
         for llaveD, valor in preferencias.iteritems():
             if llaveD == 10101:
@@ -79,54 +78,54 @@ class Preferencias(object):
     def setListaMainApp(self, listaMainApp):
         if isinstance(listaMainApp, ListType):
             self.__listaMainApp = listaMainApp
-            self.p.actualizarPreferencia(id = 10101 ,valor = listaMainApp)
+            self.p.actualizarPreferencia(id=10101 , valor=listaMainApp)
         else:
             raise TypeError('Tipo de dato no admitido')
     def setCantidadEventos(self, cantidadEventos):
         if isinstance(cantidadEventos, IntType):
             self.__cantidadEventos = cantidadEventos
-            self.p.actualizarPreferencia(id = 10501, valor= cantidadEventos)
+            self.p.actualizarPreferencia(id=10501, valor=cantidadEventos)
         else:
             raise TypeError('Tipo de dato no admitido')
     def setCorreo(self, correo):
         if isinstance(correo, basestring):
             self.__correo = correo
-            self.p.actualizarPreferencia(id = 10402, valor = correo)
+            self.p.actualizarPreferencia(id=10402, valor=correo)
         else:
             raise TypeError('Tipo de dato no admitido')
     def setTipoAlarma(self, tipoAlarma):
         if isinstance(tipoAlarma, IntType):
             self.__tipoAlarma = tipoAlarma
-            self.p.actualizarPreferencia(id= 10601, valor= tipoAlarma)
+            self.p.actualizarPreferencia(id=10601, valor=tipoAlarma)
         else:
             raise TypeError('Tipo de dato no admitido')
-    def setCantCopiaSeg(self,cantCopiaSeg):
+    def setCantCopiaSeg(self, cantCopiaSeg):
         if isinstance(cantCopiaSeg, IntType):
             self.__cantCopiaSeg = cantCopiaSeg
-            self.p.actualizarPreferencia(id= 10701, valor= cantCopiaSeg)
+            self.p.actualizarPreferencia(id=10701, valor=cantCopiaSeg)
         else:
             raise TypeError('Tipo de dato no admitido')
-    def setLlave(self,llave):
+    def setLlave(self, llave):
         if isinstance(llave, IntType):
             self.__llave = llave
-            self.p.actualizarPreferencia(id= 998, valor = llave)
+            self.p.actualizarPreferencia(id=998, valor=llave)
             
         else:
             raise TypeError('Tipo de dato no admitido')
     def setVersion(self, version):
         if isinstance(id, IntType):
             self.__version = version
-            self.p.actualizarPreferencia(id = 999, valor = version)
+            self.p.actualizarPreferencia(id=999, valor=version)
         else:
             raise TypeError('Tipo de dato no admitido')
     def setUltimaSinc(self, ultimaSinc):
         if isinstance(ultimaSinc, IntType):
             self.__ultimaSinc = ultimaSinc
-            self.p.actualizarPreferencia(id = 997, valor =ultimaSinc)
+            self.p.actualizarPreferencia(id=997, valor=ultimaSinc)
         else:
             raise TypeError('Tipo de dato no admitido')                   
                              
-    def borrarPreferencia(self,id_preferencia):
+    def borrarPreferencia(self, id_preferencia):
         p = Persistence()
         if id_preferencia == 10101:
             self.__listaMainApp = '20111,20105,20115,20114,20124,20123,20101,20107,20102,20108,20109'
@@ -146,7 +145,7 @@ class Preferencias(object):
         #consultar Preferencias: Cantidad Maxima Copias de Seguridad 
         elif id_preferencia == 10701:
             self.__cantCopiaSeg = 5
-            p.borrarPreferencia(id_preferencia= 10701) 
+            p.borrarPreferencia(id_preferencia=10701) 
         #consultar Preferencias: llave 
         elif id_preferencia == 998:
             self.__llave = 0000
@@ -172,36 +171,36 @@ def borrarPreferencias(self):
         self.__version = 1
         self.__ultimaSinc = 0000
         
-def actualizarPrefrencia(self,id_preferencia,valor):
+def actualizarPrefrencia(self, id_preferencia, valor):
         p = Persistence()
         if id_preferencia == 10101:
-            p.actualizarPreferencia(id= id_preferencia, valor= valor)
+            p.actualizarPreferencia(id=id_preferencia, valor=valor)
             self.__listaMainApp = valor
         #consultar Preferencias:  correo 
         elif id_preferencia == 10402:
-            p.actualizarPreferencia(id= id_preferencia, valor= valor)
+            p.actualizarPreferencia(id=id_preferencia, valor=valor)
             self.__correo = valor              
         #consultar Preferencias: Cantidad Eventos Proximos 
         elif id_preferencia == 10501:
-            p.actualizarPreferencia(id= id_preferencia, valor= valor)
+            p.actualizarPreferencia(id=id_preferencia, valor=valor)
             self.__cantidadEventos = valor
         #consultar Preferencias: Tipo Alarma 0 ninguni, 1 correo y alerta, 2 solo correo, 3 solo alerta
         elif id_preferencia == 10601:
-            p.actualizarPreferencia(id= id_preferencia, valor= valor)
+            p.actualizarPreferencia(id=id_preferencia, valor=valor)
             self.__tipoAlarma = valor
         #consultar Preferencias: Cantidad Maxima Copias de Seguridad 
         elif id_preferencia == 10701:
-            p.actualizarPreferencia(id= id_preferencia, valor= valor)
+            p.actualizarPreferencia(id=id_preferencia, valor=valor)
             self.__cantCopiaSeg = valor
         #consultar Preferencias: llave 
         elif id_preferencia == 998:
-            p.actualizarPreferencia(id= id_preferencia, valor= valor)
+            p.actualizarPreferencia(id=id_preferencia, valor=valor)
             self.__llave = valor
         #consultar Preferencias: Version 
         elif id_preferencia == 999:
-            p.actualizarPreferencia(id= id_preferencia, valor= valor)
+            p.actualizarPreferencia(id=id_preferencia, valor=valor)
             self.__version = valor
         #consultar Preferencias: Ultima sincronizacion 
         elif id_preferencia == 997:
-            p.actualizarPreferencia(id= id_preferencia, valor= valor)
+            p.actualizarPreferencia(id=id_preferencia, valor=valor)
             self.__ultimaSinc = 0000
