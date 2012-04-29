@@ -21,8 +21,8 @@ class SyncManager(object):
     '''
     
 
-    def __init__(self):
-        self.__conMgr = ConnectionManager()
+    def __init__(self,carpeta=None):
+        self.__conMgr = ConnectionManager(ruta=carpeta)
         
     def sincronizarLocal(self, archivo_movil):
         try:

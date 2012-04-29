@@ -4,7 +4,7 @@ Created on 06/08/2011
 @author: elfotografo007
 '''
 import sqlite3
-from os.path import exists
+from os.path import exists, join
 
 class ConnectionManager(object):
     '''
@@ -12,9 +12,13 @@ class ConnectionManager(object):
     '''
 
     
-    def __init__(self):
-        self.__DBNAME = '../persistence/database.ehm'
-        
+    def __init__(self, ruta=None):
+        if ruta is None:
+            self.__DBNAME = '../persistence/database.ehm'
+        else:
+            self.__DBNAME = join(ruta, 'database.ehm')
+        print self.__DBNAME
+            
     def prepararBD(self):
         if not exists(self.__DBNAME):
             self.__crearBD()

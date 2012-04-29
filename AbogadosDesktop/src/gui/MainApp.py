@@ -7,6 +7,8 @@ Created on 30/01/2012
 '''
 import shutil
 import platform
+from os.path import exists, join
+from os import mkdir
 import PySide
 from PySide import QtCore, QtGui
 from MainAppScreen import Ui_mainApp
@@ -61,21 +63,23 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
     TXTAJUSTES = Preferencias.TXTAJUSTES
     TXTEVENTOS = Preferencias.TXTEVENTOS
     CANTEVENTOS = Preferencias.CANTEVENTOS
+    CARPETAEHM = join(QtGui.QDesktopServices.storageLocation(QtGui.QDesktopServices.DocumentsLocation),'ehmSoftware')
     
     def __init__(self, parent=None):
         super(MainApp, self).__init__(parent)
         self.last = None
         self.setupUi(self)
-        self.__gestor = GestorCitas(self)
-        self.__gestor.actualizarCitas()
         try:
-            self.__persistence = Persistence()
+            self.verificarCarpetaDocumentos()
+            self.__persistence = Persistence(MainApp.CARPETAEHM)
         except Exception:
             message = QtGui.QMessageBox()
             message.setIcon(QtGui.QMessageBox.Warning)
             message.setText(u'Ocurrió un error al cargar la base de datos')
             message.exec_()
             
+        self.__gestor = GestorCitas(self)
+        self.__gestor.actualizarCitas()
         self.setTrayIcon()
         #Crear menu izquierdo
         self.lista = [MainApp.TXTEVENTOS, MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES, MainApp.TXTCATEGORIAS, MainApp.TXTCAMPOS, MainApp.TXTSINCRONIZAR, MainApp.TXTAJUSTES]
@@ -312,14 +316,14 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         elif item.text() == MainApp.TXTSINCRONIZAR:   
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
-                self.columna1 = ColumnaSync()
+                self.columna1 = ColumnaSync(carpeta=MainApp.CARPETAEHM)
                 #self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
             else:
                 #Borrar la segunda columna y poner una nueva
                 self.columna1.hide()
-                self.columna1 = ColumnaSync()
+                self.columna1 = ColumnaSync(carpeta=MainApp.CARPETAEHM)
                 #self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
@@ -568,8 +572,6 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             self.connect(listado, QtCore.SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
             self.connect(listado, QtCore.SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
             self.connect(columna, QtCore.SIGNAL('clicked()'), self.columnaCamposAgregarClicked)    
-
-            
 
     def columnaCamposElementChanged(self):
         if hasattr(self.columna1, 'count'):
@@ -1085,6 +1087,10 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             action.setCheckable(True)
         return action
     
+    def verificarCarpetaDocumentos(self): 
+        if not exists(MainApp.CARPETAEHM):
+            mkdir(MainApp.CARPETAEHM)
+        
 import sys
 translator = MyTranslator()
 app = QtGui.QApplication(sys.argv)
