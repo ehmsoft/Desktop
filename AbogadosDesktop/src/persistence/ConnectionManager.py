@@ -17,7 +17,6 @@ class ConnectionManager(object):
             self.__DBNAME = '../persistence/database.ehm'
         else:
             self.__DBNAME = join(ruta, 'database.ehm')
-        print self.__DBNAME
             
     def prepararBD(self):
         if not exists(self.__DBNAME):

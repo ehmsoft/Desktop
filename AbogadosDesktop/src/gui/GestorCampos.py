@@ -105,7 +105,7 @@ class GestorCampos(object):
         campo = self.__campos[index - self.__count]
         dialogo = NuevoCampo(self.__constanteEdicion, campo, self.__parent)
         if dialogo.exec_():
-            label.setText(unicode("%s:" % campo.getNombre()))
+            label.setText(u"%s:" % campo.getNombre())
             if campo.getLongitudMax() is not 0:
                 txtField.setMaxLength(campo.getLongitudMax())
             else:

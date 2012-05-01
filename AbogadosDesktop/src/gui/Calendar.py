@@ -111,7 +111,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
             message.setIcon(QtGui.QMessageBox.Question)
             message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
             message.setDefaultButton(QtGui.QMessageBox.No)
-            message.setText(unicode("¿Desea eliminar todas las citas vencidas?"))
+            message.setText(u"¿Desea eliminar todas las citas vencidas?")
             ret = message.exec_()
             if ret == QtGui.QMessageBox.Yes:
                 p = Persistence()
@@ -132,7 +132,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         message.setIcon(QtGui.QMessageBox.Question)
         message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         message.setDefaultButton(QtGui.QMessageBox.No)
-        message.setText(unicode("¿Desea eliminar la cita?"))
+        message.setText(u"¿Desea eliminar la cita?")
         ret = message.exec_()
         if ret == QtGui.QMessageBox.Yes:
             if self.tabWidget.currentIndex() == 0:
