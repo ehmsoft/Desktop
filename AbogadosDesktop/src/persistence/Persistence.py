@@ -25,8 +25,8 @@ class Persistence(object):
     __metaclass__ = Singleton
 
 
-    def __init__(self):
-        self.__conMgr = ConnectionManager()
+    def __init__(self, ruta=None):
+        self.__conMgr = ConnectionManager(ruta)
     
     #Metodos de Guardado
     def actualizarPersona(self, persona):

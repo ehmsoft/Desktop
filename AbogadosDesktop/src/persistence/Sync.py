@@ -12,9 +12,9 @@ class Sync(object):
     '''
 
 
-    def __init__(self):
-        self.syncMgr = SyncManager()
-        self.usbSync = USBSync()
+    def __init__(self, carpeta=None):
+        self.syncMgr = SyncManager(carpeta=carpeta)
+        self.usbSync = USBSync(local=carpeta)
         
     def syncViaUSB(self):
         mobilePath = self.usbSync.getLocalMobilePath()

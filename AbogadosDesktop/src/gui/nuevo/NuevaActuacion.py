@@ -37,8 +37,8 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         campos = []
                 
         if actuacion is not None:
-            self.setWindowTitle(unicode("Editar actuación"))
-            self.groupBox.setTitle(unicode("Datos de la actuación:"))
+            self.setWindowTitle(u'Editar actuación')
+            self.groupBox.setTitle(u'Datos de la actuación:')
             self.__juzgado = actuacion.getJuzgado()
             campos = actuacion.getCampos()
             self.txtDescripcion.setText(unicode(actuacion.getDescripcion()))
@@ -58,7 +58,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         else:
             self.dteFecha.setDateTime(datetime.today())
             self.dteFechaProxima.setDateTime(datetime.today())
-            self.lblJuzgado.setText(unicode("vacío"))
+            self.lblJuzgado.setText(u'vacío')
             self.__cita = None
             
         self.__dialogo = DialogoAuxiliar(self)
@@ -110,7 +110,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             message.setIcon(QtGui.QMessageBox.Question)
             message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
             message.setDefaultButton(QtGui.QMessageBox.No)
-            message.setText(unicode("¿Desea eliminar la cita?"))
+            message.setText(u'¿Desea eliminar la cita?')
             if message.exec_() == QtGui.QMessageBox.Yes:
                 p = Persistence()
                 p.borrarCitaCalendario(self.__cita)
@@ -153,13 +153,13 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         if len(self.txtDescripcion.text()) is 0:
             message = QtGui.QMessageBox()
             message.setIcon(QtGui.QMessageBox.Warning)
-            message.setText("La descripción se considera obligatoria")
+            message.setText(u"La descripción se considera obligatoria")
             message.exec_()
             self.txtDescripcion.setFocus()
         elif self.__juzgado is None or self.__juzgado.getId_juzgado() is "1":
             message = QtGui.QMessageBox()
             message.setIcon(QtGui.QMessageBox.Warning)
-            message.setText("El juzgado no se permite vacío")
+            message.setText(u"El juzgado no se permite vacío")
             message.exec_()
             self.txtDescripcion.setFocus()
         elif self.__gestor.organizarCampos():
@@ -185,7 +185,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
                     for campo in camposNuevos:
                         p.guardarCampoActuacion(campo, self.__actuacion.getId_actuacion())
                 except Exception, e:
-                    print "__guardar actuación -> " % e.args
+                    print "guardar actuación -> " % e.args
             self.__actuacion.setDescripcion(descripcion)
             self.__actuacion.setFecha(fecha)
             self.__actuacion.setFechaProxima(fechaProxima)

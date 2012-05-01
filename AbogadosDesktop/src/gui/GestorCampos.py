@@ -46,7 +46,7 @@ class GestorCampos(object):
         else:
             return True        
         
-    def organizarCampos(self, validar = True):
+    def organizarCampos(self, validar=True):
         count = self.__count
         for campo in self.__campos:
             if campo is not None:
@@ -61,12 +61,12 @@ class GestorCampos(object):
                     item.setFocus()
                     return False
                 elif validar and campo.getLongitudMax() is not 0 and len(item.text()) > campo.getLongitudMax():
-                    message.setText(unicode("La longitud máxima del campo %s es de %i caracteres" % (campo.getNombre(), campo.getLongitudMax())))
+                    message.setText(u'La longitud máxima del campo {0} es de {1} caracteres'.format(campo.getNombre(), campo.getLongitudMax()))
                     message.exec_()
                     return False
                     item.setFocus()
                 elif validar and campo.getLongitudMin() is not 0 and len(item.text()) < campo.getLongitudMin():
-                    message.setText(unicode("La longitud mínima del campo %s es de %i caracteres" % (campo.getNombre(), campo.getLongitudMin())))
+                    message.setText(u'La longitud mínima del campo {0} es de {1} caracteres'.format(campo.getNombre(), campo.getLongitudMin()))
                     message.exec_()
                     return False
                     item.setFocus()
@@ -105,15 +105,15 @@ class GestorCampos(object):
         campo = self.__campos[index - self.__count]
         dialogo = NuevoCampo(self.__constanteEdicion, campo, self.__parent)
         if dialogo.exec_():
-            label.setText(unicode("%s:" % campo.getNombre()))
+            label.setText(u"%s:" % campo.getNombre())
             if campo.getLongitudMax() is not 0:
                 txtField.setMaxLength(campo.getLongitudMax())
             else:
                 txtField.setMaxLength(32767)
     
-    def addCampo(self, campo = None):
+    def addCampo(self, campo=None):
         if campo is None:
-            dialogo = ListadoDialogo(tipo = self.__constanteCreacion, parent = self.__parent)
+            dialogo = ListadoDialogo(tipo=self.__constanteCreacion, parent=self.__parent)
             if dialogo.exec_():
                 self.addCampo(dialogo.getSelected())
         else:
@@ -169,7 +169,7 @@ class GestorCampos(object):
             self.__formLayout.addRow(label, txtBox)
             txtBox.textEdited.connect(self.__parent.setDirty)   
             
-    def __createAction(self, text, slot = None):
+    def __createAction(self, text, slot=None):
         action = QtGui.QAction(text, self.__formLayout)
         if slot is not None:
             self.__formLayout.connect(action, QtCore.SIGNAL("triggered()"), slot)

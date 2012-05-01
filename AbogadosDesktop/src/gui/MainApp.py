@@ -7,6 +7,8 @@ Created on 30/01/2012
 '''
 import shutil
 import platform
+from os.path import exists, join
+from os import mkdir
 import PySide
 from PySide import QtCore, QtGui
 from MainAppScreen import Ui_mainApp
@@ -61,21 +63,23 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
     TXTAJUSTES = Preferencias.TXTAJUSTES
     TXTEVENTOS = Preferencias.TXTEVENTOS
     CANTEVENTOS = Preferencias.CANTEVENTOS
+    CARPETAEHM = join(QtGui.QDesktopServices.storageLocation(QtGui.QDesktopServices.DocumentsLocation),'ehmSoftware')
     
     def __init__(self, parent=None):
         super(MainApp, self).__init__(parent)
         self.last = None
         self.setupUi(self)
-        self.__gestor = GestorCitas(self)
-        self.__gestor.actualizarCitas()
         try:
-            self.__persistence = Persistence()
+            self.verificarCarpetaDocumentos()
+            self.__persistence = Persistence(MainApp.CARPETAEHM)
         except Exception:
             message = QtGui.QMessageBox()
             message.setIcon(QtGui.QMessageBox.Warning)
-            message.setText("Ocurrió un error al cargar la base de datos")
+            message.setText(u'Ocurrió un error al cargar la base de datos')
             message.exec_()
             
+        self.__gestor = GestorCitas(self)
+        self.__gestor.actualizarCitas()
         self.setTrayIcon()
         #Crear menu izquierdo
         self.lista = [MainApp.TXTEVENTOS, MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES, MainApp.TXTCATEGORIAS, MainApp.TXTCAMPOS, MainApp.TXTSINCRONIZAR, MainApp.TXTAJUSTES]
@@ -163,7 +167,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         message.setIcon(QtGui.QMessageBox.Question)
         message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         message.setDefaultButton(QtGui.QMessageBox.No)
-        message.setText(unicode("¿Desea cerrar la aplicación, no obtendrá notificaciones de sus citas?"))
+        message.setText(u'¿Desea cerrar la aplicación, no obtendrá notificaciones de sus citas?')
         ret = message.exec_()
         if ret == QtGui.QMessageBox.Yes:
             event.accept()
@@ -312,14 +316,14 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         elif item.text() == MainApp.TXTSINCRONIZAR:   
             if self.centralSplitter.count() == 1:
                 #Agregar la segunda columna si no existe
-                self.columna1 = ColumnaSync()
+                self.columna1 = ColumnaSync(carpeta=MainApp.CARPETAEHM)
                 #self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
             else:
                 #Borrar la segunda columna y poner una nueva
                 self.columna1.hide()
-                self.columna1 = ColumnaSync()
+                self.columna1 = ColumnaSync(carpeta=MainApp.CARPETAEHM)
                 #self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
@@ -397,7 +401,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                     self.columna1ElementChanged()
                 del actuacionVentana
             else:
-                QtGui.QMessageBox.warning(self, 'Advertencia', unicode('Debe seleccionar un proceso para poder agregar una actuación'))
+                QtGui.QMessageBox.warning(self, 'Advertencia', u'Debe seleccionar un proceso para poder agregar una actuación')
                 
     def columna1ElementChanged(self):
         if hasattr(self.columna1, 'getCentralWidget'):
@@ -568,8 +572,6 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             self.connect(listado, QtCore.SIGNAL('itemSelectionChanged()'), self.columnaCamposElementChanged)
             self.connect(listado, QtCore.SIGNAL('customContextMenuRequested(QPoint)'), self.camposContextMenu)
             self.connect(columna, QtCore.SIGNAL('clicked()'), self.columnaCamposAgregarClicked)    
-
-            
 
     def columnaCamposElementChanged(self):
         if hasattr(self.columna1, 'count'):
@@ -751,7 +753,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
     def categoriaEliminarClicked(self):
         categoria = self.columna1.getCentralWidget().getSelectedItem()
         if categoria.getId_categoria() == '1':
-            QtGui.QMessageBox.warning(self, 'No se puede borrar', unicode('La categoría Ninguna es por defecto y no se puede eliminar'))
+            QtGui.QMessageBox.warning(self, 'No se puede borrar', u'La categoría Ninguna es por defecto y no se puede eliminar')
         elif self.columna1.getCentralWidget().remove():
             p = Persistence()
             p.borrarCategoria(categoria)
@@ -1085,6 +1087,10 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             action.setCheckable(True)
         return action
     
+    def verificarCarpetaDocumentos(self): 
+        if not exists(MainApp.CARPETAEHM):
+            mkdir(MainApp.CARPETAEHM)
+        
 import sys
 translator = MyTranslator()
 app = QtGui.QApplication(sys.argv)

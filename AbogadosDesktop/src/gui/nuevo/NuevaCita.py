@@ -57,7 +57,7 @@ class NuevaCita(QtGui.QDialog, Ui_Cita):
             return ant * 60
         elif escala == 'horas':
             return ant * 3600
-        elif escala == unicode('días'):
+        elif escala == u'días':
             return ant * 86400
         else:
             raise TypeError('Error en valores')
@@ -68,7 +68,7 @@ class NuevaCita(QtGui.QDialog, Ui_Cita):
         elif ant < 86400:
             return (ant / 3600, 'horas')
         else:
-            return (ant / 86400, unicode('días'))
+            return (ant / 86400, u'días')
         
     def guardar(self):
         fecha = self.fecha.dateTime().toPython()

@@ -21,8 +21,8 @@ class SyncManager(object):
     '''
     
 
-    def __init__(self):
-        self.__conMgr = ConnectionManager()
+    def __init__(self,carpeta=None):
+        self.__conMgr = ConnectionManager(ruta=carpeta)
         
     def sincronizarLocal(self, archivo_movil):
         try:
@@ -189,13 +189,15 @@ class SyncManager(object):
                 cLocal.execute('''INSERT INTO atributos_plantilla(id_atributo, id_plantilla, valor, nuevo) VALUES (?,?,?,0)''', (id_atributo, id_plantilla, valor,))
             
             #Seccion Citas
-            cMovil.execute('''SELECT  id_cita, uid,fecha as "fecha [timestamp]", anticipacion,id_actuacion FROM citas WHERE nuevo = 1 AND eliminado = 0''')
+            cMovil.execute('''SELECT  id_cita, uid,fecha as "fecha [timestamp]", descripcion, anticipacion, alarma, id_actuacion FROM citas WHERE nuevo = 1 AND eliminado = 0''')
             for row in cMovil:
                 id_actuacion = str(row['id_actuacion'])
                 fecha = row['fecha']
+                descripcion = row['descripcion']
                 anticipacion = row['anticipacion']
                 uid = row['uid']
-                cLocal.execute('''INSERT INTO citas (id_cita,uid, fecha,anticipacion,id_actuacion, nuevo) VALUES( NULL,?,?,?,?,0)''', (uid,fecha,anticipacion,id_actuacion))
+                alarma = row['alarma']
+                cLocal.execute('''INSERT INTO citas (id_cita,uid, fecha,descripcion,anticipacion,alarma,id_actuacion, nuevo) VALUES( NULL,?,?,?,?,?,?,0)''', (uid,fecha,descripcion,anticipacion,alarma,id_actuacion))
                                
             #Bajar Flag +n -me
             cMovil.execute('''UPDATE demandantes SET nuevo = 0 WHERE nuevo = 1 AND modificado = 0 AND eliminado = 0''')     
@@ -622,14 +624,16 @@ class SyncManager(object):
                     raise Exception('registro No encontrado')
                 
             #Seccion Citas
-            cMovil.execute('''SELECT  fecha_mod as "fecha_mod [timestamp]",id_cita, uid,fecha as "fecha [timestamp]", anticipacion,id_actuacion FROM citas WHERE modificado = 1''')
+            cMovil.execute('''SELECT  fecha_mod as "fecha_mod [timestamp]",id_cita, uid,fecha as "fecha [timestamp]",descripcion, anticipacion,alarma, id_actuacion FROM citas WHERE modificado = 1''')
             listaCMovil = cMovil.fetchall()
             for row in listaCMovil:
                 fecha_mod = row['fecha_mod']
                 id_actuacion = str(row['id_actuacion'])
                 id_cita = str(row['id_cita'])
                 fecha = row['fecha']
+                descripcion = row['descripcion']
                 anticipacion = row['anticipacion']
+                alarma = row['alarma']
                 uid = row['uid']
                 cLocal.execute('''SELECT fecha_mod as "fecha_mod [timestamp]", modificado FROM citas WHERE id_cita = ? ''', (id_cita,))
                 row = cLocal.fetchone()
@@ -638,9 +642,9 @@ class SyncManager(object):
                     fecha_modLocal = row['fecha_mod']
                     if modificado:
                         if fecha_mod > fecha_modLocal:
-                            cLocal.execute('''UPDATE citas SET uid=?, fecha=?,anticipacion=?,id_actuacion=?,WHERE id_cita=?''', (uid,fecha,anticipacion,id_actuacion,id_cita,))
+                            cLocal.execute('''UPDATE citas SET uid=?, fecha=?,descripcion=?,anticipacion=?,alarma=?,id_actuacion=? WHERE id_cita=?''', (uid,fecha,descripcion,anticipacion,alarma,id_actuacion,id_cita,))
                     else:
-                        cLocal.execute('''UPDATE citas SET uid=?, fecha=?,anticipacion=?,id_actuacion=?,WHERE id_cita=?''', (uid,fecha,anticipacion,id_actuacion,id_cita,))
+                        cLocal.execute('''UPDATE citas SET uid=?, fecha=?,descripcion=?,anticipacion=?,alarma=?,id_actuacion=? WHERE id_cita=?''', (uid,fecha,descripcion,anticipacion,alarma,id_actuacion,id_cita,))
                 else:
                     raise Exception('registro No encontrado')
                 
@@ -820,14 +824,16 @@ class SyncManager(object):
                 cMovil.execute('''INSERT INTO atributos_plantilla(id_atributo_plantilla, id_atributo, id_plantilla, valor, nuevo) VALUES (?,?,?,?,0)''', (id_atributo_plantilla, id_atributo, id_plantilla, valor,))
             
             #Copiar Citas
-            cLocal.execute('''SELECT  id_cita, uid,fecha as "fecha [timestamp]", anticipacion,id_actuacion FROM citas WHERE id_cita <> 0''')
+            cLocal.execute('''SELECT  id_cita, uid,fecha as "fecha [timestamp]",descripcion, anticipacion,alarma,id_actuacion FROM citas WHERE id_cita <> 0''')
             for row in cLocal:
                 id_actuacion = str(row['id_actuacion'])
                 id_cita = str(row['id_cita'])
                 fecha = row['fecha']
+                descripcion= row['descripcion']
                 anticipacion = row['anticipacion']
+                alarma = row['alarma']
                 uid = row['uid']
-                cMovil.execute('''INSERT INTO citas (id_cita,uid, fecha,anticipacion,id_actuacion, nuevo) VALUES( ?,?,?,?,?,0)''', (id_cita,uid,fecha,anticipacion,id_actuacion))
+                cMovil.execute('''INSERT INTO citas (id_cita,uid, fecha,descripcion,anticipacion,alarma,id_actuacion, nuevo) VALUES( ?,?,?,?,?,?,?,0)''', (id_cita,uid,fecha,descripcion,anticipacion,alarma,id_actuacion))
             
             #Bajar Flags de la base de datos de escritorio
             cLocal.execute('''UPDATE demandantes SET nuevo = 0, modificado = 0''')     
@@ -1016,13 +1022,16 @@ class SyncManager(object):
                     valor = row['valor']
                     cLocal.execute('''INSERT INTO atributos_plantilla(id_atributo, id_plantilla, valor, nuevo) VALUES (?,?,?,0)''', (id_atributo, id_plantilla, valor,))
                 
-                cMovil.execute('''SELECT id_cita, uid,fecha as "fecha [timestamp]", anticipacion,id_actuacion FROM citas''')
+                #Seccion citas
+                cMovil.execute('''SELECT id_cita, uid,fecha as "fecha [timestamp]",descripcion,anticipacion,alarma,id_actuacion FROM citas''')
                 for row in cMovil:
                     id_actuacion = str(row['id_actuacion'])
                     fecha = row['fecha']
+                    descripcion = row['descripcion']
                     anticipacion = row['anticipacion']
+                    alarma = row['alarma']
                     uid = row['uid']
-                    cLocal.execute('''INSERT INTO citas (id_cita,uid, fecha,anticipacion,id_actuacion, nuevo) VALUES( NULL,?,?,?,?,0)''', (uid,fecha,anticipacion,id_actuacion))
+                    cLocal.execute('''INSERT INTO citas (id_cita,uid, fecha,descripcion,anticipacion,alarma,id_actuacion, nuevo) VALUES( NULL,?,?,?,?,?,?,0)''', (uid,fecha,descripcion,anticipacion,alarma,id_actuacion))
                 ret = False
                 print 'Copiado desde el movil al Escritorio'  
                 connMovil.commit()

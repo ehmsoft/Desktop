@@ -81,7 +81,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         actionEliminar.setToolTip('Elimina definitivamente la cita')
         self.connect(actionEliminar, QtCore.SIGNAL('triggered()'), self.__eliminar)
         actionEditar = QtGui.QAction('Editar', self)
-        actionEditar.setToolTip('Lanza la ventana de edición de la cita seleccionada')
+        actionEditar.setToolTip(u'Lanza la ventana de edición de la cita seleccionada')
         self.connect(actionEditar, QtCore.SIGNAL('triggered()'), self.__editar)
         self.btnEliminar.clicked.connect(self.__clickEliminar)
         
@@ -98,7 +98,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
             message.setIcon(QtGui.QMessageBox.Question)
             message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
             message.setDefaultButton(QtGui.QMessageBox.No)
-            message.setText(unicode("¿Desea eliminar las citas seleccionadas?"))
+            message.setText(u'¿Desea eliminar las citas seleccionadas?')
             ret = message.exec_()
             if ret == QtGui.QMessageBox.Yes:
                 p = Persistence()
@@ -111,7 +111,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
             message.setIcon(QtGui.QMessageBox.Question)
             message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
             message.setDefaultButton(QtGui.QMessageBox.No)
-            message.setText(unicode("¿Desea eliminar todas las citas vencidas?"))
+            message.setText(u"¿Desea eliminar todas las citas vencidas?")
             ret = message.exec_()
             if ret == QtGui.QMessageBox.Yes:
                 p = Persistence()
@@ -132,7 +132,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         message.setIcon(QtGui.QMessageBox.Question)
         message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         message.setDefaultButton(QtGui.QMessageBox.No)
-        message.setText(unicode("¿Desea eliminar la cita?"))
+        message.setText(u"¿Desea eliminar la cita?")
         ret = message.exec_()
         if ret == QtGui.QMessageBox.Yes:
             if self.tabWidget.currentIndex() == 0:

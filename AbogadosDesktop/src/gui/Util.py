@@ -7,7 +7,7 @@ def reject(dialog, dirty):
         message.setIcon(QtGui.QMessageBox.Question)
         message.setStandardButtons(QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         message.setDefaultButton(QtGui.QMessageBox.No)
-        message.setText(unicode("¿Desea descartar los cambios?"))
+        message.setText(u"¿Desea descartar los cambios?")
         ret = message.exec_()
         if ret == QtGui.QMessageBox.Yes:
             return QtGui.QDialog.reject(dialog)

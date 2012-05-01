@@ -11,9 +11,9 @@ from persistence.Sync import Sync
 from persistence.USBSync import NoDeviceError
 
 class ColumnaSync(QWidget, Ui_ColumnaSync):
-    def __init__(self,parent = None):
+    def __init__(self, parent=None, carpeta=None):
         super(ColumnaSync, self).__init__(parent)
-        self.syncObject = Sync()
+        self.syncObject = Sync(carpeta=carpeta)
         self.setupUi(self)
         self.connect(self.btnSincronizar, SIGNAL("clicked()"), self.sincronizar)
         
@@ -21,10 +21,10 @@ class ColumnaSync(QWidget, Ui_ColumnaSync):
         try:
             self.syncObject.syncViaUSB()
             dialogoOk = QMessageBox()
-            dialogoOk.setText(unicode("Sincronización Finalizada con éxito!"))
+            dialogoOk.setText(u'Sincronización Finalizada con éxito!')
             dialogoOk.exec_()
         except NoDeviceError:
-            QMessageBox.warning(self, "Error", unicode("El dispositivo no fue encontrado, verifique que está conectado mediante USB y el modo Unidad USB está activado.\nSi el problema persiste solicite ayuda en soporte@ehmsoft.com"))
+            QMessageBox.warning(self, "Error", u'El dispositivo no fue encontrado, verifique que está conectado mediante USB y el modo Unidad USB está activado.\nSi el problema persiste solicite ayuda en soporte@ehmsoft.com')
         
         #TODO: Capturar excepciones
         

@@ -7,7 +7,7 @@ from PySide import QtGui
 from gui.ver.VerPersonaScreen import Ui_VerPersona
 
 class VerPersona(QtGui.QWidget, Ui_VerPersona):
-    def __init__(self, persona = None, parent = None):
+    def __init__(self, persona=None, parent=None):
         super(VerPersona, self).__init__(parent)
         self.__persona = persona
         self.setupUi(self)
@@ -22,10 +22,10 @@ class VerPersona(QtGui.QWidget, Ui_VerPersona):
             self.lblNotas.setText(self.__persona.getNotas())
             for campo in self.__persona.getCampos():
                 label = QtGui.QLabel()
-                label.setText('%s:' % campo.getNombre())
+                label.setText(u'{0}:'.format(campo.getNombre()))
                 lblBox = QtGui.QLabel()
                 lblBox.setText(campo.getValor())
-                self.formLayout.addRow(label,lblBox)
+                self.formLayout.addRow(label, lblBox)
             
             if self.__tipo == 1:
                 self.setWindowTitle('Ver Demandante')

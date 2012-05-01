@@ -9,7 +9,7 @@ from VerProcesoScreen import Ui_VerProceso
 from VerActuacion import VerActuacion
 
 class VerProceso(QtGui.QWidget, Ui_VerProceso):
-    def __init__(self, proceso = None, parent = None):
+    def __init__(self, proceso=None, parent=None):
         super(VerProceso, self).__init__(parent)
         self.__proceso = proceso
         self.setupUi(self)
@@ -29,21 +29,21 @@ class VerProceso(QtGui.QWidget, Ui_VerProceso):
             
             for campo in self.__proceso.getCampos():
                 label = QtGui.QLabel()
-                label.setText('%s:' % campo.getNombre())
+                label.setText(u'{0}:'.format(campo.getNombre()))
                 lblBox = QtGui.QLabel()
                 lblBox.setText(campo.getValor())
-                self.formLayout.addRow(label,lblBox)
+                self.formLayout.addRow(label, lblBox)
             actuaciones = self.__proceso.getActuaciones()
             if len(actuaciones) is not 0:
                 vbox = QtGui.QVBoxLayout()
                 for actuacion in actuaciones:
                     vbox.addWidget(VerActuacion(actuacion))
                 
-                vbox.setContentsMargins(1,1,1,1)
+                vbox.setContentsMargins(1, 1, 1, 1)
                 vbox.setSpacing(1)
                 scroll = QtGui.QScrollArea()
                 widgetActuaciones = QtGui.QWidget()
                 widgetActuaciones.setLayout(vbox)
-                widgetActuaciones.setContentsMargins(0,0,0,0)
+                widgetActuaciones.setContentsMargins(0, 0, 0, 0)
                 scroll.setWidget(widgetActuaciones)
                 self.tabWidget.addTab(scroll, "Actuaciones")
