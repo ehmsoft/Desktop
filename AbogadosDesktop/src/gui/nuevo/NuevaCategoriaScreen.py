@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'nuevaCategoria.ui'
+# Form implementation generated from reading ui file 'uis/nuevaCategoria.ui'
 #
-# Created: Wed Feb  8 09:52:50 2012
-#      by: pyside-uic 0.2.11 running on PySide 1.0.8
+# Created: Thu May 24 20:15:48 2012
+#      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_NuevaCategoria(object):
     def setupUi(self, NuevaCategoria):
         NuevaCategoria.setObjectName("NuevaCategoria")
-        NuevaCategoria.resize(439, 162)
+        NuevaCategoria.resize(439, 177)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -64,7 +64,7 @@ class Ui_NuevaCategoria(object):
         QtCore.QMetaObject.connectSlotsByName(NuevaCategoria)
 
     def retranslateUi(self, NuevaCategoria):
-        NuevaCategoria.setWindowTitle(QtGui.QApplication.translate("NuevaCategoria", "Nueva categoria", None, QtGui.QApplication.UnicodeUTF8))
-        self.groupBox.setTitle(QtGui.QApplication.translate("NuevaCategoria", "Ingrese la información de la nueva cateoría:", None, QtGui.QApplication.UnicodeUTF8))
+        NuevaCategoria.setWindowTitle(QtGui.QApplication.translate("NuevaCategoria", "Nueva categoría", None, QtGui.QApplication.UnicodeUTF8))
+        self.groupBox.setTitle(QtGui.QApplication.translate("NuevaCategoria", "Ingrese la información de la nueva categoría:", None, QtGui.QApplication.UnicodeUTF8))
         self.lbldescripcion.setText(QtGui.QApplication.translate("NuevaCategoria", "Descripción:", None, QtGui.QApplication.UnicodeUTF8))
 

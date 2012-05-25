@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>439</width>
-    <height>162</height>
+    <height>177</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Nueva categoria</string>
+   <string>Nueva categoría</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="8" column="0">
@@ -45,7 +45,7 @@
       </sizepolicy>
      </property>
      <property name="title">
-      <string>Ingrese la información de la nueva cateoría:</string>
+      <string>Ingrese la información de la nueva categoría:</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
