@@ -33,7 +33,7 @@ class Preferencias_GUI(QtGui.QWidget, Ui_Form):
         elif alarma == 3:
             self.alarmaMenEmergente.setChecked(False)
             self.alarmaIcono.setChecked(True)
-        self.cantCopiaSegSpin.setValue(self.preferencia.getCantCopiaSeg())
+        #self.cantCopiaSegSpin.setValue(self.preferencia.getCantCopiaSeg())
         self.OrdenarListaMainApp()
         
     def borrarEventos(self):
@@ -115,7 +115,7 @@ class Preferencias_GUI(QtGui.QWidget, Ui_Form):
         cantEventos = self.cantidadEventosSpin.value()
         mensajeEmergente = self.alarmaMenEmergente.isChecked()
         alarmaIcono = self.alarmaIcono.isChecked()
-        cantCopias = self.cantCopiaSegSpin.value()
+        #cantCopias = self.cantCopiaSegSpin.value()
         listaMainApp = []
         for i in range(self.listaMainApp.count()):
             item = self.listaMainApp.item(i)
@@ -132,7 +132,7 @@ class Preferencias_GUI(QtGui.QWidget, Ui_Form):
             else:
                 self.preferencia.setTipoAlarma(tipoAlarma=0)
         self.preferencia.setCantidadEventos(cantidadEventos = cantEventos)
-        self.preferencia.setCantCopiaSeg(cantCopiaSeg = cantCopias)
+        #self.preferencia.setCantCopiaSeg(cantCopiaSeg = cantCopias)
         self.preferencia.setListaMainApp(listaMainApp = listaMainApp)
         
     def OrdenarListaMainApp(self):
