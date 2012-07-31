@@ -124,6 +124,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         self.connect(self.actionNuevoCampo_Juzgado, QtCore.SIGNAL('triggered()'), self.menuNuevoCampoJuzgadoClicked)
         self.connect(self.actionNuevoCampo_Actuacion, QtCore.SIGNAL('triggered()'), self.menuNuevoCampoActuacionClicked)
         self.connect(self.actionNuevoProceso_a_partir_de_Plantilla, QtCore.SIGNAL('triggered()'), self.menuNuevoProcesoPlantillaClicked)
+        self.connect(self.actionNuevaCita, QtCore.SIGNAL('triggered()'), self.menuNuevaCitaClicked)
         self.connect(self.actionArchivo_CSV, QtCore.SIGNAL('triggered()'), self.menuExportarCSVClicked)
         self.connect(self.actionArchivo_de_Copia_de_Seguridad, QtCore.SIGNAL('triggered()'), self.menuExportarArchivoClicked)
         self.connect(self.actionImportar, QtCore.SIGNAL('triggered()'), self.menuImportarArchivoClicked)
@@ -132,7 +133,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         self.connect(self.actionAcerca_de_Qt, QtCore.SIGNAL('triggered()'), self.aboutQt)
         self.connect(self.actionImprimir, QtCore.SIGNAL('triggered()'), self.menuImpresionClicked)
         self.connect(self.actionMostrarCalendario, QtCore.SIGNAL('triggered()'), self.mostrarCalendario)
-        
+        self.connect(self.actionNuevaCitaCalendario, QtCore.SIGNAL('triggered()'), self.menuNuevaCitaClicked)
         
     def elementChanged(self):
         self.elementClicked(self.listaIzquierda.currentItem())
@@ -1039,6 +1040,10 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.elementChanged()
             del procesoVentana
         del plantillaSelect
+        
+    def menuNuevaCitaClicked(self):
+        #TODO: Agregar funcionalidad de crear nueva cita
+        print 'Nueva Cita Clicked'
         
     def menuExportarCSVClicked(self):
         exportarDialog = ExportarCSVDialog()

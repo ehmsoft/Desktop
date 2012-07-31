@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'uis/mainApp.ui'
 #
-# Created: Tue Apr 24 18:36:16 2012
+# Created: Tue Jul 31 15:44:27 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -99,6 +99,10 @@ class Ui_mainApp(object):
         self.actionSalir_de_Procesos_Judiciales = QtGui.QAction(mainApp)
         self.actionSalir_de_Procesos_Judiciales.setMenuRole(QtGui.QAction.QuitRole)
         self.actionSalir_de_Procesos_Judiciales.setObjectName("actionSalir_de_Procesos_Judiciales")
+        self.actionNuevaCitaCalendario = QtGui.QAction(mainApp)
+        self.actionNuevaCitaCalendario.setObjectName("actionNuevaCitaCalendario")
+        self.actionNuevaCita = QtGui.QAction(mainApp)
+        self.actionNuevaCita.setObjectName("actionNuevaCita")
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Proceso)
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Plantilla)
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Demandante)
@@ -114,6 +118,7 @@ class Ui_mainApp(object):
         self.menu_Nuevo.addAction(self.actionNuevaCategoria)
         self.menu_Nuevo.addAction(self.menuCampo_Personalizado.menuAction())
         self.menu_Nuevo.addAction(self.actionNuevoProceso_a_partir_de_Plantilla)
+        self.menu_Nuevo.addAction(self.actionNuevaCitaCalendario)
         self.menuExportar.addAction(self.actionArchivo_CSV)
         self.menuExportar.addAction(self.actionArchivo_de_Copia_de_Seguridad)
         self.menu_Archivo.addAction(self.menu_Nuevo.menuAction())
@@ -124,6 +129,7 @@ class Ui_mainApp(object):
         self.menuAyuda.addAction(self.actionAcerca_de_Procesos_Judiciales)
         self.menuAyuda.addAction(self.actionAcerca_de_Qt)
         self.menuCalendario.addAction(self.actionMostrarCalendario)
+        self.menuCalendario.addAction(self.actionNuevaCita)
         self.menubar.addAction(self.menu_Archivo.menuAction())
         self.menubar.addAction(self.menuCalendario.menuAction())
         self.menubar.addAction(self.menuAyuda.menuAction())
@@ -158,7 +164,7 @@ class Ui_mainApp(object):
         self.actionNuevoCampo_Actuacion.setText(QtGui.QApplication.translate("mainApp", "Campo Actuacion", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevoCampo_Actuacion.setToolTip(QtGui.QApplication.translate("mainApp", "Nuevo Campo Actuacion", None, QtGui.QApplication.UnicodeUTF8))
         self.actionImprimir.setText(QtGui.QApplication.translate("mainApp", "Imprimir", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionImprimir.setShortcut(QtGui.QApplication.translate("mainApp", "Meta+P, Ctrl+P", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionImprimir.setShortcut(QtGui.QApplication.translate("mainApp", "Meta+P", None, QtGui.QApplication.UnicodeUTF8))
         self.actionImportar.setText(QtGui.QApplication.translate("mainApp", "Importar", None, QtGui.QApplication.UnicodeUTF8))
         self.actionImportar.setShortcut(QtGui.QApplication.translate("mainApp", "Meta+I, Ctrl+I", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevoProceso_a_partir_de_Plantilla.setText(QtGui.QApplication.translate("mainApp", "Proceso a partir de Plantilla", None, QtGui.QApplication.UnicodeUTF8))
@@ -168,4 +174,6 @@ class Ui_mainApp(object):
         self.actionAcerca_de_Qt.setText(QtGui.QApplication.translate("mainApp", "Acerca de Qt", None, QtGui.QApplication.UnicodeUTF8))
         self.actionMostrarCalendario.setText(QtGui.QApplication.translate("mainApp", "Mostrar Calendario", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSalir_de_Procesos_Judiciales.setText(QtGui.QApplication.translate("mainApp", "Salir de Procesos Judiciales", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionNuevaCitaCalendario.setText(QtGui.QApplication.translate("mainApp", "Cita", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionNuevaCita.setText(QtGui.QApplication.translate("mainApp", "Nueva Cita", None, QtGui.QApplication.UnicodeUTF8))
 
