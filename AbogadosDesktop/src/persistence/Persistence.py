@@ -1600,11 +1600,14 @@ class Persistence(object):
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT id_preferencia, valor FROM preferencias''')
-            preferencias = {10101:None, 10501:None, 10502:None, 10601:None, 10701:None, 998:None, 999:None, 997:None}         
+            preferencias = {10101:None,10402:None, 10501:None, 10502:None, 10601:None, 10701:None, 998:None, 999:None, 997:None}         
             for row in c:
                 if row['id_preferencia'] == 10101:
                     listaEnteros = [int(x) for x in row['valor'].split(',')]
                     preferencias[10101]=listaEnteros
+                #consultar Preferencias: Correo electronico 
+                elif row['id_preferencia'] == 10402:
+                    preferencias[10402]=row['valor']
                 #consultar Preferencias: Cantidad Eventos Proximos 
                 elif row['id_preferencia'] == 10501:
                     preferencias[10501]=row['valor']
@@ -1615,8 +1618,8 @@ class Persistence(object):
                 elif row['id_preferencia'] == 10601:
                     preferencias[10601]=row['valor']                    
                 #consultar Preferencias: Cantidad Maxima Copias de Seguridad 
-                elif row['id_preferencia'] == 10701:
-                    preferencias[10701]=row['valor']
+#                elif row['id_preferencia'] == 10701:
+#                    preferencias[10701]=row['valor']
                 #consultar Preferencias: llave 
                 elif row['id_preferencia'] == 998:
                     preferencias[998]=row['valor']
