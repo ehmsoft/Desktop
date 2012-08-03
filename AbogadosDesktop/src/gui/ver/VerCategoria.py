@@ -13,4 +13,7 @@ class VerCategoria(QtGui.QWidget, Ui_VerCategoria):
         self.__categoria = categoria
         self.setupUi(self)
         if self.__categoria:
+            self.lblDescripcion.setWordWrap(True)
+            self.lblDescripcion.setToolTip(self.__categoria.getDescripcion())
             self.lblDescripcion.setText(self.__categoria.getDescripcion())
+            

@@ -12,8 +12,10 @@ class VerCampoPersonalizado(QtGui.QWidget, Ui_VerCampoPersonalizado):
         super(VerCampoPersonalizado, self).__init__(parent)
         self.__campo = campo
         self.setupUi(self)
-        if self.__campo:
+        if self.__campo:  
+            self.lblNombre.setWordWrap(True)
             self.lblNombre.setText(self.__campo.getNombre())
+            self.lblNombre.setToolTip(self.__campo.getNombre())
             self.lblLongitudMax.setNum(self.__campo.getLongitudMax())
             self.lblLongitudMin.setNum(self.__campo.getLongitudMin())
             self.chkObligatorio.setChecked(self.__campo.isObligatorio())

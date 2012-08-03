@@ -14,6 +14,17 @@ class VerPersona(QtGui.QWidget, Ui_VerPersona):
     
         if self.__persona:
             self.__tipo = self.__persona.getTipo()
+            self.lblNombre.setWordWrap(True)
+            self.lblCedula.setWordWrap(True)
+            self.lblTelefono.setWordWrap(True)
+            self.lblDireccion.setWordWrap(True)
+            self.lblCorreo.setWordWrap(True)
+            self.lblNotas.setWordWrap(True)
+            self.lblNombre.setToolTip(self.__persona.getNombre())
+            self.lblCedula.setToolTip(self.__persona.getId())
+            self.lblTelefono.setToolTip(self.__persona.getTelefono())
+            self.lblDireccion.setToolTip(self.__persona.getDireccion())
+            self.lblCorreo.setToolTip(self.__persona.getCorreo())
             self.lblNombre.setText(self.__persona.getNombre())
             self.lblCedula.setText(self.__persona.getId())
             self.lblTelefono.setText(self.__persona.getTelefono())
@@ -22,8 +33,11 @@ class VerPersona(QtGui.QWidget, Ui_VerPersona):
             self.lblNotas.setText(self.__persona.getNotas())
             for campo in self.__persona.getCampos():
                 label = QtGui.QLabel()
+                label.setWordWrap(True)
                 label.setText(u'{0}:'.format(campo.getNombre()))
                 lblBox = QtGui.QLabel()
+                lblBox.setWordWrap(True)
+                lblBox.setToolTip(campo.getValor())
                 lblBox.setText(campo.getValor())
                 self.formLayout.addRow(label, lblBox)
             
