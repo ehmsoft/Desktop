@@ -220,7 +220,7 @@ class Proceso(object):
             raise TypeError('Tipo de dato no admitido')
         
     def __str__(self):
-        return 'Radicado:{0}\n  Demandante:{1}\n  Demandado:{2}'.format(self.getRadicado(), self.getDemandante(), self.getDemandado())
+        return 'Radicado:{0}\n  Demandante:{1}\n  Demandado:{2}\n  Juzgado:{3}'.format(self.getRadicado(), self.getDemandante(), self.getDemandado(), self.getJuzgado())
     
     def __eq__(self, other):
         if other is None:
