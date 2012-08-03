@@ -13,6 +13,27 @@ class VerPlantilla(QtGui.QWidget, Ui_VerPlantilla):
         self.setupUi(self)
     
         if self.__plantilla:
+            self.lblNombre.setWordWrap(True)
+            self.lblDemandante.setWordWrap(True)
+            self.lblDemandado.setWordWrap(True)
+            self.lblJuzgado.setWordWrap(True)
+            self.lblRadicado.setWordWrap(True)
+            self.lblRadicadoUnico.setWordWrap(True)
+            self.lblEstado.setWordWrap(True)
+            self.lblCategoria.setWordWrap(True)
+            self.lblTipo.setWordWrap(True)
+            
+            self.lblNombre.setToolTip(unicode(self.__plantilla))
+            self.lblDemandante.setToolTip(unicode(self.__plantilla.getDemandante()))
+            self.lblDemandado.setToolTip(unicode(self.__plantilla.getDemandado()))
+            self.lblJuzgado.setToolTip(unicode(self.__plantilla.getJuzgado()))
+            self.lblRadicado.setToolTip(self.__plantilla.getRadicado())
+            self.lblRadicadoUnico.setToolTip(self.__plantilla.getRadicadoUnico())
+            self.lblEstado.setToolTip(self.__plantilla.getEstado())
+            self.lblCategoria.setToolTip(unicode(self.__plantilla.getCategoria()))
+            self.lblTipo.setToolTip(unicode(self.__plantilla.getTipo()))
+            
+            
             self.lblNombre.setText(unicode(self.__plantilla))
             self.lblDemandante.setText(unicode(self.__plantilla.getDemandante()))
             self.lblDemandado.setText(unicode(self.__plantilla.getDemandado()))
@@ -27,7 +48,10 @@ class VerPlantilla(QtGui.QWidget, Ui_VerPlantilla):
             
             for campo in self.__plantilla.getCampos():
                 label = QtGui.QLabel()
+                label.setWordWrap(True)
                 label.setText(u'{0}:'.format(campo.getNombre()))
                 lblBox = QtGui.QLabel()
+                lblBox.setWordWrap(True)
+                lblBox.setToolTip(campo.getValor())
                 lblBox.setText(campo.getValor())
                 self.formLayout.addRow(label, lblBox)
