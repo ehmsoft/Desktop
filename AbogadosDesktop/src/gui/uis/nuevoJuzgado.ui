@@ -54,80 +54,99 @@
      <property name="title">
       <string>Ingrese la información del nuevo juzgado:</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <layout class="QFormLayout" name="formLayout">
-        <property name="fieldGrowthPolicy">
-         <enum>QFormLayout::ExpandingFieldsGrow</enum>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QScrollArea" name="scrollArea">
+        <property name="widgetResizable">
+         <bool>true</bool>
         </property>
-        <item row="0" column="0">
-         <widget class="QLabel" name="lblNombre">
-          <property name="text">
-           <string>Nombre:</string>
-          </property>
-          <property name="buddy">
-           <cstring>txtNombre</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QLineEdit" name="txtNombre"/>
-        </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="lblCiudad">
-          <property name="text">
-           <string>Ciudad:</string>
-          </property>
-          <property name="buddy">
-           <cstring>txtCiudad</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="QLineEdit" name="txtCiudad"/>
-        </item>
-        <item row="2" column="0">
-         <widget class="QLabel" name="lblDireccion">
-          <property name="text">
-           <string>Dirección</string>
-          </property>
-          <property name="buddy">
-           <cstring>txtDireccion</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <widget class="QLineEdit" name="txtDireccion"/>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="lblTelefono">
-          <property name="text">
-           <string>Teléfono</string>
-          </property>
-          <property name="buddy">
-           <cstring>txtTelefono</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="1">
-         <widget class="QLineEdit" name="txtTelefono"/>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="lblTipo">
-          <property name="text">
-           <string>Tipo</string>
-          </property>
-          <property name="buddy">
-           <cstring>txtTipo</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QLineEdit" name="txtTipo"/>
-        </item>
-       </layout>
+        <widget class="QWidget" name="scrollAreaWidgetContents">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>379</width>
+           <height>136</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <layout class="QFormLayout" name="formLayout">
+            <property name="fieldGrowthPolicy">
+             <enum>QFormLayout::ExpandingFieldsGrow</enum>
+            </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="lblNombre">
+              <property name="text">
+               <string>Nombre:</string>
+              </property>
+              <property name="buddy">
+               <cstring>txtNombre</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLineEdit" name="txtNombre"/>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="lblCiudad">
+              <property name="text">
+               <string>Ciudad:</string>
+              </property>
+              <property name="buddy">
+               <cstring>txtCiudad</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="txtCiudad"/>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="lblDireccion">
+              <property name="text">
+               <string>Dirección</string>
+              </property>
+              <property name="buddy">
+               <cstring>txtDireccion</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="txtDireccion"/>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="lblTelefono">
+              <property name="text">
+               <string>Teléfono</string>
+              </property>
+              <property name="buddy">
+               <cstring>txtTelefono</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QLineEdit" name="txtTelefono"/>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="lblTipo">
+              <property name="text">
+               <string>Tipo</string>
+              </property>
+              <property name="buddy">
+               <cstring>txtTipo</cstring>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QLineEdit" name="txtTipo"/>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </widget>
       </item>
-      <item row="1" column="0">
+      <item>
        <widget class="QPushButton" name="btnAdd">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">

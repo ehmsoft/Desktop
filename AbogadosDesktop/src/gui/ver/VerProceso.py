@@ -15,6 +15,24 @@ class VerProceso(QtGui.QWidget, Ui_VerProceso):
         self.setupUi(self)
     
         if self.__proceso:
+            self.lblDemandante.setWordWrap(True)
+            self.lblDemandado.setWordWrap(True)
+            self.lblJuzgado.setWordWrap(True)
+            self.lblRadicado.setWordWrap(True)
+            self.lblRadicadoUnico.setWordWrap(True)
+            self.lblEstado.setWordWrap(True)
+            self.lblCategoria.setWordWrap(True)
+            self.lblTipo.setWordWrap(True)
+            
+            self.lblDemandante.setToolTip(unicode(self.__proceso.getDemandante()))
+            self.lblDemandado.setToolTip(unicode(self.__proceso.getDemandado()))
+            self.lblJuzgado.setToolTip(unicode(self.__proceso.getJuzgado()))
+            self.lblRadicado.setToolTip(self.__proceso.getRadicado())
+            self.lblRadicadoUnico.setToolTip(self.__proceso.getRadicadoUnico())
+            self.lblEstado.setToolTip(self.__proceso.getEstado())
+            self.lblCategoria.setToolTip(unicode(self.__proceso.getCategoria()))
+            self.lblTipo.setToolTip(unicode(self.__proceso.getTipo()))
+            
             self.lblDemandante.setText(unicode(self.__proceso.getDemandante()))
             self.lblDemandado.setText(unicode(self.__proceso.getDemandado()))
             self.dteFecha.setDateTime(self.__proceso.getFecha())
@@ -29,6 +47,7 @@ class VerProceso(QtGui.QWidget, Ui_VerProceso):
             
             for campo in self.__proceso.getCampos():
                 label = QtGui.QLabel()
+                label.setWordWrap(True)
                 label.setText(u'{0}:'.format(campo.getNombre()))
                 lblBox = QtGui.QLabel()
                 lblBox.setText(campo.getValor())
