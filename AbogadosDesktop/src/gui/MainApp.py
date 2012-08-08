@@ -918,9 +918,13 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
     def columna1ContextMenu(self, pos):
         menu = QtGui.QMenu(self)
         menu.addAction(self.__createAction('Nuevo', self.columna1AgregarClicked))
-        menu.addAction(self.__createAction('Editar', self.columna1ContextEditar))
-        menu.addSeparator()
-        menu.addAction(self.__createAction('Eliminar', self.columna1ContextEliminar))
+        if self.columna1.getCentralWidget().currentItem():
+            if isinstance(self.columna1.getCentralWidget().currentItem().getObjeto(), Proceso) :
+                menu.addAction(self.__createAction(u'Nueva Actuación', self.columna1ContextNuevaActuacion))
+            menu.addAction(self.__createAction('Editar', self.columna1ContextEditar))
+            menu.addSeparator()
+            menu.addAction(self.__createAction('Eliminar', self.columna1ContextEliminar))
+        
         menu.exec_(self.columna1.mapToGlobal(pos))
     
     def columna1ContextEditar(self):
@@ -949,6 +953,17 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         elif isinstance(objeto, Categoria):
             self.categoriaEliminarClicked()
             
+    def columna1ContextNuevaActuacion(self):
+        objeto = self.columna1.getCentralWidget().currentItem().getObjeto()
+        nuevaActuacion = NuevaActuacion()
+        if nuevaActuacion.exec_():
+            p = Persistence()
+            p.guardarActuacion(nuevaActuacion.getActuacion(), objeto.getId_proceso())
+        del nuevaActuacion
+        self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTACTUACIONES))
+        self.elementChanged()
+        del objeto
+        
     def menuNuevoProcesoClicked(self):
         procesoVentana = NuevoProceso()
         if procesoVentana.exec_():
