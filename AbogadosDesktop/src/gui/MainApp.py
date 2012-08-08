@@ -747,10 +747,13 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
     def categoriaEditarClicked(self):
         categoria = self.columna1.getCentralWidget().currentItem().getObjeto()
         categoriaVentana = NuevaCategoria(categoria)
-        if categoriaVentana.exec_():
-            self.columna1.getCentralWidget().replace(categoriaVentana.getCategoria())
-        self.columna1ElementChanged()
-        del categoriaVentana
+        if categoria.getId_categoria() == '1':
+            QtGui.QMessageBox.warning(self, 'No se puede editar', u'La categoría Ninguna es por defecto y no se puede editar')
+        else:
+            if categoriaVentana.exec_():
+                self.columna1.getCentralWidget().replace(categoriaVentana.getCategoria())
+            self.columna1ElementChanged()
+            del categoriaVentana
     
     def categoriaEliminarClicked(self):
         categoria = self.columna1.getCentralWidget().getSelectedItem()
