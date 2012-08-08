@@ -178,7 +178,8 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
             vista = VerPersona(self.__demandante, self)
             self.__dialogo.setWidget(vista)
             self.__dirty = True
-    
+        del(listado)
+        
     def __cambiarDemandado(self):
         listado = ListadoDialogo(ListadoDialogo.DEMANDADO, self)
         if listado.exec_():
@@ -234,8 +235,8 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
                 self.lblJuzgado.setText(self.__juzgado.getNombre())
                 if (isinstance(self.__dialogo.getWidget(), VerJuzgado)):
                     vista = VerJuzgado(self.__juzgado, self)
-                    self.horizontalLayout.addWidget(vista)
-                del(dialogo)
+                    self.__dialogo.setWidget(vista)
+            del(dialogo)
     
     def __editarCategoria(self):
         if self.__categoria is not None and self.__categoria.getId_categoria() is not "1":
