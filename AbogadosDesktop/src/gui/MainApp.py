@@ -47,6 +47,7 @@ from gui.Calendar import Calendar
 from gui.Preferencias_GUI import Preferencias_GUI
 from core.Preferencias import Preferencias
 from gui.MyTranslator import MyTranslator
+from gui import MainAppScreen
 __version__ = '1.0'
 
 class MainApp(QtGui.QMainWindow, Ui_mainApp):
@@ -897,7 +898,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             
     def listaIzquierdaContextMenu(self, pos):
         item = self.listaIzquierda.currentItem()
-        if item.text() not in (MainApp.TXTACTUACIONES, MainApp.TXTCAMPOS, MainApp.TXTSINCRONIZAR, MainApp.TXTAJUSTES):
+        if item.text() not in (MainApp.TXTACTUACIONES, MainApp.TXTCAMPOS, MainApp.TXTSINCRONIZAR, MainApp.TXTAJUSTES, MainApp.TXTEVENTOS):
             menu = QtGui.QMenu(self)
             menu.addAction(self.__createAction('Nuevo', self.columna1AgregarClicked))
             menu.exec_(self.mapToGlobal(pos))
