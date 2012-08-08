@@ -1072,7 +1072,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         fname = QtGui.QFileDialog.getSaveFileName(self, 'Exportar Archivo')[0]
         if fname != '':
             fname = fname + '.bk'
-            shutil.copy(ConnectionManager().getDbLocation(), fname)
+            shutil.copy(ConnectionManager(MainApp.CARPETAEHM).getDbLocation(), fname)
     
     def menuImportarArchivoClicked(self):
         fname = QtGui.QFileDialog.getOpenFileName(self, 'Importar Archivo')[0]
