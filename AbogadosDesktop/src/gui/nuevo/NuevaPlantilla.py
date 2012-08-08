@@ -307,7 +307,6 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
         return self.__plantilla
     
     def reject(self):
-        del(self.__dialogo)
         Util.reject(self, self.__dirty)
     
     def setDirty(self):
