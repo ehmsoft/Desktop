@@ -9,6 +9,8 @@ from PySide.QtCore import *
 from gui.ColumnaSyncScreen import Ui_ColumnaSync
 from persistence.Sync import Sync
 from persistence.USBSync import NoDeviceError
+import sqlite3
+from persistence.SyncManager import SyncDupException
 
 class ColumnaSync(QWidget, Ui_ColumnaSync):
     def __init__(self, parent=None, carpeta=None):
@@ -25,6 +27,8 @@ class ColumnaSync(QWidget, Ui_ColumnaSync):
             dialogoOk.exec_()
         except NoDeviceError:
             QMessageBox.warning(self, "Error", u'El dispositivo no fue encontrado, verifique que está conectado mediante USB y el modo Unidad USB está activado.\nSi el problema persiste solicite ayuda en soporte@ehmsoft.com')
-        
+        except SyncDupException as e:
+            QMessageBox.warning(self, "Error", u'{0}\nSi el problema persiste solicite ayuda en soporte@ehmsoft.com'.format(e.message))
+
         #TODO: Capturar excepciones
         

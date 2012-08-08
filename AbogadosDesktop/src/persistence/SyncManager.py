@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on 08/11/2011
 
@@ -14,6 +15,13 @@ from core.CampoPersonalizado import CampoPersonalizado
 from core.Proceso import Proceso
 from core.Plantilla import Plantilla
 from core.Actuacion import Actuacion
+
+class SyncDupException(Exception):
+    def __init__(self, message = None):
+        self.valor = u'Error de sincronización'
+        self.message = message
+    def __str__(self):
+        return 'Error {0}\n{1}'.format(self.valor, self.message)
 
 class SyncManager(object):
     '''
@@ -51,143 +59,274 @@ class SyncManager(object):
             cMovil.execute('''SELECT id_demandante, cedula, nombre, telefono, direccion, correo, notas FROM demandantes WHERE nuevo = 1 AND eliminado = 0''')
             listaCMovil = cMovil.fetchall()
             for row in listaCMovil:
-                id_demandante = row['id_demandante']
-                cedula = row['cedula']
-                nombre = row['nombre']
-                telefono = row['telefono']
-                direccion = row['direccion']
-                correo = row['correo']
-                notas = row['notas']
-                cLocal.execute('''INSERT INTO demandantes(cedula, nombre, telefono, direccion, correo, notas, nuevo) VALUES(?,?,?,?,?,?,0)''', (cedula, nombre, telefono, direccion, correo, notas,))
-                _id = cLocal.lastrowid
-                cMovil.execute('''UPDATE procesos SET id_demandante = ? WHERE id_demandante = ? ''', (_id, id_demandante,))
-                cMovil.execute('''UPDATE plantillas SET id_demandante = ? WHERE id_demandante = ? ''', (_id, id_demandante,))
+                try:
+                    id_demandante = row['id_demandante']
+                    cedula = row['cedula']
+                    nombre = row['nombre']
+                    telefono = row['telefono']
+                    direccion = row['direccion']
+                    correo = row['correo']
+                    notas = row['notas']
+                    cLocal.execute('''INSERT INTO demandantes(cedula, nombre, telefono, direccion, correo, notas, nuevo) VALUES(?,?,?,?,?,?,0)''', (cedula, nombre, telefono, direccion, correo, notas,))
+                    _id = cLocal.lastrowid
+                    cMovil.execute('''UPDATE procesos SET id_demandante = ? WHERE id_demandante = ? ''', (_id, id_demandante,))
+                    cMovil.execute('''UPDATE plantillas SET id_demandante = ? WHERE id_demandante = ? ''', (_id, id_demandante,))
+                except sqlite3.IntegrityError:
+                    #Si ya existe en la base de datos
+                    demandante_local = Persistence().consultarPersona(id_demandante, 1)
+                    demandante_movil = Persona(tipo=1, id=cedula, nombre=nombre, telefono=telefono, direccion=direccion, correo=correo, notas=notas, id_persona=unicode(id_demandante))
+                    if demandante_local.getId() == demandante_movil.getId():
+                        if not SyncConflict(local=demandante_local, movil=demandante_movil).getSeleccionado():
+                            cLocal.execute('''UPDATE demandantes SET cedula = ?, nombre = ?, telefono = ?, direccion = ?, correo = ?, notas = ? WHERE id_demandante = ?''', (cedula, nombre, telefono, direccion, correo, notas, id_demandante,))        
+                    else:
+                        raise SyncDupException(u'El demandante cédula {0} y nombre {1} está duplicado en el dispositivo y en el escritorio, por favor elimine uno de los dos e intente sincronizar de nuevo'.format(cedula,nombre))
             
             #Seccion demandados
             cMovil.execute('''SELECT id_demandado, cedula, nombre, telefono, direccion, correo, notas FROM demandados WHERE nuevo = 1 AND eliminado = 0''')
             listaCMovil = cMovil.fetchall()
             for row in listaCMovil:
-                id_demandado = row['id_demandado']
-                cedula = row['cedula']
-                nombre = row['nombre']
-                telefono = row['telefono']
-                direccion = row['direccion']
-                correo = row['correo']
-                notas = row['notas']
-                cLocal.execute('''INSERT INTO demandados(cedula, nombre, telefono, direccion, correo, notas, nuevo) VALUES(?,?,?,?,?,?,0)''', (cedula, nombre, telefono, direccion, correo, notas,))
-                _id = cLocal.lastrowid
-                cMovil.execute('''UPDATE procesos SET id_demandado = ? WHERE id_demandado = ? ''', (_id, id_demandado,))
-                cMovil.execute('''UPDATE plantillas SET id_demandado = ? WHERE id_demandado = ? ''', (_id, id_demandado,))            
+                try:
+                    id_demandado = row['id_demandado']
+                    cedula = row['cedula']
+                    nombre = row['nombre']
+                    telefono = row['telefono']
+                    direccion = row['direccion']
+                    correo = row['correo']
+                    notas = row['notas']
+                    cLocal.execute('''INSERT INTO demandados(cedula, nombre, telefono, direccion, correo, notas, nuevo) VALUES(?,?,?,?,?,?,0)''', (cedula, nombre, telefono, direccion, correo, notas,))
+                    _id = cLocal.lastrowid
+                    cMovil.execute('''UPDATE procesos SET id_demandado = ? WHERE id_demandado = ? ''', (_id, id_demandado,))
+                    cMovil.execute('''UPDATE plantillas SET id_demandado = ? WHERE id_demandado = ? ''', (_id, id_demandado,))            
+                except sqlite3.IntegrityError:
+                    #Si ya existe en la base de datos
+                    demandado_local = Persistence().consultarPersona(id_demandado, 2)
+                    demandado_movil = Persona(tipo=2, id=cedula, nombre=nombre, telefono=telefono, direccion=direccion, correo=correo, notas=notas, id_persona=unicode(id_demandado))
+                    if demandado_local.getId() == demandado_movil.getId():
+                        if not SyncConflict(local=demandado_local, movil=demandado_movil).getSeleccionado():
+                            cLocal.execute('''UPDATE demandados SET cedula = ?, nombre = ?, telefono = ?, direccion = ?, correo = ?, notas = ? WHERE id_demandado = ?''', (cedula, nombre, telefono, direccion, correo, notas, id_demandado,))
+                    else:
+                        raise SyncDupException(u'El demandado cédula {0} y nombre {1} está duplicado en el dispositivo y en el escritorio, por favor elimine uno de los dos e intente sincronizar de nuevo'.format(cedula,nombre))
             
             #Seccion Juzgados
             cMovil.execute('''SELECT id_juzgado, nombre, ciudad, telefono, direccion, tipo FROM juzgados WHERE nuevo = 1 AND eliminado = 0''')
             listaCMovil = cMovil.fetchall()
             for row in listaCMovil:
-                id_juzgado = row['id_juzgado']
-                nombre = row['nombre']
-                ciudad = row['ciudad']
-                telefono = row['telefono']
-                direccion = row['direccion'] 
-                tipo = row['tipo']
-                cLocal.execute('''INSERT INTO juzgados(nombre, ciudad, telefono, direccion, tipo, nuevo) VALUES(?,?,?,?,?,0)''', (nombre, ciudad, telefono, direccion, tipo,))
-                _id = cLocal.lastrowid
-                cMovil.execute('''UPDATE procesos SET id_juzgado = ? WHERE id_juzgado = ? ''', (_id, id_juzgado,))
-                cMovil.execute('''UPDATE plantillas SET id_juzgado = ? WHERE id_juzgado = ? ''', (_id, id_juzgado,))
-                cMovil.execute('''UPDATE actuaciones SET id_juzgado = ? WHERE id_juzgado = ? ''', (_id, id_juzgado,))
+                try:
+                    id_juzgado = row['id_juzgado']
+                    nombre = row['nombre']
+                    ciudad = row['ciudad']
+                    telefono = row['telefono']
+                    direccion = row['direccion'] 
+                    tipo = row['tipo']
+                    cLocal.execute('''INSERT INTO juzgados(nombre, ciudad, telefono, direccion, tipo, nuevo) VALUES(?,?,?,?,?,0)''', (nombre, ciudad, telefono, direccion, tipo,))
+                    _id = cLocal.lastrowid
+                    cMovil.execute('''UPDATE procesos SET id_juzgado = ? WHERE id_juzgado = ? ''', (_id, id_juzgado,))
+                    cMovil.execute('''UPDATE plantillas SET id_juzgado = ? WHERE id_juzgado = ? ''', (_id, id_juzgado,))
+                    cMovil.execute('''UPDATE actuaciones SET id_juzgado = ? WHERE id_juzgado = ? ''', (_id, id_juzgado,))
+                except sqlite3.IntegrityError:
+                    #Si ya existe en la base de datos
+                    juzgado_local = Persistence().consultarJuzgado(id_juzgado)
+                    juzgado_movil = Juzgado(nombre=nombre, ciudad=ciudad, direccion=direccion, telefono=telefono, tipo=tipo, id_juzgado=unicode(id_juzgado))
+                    if juzgado_local.getNombre() == juzgado_movil.getNombre():
+                        if not SyncConflict(local=juzgado_local, movil=juzgado_movil).getSeleccionado():
+                            cLocal.execute('''UPDATE juzgados SET nombre = ?, ciudad = ?, telefono = ?, direccion = ?, tipo = ? WHERE id_juzgado = ?''', (nombre, ciudad, telefono, direccion, tipo, id_juzgado,))
+                    else:
+                        raise SyncDupException(u'El juzgado {0} está duplicado en el dispositivo y en el escritorio, por favor elimine uno de los dos e intente sincronizar de nuevo'.format(nombre))
             
             #Seccion categorias
             cMovil.execute('''SELECT id_categoria, descripcion FROM categorias WHERE nuevo = 1 AND eliminado = 0''')
             listaCMovil = cMovil.fetchall()
             for row in listaCMovil:
-                id_categoria = row['id_categoria']
-                descripcion = row['descripcion']
-                cLocal.execute('''INSERT INTO categorias(descripcion, nuevo) VALUES(?,0)''', (descripcion,))
-                _id = cLocal.lastrowid
-                cMovil.execute('''UPDATE procesos SET id_categoria = ? WHERE id_categoria = ? ''', (_id, id_categoria,))
-                cMovil.execute('''UPDATE plantillas SET id_categoria = ? WHERE id_categoria = ? ''', (_id, id_categoria,))
+                try:
+                    id_categoria = row['id_categoria']
+                    descripcion = row['descripcion']
+                    cLocal.execute('''INSERT INTO categorias(descripcion, nuevo) VALUES(?,0)''', (descripcion,))
+                    _id = cLocal.lastrowid
+                    cMovil.execute('''UPDATE procesos SET id_categoria = ? WHERE id_categoria = ? ''', (_id, id_categoria,))
+                    cMovil.execute('''UPDATE plantillas SET id_categoria = ? WHERE id_categoria = ? ''', (_id, id_categoria,))
+                except sqlite3.IntegrityError:
+                    #Si ya existe en la base de datos
+                    categoria_local = Persistence().consultarCategoria(id_categoria)
+                    categoria_movil = Categoria(descripcion=descripcion, id_categoria=unicode(id_categoria))
+                    if categoria_local.getDescripcion() == categoria_movil.getDescripcion():
+                        if not SyncConflict(local=categoria_local, movil=categoria_movil).getSeleccionado():
+                            cLocal.execute('''UPDATE categorias SET descripcion = ? WHERE id_categoria = ?''', (descripcion, id_categoria,))
+                    else:
+                        raise SyncDupException(u'La categoría {0} está duplicada en el dispositivo y en el escritorio, por favor elimine uno de los dos e intente sincronizar de nuevo'.format(descripcion))
+            
             
             #Seccion Atributos
             cMovil.execute('''SELECT id_atributo, nombre, obligatorio, longitud_max, longitud_min FROM atributos WHERE nuevo = 1 AND eliminado = 0''')
             listaCMovil = cMovil.fetchall()
             for row in listaCMovil:
-                id_atributo = row['id_atributo']
-                nombre = row['nombre']
-                obligatorio = row['obligatorio']
-                longitud_max = row['longitud_max']
-                longitud_min = row['longitud_min']
-                cLocal.execute('''INSERT INTO atributos(nombre, obligatorio, longitud_max, longitud_min, nuevo) VALUES(?,?,?,?,0)''', (nombre, obligatorio, longitud_max, longitud_min,))
-                _id = cLocal.lastrowid
-                cMovil.execute('''UPDATE atributos_proceso SET id_atributo = ? WHERE id_atributo = ? ''', (_id, id_atributo,))
-                cMovil.execute('''UPDATE atributos_plantilla SET id_atributo = ? WHERE id_atributo = ? ''', (_id, id_atributo,))
+                try:
+                    id_atributo = row['id_atributo']
+                    nombre = row['nombre']
+                    obligatorio = row['obligatorio']
+                    longitud_max = row['longitud_max']
+                    longitud_min = row['longitud_min']
+                    cLocal.execute('''INSERT INTO atributos(nombre, obligatorio, longitud_max, longitud_min, nuevo) VALUES(?,?,?,?,0)''', (nombre, obligatorio, longitud_max, longitud_min,))
+                    _id = cLocal.lastrowid
+                    cMovil.execute('''UPDATE atributos_proceso SET id_atributo = ? WHERE id_atributo = ? ''', (_id, id_atributo,))
+                    cMovil.execute('''UPDATE atributos_plantilla SET id_atributo = ? WHERE id_atributo = ? ''', (_id, id_atributo,))
+                except sqlite3.IntegrityError:
+                    #Si ya existe en la base de datos
+                    atributo_local = Persistence().consultarAtributo(id_atributo)
+                    if obligatorio == 1:
+                        ob = True
+                    else:
+                        ob = False
+                    atributo_movil = CampoPersonalizado(nombre=nombre, obligatorio=ob, longitudMax= longitud_max, longitudMin= longitud_min, id_atributo=unicode(id_atributo))
+                    if atributo_local.getNombre() == atributo_movil.getNombre():
+                        if not SyncConflict(local=atributo_local, movil=atributo_movil).getSeleccionado():
+                            cLocal.execute('''UPDATE atributos SET nombre = ?, obligatorio = ?, longitud_max = ?, longitud_min = ? WHERE id_atributo = ?''', (nombre, obligatorio, longitud_max, longitud_min, id_atributo,))
+                    else:
+                        raise SyncDupException(u'El Campo Personalizado {0} está duplicado en el dispositivo y en el escritorio, por favor elimine uno de los dos e intente sincronizar de nuevo'.format(nombre))
             
+                
             #Seccion Procesos
             cMovil.execute('''SELECT id_proceso, id_demandante, id_demandado, fecha_creacion as "fecha_creacion [timestamp]", radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria FROM procesos WHERE nuevo = 1 AND eliminado = 0''')
             listaCMovil = cMovil.fetchall()
             for row in listaCMovil:
-                id_proceso = row['id_proceso']
-                id_demandante = row['id_demandante']
-                id_demandado = row['id_demandado']
-                fecha_creacion = row['fecha_creacion']
-                radicado = row['radicado']
-                radicado_unico = row['radicado_unico']
-                estado = row['estado']
-                tipo = row['tipo']
-                notas = row['notas']
-                prioridad = row['prioridad']
-                id_juzgado = row['id_juzgado']
-                id_categoria = row['id_categoria']
-                cLocal.execute('''INSERT INTO procesos(id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, nuevo) VALUES (?,?,?,?,?,?,?,?,?,?,?,0)''', (id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria,))
-                _id = cLocal.lastrowid
-                cMovil.execute('''UPDATE atributos_proceso SET id_proceso = ? WHERE id_proceso = ? ''', (_id, id_proceso,))
-                cMovil.execute('''UPDATE actuaciones SET id_proceso = ? WHERE id_proceso = ? ''', (_id, id_proceso,))
+                try:
+                    id_proceso = row['id_proceso']
+                    id_demandante = row['id_demandante']
+                    id_demandado = row['id_demandado']
+                    fecha_creacion = row['fecha_creacion']
+                    radicado = row['radicado']
+                    radicado_unico = row['radicado_unico']
+                    estado = row['estado']
+                    tipo = row['tipo']
+                    notas = row['notas']
+                    prioridad = row['prioridad']
+                    id_juzgado = row['id_juzgado']
+                    id_categoria = row['id_categoria']
+                    cLocal.execute('''INSERT INTO procesos(id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, nuevo) VALUES (?,?,?,?,?,?,?,?,?,?,?,0)''', (id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria,))
+                    _id = cLocal.lastrowid
+                    cMovil.execute('''UPDATE atributos_proceso SET id_proceso = ? WHERE id_proceso = ? ''', (_id, id_proceso,))
+                    cMovil.execute('''UPDATE actuaciones SET id_proceso = ? WHERE id_proceso = ? ''', (_id, id_proceso,))
+                except sqlite3.IntegrityError:
+                    #Si ya existe en la base de datos
+                    p = Persistence()
+                    proceso_local = p.consultarProceso(id_proceso)
+                    demandante = p.consultarPersona(id_demandante, 1)
+                    demandado = p.consultarPersona(id_demandado, 2)
+                    juzgado = p.consultarJuzgado(id_juzgado)
+                    categoria = p.consultarCategoria(id_categoria)
+                    proceso_movil = Proceso(demandante=demandante, demandado=demandado, fecha=fecha_creacion, juzgado=juzgado, radicado=radicado, radicadoUnico=radicado_unico, actuaciones=[],estado=estado, categoria=categoria, tipo=tipo, notas=notas, prioridad=int(prioridad), id_proceso=unicode(id_proceso))
+                    if proceso_local.getRadicado() == proceso_movil.getRadicado():
+                        if not SyncConflict(local=proceso_local, movil=proceso_movil).getSeleccionado():
+                            cLocal.execute('''UPDATE procesos SET id_demandante = ?, id_demandado = ?, fecha_creacion = ?, radicado = ?, radicado_unico = ?, estado = ?, tipo = ?, notas = ?, prioridad = ?, id_juzgado = ?, id_categoria = ?  WHERE id_proceso = ?''', (id_demandante, id_demandado, fecha_creacion, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, id_proceso,))
+                        del p
+                    else:
+                        raise SyncDupException(u'El proceso con radicado {0} está duplicado en el dispositivo y en el escritorio, por favor elimine uno de los dos e intente sincronizar de nuevo'.format(radicado))
             
             #Seccion Plantillas
             cMovil.execute('''SELECT id_plantilla, nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria FROM plantillas WHERE nuevo = 1 AND eliminado = 0''')
             listaCMovil = cMovil.fetchall()
             for row in listaCMovil:
-                id_plantilla = row['id_plantilla']
-                nombre = row['nombre']
-                id_demandante = row['id_demandante']
-                id_demandado = row['id_demandado']
-                radicado = row['radicado']
-                radicado_unico = row['radicado_unico']
-                estado = row['estado']
-                tipo = row['tipo']
-                notas = row['notas']
-                prioridad = row['prioridad']
-                id_juzgado = row['id_juzgado']
-                id_categoria = row['id_categoria']
-                cLocal.execute('''INSERT INTO plantillas(nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, nuevo) VALUES (?,?,?,?,?,?,?,?,?,?,?,0)''', (nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria,))
-                _id = cLocal.lastrowid
-                cMovil.execute('''UPDATE atributos_plantilla SET id_plantilla = ? WHERE id_plantilla = ? ''', (_id, id_plantilla,))
+                try:
+                    id_plantilla = row['id_plantilla']
+                    nombre = row['nombre']
+                    id_demandante = row['id_demandante']
+                    id_demandado = row['id_demandado']
+                    radicado = row['radicado']
+                    radicado_unico = row['radicado_unico']
+                    estado = row['estado']
+                    tipo = row['tipo']
+                    notas = row['notas']
+                    prioridad = row['prioridad']
+                    id_juzgado = row['id_juzgado']
+                    id_categoria = row['id_categoria']
+                    cLocal.execute('''INSERT INTO plantillas(nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, nuevo) VALUES (?,?,?,?,?,?,?,?,?,?,?,0)''', (nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria,))
+                    _id = cLocal.lastrowid
+                    cMovil.execute('''UPDATE atributos_plantilla SET id_plantilla = ? WHERE id_plantilla = ? ''', (_id, id_plantilla,))
+                except sqlite3.IntegrityError:
+                    #Si ya existe en la base de datos
+                    p = Persistence()
+                    plantilla_local = p.consultarPlantilla(id_plantilla)
+                    demandante = p.consultarPersona(id_demandante, 1)
+                    demandado = p.consultarPersona(id_demandado, 2)
+                    juzgado = p.consultarJuzgado(id_juzgado)
+                    categoria = p.consultarCategoria(id_categoria)
+                    plantilla_movil = Plantilla(nombre=nombre,demandante=demandante, demandado=demandado, juzgado=juzgado, radicado=radicado, radicadoUnico=radicado_unico, estado=estado, categoria=categoria, tipo=tipo, notas=notas, campos = [],prioridad=int(prioridad), id_plantilla=unicode(id_plantilla))
+                    if plantilla_local.getNombre() == plantilla_movil.getNombre():
+                        if not SyncConflict(local=plantilla_local, movil=plantilla_movil).getSeleccionado():
+                            cLocal.execute('''UPDATE plantillas SET nombre = ?, id_demandante = ?, id_demandado = ?, radicado = ?, radicado_unico = ?, estado = ?, tipo = ?, notas = ?, prioridad = ?, id_juzgado = ?, id_categoria = ?  WHERE id_plantilla = ?''', (nombre, id_demandante, id_demandado, radicado, radicado_unico, estado, tipo, notas, prioridad, id_juzgado, id_categoria, id_plantilla,))
+                        del p
+                    else:
+                        raise SyncDupException(u'La plantilla {0} está duplicada en el dispositivo y en el escritorio, por favor elimine uno de los dos e intente sincronizar de nuevo'.format(nombre))
             
             #Seccion Actuaciones
-            cMovil.execute('''SELECT id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE nuevo = 1 AND eliminado = 0''')
+            cMovil.execute('''SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE nuevo = 1 AND eliminado = 0''')
             for row in cMovil:
-                id_proceso = row['id_proceso']
-                id_juzgado = row['id_juzgado']
-                fecha_creacion = row['fecha_creacion']
-                fecha_proxima = row['fecha_proxima']
-                descripcion = row['descripcion']
-                uid = row['uid']
-                cLocal.execute('''INSERT INTO actuaciones(id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid, nuevo) VALUES(?,?,?,?,?,?,0)''', (id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid,))
-
+                try:
+                    id_actuacion = row['id_actuacion']
+                    id_proceso = row['id_proceso']
+                    id_juzgado = row['id_juzgado']
+                    fecha_creacion = row['fecha_creacion']
+                    fecha_proxima = row['fecha_proxima']
+                    descripcion = row['descripcion']
+                    uid = row['uid']
+                    cLocal.execute('''INSERT INTO actuaciones(id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid, nuevo) VALUES(?,?,?,?,?,?,0)''', (id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid,))
+                except sqlite3.IntegrityError:
+                    #Si ya existe en la base de datos
+                    p = Persistence()
+                    actuacion_local = p.consultarActuacion(id_actuacion)
+                    juzgado = p.consultarJuzgado(id_juzgado)
+                    actuacion_movil = Actuacion(juzgado=juzgado, fecha=fecha_creacion, fechaProxima=fecha_proxima, descripcion=descripcion, id_actuacion=unicode(id_actuacion))
+                    if actuacion_local.getId_proceso() == actuacion_movil.getId_proceso():
+                        if not SyncConflict(local=actuacion_local, movil=actuacion_movil).getSeleccionado():
+                            cLocal.execute('''UPDATE actuaciones SET id_proceso = ?, id_juzgado = ?, fecha_creacion = ?, fecha_proxima = ?, descripcion = ?, uid = ? WHERE id_actuacion = ?''', (id_proceso, id_juzgado, fecha_creacion, fecha_proxima, descripcion, uid, id_actuacion,))
+                        del p
+                    else:
+                        raise SyncDupException(u'La actuación {0} está duplicada en el dispositivo y en el escritorio, por favor elimine uno de los dos e intente sincronizar de nuevo'.format(descripcion))
+                    
             #Seccion Atributos por Proceso
-            cMovil.execute('''SELECT id_atributo, id_proceso, valor FROM atributos_proceso WHERE nuevo = 1 AND eliminado = 0''')
+            cMovil.execute('''SELECT id_atributo_proceso, id_atributo, id_proceso, valor FROM atributos_proceso WHERE nuevo = 1 AND eliminado = 0''')
             for row in cMovil:
-                id_atributo = row['id_atributo']
-                id_proceso = row['id_proceso']
-                valor = row['valor']
-                cLocal.execute('''INSERT INTO atributos_proceso(id_atributo, id_proceso, valor, nuevo) VALUES (?,?,?,0)''', (id_atributo, id_proceso, valor,))
-                
+                try:
+                    id_atributo_proceso = row['id_atributo_proceso']
+                    id_atributo = row['id_atributo']
+                    id_proceso = row['id_proceso']
+                    valor = row['valor']
+                    cLocal.execute('''INSERT INTO atributos_proceso(id_atributo, id_proceso, valor, nuevo) VALUES (?,?,?,0)''', (id_atributo, id_proceso, valor,))
+                except sqlite3.IntegrityError:
+                    #Si ya existe en la base de datos
+                    p = Persistence()
+                    atributo_local = p.consultarCampo(id_atributo_proceso)
+                    atributo_movil = p.consultarCampo(id_atributo_proceso)
+                    atributo_movil.setValor(valor)
+                    if valor != atributo_local.getValor():
+                        if not SyncConflict(local=atributo_local, movil=atributo_movil).getSeleccionado():
+                            cLocal.execute('''UPDATE atributos_proceso SET id_atributo = ?, id_proceso = ?, valor = ? WHERE id_atributo_proceso = ?''', (id_atributo, id_proceso, valor, id_atributo_proceso,))
+                        del p
+                    else:
+                        raise SyncDupException(u'El campo por proceso {0} está duplicado en el dispositivo y en el escritorio, por favor elimine uno de los dos e intente sincronizar de nuevo'.format(atributo_local.getNombre()))
+                    
             #Seccion Atributos por plantilla
-            cMovil.execute('''SELECT id_atributo, id_plantilla, valor FROM atributos_plantilla WHERE nuevo = 1 AND eliminado = 0''')
+            cMovil.execute('''SELECT id_atributo_plantilla,id_atributo, id_plantilla, valor FROM atributos_plantilla WHERE nuevo = 1 AND eliminado = 0''')
             for row in cMovil:
-                id_atributo = row['id_atributo']
-                id_plantilla = row['id_plantilla']
-                valor = row['valor']
-                cLocal.execute('''INSERT INTO atributos_plantilla(id_atributo, id_plantilla, valor, nuevo) VALUES (?,?,?,0)''', (id_atributo, id_plantilla, valor,))
-            
+                try:
+                    id_atributo_plantilla = row['id_atributo_plantilla']
+                    id_atributo = row['id_atributo']
+                    id_plantilla = row['id_plantilla']
+                    valor = row['valor']
+                    cLocal.execute('''INSERT INTO atributos_plantilla(id_atributo, id_plantilla, valor, nuevo) VALUES (?,?,?,0)''', (id_atributo, id_plantilla, valor,))
+                except sqlite3.IntegrityError:
+                    #Si ya existe en la base de datos
+                    p = Persistence()
+                    atributo_local = p.consultarCampoPlantilla(id_atributo_plantilla)
+                    atributo_movil = p.consultarCampo(id_atributo_proceso)
+                    atributo_movil.setValor(valor)
+                    if valor != atributo_local.getValor():
+                        if not SyncConflict(local=atributo_local, movil=atributo_movil).getSeleccionado():
+                            cLocal.execute('''UPDATE atributos_plantilla SET id_atributo = ?, id_plantilla = ?, valor = ? WHERE id_atributo_plantilla = ?''', (id_atributo, id_plantilla, valor, id_atributo_plantilla,))
+                        del p
+                    else:
+                        raise SyncDupException(u'El campo por plantilla {0} está duplicado en el dispositivo y en el escritorio, por favor elimine uno de los dos e intente sincronizar de nuevo'.format(atributo_local.getNombre()))
+                    
+                
             #Seccion Citas
             cMovil.execute('''SELECT  id_cita, uid,fecha as "fecha [timestamp]", descripcion, anticipacion, alarma, id_actuacion FROM citas WHERE nuevo = 1 AND eliminado = 0''')
             for row in cMovil:
