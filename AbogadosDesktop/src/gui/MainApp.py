@@ -425,8 +425,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 proceso = VerProceso(proc)
                 #Agregar elemento derecho y ponerle un tamano maximo
                 nuevoElemento = ColumnaDerecha(titulo=False, centralWidget=proceso)
-                nuevoElemento.setMaximumWidth(340)
-                nuevoElemento.setMinimumWidth(310)
+                nuevoElemento.setMaximumWidth(360)
+                nuevoElemento.setMinimumWidth(300)
                 self.gridLayout.addWidget(nuevoElemento, 0, 1, 1, 1)
                 self.connect(nuevoElemento.btnEditar, QtCore.SIGNAL('clicked()'), self.procesoEditarClicked)
                 self.connect(nuevoElemento.btnEliminar, QtCore.SIGNAL('clicked()'), self.procesoEliminarClicked)
@@ -440,7 +440,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 nuevoElemento = ColumnaDerecha(titulo=False, centralWidget=proceso)
                 if self.listaIzquierda.currentItem().text() == MainApp.TXTACTUACIONES:
                     nuevoElemento.getCentralWidget().tabWidget.setCurrentIndex(1)
-                nuevoElemento.setMaximumWidth(340)
+                nuevoElemento.setMaximumWidth(360)
                 nuevoElemento.setMinimumWidth(310)
                 self.gridLayout.addWidget(nuevoElemento, 0, 1, 1, 1)
                 self.connect(nuevoElemento.btnEditar, QtCore.SIGNAL('clicked()'), self.procesoEditarClicked)
@@ -453,7 +453,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 plantilla = VerPlantilla(item.getObjeto())
                 #Agregar elemento derecho y ponerle un tamano maximo
                 nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=plantilla, plantilla=True)
-                nuevoElemento.setMaximumWidth(310)
+                nuevoElemento.setMaximumWidth(360)
                 nuevoElemento.setMinimumWidth(310)
                 self.gridLayout.addWidget(nuevoElemento, 0, 1, 1, 1)
                 self.connect(nuevoElemento.btnCrearProceso, QtCore.SIGNAL('clicked()'), self.plantillaNuevoProcesoClicked)
@@ -467,7 +467,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 persona = VerPersona(item.getObjeto())
                 #Agregar elemento derecho y ponerle un tamano maximo
                 nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=persona)
-                nuevoElemento.setMaximumWidth(310)
+                nuevoElemento.setMaximumWidth(360)
                 self.gridLayout.addWidget(nuevoElemento, 0, 1, 1, 1)
                 self.connect(nuevoElemento.btnEditar, QtCore.SIGNAL('clicked()'), self.personaEditarClicked)
                 self.connect(nuevoElemento.btnEliminar, QtCore.SIGNAL('clicked()'), self.personaEliminarClicked)
@@ -479,7 +479,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 juzgado = VerJuzgado(item.getObjeto())
                 #Agregar elemento derecho y ponerle un tamano maximo
                 nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=juzgado)
-                nuevoElemento.setMaximumWidth(310)
+                nuevoElemento.setMaximumWidth(360)
                 nuevoElemento.setMinimumWidth(310)
                 self.gridLayout.addWidget(nuevoElemento, 0, 1, 1, 1)
                 self.connect(nuevoElemento.btnEditar, QtCore.SIGNAL('clicked()'), self.juzgadoEditarClicked)
@@ -492,7 +492,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 categoria = VerCategoria(item.getObjeto())
                 #Agregar elemento derecho y ponerle un tamano maximo
                 nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=categoria)
-                nuevoElemento.setMaximumWidth(310)
+                nuevoElemento.setMaximumWidth(360)
                 nuevoElemento.setMinimumWidth(310)
                 self.gridLayout.addWidget(nuevoElemento, 0, 1, 1, 1)
                 self.connect(nuevoElemento.btnEditar, QtCore.SIGNAL('clicked()'), self.categoriaEditarClicked)
@@ -587,7 +587,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                     elementoGrid.setParent(None)
                     campo = VerCampoPersonalizado(item.getObjeto())
                     nuevoElemento = ColumnaDerecha(titulo=True, centralWidget=campo)
-                    nuevoElemento.setMaximumWidth(310)
+                    nuevoElemento.setMaximumWidth(360)
                     nuevoElemento.setMinimumWidth(310)
                     self.gridLayout.addWidget(nuevoElemento, 0, 1, 1, 1)
                     self.connect(nuevoElemento.btnEditar, QtCore.SIGNAL('clicked()'), self.campoEditarClicked)

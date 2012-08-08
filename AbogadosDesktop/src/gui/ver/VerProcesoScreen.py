@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'verProceso.ui'
+# Form implementation generated from reading ui file 'uis/verProceso.ui'
 #
-# Created: Fri Aug  3 15:01:00 2012
+# Created: Wed Aug  8 17:50:40 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,12 +12,13 @@ from PySide import QtCore, QtGui
 class Ui_VerProceso(object):
     def setupUi(self, VerProceso):
         VerProceso.setObjectName("VerProceso")
-        VerProceso.resize(399, 396)
+        VerProceso.resize(390, 500)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(VerProceso.sizePolicy().hasHeightForWidth())
         VerProceso.setSizePolicy(sizePolicy)
+        VerProceso.setMinimumSize(QtCore.QSize(350, 500))
         self.gridLayout_2 = QtGui.QGridLayout(VerProceso)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.tabWidget = QtGui.QTabWidget(VerProceso)
@@ -30,7 +31,7 @@ class Ui_VerProceso(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 369, 345))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 318, 419))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout = QtGui.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout.setObjectName("verticalLayout")

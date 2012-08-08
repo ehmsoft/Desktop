@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'verPersona.ui'
+# Form implementation generated from reading ui file 'uis/verPersona.ui'
 #
-# Created: Wed Jan 25 10:47:55 2012
-#      by: pyside-uic 0.2.13 running on PySide 1.0.7
+# Created: Wed Aug  8 17:50:05 2012
+#      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,8 @@ from PySide import QtCore, QtGui
 class Ui_VerPersona(object):
     def setupUi(self, VerPersona):
         VerPersona.setObjectName("VerPersona")
-        VerPersona.resize(366, 222)
+        VerPersona.resize(384, 217)
+        VerPersona.setMinimumSize(QtCore.QSize(300, 217))
         self.gridLayout = QtGui.QGridLayout(VerPersona)
         self.gridLayout.setObjectName("gridLayout")
         self.groupBox = QtGui.QGroupBox(VerPersona)
@@ -21,6 +22,7 @@ class Ui_VerPersona(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.groupBox.sizePolicy().hasHeightForWidth())
         self.groupBox.setSizePolicy(sizePolicy)
+        self.groupBox.setMinimumSize(QtCore.QSize(0, 0))
         self.groupBox.setTitle("")
         self.groupBox.setObjectName("groupBox")
         self.gridLayout_2 = QtGui.QGridLayout(self.groupBox)
