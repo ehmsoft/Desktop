@@ -78,7 +78,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             message.setIcon(QtGui.QMessageBox.Warning)
             message.setText(u'Ocurrió un error al cargar la base de datos')
             message.exec_()
-            
+        
+        print self.verificarActivacion()
         self.__gestor = GestorCitas(self)
         self.__gestor.actualizarCitas()
         self.setTrayIcon()
@@ -1078,7 +1079,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         fname = QtGui.QFileDialog.getOpenFileName(self, 'Importar Archivo')[0]
         if fname != '':
             if QtGui.QMessageBox.question(self, "Restaurar Archivo", u"Si continúa, se borrará toda la información que tiene en el programa y se reemplazará por la información del arhivo que está importando. ¿Seguro que desea Continuar?", QtGui.QMessageBox.Yes | QtGui.QMessageBox.No) == QtGui.QMessageBox.Yes:
-                shutil.copy(fname, ConnectionManager().getDbLocation())
+                shutil.copy(fname, ConnectionManager(MainApp.CARPETAEHM).getDbLocation())
     
     def about(self):
         QtGui.QMessageBox.about(self, "Acerca de Procesos Judiciales",
@@ -1115,6 +1116,15 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         if not exists(MainApp.CARPETAEHM):
             mkdir(MainApp.CARPETAEHM)
         
+    def verificarActivacion(self):
+        try:
+            activado = self.__persistence.consultarPreferencia(998)
+            if activado == 1:
+                return True
+            else:
+                return False
+        except:
+            QtGui.QMessageBox.warning(self, 'Error', u'Ocurrió un error al verificar la activación de la aplicación. La aplicación se cerrará. Reiniciéla, si el problema persiste, contacte a soporte@ehmsoft.com')
 import sys
 translator = MyTranslator()
 app = QtGui.QApplication(sys.argv)
