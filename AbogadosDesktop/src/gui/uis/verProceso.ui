@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>399</width>
-    <height>396</height>
+    <height>550</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -16,22 +16,55 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>350</width>
+    <height>550</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Ver Proceso</string>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
+   <property name="margin">
+    <number>5</number>
+   </property>
    <item row="0" column="0">
     <widget class="QTabWidget" name="tabWidget">
+     <property name="minimumSize">
+      <size>
+       <width>375</width>
+       <height>490</height>
+      </size>
+     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
      <widget class="QWidget" name="tabProceso">
+      <property name="minimumSize">
+       <size>
+        <width>370</width>
+        <height>490</height>
+       </size>
+      </property>
+      <property name="sizeIncrement">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
       <attribute name="title">
        <string>Info. Proceso</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
        <item row="0" column="0">
         <widget class="QScrollArea" name="scrollArea">
+         <property name="minimumSize">
+          <size>
+           <width>340</width>
+           <height>490</height>
+          </size>
+         </property>
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
@@ -40,8 +73,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>369</width>
-            <height>345</height>
+            <width>341</width>
+            <height>488</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">

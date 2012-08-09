@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'verJuzgado.ui'
+# Form implementation generated from reading ui file 'uis/verJuzgado.ui'
 #
-# Created: Thu Feb  2 15:43:50 2012
-#      by: pyside-uic 0.2.13 running on PySide 1.0.7
+# Created: Wed Aug  8 17:50:11 2012
+#      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,13 @@ from PySide import QtCore, QtGui
 class Ui_VerJuzgado(object):
     def setupUi(self, VerJuzgado):
         VerJuzgado.setObjectName("VerJuzgado")
-        VerJuzgado.resize(381, 190)
+        VerJuzgado.resize(384, 190)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(VerJuzgado.sizePolicy().hasHeightForWidth())
+        VerJuzgado.setSizePolicy(sizePolicy)
+        VerJuzgado.setMinimumSize(QtCore.QSize(300, 190))
         self.gridLayout = QtGui.QGridLayout(VerJuzgado)
         self.gridLayout.setObjectName("gridLayout")
         self.groupBox = QtGui.QGroupBox(VerJuzgado)

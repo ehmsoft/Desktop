@@ -291,7 +291,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
                 self.lblJuzgado.setText(self.__juzgado.getNombre())
                 if (isinstance(self.__dialogo.getWidget(), VerJuzgado)):
                     vista = VerJuzgado(self.__juzgado, self)
-                    self.horizontalLayout.addWidget(vista)
+                    self.__dialogo.setWidget(vista)
             del(dialogo)
     
     def __editarCategoria(self):
