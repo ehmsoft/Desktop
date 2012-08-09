@@ -144,23 +144,22 @@ class CitaCalendario(object):
         if other is None:
             return False
         if isinstance(other, CitaCalendario):
-            if self.__fecha != other.getFecha():
-                return False
-            if self.__anticipacion != other.getAnticipacion():
-                return False
             if self.__id_actuacion != other.getId_actuacion():
-                return False
-            if self.__id_cita != other.getId_cita():
-                return False
-            if self.__uid != other.getUid():
-                return False
-            if self.__descripcion != other.getDescripcion():
-                return False
-            if self.__alarma != other.isAlarma():
                 return False
             return True
         else:
             return False
+        
+        
+    def __ne__(self, other):
+        if other is None:
+            return True
+        if isinstance(other, CitaCalendario):
+            if self.__id_actuacion != other.getId_actuacion():
+                return True
+            return False
+        else:
+            return True
     
     #>=
     def __gt__(self, other):
@@ -189,25 +188,3 @@ class CitaCalendario(object):
             return True
         else:
             return False
-
-    def __ne__(self, other):
-        if other is None:
-            return True
-        if isinstance(other, CitaCalendario):
-            if self.__fecha != other.getFecha():
-                return True
-            if self.__anticipacion != other.getAnticipacion():
-                return True
-            if self.__id_actuacion != other.getId_actuacion():
-                return True
-            if self.__id_cita != other.getId_cita():
-                return True
-            if self.__uid != other.getUid():
-                return True
-            if self.__descripcion != other.getDescripcion():
-                return True
-            if self.__alarma != other.isAlarma():
-                return True
-            return False
-        else:
-            return True
