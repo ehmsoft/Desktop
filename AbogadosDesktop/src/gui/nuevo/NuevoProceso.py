@@ -25,6 +25,7 @@ from core.Categoria import Categoria
 from gui.DialogoAuxiliar import DialogoAuxiliar
 from core.Plantilla import Plantilla
 from gui import Util
+from gui.GestorCitas import GestorCitas
 
 class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     '''
@@ -372,10 +373,30 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
                 self.__proceso.setPrioridad(prioridad)
                 self.__proceso.setCampos(campos)
                 p.actualizarProceso(self.__proceso)
+            self.guardarCitas(actuaciones)
         except Exception, e:
             print "Guardar proceso -> %s con %s" % (e, e.args)
         finally:
             return QtGui.QDialog.accept(self)
+        
+    def guardarCitas(self, actuaciones):
+        p = Persistence()
+        gestor = GestorCitas()
+        for actuacion in actuaciones:
+            if hasattr(actuacion, 'cita'):
+                if actuacion.cita:
+                    cita = actuacion.cita
+                    cita.setId_actuacion(actuacion.getId_actuacion())
+                    try:
+                        if not cita.getId_cita():
+                            p.guardarCitaCalendario(cita)
+                        else:
+                            p.actualizarCitaCalendario(cita)
+                        return QtGui.QDialog.accept(self)
+                        gestor.actualizarCitas()
+                    except Exception, e:
+                        print e
+                        return QtGui.QDialog.reject(self)
                 
     def getProceso(self):
         return self.__proceso
