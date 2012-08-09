@@ -11,9 +11,10 @@ from persistence.Persistence import Persistence
 from gui.GestorCitas import GestorCitas
 
 class NuevaCita(QtGui.QDialog, Ui_Cita):
-    def __init__(self, actuacion=None, cita=None, fecha=None, parent=None):
+    def __init__(self, actuacion=None, cita=None, fecha=None, parent=None, isGuardar = True):
         super(NuevaCita, self).__init__(parent)
         self.setupUi(self)
+        self.isGuardar = isGuardar
         self.cita = cita
         self.actuacion = actuacion
         self.checkBox.stateChanged.connect(self.checkBoxChanged)
@@ -76,14 +77,24 @@ class NuevaCita(QtGui.QDialog, Ui_Cita):
         descripcion = self.descripcion.text()
         alarma = self.checkBox.isChecked()
         if not self.cita:
+            if self.isGuardar:
+                id_actuacion = self.actuacion.getId_actuacion()
+            else:
+                id_actuacion = None
             self.cita = CitaCalendario(fecha=fecha, anticipacion=anticipacion,
                                        descripcion=descripcion, alarma=alarma,
-                                       id_cita=None, id_actuacion=self.actuacion.getId_actuacion(), uid='')
+                                       id_cita=None, id_actuacion=id_actuacion, uid='')
         else:
             self.cita.setFecha(fecha)
             self.cita.setAnticipacion(anticipacion)
             self.cita.setAlarma(alarma)
             self.cita.setDescripcion(descripcion)
+        if self.isGuardar:
+            self.guardarEnBD()
+        else:
+            return QtGui.QDialog.accept(self)
+            
+    def guardarEnBD(self):
         try:
             p = Persistence()
             if self.cita.getId_cita() == None:
@@ -96,7 +107,6 @@ class NuevaCita(QtGui.QDialog, Ui_Cita):
         except Exception, e:
             print e
             return QtGui.QDialog.reject(self)
-
             
     def accept(self):
         self.guardar()
