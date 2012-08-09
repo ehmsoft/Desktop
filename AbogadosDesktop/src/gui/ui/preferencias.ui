@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>Preferencias</class>
+ <widget class="QWidget" name="Preferencias">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>293</width>
-    <height>506</height>
+    <width>247</width>
+    <height>410</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -46,7 +46,7 @@
      <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Tipo de alarma:</string>
+        <string>Alarma:</string>
        </property>
       </widget>
      </item>
@@ -81,12 +81,26 @@
            </property>
           </widget>
          </item>
+         <item>
+          <widget class="QCheckBox" name="checkBox">
+           <property name="text">
+            <string>Correo electrónico</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit"/>
+         </item>
         </layout>
        </item>
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_3"/>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -103,61 +117,6 @@
           <string>Aceptar</string>
          </property>
         </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Orden del menu:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_8">
-       <item>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
-         <property name="leftMargin">
-          <number>9</number>
-         </property>
-         <item>
-          <widget class="QPushButton" name="OrdenArribaBtn">
-           <property name="text">
-            <string>Arriba</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="OrdenAbajoBtn">
-           <property name="text">
-            <string>Abajo</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>40</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QPushButton" name="OrdenRestablecerBtn">
-           <property name="text">
-            <string>Restablecer</string>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QListWidget" name="listaMainApp"/>
        </item>
       </layout>
      </item>
