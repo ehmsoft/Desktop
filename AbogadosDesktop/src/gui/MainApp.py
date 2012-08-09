@@ -5,6 +5,7 @@ Created on 30/01/2012
 
 @author: elfotografo007
 '''
+import sys
 import shutil
 import platform
 from os.path import exists, join
@@ -48,6 +49,7 @@ from gui.Preferencias_GUI import Preferencias_GUI
 from core.Preferencias import Preferencias
 from gui.MyTranslator import MyTranslator
 from gui import MainAppScreen
+from gui.AsistenteRegistro import AsistenteRegistro
 __version__ = '1.0'
 
 class MainApp(QtGui.QMainWindow, Ui_mainApp):
@@ -79,6 +81,9 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             message.setText(u'Ocurrió un error al cargar la base de datos')
             message.exec_()
             
+        if not self.verificarActivacion():
+            self.activarPrograma()
+                    
         self.__gestor = GestorCitas(self)
         self.__gestor.actualizarCitas()
         self.setTrayIcon()
@@ -1114,8 +1119,29 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
     def verificarCarpetaDocumentos(self): 
         if not exists(MainApp.CARPETAEHM):
             mkdir(MainApp.CARPETAEHM)
-        
-import sys
+      
+    def verificarActivacion(self):
+        try:
+            activado = self.__persistence.consultarPreferencia(998)
+            if activado == 1:
+                return True
+            else:
+                return False
+        except:
+            QtGui.QMessageBox.warning(self, "Error", u"Ha ocurrido un problema verificando la activación de la aplicación, esta se cerrará. Por favor vuelva a iniciarla.\nSi el problema persiste contacte a soporte@ehmsoft.com")
+            sys.exit(0)
+            
+    def activarPrograma(self):
+        asistenteRegistro = AsistenteRegistro()
+        if asistenteRegistro.exec_():
+            if asistenteRegistro.isValid():
+                try:
+                    self.__persistence.actualizarPreferencia(998, 1)
+                    return
+                except:
+                    QtGui.QMessageBox.warning(self, "Error", u"Ha ocurrido un problema verificando la activación de la aplicación, esta se cerrará. Por favor vuelva a iniciarla.\nSi el problema persiste contacte a soporte@ehmsoft.com")
+        sys.exit(0)
+
 translator = MyTranslator()
 app = QtGui.QApplication(sys.argv)
 app.installTranslator(translator)
