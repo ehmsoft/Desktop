@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-from PySide.QtCore import *
-from PySide.QtGui import *
+from PySide import QtCore, QtGui
 from persistence.Persistence import Persistence
 from gui.ListadoBusqueda import ListadoBusqueda
 
         
-class ListadoDialogo (QDialog):
+class ListadoDialogo (QtGui.QDialog):
     DEMANDANTE = 1
     DEMANDADO = 2
     JUZGADO = 3
@@ -17,11 +16,13 @@ class ListadoDialogo (QDialog):
     CAMPODEMANDADO = 9
     PROCESO = 10
     PLANTILLA = 11
+    ACTUACION = 12
     
-    def __init__(self, tipo, parent = None):
+    def __init__(self, tipo, parent = None, proceso = None):
         super(ListadoDialogo, self).__init__(parent)
         
         self.__tipo = tipo
+        self.__proceso = proceso
         self.__p = Persistence()
         self.__editado = []
         self.__eliminado = []
@@ -59,13 +60,19 @@ class ListadoDialogo (QDialog):
         elif self.__tipo is self.__class__.PLANTILLA:
             objetos = self.__p.consultarPlantillas()
             self.setWindowTitle('Seleccione una plantilla')
+        elif self.__tipo is self.ACTUACION:
+            if proceso:
+                self.setWindowTitle('Seleccione una actuación')
+                objetos = self.__p.consultarActuaciones(proceso)
+            else:
+                raise AttributeError('Proceso no puede ser None')
             
-        groupBox = QGroupBox("Seleccione un elemento")           
+        groupBox = QtGui.QGroupBox("Seleccione un elemento")           
         self.lista = ListadoBusqueda(objetos)
-        btnAgregar = QPushButton('+')
-        layout = QVBoxLayout()
-        layoutBox = QVBoxLayout() 
-        buttonlayout = QHBoxLayout()
+        btnAgregar = QtGui.QPushButton('+')
+        layout = QtGui.QVBoxLayout()
+        layoutBox = QtGui.QVBoxLayout() 
+        buttonlayout = QtGui.QHBoxLayout()
         buttonlayout.addStretch()
         layout.addWidget(self.lista.getSearchField())
         layout.addWidget(self.lista)
@@ -75,8 +82,9 @@ class ListadoDialogo (QDialog):
         layoutBox.addLayout(buttonlayout)
         self.setLayout(layoutBox)
         self.lista.itemClicked.connect(self.click)
-        self.connect(btnAgregar, SIGNAL("clicked()"), self.button)
-        self.lista.setContextMenuPolicy(Qt.ActionsContextMenu)
+        #self.connect(btnAgregar, SIGNAL("clicked()"), self.button)
+        btnAgregar.clicked.connect(self.button)
+        self.lista.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
         
         actionEliminar = self.__createAction("Eliminar", self.eliminar)
         actionAgregar = self.__createAction("Agregar", self.button)
@@ -100,6 +108,7 @@ class ListadoDialogo (QDialog):
         from gui.nuevo.NuevoCampo import NuevoCampo
         from gui.nuevo.NuevoProceso import NuevoProceso
         from gui.nuevo.NuevaPlantilla import NuevaPlantilla
+        from gui.nuevo.NuevaActuacion import NuevaActuacion
         
         if self.__tipo is self.__class__.DEMANDANTE:
             nuevaPersona = NuevaPersona(tipo = 1 , parent = self)
@@ -167,23 +176,18 @@ class ListadoDialogo (QDialog):
                 plantilla = nuevaPlantilla.getPlantilla()
                 self.lista.add(plantilla)
                 self.__agregado.append(plantilla)
-        
-                
+        elif self.__tipo is self.ACTUACION:
+            nuevaActuacion = NuevaActuacion(parent=self)
+            if nuevaActuacion.exec_():
+                actuacion = nuevaActuacion.getActuacion()
+                self.__p.guardarActuacion(actuacion, self.__proceso.getId_proceso())
+                self.lista.add(actuacion)
+                self.__agregado.append(actuacion)
     
-    
-    def __createAction(self, text, slot = None, shortcut = None, icon = None, tip = None, checkable = False, signal = "triggered()"):
-        action = QAction(text, self)
-        if icon is not None:
-            action.setIcon(QIcon("./images/%s.png" % icon))
-        if shortcut is not None:
-            action.setShortcut(shortcut)
-        if tip is not None:
-            action.setToolTip(tip)
-            action.setStatusTip(tip)
+    def __createAction(self, text, slot = None, signal = "triggered()"):
+        action = QtGui.QAction(text, self)
         if slot is not None:
-            self.connect(action, SIGNAL(signal), slot)
-        if checkable:
-            action.setCheckable(True)
+            self.connect(action, QtCore.SIGNAL(signal), slot)
         return action       
     
     def eliminar(self):
@@ -220,6 +224,9 @@ class ListadoDialogo (QDialog):
             self.__eliminado.append(objeto)
         elif self.__tipo is self.__class__.PLANTILLA:
             self.__p.borrarPlantilla(objeto)
+            self.__eliminado.append(objeto)
+        elif self.__tipo is self.ACTUACION:
+            self.__p.borrarActuacion(objeto)
             self.__eliminado.append(objeto) 
         self.lista.remove()
             
@@ -231,6 +238,7 @@ class ListadoDialogo (QDialog):
         from gui.nuevo.NuevoCampo import NuevoCampo
         from gui.nuevo.NuevoProceso import NuevoProceso
         from gui.nuevo.NuevaPlantilla import NuevaPlantilla
+        from gui.nuevo.NuevaActuacion import NuevaActuacion
         if self.__tipo is self.__class__.DEMANDANTE:
             nuevaPersona = NuevaPersona(persona = self.lista.currentItem().getObjeto(), tipo = 1 , parent = self)
             if nuevaPersona.exec_():
@@ -297,6 +305,12 @@ class ListadoDialogo (QDialog):
                 plantilla = nuevaPlantilla.getProceso()
                 self.lista.replace(plantilla)
                 self.__editado.append(plantilla)
+        elif self.__tipo is self.ACTUACION:
+            nuevaActuacion = NuevaActuacion(actuacion = self.lista.currentItem().getObjeto(), parent = self)
+            if nuevaActuacion.exec_():
+                actuacion = nuevaActuacion.getActuacion()
+                self.lista.replace(actuacion)
+                self.__editado.append(actuacion)            
 
     def getEditados(self):
         return self.__editado
