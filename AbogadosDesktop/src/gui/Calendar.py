@@ -16,7 +16,6 @@ from gui.ListadoDialogo import ListadoDialogo
 from copy import deepcopy
 from gui.GestorCitas import GestorCitas
 from datetime import timedelta
-from gui.ListadoBusqueda import ListadoBusqueda
 
 class QCalendar(QtGui.QCalendarWidget):
     def __init__(self, citas=[], *args, **kwargs):
@@ -91,6 +90,9 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         self.lista2.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
         self.lista2.addActions([actionEliminar, actionEditar])
         
+        self.lista3.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+        self.lista3.addActions([actionEliminar, actionEditar])
+        
     def __clickEliminar(self):
         items = self.lista3.selectedItems()
         if len(items) != 0:
@@ -137,8 +139,10 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         if ret == QtGui.QMessageBox.Yes:
             if self.tabWidget.currentIndex() == 0:
                 cita = self.lista.currentItem().getObjeto()
-            else:
+            elif self.tabWidget.currentIndex() == 1:
                 cita = self.lista2.currentItem().getObjeto()
+            else:
+                cita = self.lista3.currentItem().getObjeto()
             try:
                 p = Persistence()
                 p.borrarCitaCalendario(cita)
@@ -150,8 +154,10 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
     def __editar(self):
         if self.tabWidget.currentIndex() == 0:
             cita = self.lista.currentItem().getObjeto()
-        else:
+        elif self.tabWidget.currentIndex() == 1:
             cita = self.lista2.currentItem().getObjeto()
+        else:
+            cita = self.lista3.currentItem().getObjeto()
         editar = NuevaCita(cita=cita, parent=self)
         if editar.exec_():
             self.__redibujar()
@@ -164,26 +170,39 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         procesos = ListadoDialogo(ListadoDialogo.PROCESO, self)
         if procesos.exec_():
             proceso = procesos.getSelected()
-            actuaciones = DialogoActuaciones(proceso, self)
+            actuaciones = ListadoDialogo(tipo = ListadoDialogo.ACTUACION, parent = self, proceso = proceso)
             if actuaciones.exec_():
                 actuacion = actuaciones.getSelected()
-                dialogo = NuevaCita(actuacion=actuacion, parent=self)
-                if dialogo.exec_():
-                    cita = dialogo.getCita()
-                    self.__ubicarCita(cita)
-                    self.__redibujar()
-                dialogo.setParent(None)
+                if not self.hasCita(actuacion.getId_actuacion()):
+                    dialogo = NuevaCita(actuacion=actuacion, parent=self)
+                    if dialogo.exec_():
+                        cita = dialogo.getCita()
+                        self.__ubicarCita(cita)
+                        self.__redibujar()
+                    dialogo.setParent(None)
+                else:
+                    QtGui.QMessageBox.information(self,'Error', u'La actuación ya tiene una cita asignada')
             actuaciones.setParent(None)
         procesos.setParent(None)
+        
+    def hasCita(self, id_actuacion):
+        for cita in self.__citas:
+            if cita.getId_actuacion() == id_actuacion:
+                return True
+        else:
+            return False
                     
     def __ubicarCita(self, cita):
-        for c in self.__citas:
-            if cita <= c:
-                index = self.__citas.index(c)
-                self.__citas.insert(index, cita)
-                break
+        if cita not in self.__citas:
+            for c in self.__citas:
+                if cita <= c:
+                    index = self.__citas.index(c)
+                    self.__citas.insert(index, cita)
+                    break
+            else:
+                self.__citas.append(cita)
         else:
-            self.__citas.append(cita) 
+            QtGui.QMessageBox.information(self, 'Error', u'La actuación seleccionada ya tiene cita asociada')
     
     def __redibujar(self):
         gestor = GestorCitas(self)
@@ -246,22 +265,3 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
                 c = deepcopy(cita)
                 c.setConFecha(False)
                 self.lista2.addItem(ItemListas(c, self.lista2))
-            
-class DialogoActuaciones(QtGui.QDialog):
-    def __init__(self, proceso, parent=None):
-        super(DialogoActuaciones, self).__init__(parent)
-        listado = ListadoBusqueda(proceso.getActuaciones())
-        layout = QtGui.QVBoxLayout()
-        layout.addWidget(listado)
-        self.setLayout(layout)
-        self.selected = None
-        
-        #self.connect(listado, QtCore.SIGNAL('itemClicked(QtGui.QListWidgetItem)'), self.click)
-        listado.itemClicked.connect(self.click)
-        
-    def click(self, item):
-        self.selected = item.getObjeto()
-        self.accept()
-        
-    def getSelected(self):
-        return self.selected
