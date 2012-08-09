@@ -75,7 +75,7 @@ class NuevaCita(QtGui.QDialog, Ui_Cita):
         anticipacion = self.getAnticipacion()
         descripcion = self.descripcion.text()
         alarma = self.checkBox.isChecked()
-        if self.cita == None:
+        if not self.cita:
             self.cita = CitaCalendario(fecha=fecha, anticipacion=anticipacion,
                                        descripcion=descripcion, alarma=alarma,
                                        id_cita=None, id_actuacion=self.actuacion.getId_actuacion(), uid='')
