@@ -5,7 +5,7 @@ Created on 10/08/2012
 @author: elfotografo007
 '''
 from PySide import QtGui
-from httplib import HTTPConnection
+from httplib import HTTPSConnection
 from urllib import urlencode
 from xml.dom.minidom import parseString
 
@@ -57,7 +57,7 @@ class DialogoEspera(QtGui.QDialog):
                 return False, u"Lo sentimos pero no se ha encontrado la cuenta. Por favor comuníquese con nuestro personal de soporte técnico: soporte@ehmsoft.com"
 
     def peticion(self, correo, peticion):
-        conn= HTTPConnection('localhost', 3000, timeout=10)
+        conn= HTTPSConnection('activacionehm.herokuapp.com', timeout=10)
         params = urlencode({'correo':'%s' % correo, 'aplicacion_id':1})
         conn.request(method="POST", url="/%s.xml" % peticion, body=params)
         response = conn.getresponse()
