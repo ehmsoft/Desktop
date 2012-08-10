@@ -50,6 +50,7 @@ from core.Preferencias import Preferencias
 from gui.MyTranslator import MyTranslator
 from gui import MainAppScreen
 from gui.AsistenteRegistro import AsistenteRegistro
+from gui.DialogoEspera import DialogoEspera
 __version__ = '1.0'
 
 class MainApp(QtGui.QMainWindow, Ui_mainApp):
@@ -140,6 +141,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         self.connect(self.actionImprimir, QtCore.SIGNAL('triggered()'), self.menuImpresionClicked)
         self.connect(self.actionMostrarCalendario, QtCore.SIGNAL('triggered()'), self.mostrarCalendario)
         self.connect(self.actionNuevaCitaCalendario, QtCore.SIGNAL('triggered()'), self.menuNuevaCitaClicked)
+        self.connect(self.actionDesactivar, QtCore.SIGNAL('triggered()'), self.menuAyudaDesactivar)
         
     def elementChanged(self):
         self.elementClicked(self.listaIzquierda.currentItem())
@@ -1085,6 +1087,24 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if QtGui.QMessageBox.question(self, "Restaurar Archivo", u"Si continúa, se borrará toda la información que tiene en el programa y se reemplazará por la información del arhivo que está importando. ¿Seguro que desea Continuar?", QtGui.QMessageBox.Yes | QtGui.QMessageBox.No) == QtGui.QMessageBox.Yes:
                 shutil.copy(fname, ConnectionManager().getDbLocation())
     
+    def menuAyudaDesactivar(self):
+        confirmar = QtGui.QMessageBox.question(self, u"Confirmar desactivación", u"Si procede no podrá utilizar la aplicación. ¿Seguro que desea desactivar la aplicación?", QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
+        if confirmar == QtGui.QMessageBox.Yes:
+            dialogo = DialogoEspera()
+            try:
+                correo = self.__persistence.consultarPreferencia(10402)
+            except:
+                QtGui.QMessageBox.warning(self, "Error", u"Ha ocurrido un problema desactivando la aplicación. Por favor vuelva a intentar.\nSi el problema persiste contacte a soporte@ehmsoft.com")
+            flag, respuesta = dialogo.iniciarDesactivacion(correo)
+            QtGui.QMessageBox.warning(self,"Info", respuesta)
+            if flag:
+                try:
+                    self.__persistence.actualizarPreferencia(998, 0)
+                except Exception as e:
+                    QtGui.QMessageBox.warning(self, "Error", u"Ha ocurrido un problema desactivando la aplicación. Por favor vuelva a intentar.\nSi el problema persiste contacte a soporte@ehmsoft.com")
+                    print e
+            sys.exit(0)
+    
     def about(self):
         QtGui.QMessageBox.about(self, "Acerca de Procesos Judiciales",
                 """<b>Procesos Judiciales</b> v %s 
@@ -1137,6 +1157,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if asistenteRegistro.isValid():
                 try:
                     self.__persistence.actualizarPreferencia(998, 1)
+                    self.__persistence.actualizarPreferencia(10402, asistenteRegistro.getCorreo())
                     return
                 except:
                     QtGui.QMessageBox.warning(self, "Error", u"Ha ocurrido un problema verificando la activación de la aplicación, esta se cerrará. Por favor vuelva a iniciarla.\nSi el problema persiste contacte a soporte@ehmsoft.com")
