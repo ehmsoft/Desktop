@@ -379,6 +379,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         finally:
             return QtGui.QDialog.accept(self)
         
+    @classmethod
     def guardarCitas(self, actuaciones):
         p = Persistence()
         gestor = GestorCitas()
@@ -387,16 +388,11 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
                 if actuacion.cita:
                     cita = actuacion.cita
                     cita.setId_actuacion(actuacion.getId_actuacion())
-                    try:
-                        if not cita.getId_cita():
-                            p.guardarCitaCalendario(cita)
-                        else:
-                            p.actualizarCitaCalendario(cita)
-                        return QtGui.QDialog.accept(self)
-                        gestor.actualizarCitas()
-                    except Exception, e:
-                        print e
-                        return QtGui.QDialog.reject(self)
+                    if not cita.getId_cita():
+                        p.guardarCitaCalendario(cita)
+                    else:
+                        p.actualizarCitaCalendario(cita)
+                    gestor.actualizarCitas()
                 
     def getProceso(self):
         return self.__proceso
