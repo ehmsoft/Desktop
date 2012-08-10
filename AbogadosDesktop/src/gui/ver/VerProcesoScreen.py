@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'uis/verProceso.ui'
 #
-# Created: Wed Aug  8 18:03:02 2012
+# Created: Fri Aug 10 11:12:47 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,13 +12,13 @@ from PySide import QtCore, QtGui
 class Ui_VerProceso(object):
     def setupUi(self, VerProceso):
         VerProceso.setObjectName("VerProceso")
-        VerProceso.resize(399, 550)
+        VerProceso.resize(409, 523)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(VerProceso.sizePolicy().hasHeightForWidth())
         VerProceso.setSizePolicy(sizePolicy)
-        VerProceso.setMinimumSize(QtCore.QSize(350, 550))
+        VerProceso.setMinimumSize(QtCore.QSize(350, 450))
         self.gridLayout_2 = QtGui.QGridLayout(VerProceso)
         self.gridLayout_2.setContentsMargins(5, 5, 5, 5)
         self.gridLayout_2.setObjectName("gridLayout_2")
@@ -26,17 +26,18 @@ class Ui_VerProceso(object):
         self.tabWidget.setMinimumSize(QtCore.QSize(375, 490))
         self.tabWidget.setObjectName("tabWidget")
         self.tabProceso = QtGui.QWidget()
-        self.tabProceso.setMinimumSize(QtCore.QSize(370, 490))
+        self.tabProceso.setMinimumSize(QtCore.QSize(370, 430))
         self.tabProceso.setSizeIncrement(QtCore.QSize(0, 0))
         self.tabProceso.setObjectName("tabProceso")
         self.gridLayout = QtGui.QGridLayout(self.tabProceso)
         self.gridLayout.setObjectName("gridLayout")
         self.scrollArea = QtGui.QScrollArea(self.tabProceso)
-        self.scrollArea.setMinimumSize(QtCore.QSize(340, 490))
+        self.scrollArea.setMinimumSize(QtCore.QSize(350, 400))
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 341, 488))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 351, 455))
+        self.scrollAreaWidgetContents.setMinimumSize(QtCore.QSize(0, 399))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout = QtGui.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -146,6 +147,7 @@ class Ui_VerProceso(object):
         self.formLayout.setWidget(9, QtGui.QFormLayout.FieldRole, self.lblPrioridad)
         self.verticalLayout.addLayout(self.formLayout)
         self.formLayout_2 = QtGui.QFormLayout()
+        self.formLayout_2.setFieldGrowthPolicy(QtGui.QFormLayout.FieldsStayAtSizeHint)
         self.formLayout_2.setObjectName("formLayout_2")
         self.lbl10 = QtGui.QLabel(self.scrollAreaWidgetContents)
         self.lbl10.setObjectName("lbl10")
