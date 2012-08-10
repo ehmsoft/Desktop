@@ -19,15 +19,23 @@ class DialogoEspera(QtGui.QDialog):
     def iniciarDesactivacion(self, correo):
         self.show()
         self.raise_()
-        flag, respuesta = self.peticion(correo, 'desactivar')
-        self.hide()
+        try:
+            flag, respuesta = self.peticion(correo, 'desactivar')
+        except Exception as e:
+            raise e
+        finally:   
+            self.hide()
         return flag,respuesta
         
     def iniciarActivacion(self, correo):
         self.show()
         self.raise_()
-        flag, respuesta = self.peticion(correo, 'activar')
-        self.hide()
+        try:
+            flag, respuesta = self.peticion(correo, 'activar')
+        except Exception as e:
+            raise e
+        finally:   
+            self.hide()
         return flag,respuesta
         
     def procesar(self,texto,peticion):
@@ -42,7 +50,6 @@ class DialogoEspera(QtGui.QDialog):
                 return True, u"Activación Correcta\nCorreo: {0}\nActivaciones restantes: {1}\nTotal: {2}".format(correo, pendiente, total)
             else:
                 return True, u"Desactivación Correcta\nCorreo: {0}\nActivaciones restantes: {1}\nTotal: {2}".format(correo, pendiente, total)
-
         else:
             if peticion == 'activar':
                 return False, u"Lo sentimos pero no se han encontrado licencias disponibles. Por favor comuníquese con nuestro personal de soporte técnico: soporte@ehmsoft.com"

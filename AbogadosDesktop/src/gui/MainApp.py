@@ -1095,7 +1095,11 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 correo = self.__persistence.consultarPreferencia(10402)
             except:
                 QtGui.QMessageBox.warning(self, "Error", u"Ha ocurrido un problema desactivando la aplicación. Por favor vuelva a intentar.\nSi el problema persiste contacte a soporte@ehmsoft.com")
-            flag, respuesta = dialogo.iniciarDesactivacion(correo)
+            try:
+                flag, respuesta = dialogo.iniciarDesactivacion(correo)
+            except:
+                QtGui.QMessageBox.warning(self, "Error", u"Ha ocurrido un problema desactivando la aplicación. Por favor vuelva a intentar.\nSi el problema persiste contacte a soporte@ehmsoft.com")
+                sys.exit(0)
             QtGui.QMessageBox.warning(self,"Info", respuesta)
             if flag:
                 try:

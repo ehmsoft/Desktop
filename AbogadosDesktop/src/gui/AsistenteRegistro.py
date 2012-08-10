@@ -7,7 +7,7 @@ Created on 09/08/2012
 from PySide import QtGui
 from gui.AsistenteRegistroScreen import Ui_WizardRegistro
 from gui.DialogoEspera import DialogoEspera
-
+import sys
 
 class AsistenteRegistro(QtGui.QWizard, Ui_WizardRegistro):
     def __init__(self, parent=None):
@@ -24,7 +24,11 @@ class AsistenteRegistro(QtGui.QWizard, Ui_WizardRegistro):
             return False
         else:
             dialogo = DialogoEspera()
-            flag, respuesta = dialogo.iniciarActivacion(correo)
+            try:
+                flag, respuesta = dialogo.iniciarActivacion(correo)
+            except:
+                QtGui.QMessageBox.warning(self, "Error", u"Ha ocurrido un problema verificando la activación de la aplicación, esta se cerrará. Por favor vuelva a iniciarla.\nSi el problema persiste contacte a soporte@ehmsoft.com")
+                sys.exit(0)
             QtGui.QMessageBox.warning(self,"Info", respuesta)
             self.__valid = flag
             self.__correo = correo
