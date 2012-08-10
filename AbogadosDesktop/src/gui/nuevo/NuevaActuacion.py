@@ -116,11 +116,12 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             message.setDefaultButton(QtGui.QMessageBox.No)
             message.setText(u'¿Desea eliminar la cita?')
             if message.exec_() == QtGui.QMessageBox.Yes:
-                p = Persistence()
-                p.borrarCitaCalendario(self.__cita)
+                if self.__actuacion:
+                    p = Persistence()
+                    p.borrarCitaCalendario(self.__cita)
+                    gestor = GestorCitas()
+                    gestor.actualizarCitas()
                 self.__cita = None
-                gestor = GestorCitas()
-                gestor.actualizarCitas()
             else:
                 self.checkCita.setChecked(True)
         self.setActionCita()

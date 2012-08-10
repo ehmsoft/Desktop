@@ -163,7 +163,7 @@ def borrarPreferencias(self):
         p = Persistence()
         p.borrarPreferencias()
         self.__listaMainApp = '20111,20105,20115,20114,20124,20123,20101,20107,20102,20108,20109'
-        self.__correo = ' '
+        self.__correo = ''
         self.__cantidadEventos = 10
         self.__tipoAlarma = 1
         self.__cantCopiaSeg = 5
