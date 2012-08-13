@@ -29,9 +29,13 @@ class MyTranslator(QtCore.QTranslator):
             return u'Siguiente'
         elif sourceText == '&Next':
             return u'&Siguiente'
+        elif sourceText == '&Next >':
+            return u'&Siguiente'
         elif sourceText == 'Go Back':
             return u'Atrás'
         elif sourceText == '&Back':
+            return u'&Atrás'
+        elif sourceText == '< &Back':
             return u'&Atrás'
         elif sourceText == 'Done':
             return u'Finalizar'
