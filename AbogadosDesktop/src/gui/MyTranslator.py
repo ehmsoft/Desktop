@@ -27,9 +27,15 @@ class MyTranslator(QtCore.QTranslator):
             return u'&Sí'
         elif sourceText == 'Continue':
             return u'Siguiente'
+        elif sourceText == 'Next':
+            return u'Siguiente'
         elif sourceText == 'Go Back':
             return u'Atrás'
+        elif sourceText == 'Back':
+            return u'Atrás'
         elif sourceText == 'Done':
+            return u'Finalizar'
+        elif sourceText == 'Finish':
             return u'Finalizar'
         return super(MyTranslator,self).translate(context, sourceText,disambiguation, n)
         
