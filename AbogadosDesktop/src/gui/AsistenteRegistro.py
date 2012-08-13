@@ -16,6 +16,7 @@ class AsistenteRegistro(QtGui.QWizard, Ui_WizardRegistro):
         self.registro.validatePage = self.validatePage
         self.__valid = False
         self.__correo = None
+        self.setPixmap(QtGui.QWizard.BackgroundPixmap,QtGui.QPixmap(QtGui.QImage(':/images/bolita.png')))
         
     def validatePage(self):
         correo = self.txtCorreo.text()
