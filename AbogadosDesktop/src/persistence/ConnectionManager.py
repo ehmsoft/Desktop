@@ -81,8 +81,8 @@ class ConnectionManager(object):
             c.execute('''INSERT INTO 'preferencias' VALUES(10501,10)''')
                 #Insertar correo
             c.execute('''INSERT INTO 'preferencias' VALUES(10402,' ')''')    
-                #Insertar Preferencias: Tipo Alarma 0 ningun0, 1 mensaje emerjente e icono de notificacion, 2 solo mensaje emergente, 3 solo iconode notificacion
-            c.execute('''INSERT INTO 'preferencias' VALUES(10601,1) ''')
+                #Insertar Preferencias: Tipo Alarma es un valor binario, primer bit mensaje emergente, segundo bit ,emsaje en icono de notificacion, tercer bit correo electronico
+            c.execute('''INSERT INTO 'preferencias' VALUES(10601,0) ''')
                 #Insertar cantidad maxima de copias de seguridad
             c.execute('''INSERT INTO 'preferencias' VALUES(10701,5)''')
                 #Insertar llave
