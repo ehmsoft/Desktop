@@ -562,8 +562,8 @@ class Persistence(object):
             c.execute('''UPDATE preferencias SET valor=' ' WHERE id_preferencia = 10402''')
             #borrar Preferencias: Cantidad Eventos Proximos 
             c.execute('''UPDATE preferencias SET valor=10 WHERE id_preferencia = 10501''')
-            #borrar Preferencias: Tipo Alarma 0 ninguni, 1 correo y alerta, 2 solo correo, 3 solo alerta
-            c.execute('''UPDATE preferencias SET valor=1 WHERE id_preferencia = 10601''')
+            #borrar Preferencias: Tipo Alarma es un valor binario, primer bit mensaje emergente, segundo bit ,emsaje en icono de notificacion, tercer bit correo electronico
+            c.execute('''UPDATE preferencias SET valor=0 WHERE id_preferencia = 10601''')
             #borrar Preferencias: Cantidad Maxima Copias de Seguridad 
             c.execute('''UPDATE preferencias SET valor= 5 WHERE id_preferencia = 10701''')
             #borrar Preferencias: llave 
@@ -893,7 +893,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             c = conn.cursor()
-            c.execute('''UPDATE citas SET eliminado = 1 WHERE fecha_proxima < date() AND eliminado = 0 ''')
+            c.execute('''UPDATE citas SET eliminado = 1 WHERE fecha < date() AND eliminado = 0 ''')
         except Exception as e:
             raise e
         finally:
