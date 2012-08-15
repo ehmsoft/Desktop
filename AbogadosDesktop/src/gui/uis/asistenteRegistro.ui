@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>672</width>
-    <height>515</height>
+    <width>699</width>
+    <height>542</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,6 +43,32 @@
     </property>
    </widget>
   </widget>
+  <widget class="QWizardPage" name="terminos">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="title">
+    <string>Términos y Condiciones</string>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTextBrowser" name="textBrowser">
+      <property name="html">
+       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Lucida Grande'; font-size:13pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;AVISO IMPORTANTE: Antes de descargar, instalar, copiar o utilizar el software lea los siguientes términos y condiciones: ehmSoftware es el propietario del software y del soporte físico. ehmSoftware concede este software bajo una licencia exclusivamente de uso a una persona natural o jurídica. Disponiendo de ésta, la instalación podrá realizarse solamente en un dispositivo o computadora, el cual está permitido cambiarlo, para esto debe eliminar por completo la instalación en el dispositivo anterior y contactar a ehmSoftware. Para que el software funcione correctamente se debe cumplir con los requisitos mínimos especificados por ehmSoftware.&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;
+&lt;p align=&quot;justify&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;ehmSoftware no se hará responsable por pérdidas, daños, reclamaciones o costes de cualquier naturaleza, incluyendo cualquier daño consecuente, indirecto o secundario, ni de cualquier pérdida de beneficios o ganancias, daños que resulten de la interrupción del negocio, daño personal o incumplimiento de cualquier deber de diligencia o reclamaciones de terceros, del mismo modo no garantiza que el software este libre de errores y se recomienda que en el caso de que éstos se presente sean reportados a soporte@ehmsoft.com para realizar el seguimiento de los mismos y tomar medidas para su corrección en el menor tiempo posible. ehmSoftware se reserva todos los derechos que no se le conceden expresamente a usted en este documento y puede retirar la licencia de uso si usted no cumple con los términos y condiciones. Si usted presiona el botón Siguiente indica que ha leído, comprendido y está de acuerdo con todos los términos y condiciones expuestos en el presente documento así como con la licencia exclusivamente de uso del software. Si no está de acuerdo presione el botón Cancelar, destruya todas las copias del software que tenga en su poder y póngase en contacto con ehmSoftware.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
   <widget class="QWizardPage" name="registro">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
@@ -56,7 +82,7 @@
    <property name="subTitle">
     <string>Por favor llene los campos a continuación:</string>
    </property>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
