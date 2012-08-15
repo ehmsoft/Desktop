@@ -66,7 +66,7 @@ class CitaCalendario(object):
     def getAnticipacion(self):
         return self.__anticipacion
     def getDescripcion(self):
-        return self.__descripcion
+        return unicode(self.__descripcion)
     def isAlarma(self):
         return self.__alarma
     
@@ -124,9 +124,9 @@ class CitaCalendario(object):
                 return '%i horas' % (ant / 3600)
         else:
             if ant == 86400:
-                return '1 día'
+                return u'1 día'
             else:
-                return '%i días' % (ant / 86400)
+                return u'%i días' % (ant / 86400)
             
     def setConFecha(self, fecha):
         if isinstance(fecha, BooleanType):
@@ -136,9 +136,15 @@ class CitaCalendario(object):
         
     def __str__(self):
         if self.__conFecha:
-            return 'Descripción: %s\nFecha: %s\nAnticipación: %s' % (self.getDescripcion(), '{:%d/%m/%Y %I:%M %p}'.format(self.getFecha()), self.transAnticipacion(self.getAnticipacion()))
+            return u'Descripción: %s\nFecha: %s\nAnticipación: %s' % (self.getDescripcion(), '{:%d/%m/%Y %I:%M %p}'.format(self.getFecha()), self.transAnticipacion(self.getAnticipacion()))
         else:
-            return 'Descripción: %s\nHora: %s\nAnticipación: %s' % (self.getDescripcion(), '{:%I:%M %p}'.format(self.getFecha()), self.transAnticipacion(self.getAnticipacion()))
+            return u'Descripción: %s\nHora: %s\nAnticipación: %s' % (self.getDescripcion(), '{:%I:%M %p}'.format(self.getFecha()), self.transAnticipacion(self.getAnticipacion()))
+    
+    def __repr__(self):
+        if self.__conFecha:
+            return u'Descripción: %s\nFecha: %s\nAnticipación: %s' % (self.getDescripcion(), '{:%d/%m/%Y %I:%M %p}'.format(self.getFecha()), self.transAnticipacion(self.getAnticipacion()))
+        else:
+            return u'Descripción: %s\nHora: %s\nAnticipación: %s' % (self.getDescripcion(), '{:%I:%M %p}'.format(self.getFecha()), self.transAnticipacion(self.getAnticipacion()))
     
     def __eq__(self, other):
         if other is None:

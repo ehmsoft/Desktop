@@ -80,9 +80,9 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             message.exec_()
         
         print self.verificarActivacion()
-        self.__gestor = GestorCitas(self)
-        self.__gestor.actualizarCitas()
         self.setTrayIcon()
+        self.__gestor = GestorCitas(parent = self, tray = self.tray)
+        self.__gestor.actualizarCitas()
         #Crear menu izquierdo
         self.lista = [MainApp.TXTEVENTOS, MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES, MainApp.TXTCATEGORIAS, MainApp.TXTCAMPOS, MainApp.TXTSINCRONIZAR, MainApp.TXTAJUSTES]
         self.centralSplitter = QtGui.QSplitter(QtCore.Qt.Horizontal)

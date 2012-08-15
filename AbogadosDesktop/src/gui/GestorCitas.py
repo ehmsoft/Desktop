@@ -9,11 +9,16 @@ from PySide import QtGui, QtCore
 from persistence.Persistence import Persistence
 from datetime import datetime
 from datetime import timedelta
+from core.Preferencias import Preferencias
+from gui.Preferencias_GUI import Preferencias_GUI
+from core.GestorCorreo import enviarCorreo
+
 class GestorCitas(object):
     __metaclass__ = Singleton
     
-    def __init__(self, parent=None):
+    def __init__(self, tray,parent=None):
         self.timer = []
+        self.tray = tray
         self.parent = parent
         
     def actualizarCitas(self):
@@ -43,7 +48,14 @@ class GestorCitas(object):
                 
     
     def __seCumpleCita(self, cita):
-        message = QtGui.QMessageBox()
-        message.setIcon(QtGui.QMessageBox.Warning)
-        message.setText("Se cumple la cita:\n" + unicode(cita))
-        message.exec_()
+        preferencias = Preferencias()
+        tipoAlarma = preferencias.getTipoAlarma()
+        if tipoAlarma & Preferencias_GUI.MENSAJE_CORREO == Preferencias_GUI.MENSAJE_CORREO:
+            enviarCorreo(cita, preferencias.getCorreo())
+        if tipoAlarma & Preferencias_GUI.MENSAJE_ICONO == Preferencias_GUI.MENSAJE_ICONO:
+            self.tray.showMessage(u'Notificación de cita' + cita.getDescripcion(), unicode(cita))
+        if tipoAlarma & Preferencias_GUI.MENSAJE_EMERGENTE == Preferencias_GUI.MENSAJE_EMERGENTE:
+            message = QtGui.QMessageBox()
+            message.setIcon(QtGui.QMessageBox.Warning)
+            message.setText("Se cumple la cita:\n" + unicode(cita))
+            message.exec_()
