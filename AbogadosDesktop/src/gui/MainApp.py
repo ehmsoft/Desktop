@@ -51,6 +51,7 @@ from gui.MyTranslator import MyTranslator
 from gui import MainAppScreen
 from gui.AsistenteRegistro import AsistenteRegistro
 from gui.DialogoEspera import DialogoEspera
+from gui.DesactivarApp import DesactivarApp
 __version__ = '1.0'
 
 class MainApp(QtGui.QMainWindow, Ui_mainApp):
@@ -1088,26 +1089,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 shutil.copy(fname, ConnectionManager().getDbLocation())
     
     def menuAyudaDesactivar(self):
-        confirmar = QtGui.QMessageBox.question(self, u"Confirmar desactivación", u"Si procede no podrá utilizar la aplicación. ¿Seguro que desea desactivar la aplicación?", QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
-        if confirmar == QtGui.QMessageBox.Yes:
-            dialogo = DialogoEspera()
-            try:
-                correo = self.__persistence.consultarPreferencia(10402)
-            except:
-                QtGui.QMessageBox.warning(self, "Error", u"Ha ocurrido un problema desactivando la aplicación. Por favor vuelva a intentar.\nSi el problema persiste contacte a soporte@ehmsoft.com")
-            try:
-                flag, respuesta = dialogo.iniciarDesactivacion(correo)
-            except:
-                QtGui.QMessageBox.warning(self, "Error", u"Ha ocurrido un problema desactivando la aplicación. Por favor vuelva a intentar.\nSi el problema persiste contacte a soporte@ehmsoft.com")
-                sys.exit(0)
-            QtGui.QMessageBox.warning(self,"Info", respuesta)
-            if flag:
-                try:
-                    self.__persistence.actualizarPreferencia(998, 0)
-                except Exception as e:
-                    QtGui.QMessageBox.warning(self, "Error", u"Ha ocurrido un problema desactivando la aplicación. Por favor vuelva a intentar.\nSi el problema persiste contacte a soporte@ehmsoft.com")
-                    print e
-            sys.exit(0)
+        des = DesactivarApp(MainApp.CARPETAEHM, self)
+        des.desactivarAplicacion()
     
     def about(self):
         QtGui.QMessageBox.about(self, "Acerca de Procesos Judiciales",
