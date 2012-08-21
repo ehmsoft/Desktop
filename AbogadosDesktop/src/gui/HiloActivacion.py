@@ -11,7 +11,7 @@ from xml.dom.minidom import parseString
 
 class HiloActivacion(QtCore.QThread):
     def run(self):
-        self.peticion(self.correo, self.pet)
+        self.peticion(correo=self.correo, peticion=self.pet)
         self.exec_()
         
     def procesar(self,texto,peticion):
