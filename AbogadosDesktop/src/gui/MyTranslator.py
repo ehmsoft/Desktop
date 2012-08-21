@@ -17,6 +17,10 @@ class MyTranslator(QtCore.QTranslator):
             return 'Aceptar'
         elif sourceText == 'Cancel':
             return 'Cancelar'
+        elif sourceText == '&OK':
+            return '&Aceptar'
+        elif sourceText == '&Cancel':
+            return '&Cancelar'
         elif sourceText == 'About %1':
             return 'Acerca de %1'
         elif sourceText == 'Quit':
