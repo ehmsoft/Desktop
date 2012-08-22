@@ -79,8 +79,10 @@ class ConnectionManager(object):
             c.execute('''INSERT INTO 'preferencias' VALUES(10101,'20111,20105,20115,20114,20124,20103,20101,20107,20102,20108,20109') ''')
                 #Insertar cantidad de eventos proximos
             c.execute('''INSERT INTO 'preferencias' VALUES(10501,10)''')
-                #Insertar correo
-            c.execute('''INSERT INTO 'preferencias' VALUES(10402,' ')''')    
+                #Insertar correo activacion
+            c.execute('''INSERT INTO 'preferencias' VALUES(10402,' ')''')
+            #Insertar correo notificacion
+            c.execute('''INSERT INTO 'preferencias' VALUES(10602,' ')''')    
                 #Insertar Preferencias: Tipo Alarma es un valor binario, primer bit mensaje emergente, segundo bit ,emsaje en icono de notificacion, tercer bit correo electronico
             c.execute('''INSERT INTO 'preferencias' VALUES(10601,0) ''')
                 #Insertar cantidad maxima de copias de seguridad

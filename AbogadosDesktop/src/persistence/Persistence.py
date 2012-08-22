@@ -488,7 +488,7 @@ class Persistence(object):
                 for x in valor:
                     lista += ','+ str(x)
                 c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 10101''',(lista.lstrip(','),))
-            #actualizar Preferencias: correo
+            #actualizar Preferencias: correo de activacion
             elif id == 10402:
                 c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 10402''',(valor,))
             #actualizar Preferencias: Cantidad Evventos Proximos 
@@ -497,7 +497,10 @@ class Persistence(object):
             #actualizar Preferencias: Tipo Alarma 0 ninguni, 1 correo y alerta, 2 solo correo, 3 solo alerta
             elif id == 10601:
                 c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 10601''',(valor,))
-            #actualizar Preferencias: Cantidad Maxima Copias de Seguridad 
+            #actualizar Preferencias: correo notificacion
+            elif id == 10602:
+                c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 10602''',(valor,))
+            #actualizar Preferencias: Cantidad Maxima Copias de Seguridad   10602
             elif id == 10701:
                 c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 10701''',(valor,))
             #actualizar Preferencias: llave 
@@ -522,7 +525,7 @@ class Persistence(object):
             # Orden Mainapp 
             if id_preferencia == 10101:
                 c.execute('''UPDATE preferencias SET valor= '20111,20105,20115,20114,20124,20123,20101,20107,20102,20108,20109' WHERE id_preferencia = 10101''')
-                #borrar Preferencias: Correo 
+                #borrar Preferencias: Correo activacion
             elif id_preferencia == 10402:
                 c.execute('''UPDATE preferencias SET valor= ' ' WHERE id_preferencia = 10402''')
             
@@ -533,6 +536,9 @@ class Persistence(object):
             #borrar Preferencias: Tipo Alarma 0 ninguni, 1 correo y alerta, 2 solo correo, 3 solo alerta
             elif id_preferencia == 10601:
                 c.execute('''UPDATE preferencias SET valor=1 WHERE id_preferencia = 10601''')
+            #borrar Preferencias: Correo notificacion
+            elif id_preferencia == 10602:
+                c.execute('''UPDATE preferencias SET valor= ' ' WHERE id_preferencia = 10602''')
             #borrar Preferencias: Cantidad Maxima Copias de Seguridad 
             elif id_preferencia == 10701:
                 c.execute('''UPDATE preferencias SET valor= 5 WHERE id_preferencia = 10701''')
@@ -558,16 +564,16 @@ class Persistence(object):
             c = conn.cursor()          
             #borrar Preferencias: Orden Mainapp 
             c.execute('''UPDATE preferencias SET valor= '20111,20105,20115,20114,20124,20123,20101,20107,20102,20108,20109' WHERE id_preferencia = 10101''')
-            #borrar Preferencias: borrar correo
-            c.execute('''UPDATE preferencias SET valor=' ' WHERE id_preferencia = 10402''')
             #borrar Preferencias: Cantidad Eventos Proximos 
             c.execute('''UPDATE preferencias SET valor=10 WHERE id_preferencia = 10501''')
             #borrar Preferencias: Tipo Alarma es un valor binario, primer bit mensaje emergente, segundo bit ,emsaje en icono de notificacion, tercer bit correo electronico
             c.execute('''UPDATE preferencias SET valor=0 WHERE id_preferencia = 10601''')
+            #borrar Preferencias: borrar correo notificacion
+            c.execute('''UPDATE preferencias SET valor=' ' WHERE id_preferencia = 10602''')
             #borrar Preferencias: Cantidad Maxima Copias de Seguridad 
             c.execute('''UPDATE preferencias SET valor= 5 WHERE id_preferencia = 10701''')
             #borrar Preferencias: llave 
-            c.execute('''UPDATE preferencias SET valor= 0000 WHERE id_preferencia = 998''')
+            #c.execute('''UPDATE preferencias SET valor= 0000 WHERE id_preferencia = 998''')
             #borrar Preferencias: Version 
             c.execute('''UPDATE preferencias SET valor= 1 WHERE id_preferencia = 999''')
             #borrar Preferencias: Ultima sincronizacion 
@@ -1600,12 +1606,12 @@ class Persistence(object):
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
             c.execute('''SELECT id_preferencia, valor FROM preferencias''')
-            preferencias = {10101:None,10402:None, 10501:None, 10502:None, 10601:None, 10701:None, 998:None, 999:None, 997:None}         
+            preferencias = {10101:None,10402:None, 10501:None, 10502:None, 10601:None, 10602:None, 10701:None, 998:None, 999:None, 997:None}         
             for row in c:
                 if row['id_preferencia'] == 10101:
                     listaEnteros = [int(x) for x in row['valor'].split(',')]
                     preferencias[10101]=listaEnteros
-                #consultar Preferencias: Correo electronico 
+                #consultar Preferencias: Correo activacion
                 elif row['id_preferencia'] == 10402:
                     preferencias[10402]=row['valor']
                 #consultar Preferencias: Cantidad Eventos Proximos 
@@ -1614,12 +1620,12 @@ class Persistence(object):
                 #consultar Preferencias: eliminar eventos vencidos 
                 elif row['id_preferencia'] == 10502:
                     preferencias[10502]=row['valor']
-                #consultar Preferencias: Tipo Alarma 0 ninguni, 1 correo y alerta, 2 solo correo, 3 solo alerta
+                #consultar Preferencias: Tipo Alarma 
                 elif row['id_preferencia'] == 10601:
-                    preferencias[10601]=row['valor']                    
-                #consultar Preferencias: Cantidad Maxima Copias de Seguridad 
-#                elif row['id_preferencia'] == 10701:
-#                    preferencias[10701]=row['valor']
+                    preferencias[10601]=row['valor']  
+                #consultar Preferencias: Correo notificacion
+                elif row['id_preferencia'] == 10602:
+                    preferencias[10602]=row['valor']                  
                 #consultar Preferencias: llave 
                 elif row['id_preferencia'] == 998:
                     preferencias[998]=row['valor']
