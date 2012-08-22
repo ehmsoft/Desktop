@@ -229,7 +229,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         self.lblJuzgado.mousePressEvent = mousePressEvent
         
     def reject(self):
-        del(self.__dialogo)
+        #del(self.__dialogo)
         Util.reject(self, self.__dirty)
         
     def setDirty(self):
