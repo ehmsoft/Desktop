@@ -174,7 +174,7 @@ class Persistence(object):
             c = conn.cursor()
             c.execute('''UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''', (actuacion.getId_actuacion(),))
             c.execute('''DELETE FROM citas WHERE id_actuacion = ?''',(actuacion.getId_actuacion(),))
-            c.execute('''UPDATE atributos_actuaciones SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''', (actuacion.getId_actuacion(),))
+            c.execute('''UPDATE atributos_actuacion SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''', (actuacion.getId_actuacion(),))
             conn.commit()            
         except Exception as e:
             raise e
