@@ -109,7 +109,10 @@ class NuevaCita(QtGui.QDialog, Ui_Cita):
             return QtGui.QDialog.reject(self)
             
     def accept(self):
-        self.guardar()
+        if len(self.descripcion.text()):
+            self.guardar()
+        else:
+            QtGui.QMessageBox.information(self, 'Error', u'La descripción no se permite vacía')
             
     def getCita(self):
         return self.cita
