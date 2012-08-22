@@ -425,6 +425,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         if dialogo.exec_():
             self.verticalLayout.itemAt(index).widget().deleteLater()
             vista = VerActuacion(dialogo.getActuacion(), self)
+            self.addActionsActuacion(vista)
             self.verticalLayout.insertWidget(index, vista)
             if self.__proceso is not None:
                 self.__dirty = True
@@ -452,12 +453,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         if len(self.__actuaciones) is not 0:
             for actuacion in self.__actuaciones:
                 vista = VerActuacion(actuacion=actuacion, parent=self)
-                vista.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-                editar = self.createAction("Editar", self.editarActuacion)
-                editar.setData(vista)
-                eliminar = self.createAction("Eliminar", self.eliminarActuacion)
-                eliminar.setData(vista)
-                vista.addActions([editar, eliminar])
+                self.addActionsActuacion(vista)
                 self.verticalLayout.addWidget(vista)
     
     def addActuacion(self, actuacion=None):
@@ -469,15 +465,18 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             del(dialogo)
         else:
             vista = VerActuacion(actuacion=actuacion, parent=self)
-            vista.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
-            editar = self.createAction("Editar", self.editarActuacion)
-            editar.setData(vista)
-            eliminar = self.createAction("Eliminar", self.eliminarActuacion)
-            eliminar.setData(vista)
-            vista.addActions([editar, eliminar])
+            self.addActionsActuacion(vista)
             self.verticalLayout.addWidget(vista)
             self.__actuaciones.append(actuacion)
             self.__dirty = True
+        
+    def addActionsActuacion(self, vista):
+        vista.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
+        editar = self.createAction("Editar", self.editarActuacion)
+        editar.setData(vista)
+        eliminar = self.createAction("Eliminar", self.eliminarActuacion)
+        eliminar.setData(vista)
+        vista.addActions([editar, eliminar])
         
     def reject(self):
         Util.reject(self, self.__dirty)
