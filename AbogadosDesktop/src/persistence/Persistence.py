@@ -477,40 +477,40 @@ class Persistence(object):
         finally:
             conn.close()
     
-    def actualizarPreferencia(self, id, valor):
+    def actualizarPreferencia(self, id_preferencia, valor):
         try:
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()          
             # Orden Mainapp 
-            if id == 10101:
+            if id_preferencia == 10101:
                 lista = ''
                 for x in valor:
                     lista += ','+ str(x)
                 c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 10101''',(lista.lstrip(','),))
             #actualizar Preferencias: correo de activacion
-            elif id == 10402:
+            elif id_preferencia == 10402:
                 c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 10402''',(valor,))
             #actualizar Preferencias: Cantidad Evventos Proximos 
-            elif id == 10501:
+            elif id_preferencia == 10501:
                 c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 10501''',(valor,))
             #actualizar Preferencias: Tipo Alarma 0 ninguni, 1 correo y alerta, 2 solo correo, 3 solo alerta
-            elif id == 10601:
+            elif id_preferencia == 10601:
                 c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 10601''',(valor,))
             #actualizar Preferencias: correo notificacion
-            elif id == 10602:
+            elif id_preferencia == 10602:
                 c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 10602''',(valor,))
             #actualizar Preferencias: Cantidad Maxima Copias de Seguridad   10602
-            elif id == 10701:
+            elif id_preferencia == 10701:
                 c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 10701''',(valor,))
             #actualizar Preferencias: llave 
-            elif id == 998:
+            elif id_preferencia == 998:
                 c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 998''',(valor,))
             #actualizar Preferencias: Version 
-            elif id == 999:
+            elif id_preferencia == 999:
                 c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 999''',(valor,))
             #actualizar Preferencias: Ultima sincronizacion 
-            elif id == 997:
+            elif id_preferencia == 997:
                 c.execute('''UPDATE preferencias SET valor= ? WHERE id_preferencia = 997''',(valor,))
             conn.commit()  
         except Exception as e:
