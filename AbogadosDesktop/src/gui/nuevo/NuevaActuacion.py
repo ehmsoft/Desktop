@@ -79,11 +79,19 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         self.txtDescripcion.textChanged.connect(self.setDirty)
         self.dteFecha.dateTimeChanged.connect(self.setDirty)
         self.dteFechaProxima.dateTimeChanged.connect(self.setDirty)
+        self.dteFechaProxima.dateTimeChanged.connect(lambda : self.verificarFechas(interna = False))
+        self.dteFecha.dateTimeChanged.connect(lambda : self.verificarFechas(interna = False))
         self.checkCita.stateChanged.connect(self.setCita)
         
         self.actionEditarCita = self.__createAction('Editar cita', self.editarCita)
         self.checkCita.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
         self.setActionCita()
+        
+    def verificarFechas(self, fecha = None, interna = True):
+        if self.dteFechaProxima.dateTime() < self.dteFecha.dateTime() and not interna:
+            from datetime import timedelta
+            self.dteFechaProxima.setDateTime(self.dteFecha.dateTime().toPython() + timedelta(0, 60))
+            #QtGui.QMessageBox.information(self, 'Error', u'La fecha próxima no puede ser menor a la fecha de creación')
         
     def setActionCita(self):
         if self.__cita == None:
