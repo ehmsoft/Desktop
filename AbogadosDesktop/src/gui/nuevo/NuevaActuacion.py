@@ -81,7 +81,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         self.dteFechaProxima.dateTimeChanged.connect(self.setDirty)
         self.dteFechaProxima.dateTimeChanged.connect(lambda : self.verificarFechas(interna = False))
         self.dteFecha.dateTimeChanged.connect(lambda : self.verificarFechas(interna = False))
-        self.checkCita.stateChanged.connect(self.setCita)
+        self.checkCita.clicked.connect(self.setCita)
         
         self.actionEditarCita = self.__createAction('Editar cita', self.editarCita)
         self.checkCita.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
@@ -105,7 +105,8 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             gestor = GestorCitas()
             gestor.actualizarCitas()
         
-    def setCita(self, boolean):
+    def setCita(self):
+        boolean = self.checkCita.checkState()
         if boolean:
             if self.__actuacion:
                 guardar = True
