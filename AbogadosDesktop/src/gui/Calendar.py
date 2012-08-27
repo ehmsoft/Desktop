@@ -174,7 +174,11 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
             if actuaciones.exec_():
                 actuacion = actuaciones.getSelected()
                 if not self.hasCita(actuacion.getId_actuacion()):
-                    dialogo = NuevaCita(actuacion=actuacion, parent=self)
+                    if hasattr(actuacion, 'cita'):
+                        cita1 = actuacion.cita
+                    else:
+                        cita1 = None
+                    dialogo = NuevaCita(actuacion=actuacion, cita=cita1, parent=self)
                     if dialogo.exec_():
                         cita = dialogo.getCita()
                         self.__ubicarCita(cita)
