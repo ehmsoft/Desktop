@@ -75,6 +75,7 @@ class Preferencias(object):
     def setCantidadEventos(self, cantidadEventos):
         if isinstance(cantidadEventos, IntType):
             self.__cantidadEventos = cantidadEventos
+            Preferencias.CANTEVENTOS = cantidadEventos
             self.p.actualizarPreferencia(id=10501, valor=cantidadEventos)
         else:
             raise TypeError('Tipo de dato no admitido')

@@ -77,6 +77,10 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         try:
             self.verificarCarpetaDocumentos()
             self.__persistence = Persistence(MainApp.CARPETAEHM)
+            pref = Preferencias()
+            MainApp.CANTEVENTOS = pref.getCantidadEventos()
+            Preferencias.CANTEVENTOS = pref.getCantidadEventos()
+            pref = None
         except Exception:
             message = QtGui.QMessageBox()
             message.setIcon(QtGui.QMessageBox.Warning)
@@ -345,6 +349,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 #Agregar la segunda columna si no existe
                 self.columna1 = Preferencias_GUI()
                 #self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+                MainApp.CANTEVENTOS = Preferencias.CANTEVENTOS
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
             else:
