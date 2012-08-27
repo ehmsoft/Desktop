@@ -76,6 +76,7 @@ class Preferencias(object):
         if isinstance(cantidadEventos, IntType):
             self.__cantidadEventos = cantidadEventos
             self.p.actualizarPreferencia(id_preferencia=10501, valor=cantidadEventos)
+            Preferencias.CANTEVENTOS = cantidadEventos
         else:
             raise TypeError('Tipo de dato no admitido')
     def setCorreo(self, correo):
