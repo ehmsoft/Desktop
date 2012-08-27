@@ -203,7 +203,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if not self.centralSplitter.count() == 1:
                 self.columna1.setParent(None)
             p = Persistence()
-            listado = ListadoBusqueda(p.consultarActuacionesCriticas(MainApp.CANTEVENTOS))
+            listado = ListadoBusqueda(p.consultarActuacionesCriticas(Preferencias().getCantidadEventos()))
             self.columna1 = ColumnaWidget(listado, addbutton=False)
             self.centralSplitter.addWidget(self.columna1)
             self.__restablecerElementoDerecho()
@@ -349,7 +349,6 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 #Agregar la segunda columna si no existe
                 self.columna1 = Preferencias_GUI()
                 #self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-                MainApp.CANTEVENTOS = Preferencias.CANTEVENTOS
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
             else:
@@ -357,6 +356,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.columna1.hide()
                 self.columna1 = Preferencias_GUI()
                 #self.columna1.getCentralWidget().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+
                 self.centralSplitter.addWidget(self.columna1)
                 self.__restablecerElementoDerecho()
         if item.text() in [MainApp.TXTEVENTOS, MainApp.TXTPROCESOS, MainApp.TXTPLANTILLAS, MainApp.TXTDEMANDANTES, MainApp.TXTDEMANDADOS, MainApp.TXTJUZGADOS, MainApp.TXTACTUACIONES, MainApp.TXTCATEGORIAS]:
