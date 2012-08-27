@@ -75,38 +75,38 @@ class Preferencias(object):
     def setCantidadEventos(self, cantidadEventos):
         if isinstance(cantidadEventos, IntType):
             self.__cantidadEventos = cantidadEventos
-            self.p.actualizarPreferencia(id=10501, valor=cantidadEventos)
+            self.p.actualizarPreferencia(id_preferencia=10501, valor=cantidadEventos)
         else:
             raise TypeError('Tipo de dato no admitido')
     def setCorreo(self, correo):
         if isinstance(correo, basestring):
             self.__correo = correo
-            self.p.actualizarPreferencia(id=10402, valor=correo)
+            self.p.actualizarPreferencia(id_preferencia=10402, valor=correo)
         else:
             raise TypeError('Tipo de dato no admitido')
     def setTipoAlarma(self, tipoAlarma):
         if isinstance(tipoAlarma, IntType):
             self.__tipoAlarma = tipoAlarma
-            self.p.actualizarPreferencia(id=10601, valor=tipoAlarma)
+            self.p.actualizarPreferencia(id_preferencia=10601, valor=tipoAlarma)
         else:
             raise TypeError('Tipo de dato no admitido')
     def setLlave(self, llave):
         if isinstance(llave, IntType):
             self.__llave = llave
-            self.p.actualizarPreferencia(id=998, valor=llave)
+            self.p.actualizarPreferencia(id_preferencia=998, valor=llave)
             
         else:
             raise TypeError('Tipo de dato no admitido')
     def setVersion(self, version):
-        if isinstance(id, IntType):
+        if isinstance(version, IntType):
             self.__version = version
-            self.p.actualizarPreferencia(id=999, valor=version)
+            self.p.actualizarPreferencia(id_preferencia=999, valor=version)
         else:
             raise TypeError('Tipo de dato no admitido')
     def setUltimaSinc(self, ultimaSinc):
         if isinstance(ultimaSinc, IntType):
             self.__ultimaSinc = ultimaSinc
-            self.p.actualizarPreferencia(id=997, valor=ultimaSinc)
+            self.p.actualizarPreferencia(id_preferencia=997, valor=ultimaSinc)
         else:
             raise TypeError('Tipo de dato no admitido')                   
                              
@@ -151,25 +151,25 @@ class Preferencias(object):
             p = Persistence()
             #consultar Preferencias:  correo 
             if id_preferencia == 10402:
-                p.actualizarPreferencia(id=id_preferencia, valor=valor)
+                p.actualizarPreferencia(id_preferencia=id_preferencia, valor=valor)
                 self.__correo = valor              
             #consultar Preferencias: Cantidad Eventos Proximos 
             elif id_preferencia == 10501:
-                p.actualizarPreferencia(id=id_preferencia, valor=valor)
+                p.actualizarPreferencia(id_preferencia=id_preferencia, valor=valor)
                 self.__cantidadEventos = valor
             #consultar Preferencias: Tipo Alarma 0 ninguni, 1 correo y alerta, 2 solo correo, 3 solo alerta
             elif id_preferencia == 10601:
-                p.actualizarPreferencia(id=id_preferencia, valor=valor)
+                p.actualizarPreferencia(id_preferencia=id_preferencia, valor=valor)
                 self.__tipoAlarma = valor
             #consultar Preferencias: llave 
             elif id_preferencia == 998:
-                p.actualizarPreferencia(id=id_preferencia, valor=valor)
+                p.actualizarPreferencia(id_preferencia=id_preferencia, valor=valor)
                 self.__llave = valor
             #consultar Preferencias: Version 
             elif id_preferencia == 999:
-                p.actualizarPreferencia(id=id_preferencia, valor=valor)
+                p.actualizarPreferencia(id_preferencia=id_preferencia, valor=valor)
                 self.__version = valor
             #consultar Preferencias: Ultima sincronizacion 
             elif id_preferencia == 997:
-                p.actualizarPreferencia(id=id_preferencia, valor=valor)
+                p.actualizarPreferencia(id_preferencia=id_preferencia, valor=valor)
                 self.__ultimaSinc = 0

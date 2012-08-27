@@ -64,9 +64,9 @@ class Preferencias_GUI(QtGui.QWidget, Ui_Preferencias):
             tipoAlarma = tipoAlarma | self.MENSAJE_ICONO
         if self.cbCorreo.isChecked():
             tipoAlarma = tipoAlarma | self.MENSAJE_CORREO
-        p.actualizarPrefrencia(Preferencias.TIPO_ALARMA, tipoAlarma)
+        p.setTipoAlarma(tipoAlarma)
         if self.cbCorreo.isChecked():
-            p.actualizarPrefrencia(Preferencias.CORREO, self.txtCorreo.text())
+            p.setCorreo(self.txtCorreo.text())
         else:
-            p.actualizarPrefrencia(Preferencias.CORREO, '')
-        p.actualizarPrefrencia(Preferencias.CANTIDAD_EVENTOS, self.sbCantidadEventos.value())      
+            p.setCorreo('')
+        p.setCantidadEventos(self.sbCantidadEventos.value())      
