@@ -184,15 +184,14 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
         fecha = self.dteFecha.dateTime().toPython()
         fechaProxima = self.dteFechaProxima.dateTime().toPython()
         descripcion = self.txtDescripcion.text()
-        if self.__actuacion is None:
-            if self.checkCita.isChecked():
-                cita = self.__cita
-            else:
-                cita = None
+        if self.checkCita.isChecked():
+            cita = self.__cita
+        else:
+            cita = None
+        if not self.__actuacion:
             self.__actuacion = Actuacion(juzgado=self.__juzgado, fecha=fecha,
                                          fechaProxima=fechaProxima, descripcion=descripcion,
                                          campos=self.__gestor.getCampos())
-            self.__actuacion.cita = cita
         else:
             if self.__actuacion.getId_actuacion() is not None:
                 camposNuevos = self.__gestor.getCamposNuevos()
@@ -210,6 +209,7 @@ class NuevaActuacion(QtGui.QDialog, Ui_NuevaActuacion):
             self.__actuacion.setFechaProxima(fechaProxima)
             self.__actuacion.setCampos(self.__gestor.getCampos())
             self.__actuacion.setJuzgado(self.__juzgado)
+        self.__actuacion.cita = cita
         return QtGui.QDialog.accept(self)
         
     def __clickJuzgado(self):
