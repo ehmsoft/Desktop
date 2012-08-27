@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'uis/mainApp.ui'
 #
-# Created: Tue Jul 31 15:44:27 2012
+# Created: Fri Aug 10 08:54:45 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -103,6 +103,8 @@ class Ui_mainApp(object):
         self.actionNuevaCitaCalendario.setObjectName("actionNuevaCitaCalendario")
         self.actionNuevaCita = QtGui.QAction(mainApp)
         self.actionNuevaCita.setObjectName("actionNuevaCita")
+        self.actionDesactivar = QtGui.QAction(mainApp)
+        self.actionDesactivar.setObjectName("actionDesactivar")
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Proceso)
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Plantilla)
         self.menuCampo_Personalizado.addAction(self.actionNuevoCampo_Demandante)
@@ -128,6 +130,7 @@ class Ui_mainApp(object):
         self.menu_Archivo.addAction(self.actionSalir_de_Procesos_Judiciales)
         self.menuAyuda.addAction(self.actionAcerca_de_Procesos_Judiciales)
         self.menuAyuda.addAction(self.actionAcerca_de_Qt)
+        self.menuAyuda.addAction(self.actionDesactivar)
         self.menuCalendario.addAction(self.actionMostrarCalendario)
         self.menuCalendario.addAction(self.actionNuevaCita)
         self.menubar.addAction(self.menu_Archivo.menuAction())
@@ -176,4 +179,5 @@ class Ui_mainApp(object):
         self.actionSalir_de_Procesos_Judiciales.setText(QtGui.QApplication.translate("mainApp", "Salir de Procesos Judiciales", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevaCitaCalendario.setText(QtGui.QApplication.translate("mainApp", "Cita", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevaCita.setText(QtGui.QApplication.translate("mainApp", "Nueva Cita", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionDesactivar.setText(QtGui.QApplication.translate("mainApp", "Desactivar", None, QtGui.QApplication.UnicodeUTF8))
 

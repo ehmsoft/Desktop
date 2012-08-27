@@ -5,6 +5,7 @@ Created on 30/01/2012
 
 @author: elfotografo007
 '''
+import sys
 import shutil
 import platform
 from os.path import exists, join
@@ -48,6 +49,9 @@ from gui.Preferencias_GUI import Preferencias_GUI
 from core.Preferencias import Preferencias
 from gui.MyTranslator import MyTranslator
 from gui import MainAppScreen
+from gui.AsistenteRegistro import AsistenteRegistro
+from gui.DialogoEspera import DialogoEspera
+from gui.DesactivarApp import DesactivarApp
 __version__ = '1.0'
 
 class MainApp(QtGui.QMainWindow, Ui_mainApp):
@@ -78,8 +82,12 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             message.setIcon(QtGui.QMessageBox.Warning)
             message.setText(u'Ocurrió un error al cargar la base de datos')
             message.exec_()
-        
-        print self.verificarActivacion()
+            
+        if not self.verificarActivacion():
+            self.activarPrograma()
+                    
+        self.__gestor = GestorCitas(self)
+        self.__gestor.actualizarCitas()
         self.setTrayIcon()
         self.__gestor = GestorCitas(parent = self, tray = self.tray)
         self.__gestor.actualizarCitas()
@@ -136,6 +144,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         self.connect(self.actionImprimir, QtCore.SIGNAL('triggered()'), self.menuImpresionClicked)
         self.connect(self.actionMostrarCalendario, QtCore.SIGNAL('triggered()'), self.mostrarCalendario)
         self.connect(self.actionNuevaCitaCalendario, QtCore.SIGNAL('triggered()'), self.menuNuevaCitaClicked)
+        self.connect(self.actionDesactivar, QtCore.SIGNAL('triggered()'), self.menuAyudaDesactivar)
         
     def elementChanged(self):
         self.elementClicked(self.listaIzquierda.currentItem())
@@ -1083,6 +1092,10 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if QtGui.QMessageBox.question(self, "Restaurar Archivo", u"Si continúa, se borrará toda la información que tiene en el programa y se reemplazará por la información del arhivo que está importando. ¿Seguro que desea Continuar?", QtGui.QMessageBox.Yes | QtGui.QMessageBox.No) == QtGui.QMessageBox.Yes:
                 shutil.copy(fname, ConnectionManager(MainApp.CARPETAEHM).getDbLocation())
     
+    def menuAyudaDesactivar(self):
+        des = DesactivarApp(MainApp.CARPETAEHM, self)
+        des.desactivarAplicacion()
+    
     def about(self):
         QtGui.QMessageBox.about(self, "Acerca de Procesos Judiciales",
                 """<b>Procesos Judiciales</b> v %s 
@@ -1117,7 +1130,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
     def verificarCarpetaDocumentos(self): 
         if not exists(MainApp.CARPETAEHM):
             mkdir(MainApp.CARPETAEHM)
-        
+      
     def verificarActivacion(self):
         try:
             activado = self.__persistence.consultarPreferencia(998)
@@ -1126,8 +1139,21 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             else:
                 return False
         except:
-            QtGui.QMessageBox.warning(self, 'Error', u'Ocurrió un error al verificar la activación de la aplicación. La aplicación se cerrará. Reiniciéla, si el problema persiste, contacte a soporte@ehmsoft.com')
-import sys
+            QtGui.QMessageBox.warning(self, "Error", u"Ha ocurrido un problema verificando la activación de la aplicación, esta se cerrará. Por favor vuelva a iniciarla.\nSi el problema persiste contacte a soporte@ehmsoft.com")
+            sys.exit(0)
+            
+    def activarPrograma(self):
+        asistenteRegistro = AsistenteRegistro()
+        if asistenteRegistro.exec_():
+            if asistenteRegistro.isValid():
+                try:
+                    self.__persistence.actualizarPreferencia(998, 1)
+                    self.__persistence.actualizarPreferencia(10402, asistenteRegistro.getCorreo())
+                    return
+                except:
+                    QtGui.QMessageBox.warning(self, "Error", u"Ha ocurrido un problema verificando la activación de la aplicación, esta se cerrará. Por favor vuelva a iniciarla.\nSi el problema persiste contacte a soporte@ehmsoft.com")
+        sys.exit(0)
+
 translator = MyTranslator()
 app = QtGui.QApplication(sys.argv)
 app.installTranslator(translator)

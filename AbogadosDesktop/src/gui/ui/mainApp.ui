@@ -111,6 +111,7 @@
     </property>
     <addaction name="actionAcerca_de_Procesos_Judiciales"/>
     <addaction name="actionAcerca_de_Qt"/>
+    <addaction name="actionDesactivar"/>
    </widget>
    <widget class="QMenu" name="menuCalendario">
     <property name="title">
@@ -272,6 +273,11 @@
   <action name="actionNuevaCita">
    <property name="text">
     <string>Nueva Cita</string>
+   </property>
+  </action>
+  <action name="actionDesactivar">
+   <property name="text">
+    <string>Desactivar</string>
    </property>
   </action>
  </widget>
