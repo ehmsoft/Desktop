@@ -8,7 +8,7 @@ from PySide import QtCore
 from httplib import HTTPSConnection
 from urllib import urlencode
 from xml.dom.minidom import parseString
-
+from ssl import SSLError
 class HiloActivacion(QtCore.QThread):
     def run(self):
         self.peticion(correo=self.correo, peticion=self.pet)
@@ -36,8 +36,13 @@ class HiloActivacion(QtCore.QThread):
         conn= HTTPSConnection('activacionehm.herokuapp.com', timeout=10)
         params = urlencode({'correo':'%s' % correo, 'aplicacion_id':1})
         conn.request(method="POST", url="/%s.xml" % peticion, body=params)
-        response = conn.getresponse()
-        data = response.read()
-        self.flag, self.respuesta = self.procesar(data, peticion)
-        conn.close()
-        self.exit()
+        try:
+            response = conn.getresponse()
+            data = response.read()
+            self.flag, self.respuesta = self.procesar(data, peticion)
+        except SSLError:
+            self.flag = False
+            self.respuesta = u"El servidor ha tardado demasiado en responder. Por favor verifique su conexión a internet e intente de nuevo. Si el problema persiste por favor comuníquese con nuestro personal de soporte técnico: soporte@ehmsoft.com"
+        finally:
+            conn.close()
+            self.exit()

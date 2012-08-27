@@ -26,13 +26,13 @@ class AsistenteRegistro(QtGui.QWizard, Ui_WizardRegistro):
         if correo == "":
             QtGui.QMessageBox.warning(self, "Advertencia", u"El campo correo no puede estar vacío")
             return False
-        else:
-            self.hilo = HiloActivacion()
-            self.hilo.correo = correo
-            self.hilo.pet = 'activar'
-            self.hilo.finished.connect(self.hiloTerminado)
-            self.dialogo = DialogoEspera()
+        else: 
             try:
+                self.hilo = HiloActivacion()
+                self.hilo.correo = correo
+                self.hilo.pet = 'activar'
+                self.hilo.finished.connect(self.hiloTerminado)
+                self.dialogo = DialogoEspera()
                 self.hilo.start()
                 self.dialogo.exec_()
             except:
