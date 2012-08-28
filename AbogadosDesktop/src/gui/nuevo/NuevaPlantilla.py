@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on 14/02/2012
 
@@ -252,8 +253,12 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
         return action 
                 
     def accept(self):
-        self.__gestor.organizarCampos(False)
-        self.__guardar()
+        if len(self.txtNombre.text()):
+            self.__gestor.organizarCampos(False)
+            self.__guardar()
+        else:
+            QtGui.QMessageBox.information(self, 'Error', u'No se permite el nombre vacío')
+            self.txtNombre.setFocus()
     
     def __guardar(self):
         del(self.__dialogo)
