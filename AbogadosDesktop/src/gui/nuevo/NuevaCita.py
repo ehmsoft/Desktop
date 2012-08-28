@@ -89,7 +89,7 @@ class NuevaCita(QtGui.QDialog, Ui_Cita):
             self.cita.setAnticipacion(anticipacion)
             self.cita.setAlarma(alarma)
             self.cita.setDescripcion(descripcion)
-        if self.isGuardar:
+        if self.isGuardar or self.cita:
             self.guardarEnBD()
         else:
             return QtGui.QDialog.accept(self)
