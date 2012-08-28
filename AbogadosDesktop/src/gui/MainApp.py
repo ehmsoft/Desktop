@@ -90,8 +90,6 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         if not self.verificarActivacion():
             self.activarPrograma()
                     
-        self.__gestor = GestorCitas(self)
-        self.__gestor.actualizarCitas()
         self.setTrayIcon()
         self.__gestor = GestorCitas(parent = self, tray = self.tray)
         self.__gestor.actualizarCitas()

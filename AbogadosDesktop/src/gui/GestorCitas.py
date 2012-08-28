@@ -35,19 +35,19 @@ class GestorCitas(object):
             p = Persistence()
             citas = p.consultarCitasCalendario()
             for cita in citas:
-                if cita.isAlarma() and cita.getFecha() + timedelta(0, cita.getAnticipacion()) > datetime.today():
+                if (cita.isAlarma() and cita.getFecha() + timedelta(0, cita.getAnticipacion()) > datetime.today()) > 0:
                     t = QtCore.QTimer(self.parent)
                     self.timer.append(t)
-                    t.setSingleShot(True)
-                    t.timeout.connect(lambda : self.__seCumpleCita(cita))
                     delta = cita.getFecha() - datetime.today()
                     tiempo = (delta.total_seconds() - cita.getAnticipacion()) * 1000
-                    t.start(tiempo)
+                    t.cita = cita
+                    t.singleShot(tiempo, self.__seCumpleCita)
         except Exception as e:
             print e
                 
     
-    def __seCumpleCita(self, cita):
+    def __seCumpleCita(self):
+        cita = self.timer.pop(0).cita
         preferencias = Preferencias()
         tipoAlarma = preferencias.getTipoAlarma()
         if tipoAlarma & Preferencias_GUI.MENSAJE_CORREO == Preferencias_GUI.MENSAJE_CORREO:
