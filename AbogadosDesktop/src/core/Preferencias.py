@@ -26,6 +26,7 @@ class Preferencias(object):
     CANTEVENTOS = 10
     
     CORREO = 10402
+    CORREO_NOTIFICACION = 10602
     CANTIDAD_EVENTOS = 10501
     TIPO_ALARMA = 10601
     LLAVE = 998
@@ -54,6 +55,8 @@ class Preferencias(object):
             #consultar Preferencias: Ultima sincronizacion 
             elif llaveD == self.ULTIMA_SINC:
                 self.__ultimaSinc = valor
+            elif llaveD == self.CORREO_NOTIFICACION:
+                self.__correoNotificacion = valor
     
     #Getters    
     def getId_preferencia(self):
@@ -62,6 +65,8 @@ class Preferencias(object):
         return self.__cantidadEventos
     def getCorreo(self):
         return self.__correo
+    def getCorreoNotificacion(self):
+        return self.__correoNotificacion
     def getTipoAlarma(self):
         return self.__tipoAlarma
     def getLlave(self):
@@ -83,6 +88,12 @@ class Preferencias(object):
         if isinstance(correo, basestring):
             self.__correo = correo
             self.p.actualizarPreferencia(id_preferencia=10402, valor=correo)
+        else:
+            raise TypeError('Tipo de dato no admitido')
+    def setCorreoNotificacion(self, correo):
+        if isinstance(correo, basestring):
+            self.__correoNotificacion = correo
+            self.p.actualizarPreferencia(id_preferencia=self.CORREO_NOTIFICACION, valor=correo)
         else:
             raise TypeError('Tipo de dato no admitido')
     def setTipoAlarma(self, tipoAlarma):
@@ -116,7 +127,10 @@ class Preferencias(object):
         #consultar Preferencias:  correo 
         if id_preferencia == 10402:
             self.__correo = ''
-            p.borrarPreferencia(id_preferencia=10402)               
+            p.borrarPreferencia(id_preferencia=10402)
+        elif id_preferencia == self.CORREO_NOTIFICACION:
+            self.__correoNotificacion = ''
+            p.borrarPreferencia(self.CORREO_NOTIFICACION)               
         #consultar Preferencias: Cantidad Eventos Proximos 
         elif id_preferencia == 10501:
             self.__cantidadEventos = 10
@@ -142,6 +156,7 @@ class Preferencias(object):
             p = Persistence()
             p.borrarPreferencias()
             self.__correo = ''
+            self.__correoNotificacion = ''
             self.__cantidadEventos = 10
             self.__tipoAlarma = 1
             self.__llave = 0
@@ -153,7 +168,10 @@ class Preferencias(object):
             #consultar Preferencias:  correo 
             if id_preferencia == 10402:
                 p.actualizarPreferencia(id_preferencia=id_preferencia, valor=valor)
-                self.__correo = valor              
+                self.__correo = valor
+            elif id_preferencia == self.CORREO_NOTIFICACION:
+                p.actualizarPreferencia(id_preferencia=id_preferencia, valor = valor)   
+                self.__correoNotificacion = valor           
             #consultar Preferencias: Cantidad Eventos Proximos 
             elif id_preferencia == 10501:
                 p.actualizarPreferencia(id_preferencia=id_preferencia, valor=valor)

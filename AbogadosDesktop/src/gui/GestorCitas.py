@@ -51,7 +51,7 @@ class GestorCitas(object):
         preferencias = Preferencias()
         tipoAlarma = preferencias.getTipoAlarma()
         if tipoAlarma & Preferencias_GUI.MENSAJE_CORREO == Preferencias_GUI.MENSAJE_CORREO:
-            enviarCorreo(cita, preferencias.getCorreo())
+            enviarCorreo(cita, preferencias.getCorreoNotificacion())
         if tipoAlarma & Preferencias_GUI.MENSAJE_ICONO == Preferencias_GUI.MENSAJE_ICONO:
             self.tray.showMessage(u'Notificación de cita' + cita.getDescripcion(), unicode(cita))
         if tipoAlarma & Preferencias_GUI.MENSAJE_EMERGENTE == Preferencias_GUI.MENSAJE_EMERGENTE:

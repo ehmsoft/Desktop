@@ -66,7 +66,7 @@ class Preferencias_GUI(QtGui.QWidget, Ui_Preferencias):
             tipoAlarma = tipoAlarma | self.MENSAJE_CORREO
         p.setTipoAlarma(tipoAlarma)
         if self.cbCorreo.isChecked():
-            p.setCorreo(self.txtCorreo.text())
+            p.setCorreoNotificacion(self.txtCorreo.text())
         else:
-            p.setCorreo('')
+            p.setCorreoNotificacion('')
         p.setCantidadEventos(self.sbCantidadEventos.value())      
