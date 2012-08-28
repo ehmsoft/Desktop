@@ -210,7 +210,7 @@
     <string>Imprimir</string>
    </property>
    <property name="shortcut">
-    <string>Meta+P</string>
+    <string>Ctrl+P</string>
    </property>
   </action>
   <action name="actionImportar">
@@ -218,7 +218,7 @@
     <string>Importar</string>
    </property>
    <property name="shortcut">
-    <string>Meta+I, Ctrl+I</string>
+    <string>Ctrl+I</string>
    </property>
   </action>
   <action name="actionNuevoProceso_a_partir_de_Plantilla">
@@ -260,6 +260,9 @@
   <action name="actionSalir_de_Procesos_Judiciales">
    <property name="text">
     <string>Salir de Procesos Judiciales</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
    </property>
    <property name="menuRole">
     <enum>QAction::QuitRole</enum>

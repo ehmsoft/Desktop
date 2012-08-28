@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'uis/mainApp.ui'
+# Form implementation generated from reading ui file 'ui/mainApp.ui'
 #
-# Created: Fri Aug 10 08:54:45 2012
+# Created: Tue Aug 28 14:48:05 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -167,9 +167,9 @@ class Ui_mainApp(object):
         self.actionNuevoCampo_Actuacion.setText(QtGui.QApplication.translate("mainApp", "Campo Actuacion", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevoCampo_Actuacion.setToolTip(QtGui.QApplication.translate("mainApp", "Nuevo Campo Actuacion", None, QtGui.QApplication.UnicodeUTF8))
         self.actionImprimir.setText(QtGui.QApplication.translate("mainApp", "Imprimir", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionImprimir.setShortcut(QtGui.QApplication.translate("mainApp", "Meta+P", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionImprimir.setShortcut(QtGui.QApplication.translate("mainApp", "Ctrl+P", None, QtGui.QApplication.UnicodeUTF8))
         self.actionImportar.setText(QtGui.QApplication.translate("mainApp", "Importar", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionImportar.setShortcut(QtGui.QApplication.translate("mainApp", "Meta+I, Ctrl+I", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionImportar.setShortcut(QtGui.QApplication.translate("mainApp", "Ctrl+I", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevoProceso_a_partir_de_Plantilla.setText(QtGui.QApplication.translate("mainApp", "Proceso a partir de Plantilla", None, QtGui.QApplication.UnicodeUTF8))
         self.actionArchivo_CSV.setText(QtGui.QApplication.translate("mainApp", "Archivo CSV", None, QtGui.QApplication.UnicodeUTF8))
         self.actionArchivo_de_Copia_de_Seguridad.setText(QtGui.QApplication.translate("mainApp", "Archivo de Copia de Seguridad", None, QtGui.QApplication.UnicodeUTF8))
@@ -177,6 +177,7 @@ class Ui_mainApp(object):
         self.actionAcerca_de_Qt.setText(QtGui.QApplication.translate("mainApp", "Acerca de Qt", None, QtGui.QApplication.UnicodeUTF8))
         self.actionMostrarCalendario.setText(QtGui.QApplication.translate("mainApp", "Mostrar Calendario", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSalir_de_Procesos_Judiciales.setText(QtGui.QApplication.translate("mainApp", "Salir de Procesos Judiciales", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSalir_de_Procesos_Judiciales.setShortcut(QtGui.QApplication.translate("mainApp", "Ctrl+P", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevaCitaCalendario.setText(QtGui.QApplication.translate("mainApp", "Cita", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevaCita.setText(QtGui.QApplication.translate("mainApp", "Nueva Cita", None, QtGui.QApplication.UnicodeUTF8))
         self.actionDesactivar.setText(QtGui.QApplication.translate("mainApp", "Desactivar", None, QtGui.QApplication.UnicodeUTF8))
