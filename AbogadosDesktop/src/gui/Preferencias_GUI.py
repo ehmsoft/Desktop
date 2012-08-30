@@ -50,7 +50,7 @@ class Preferencias_GUI(QtGui.QWidget, Ui_Preferencias):
             self.cbNotificacion.setChecked(False)
         if tipoAlarma & self.MENSAJE_CORREO == self.MENSAJE_CORREO:
             self.cbCorreo.setChecked(True)
-            self.txtCorreo.setText(preferencias.getCorreo())
+            self.txtCorreo.setText(preferencias.getCorreoNotificacion())
         else:
             self.cbCorreo.setChecked(False)
         self.sbCantidadEventos.setValue(preferencias.getCantidadEventos())
