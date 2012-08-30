@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'nuevaActuacion.ui'
 #
-# Created: Sun Apr  8 22:40:03 2012
+# Created: Thu Aug 30 16:14:09 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_NuevaActuacion(object):
     def setupUi(self, NuevaActuacion):
         NuevaActuacion.setObjectName("NuevaActuacion")
-        NuevaActuacion.resize(291, 209)
+        NuevaActuacion.resize(323, 209)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -100,7 +100,9 @@ class Ui_NuevaActuacion(object):
         self.lblJuzgado_2.setText(QtGui.QApplication.translate("NuevaActuacion", "Juzgado:", None, QtGui.QApplication.UnicodeUTF8))
         self.lblJuzgado.setText(QtGui.QApplication.translate("NuevaActuacion", "TextLabel", None, QtGui.QApplication.UnicodeUTF8))
         self.lblFecha.setText(QtGui.QApplication.translate("NuevaActuacion", "Fecha:", None, QtGui.QApplication.UnicodeUTF8))
+        self.dteFecha.setDisplayFormat(QtGui.QApplication.translate("NuevaActuacion", "d MMM yyyy hh:mm:ss a", None, QtGui.QApplication.UnicodeUTF8))
         self.lblFechaProxima.setText(QtGui.QApplication.translate("NuevaActuacion", "Fecha próxima:", None, QtGui.QApplication.UnicodeUTF8))
+        self.dteFechaProxima.setDisplayFormat(QtGui.QApplication.translate("NuevaActuacion", "d MMM yyyy hh:mm:ss a", None, QtGui.QApplication.UnicodeUTF8))
         self.checkCita.setText(QtGui.QApplication.translate("NuevaActuacion", "Cita", None, QtGui.QApplication.UnicodeUTF8))
         self.btnAdd.setText(QtGui.QApplication.translate("NuevaActuacion", "+", None, QtGui.QApplication.UnicodeUTF8))
 
