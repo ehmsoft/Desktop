@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/mainApp.ui'
+# Form implementation generated from reading ui file 'mainApp.ui'
 #
-# Created: Tue Aug 28 14:48:05 2012
+# Created: Tue Aug 28 16:47:12 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_mainApp(object):
     def setupUi(self, mainApp):
         mainApp.setObjectName("mainApp")
-        mainApp.resize(800, 600)
+        mainApp.resize(800, 573)
         self.centralwidget = QtGui.QWidget(mainApp)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtGui.QGridLayout(self.centralwidget)
@@ -28,13 +28,13 @@ class Ui_mainApp(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 664, 531))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 682, 520))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.gridLayout.addWidget(self.scrollArea, 0, 0, 1, 1)
         mainApp.setCentralWidget(self.centralwidget)
-        self.menubar = QtGui.QMenuBar()
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 22))
+        self.menubar = QtGui.QMenuBar(mainApp)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 20))
         self.menubar.setObjectName("menubar")
         self.menu_Archivo = QtGui.QMenu(self.menubar)
         self.menu_Archivo.setObjectName("menu_Archivo")
@@ -120,7 +120,6 @@ class Ui_mainApp(object):
         self.menu_Nuevo.addAction(self.actionNuevaCategoria)
         self.menu_Nuevo.addAction(self.menuCampo_Personalizado.menuAction())
         self.menu_Nuevo.addAction(self.actionNuevoProceso_a_partir_de_Plantilla)
-        self.menu_Nuevo.addAction(self.actionNuevaCitaCalendario)
         self.menuExportar.addAction(self.actionArchivo_CSV)
         self.menuExportar.addAction(self.actionArchivo_de_Copia_de_Seguridad)
         self.menu_Archivo.addAction(self.menu_Nuevo.menuAction())
@@ -132,7 +131,6 @@ class Ui_mainApp(object):
         self.menuAyuda.addAction(self.actionAcerca_de_Qt)
         self.menuAyuda.addAction(self.actionDesactivar)
         self.menuCalendario.addAction(self.actionMostrarCalendario)
-        self.menuCalendario.addAction(self.actionNuevaCita)
         self.menubar.addAction(self.menu_Archivo.menuAction())
         self.menubar.addAction(self.menuCalendario.menuAction())
         self.menubar.addAction(self.menuAyuda.menuAction())

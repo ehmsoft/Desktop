@@ -158,7 +158,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
             cita = self.lista2.currentItem().getObjeto()
         else:
             cita = self.lista3.currentItem().getObjeto()
-        editar = NuevaCita(cita=cita, parent=self)
+        editar = NuevaCita(cita=cita, parent=self, isGuardar=True)
         if editar.exec_():
             self.__redibujar()
         
