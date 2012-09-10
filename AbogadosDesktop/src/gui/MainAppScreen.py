@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'mainApp.ui'
+# Form implementation generated from reading ui file 'ui/mainApp.ui'
 #
-# Created: Tue Aug 28 16:47:12 2012
+# Created: Sun Sep  9 20:34:14 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -33,7 +33,7 @@ class Ui_mainApp(object):
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.gridLayout.addWidget(self.scrollArea, 0, 0, 1, 1)
         mainApp.setCentralWidget(self.centralwidget)
-        self.menubar = QtGui.QMenuBar(mainApp)
+        self.menubar = QtGui.QMenuBar()
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 20))
         self.menubar.setObjectName("menubar")
         self.menu_Archivo = QtGui.QMenu(self.menubar)
