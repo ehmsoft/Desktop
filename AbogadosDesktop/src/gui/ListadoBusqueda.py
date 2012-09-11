@@ -234,7 +234,7 @@ class CampoBusqueda(QtGui.QWidget):
             items = []
         else:
             items = ['Todas']
-        categorias = Persistence().consultarCategorias()
+        categorias = Persistence().consultarCategorias()#TODO: Verificar constructor de Persistencia
         items += [categoria.getDescripcion() for categoria in categorias]
         while self.comboBuscar.count():
             self.comboBuscar.removeItem(1)

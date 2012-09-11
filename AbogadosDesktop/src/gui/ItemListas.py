@@ -9,7 +9,7 @@ from PySide.QtGui import QListWidgetItem
 
 class ItemListas(QListWidgetItem):
     def __init__(self, objeto, parent = None):
-        super(ItemListas, self).__init__(unicode(objeto), parent)
+        super(ItemListas, self).__init__(unicode(objeto), parent)#TODO: Verificar unicode
         self.__objeto = objeto
         
 

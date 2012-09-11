@@ -42,7 +42,7 @@ class ListadoDialogoMultipleSeleccion(QDialog):
             self.setWindowTitle('Seleccionar Juzgados')
         elif self.__tipo is self.__class__.CATEGORIA:
             objetos = self.__p.consultarCategorias()
-            self.setWindowTitle('Seleccionar categorías')
+            self.setWindowTitle(u'Seleccionar categorías')
         elif self.__tipo is self.__class__.CAMPOPROCESOP:
             objetos = self.__p.consultarAtributos()
             self.setWindowTitle('Seleccione campos')

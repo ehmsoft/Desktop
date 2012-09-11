@@ -38,7 +38,7 @@ class ListadoDialogo (QtGui.QDialog):
             self.setWindowTitle('Seleccionar Juzgado')
         elif self.__tipo is self.__class__.CATEGORIA:
             objetos = self.__p.consultarCategorias()
-            self.setWindowTitle('Seleccionar categoría')
+            self.setWindowTitle(u'Seleccionar categoría')
         elif self.__tipo is self.__class__.CAMPOPROCESOP:
             objetos = self.__p.consultarAtributos()
             self.setWindowTitle('Seleccione un campo')
