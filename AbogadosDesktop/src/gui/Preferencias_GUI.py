@@ -69,4 +69,5 @@ class Preferencias_GUI(QtGui.QWidget, Ui_Preferencias):
             p.setCorreoNotificacion(self.txtCorreo.text())
         else:
             p.setCorreoNotificacion('')
-        p.setCantidadEventos(self.sbCantidadEventos.value())      
+        p.setCantidadEventos(self.sbCantidadEventos.value())  
+        QtGui.QMessageBox.information(self,"Preferencias Guardadas","Se guardaron las preferencias correctamente")    
