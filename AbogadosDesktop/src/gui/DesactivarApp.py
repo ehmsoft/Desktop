@@ -43,6 +43,9 @@ class DesactivarApp(object):
             sys.exit(0)
             
     def hiloTerminado(self):
-        QtGui.QMessageBox.warning(self.parent,"Info", self.hilo.respuesta)
+        try:
+            QtGui.QMessageBox.warning(self.parent,"Info", self.hilo.respuesta)
+        except:
+            QtGui.QMessageBox.warning(self.parent, "Error", "Ha ocurrido un error de red indeterminado Por favor verifique su conexión a internet e intente de nuevo. Si el problema persiste por favor comuníquese con nuestro personal de soporte técnico: soporte@ehmsoft.com")
         self.flag = self.hilo.flag
         self.dialogo.hide()

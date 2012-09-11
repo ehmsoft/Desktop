@@ -9,6 +9,7 @@ from httplib import HTTPSConnection
 from urllib import urlencode
 from xml.dom.minidom import parseString
 from ssl import SSLError
+from socket import gaierror
 class HiloActivacion(QtCore.QThread):
     def run(self):
         self.peticion(correo=self.correo, peticion=self.pet)
@@ -33,13 +34,17 @@ class HiloActivacion(QtCore.QThread):
                 return False, u"Lo sentimos pero no se ha encontrado la cuenta. Por favor comuníquese con nuestro personal de soporte técnico: soporte@ehmsoft.com"
 
     def peticion(self, correo, peticion):
-        conn= HTTPSConnection('activacionehm.herokuapp.com')
-        params = urlencode({'correo':'%s' % correo, 'aplicacion_id':1})
-        conn.request(method="POST", url="/%s.xml" % peticion, body=params)
         try:
+            conn= HTTPSConnection('activacionehm.herokuapp.com')
+            params = urlencode({'correo':'%s' % correo, 'aplicacion_id':1})
+            conn.request(method="POST", url="/%s.xml" % peticion, body=params)
+        
             response = conn.getresponse()
             data = response.read()
             self.flag, self.respuesta = self.procesar(data, peticion)
+        except gaierror:
+            self.flag = False
+            self.respuesta = u"El servidor no se ha encontrado. Por favor verifique su conexión a internet e intente de nuevo. Si el problema persiste por favor comuníquese con nuestro personal de soporte técnico: soporte@ehmsoft.com"
         except SSLError:
             self.flag = False
             self.respuesta = u"El servidor ha tardado demasiado en responder. Por favor verifique su conexión a internet e intente de nuevo. Si el problema persiste por favor comuníquese con nuestro personal de soporte técnico: soporte@ehmsoft.com"
