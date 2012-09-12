@@ -899,7 +899,7 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             c = conn.cursor()
-            c.execute('''UPDATE citas SET eliminado = 1 WHERE fecha < date() AND eliminado = 0 ''')
+            c.execute('''UPDATE citas SET eliminado = 1 WHERE fecha < date('now','localtime') AND eliminado = 0 ''')
         except Exception as e:
             raise e
         finally:
@@ -1227,7 +1227,7 @@ class Persistence(object):
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE fecha_proxima >= date() AND eliminado = 0 ORDER BY fecha_proxima LIMIT ?''', (cantidad,))
+            c.execute('''SELECT id_actuacion, id_proceso, id_juzgado, fecha_creacion as "fecha_creacion [timestamp]", fecha_proxima as "fecha_proxima [timestamp]", descripcion, uid FROM actuaciones WHERE fecha_proxima >= date('now','localtime') AND eliminado = 0 ORDER BY fecha_proxima LIMIT ?''', (cantidad,))
             for row in c:
                 id_actuacion = str(row['id_actuacion'])
                 id_juzgado = str(row['id_juzgado'])
