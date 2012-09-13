@@ -11,7 +11,7 @@ from datetime import datetime
 from datetime import timedelta
 from core.Preferencias import Preferencias
 from gui.Preferencias_GUI import Preferencias_GUI
-from core.GestorCorreo import enviarCorreo
+from core.GestorCorreo import Correo
 
 class GestorCitas(object):
     __metaclass__ = Singleton
@@ -51,7 +51,13 @@ class GestorCitas(object):
         preferencias = Preferencias()
         tipoAlarma = preferencias.getTipoAlarma()
         if tipoAlarma & Preferencias_GUI.MENSAJE_CORREO == Preferencias_GUI.MENSAJE_CORREO:
-            enviarCorreo(cita, preferencias.getCorreoNotificacion())
+            try:
+                correo = Correo()
+                correo.cita = cita
+                correo.correo = preferencias.getCorreoNotificacion()
+                correo.start()
+            except:
+                QtGui.QMessageBox.information(self, 'Error', u"Error al enviar correo electrónico de notificación de una cita. Por favor verifique su conexión a internet e intente de nuevo. Si el problema persiste por favor comuníquese con nuestro personal de soporte técnico: soporte@ehmsoft.com")
         if tipoAlarma & Preferencias_GUI.MENSAJE_ICONO == Preferencias_GUI.MENSAJE_ICONO:
             self.tray.showMessage(u'Notificación de cita' + cita.getDescripcion(), unicode(cita))
         if tipoAlarma & Preferencias_GUI.MENSAJE_EMERGENTE == Preferencias_GUI.MENSAJE_EMERGENTE:
