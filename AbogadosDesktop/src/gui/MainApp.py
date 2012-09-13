@@ -654,6 +654,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.columna1.getCentralWidget().replace(procesoVentana.getProceso())
             self.columna1ElementChanged()
             del procesoVentana
+            self.columna1.getCentralWidget().buscar.llenarCombo()
         else:
             #Se viene por aqui si es una ActuacionCritica
             proceso = Persistence().consultarProceso(elemento.getId_proceso())
@@ -661,7 +662,7 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             if procesoVentana.exec_():
                 self.elementChanged()
             del procesoVentana
-        self.columna1.getCentralWidget().buscar.llenarCombo()
+        
         
     def procesoEliminarClicked(self):
         elemento = self.columna1.getCentralWidget().getSelectedItem()
@@ -905,7 +906,10 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
     def __restablecerElementoDerecho(self):
         #Reestablecer el logo de la bolita
         elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
-        if isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion, VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
+        item = self.listaIzquierda.currentItem()
+        if item.text() == MainApp.TXTEVENTOS and isinstance(elementoGrid, VerProceso):
+            pass
+        elif isinstance(elementoGrid, (VerProceso, VerPersona, VerPlantilla, VerJuzgado, VerActuacion, VerCategoria, VerCampoPersonalizado, ColumnaDerecha)):
             self.gridLayout.removeWidget(elementoGrid)
             elementoGrid.setParent(None)
             self.label = QtGui.QLabel() 
