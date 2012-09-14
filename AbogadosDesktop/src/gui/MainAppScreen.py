@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/mainApp.ui'
 #
-# Created: Sun Sep  9 20:34:14 2012
+# Created: Thu Sep 13 19:53:00 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,13 +28,13 @@ class Ui_mainApp(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 682, 520))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 664, 504))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.gridLayout.addWidget(self.scrollArea, 0, 0, 1, 1)
         mainApp.setCentralWidget(self.centralwidget)
         self.menubar = QtGui.QMenuBar()
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 20))
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 22))
         self.menubar.setObjectName("menubar")
         self.menu_Archivo = QtGui.QMenu(self.menubar)
         self.menu_Archivo.setObjectName("menu_Archivo")
@@ -175,7 +175,7 @@ class Ui_mainApp(object):
         self.actionAcerca_de_Qt.setText(QtGui.QApplication.translate("mainApp", "Acerca de Qt", None, QtGui.QApplication.UnicodeUTF8))
         self.actionMostrarCalendario.setText(QtGui.QApplication.translate("mainApp", "Mostrar Calendario", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSalir_de_Procesos_Judiciales.setText(QtGui.QApplication.translate("mainApp", "Salir de Procesos Judiciales", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionSalir_de_Procesos_Judiciales.setShortcut(QtGui.QApplication.translate("mainApp", "Ctrl+P", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionSalir_de_Procesos_Judiciales.setShortcut(QtGui.QApplication.translate("mainApp", "Ctrl+S", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevaCitaCalendario.setText(QtGui.QApplication.translate("mainApp", "Cita", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevaCita.setText(QtGui.QApplication.translate("mainApp", "Nueva Cita", None, QtGui.QApplication.UnicodeUTF8))
         self.actionDesactivar.setText(QtGui.QApplication.translate("mainApp", "Desactivar", None, QtGui.QApplication.UnicodeUTF8))

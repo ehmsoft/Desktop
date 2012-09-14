@@ -44,8 +44,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>682</width>
-         <height>520</height>
+         <width>664</width>
+         <height>504</height>
         </rect>
        </property>
       </widget>
@@ -59,7 +59,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_Archivo">
@@ -260,7 +260,7 @@
     <string>Salir de Procesos Judiciales</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+P</string>
+    <string>Ctrl+S</string>
    </property>
    <property name="menuRole">
     <enum>QAction::QuitRole</enum>
