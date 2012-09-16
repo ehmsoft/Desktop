@@ -65,7 +65,10 @@ class AsistenteImpresion(QDialog, Ui_AsistenteImpresionDialog):
                     if dialog.exec_():
                         qr = qrcode.make('id_proceso:'+proceso.getId_proceso())
                         image = QImage()
-                        image.loadFromData(QByteArray(qr.tobitmap()), "XBM")
+                        if hasattr(qr, 'tobitmap'):
+                            image.loadFromData(QByteArray(qr.tobitmap()), "XBM")
+                        else:
+                            image.loadFromData(QByteArray(qr._img.tobitmap()), "XBM")
                         image.invertPixels()
                         painter = QPainter(self.printer)
                         width = image.width() *6
