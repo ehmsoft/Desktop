@@ -655,23 +655,12 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
             self.columna1ElementChanged()
             del procesoVentana
             self.columna1.getCentralWidget().buscar.llenarCombo()
-        else:
-            #Se viene por aqui si es una ActuacionCritica
-            proceso = Persistence().consultarProceso(elemento.getId_proceso())
-            procesoVentana = NuevoProceso(proceso)
-            if procesoVentana.exec_():
-                self.elementChanged()
-            del procesoVentana
-        
         
     def procesoEliminarClicked(self):
         elemento = self.columna1.getCentralWidget().getSelectedItem()
         if self.columna1.getCentralWidget().remove():            
             if isinstance(elemento, Proceso):
                 proceso = elemento
-            else:   
-                #Si es una actuacion critica, debe cargar el proceso desde la base de datos
-                proceso = Persistence().consultarProceso(elemento.getId_proceso())
             p = Persistence()
             p.borrarProceso(proceso)           
             if not isinstance(elemento, Proceso):
