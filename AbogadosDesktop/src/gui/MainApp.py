@@ -441,8 +441,8 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 nuevoElemento.setMaximumWidth(360)
                 nuevoElemento.setMinimumWidth(300)
                 self.gridLayout.addWidget(nuevoElemento, 0, 1, 1, 1)
-                self.connect(nuevoElemento.btnEditar, QtCore.SIGNAL('clicked()'), self.procesoEditarClicked)
-                self.connect(nuevoElemento.btnEliminar, QtCore.SIGNAL('clicked()'), self.procesoEliminarClicked)
+                self.connect(nuevoElemento.btnEditar, QtCore.SIGNAL('clicked()'), self.actCriticaEditarClicked)
+                self.connect(nuevoElemento.btnEliminar, QtCore.SIGNAL('clicked()'), self.actCriticaEliminarClicked)
             if isinstance(item.getObjeto(), Proceso):
                 #Borrar el elemento derecho
                 elementoGrid = self.gridLayout.itemAtPosition(0, 1).widget()
@@ -686,6 +686,28 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
                 self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
         self.columna1.getCentralWidget().buscar.llenarCombo()
     
+    def actCriticaEditarClicked(self):
+        elemento = self.columna1.getCentralWidget().currentItem().getObjeto()
+        if isinstance(elemento, ActuacionCritica):
+            actuacion = elemento
+            actVentana = NuevaActuacion(actuacion=actuacion, parent=self)
+            if actVentana.exec_():
+                actNueva = actVentana.getActuacion()
+                self.columna1.getCentralWidget().replace(actNueva)
+                p = Persistence()
+                p.actualizarActuacion(actNueva)
+            self.columna1ElementChanged()
+            del actVentana
+                
+    def actCriticaEliminarClicked(self):
+        elemento = self.columna1.getCentralWidget().getSelectedItem()
+        if self.columna1.getCentralWidget().remove():            
+            if isinstance(elemento, ActuacionCritica):
+                actuacion = elemento
+                p = Persistence()
+                p.borrarActuacion(actuacion)
+                self.columna1ElementChanged()
+        
     def personaEditarClicked(self):
         persona = self.columna1.getCentralWidget().currentItem().getObjeto()
         personaVentana = NuevaPersona(persona)
