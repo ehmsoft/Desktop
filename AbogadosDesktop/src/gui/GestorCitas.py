@@ -35,11 +35,14 @@ class GestorCitas(object):
             p = Persistence()
             citas = p.consultarCitasCalendario()
             for cita in citas:
-                if (cita.isAlarma() and cita.getFecha() + timedelta(0, cita.getAnticipacion()) > datetime.today()) > 0:
+                if cita.isAlarma() and cita.getFecha() - timedelta(0, cita.getAnticipacion()) > datetime.today():
                     t = QtCore.QTimer(self.parent)
                     self.timer.append(t)
-                    delta = cita.getFecha() - datetime.today()
+                    getFecha = cita.getFecha()
+                    datetimeToday = datetime.today()
+                    delta = getFecha - datetimeToday
                     tiempo = (delta.total_seconds() - cita.getAnticipacion()) * 1000
+                    print 'Cita: '+ cita.getDescripcion() + '\n Anticipación: ' + unicode(tiempo)
                     t.cita = cita
                     t.singleShot(tiempo, self.__seCumpleCita)
         except Exception as e:
