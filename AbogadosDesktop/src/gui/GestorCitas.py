@@ -17,9 +17,10 @@ class GestorCitas(object):
     __metaclass__ = Singleton
     
     def __init__(self, tray,parent=None):
-        self.timer = []
         self.tray = tray
         self.parent = parent
+        self.citas = []
+        self.timer = []
         
     def actualizarCitas(self):
         self.__detenerCitas()
@@ -33,38 +34,38 @@ class GestorCitas(object):
     def __cargarCitas(self):
         try:
             p = Persistence()
-            citas = p.consultarCitasCalendario()
-            for cita in citas:
+            self.citas = p.consultarCitasCalendario()
+            for cita in self.citas:
                 if cita.isAlarma() and cita.getFecha() - timedelta(0, cita.getAnticipacion()) > datetime.today():
-                    t = QtCore.QTimer(self.parent)
-                    self.timer.append(t)
-                    getFecha = cita.getFecha()
-                    datetimeToday = datetime.today()
-                    delta = getFecha - datetimeToday
+                    timer = QtCore.QTimer(self.parent)
+                    timer.setSingleShot(True)
+                    timer.timeout.connect(self.__seCumpleCita)
+                    delta = cita.getFecha() - datetime.today()
                     tiempo = (delta.total_seconds() - cita.getAnticipacion()) * 1000
-                    print 'Cita: '+ cita.getDescripcion() + '\n Anticipación: ' + unicode(tiempo)
-                    t.cita = cita
-                    t.singleShot(tiempo, self.__seCumpleCita)
+                    #print 'Cita: '+ cita.getDescripcion() + '\n Anticipación: ' + unicode(tiempo)
+                    timer.start(tiempo)
+                    self.timer.append(timer)
         except Exception as e:
-            print e
-                
+            print e                
     
     def __seCumpleCita(self):
-        cita = self.timer.pop(0).cita
-        preferencias = Preferencias()
-        tipoAlarma = preferencias.getTipoAlarma()
-        if tipoAlarma & Preferencias_GUI.MENSAJE_CORREO == Preferencias_GUI.MENSAJE_CORREO:
-            try:
-                correo = Correo()
-                correo.cita = cita
-                correo.correo = preferencias.getCorreoNotificacion()
-                correo.start()
-            except:
-                QtGui.QMessageBox.information(self, 'Error', u"Error al enviar correo electrónico de notificación de una cita. Por favor verifique su conexión a internet e intente de nuevo. Si el problema persiste por favor comuníquese con nuestro personal de soporte técnico: soporte@ehmsoft.com")
-        if tipoAlarma & Preferencias_GUI.MENSAJE_ICONO == Preferencias_GUI.MENSAJE_ICONO:
-            self.tray.showMessage(u'Notificación de cita' + cita.getDescripcion(), unicode(cita))
-        if tipoAlarma & Preferencias_GUI.MENSAJE_EMERGENTE == Preferencias_GUI.MENSAJE_EMERGENTE:
-            message = QtGui.QMessageBox()
-            message.setIcon(QtGui.QMessageBox.Warning)
-            message.setText("Se cumple la cita:\n" + unicode(cita))
-            message.exec_()
+        if len(self.citas):
+            cita = self.citas.pop(0)
+            preferencias = Preferencias()
+            tipoAlarma = preferencias.getTipoAlarma()
+            if tipoAlarma & Preferencias_GUI.MENSAJE_CORREO == Preferencias_GUI.MENSAJE_CORREO:
+                try:
+                    correo = Correo(self.parent)
+                    correo.cita = cita
+                    correo.correo = preferencias.getCorreoNotificacion()
+                    correo.start()
+                except Exception as e:
+                    print e.message
+                    QtGui.QMessageBox.information(self.parent, 'Error', u"Error al enviar correo electrónico de notificación de una cita. Por favor verifique su conexión a internet e intente de nuevo. Si el problema persiste por favor comuníquese con nuestro personal de soporte técnico: soporte@ehmsoft.com")
+            if tipoAlarma & Preferencias_GUI.MENSAJE_ICONO == Preferencias_GUI.MENSAJE_ICONO:
+                self.tray.showMessage(u'Notificación de cita' + cita.getDescripcion(), unicode(cita))
+            if tipoAlarma & Preferencias_GUI.MENSAJE_EMERGENTE == Preferencias_GUI.MENSAJE_EMERGENTE:
+                message = QtGui.QMessageBox()
+                message.setIcon(QtGui.QMessageBox.Warning)
+                message.setText("Se cumple la cita:\n" + unicode(cita))
+                message.exec_()
