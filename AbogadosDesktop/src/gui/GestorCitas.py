@@ -21,21 +21,29 @@ class GestorCitas(object):
         self.parent = parent
         self.citas = []
         self.timer = []
+        self.callback = None
         
     def actualizarCitas(self):
         self.__detenerCitas()
         self.__cargarCitas()
         
+    def registrarCallBack(self, callback):
+        self.callback = callback
+        
+    def retirarCallBack(self):
+        self.callback = None
+        
     def __detenerCitas(self):
         for t in self.timer:
             t.stop()
         del self.timer[:]
+        del self.citas[:]
     
     def __cargarCitas(self):
         try:
             p = Persistence()
-            self.citas = p.consultarCitasCalendario()
-            for cita in self.citas:
+            citas = p.consultarCitasCalendario()
+            for cita in citas:
                 if cita.isAlarma() and cita.getFecha() - timedelta(0, cita.getAnticipacion()) > datetime.today():
                     timer = QtCore.QTimer(self.parent)
                     timer.setSingleShot(True)
@@ -43,14 +51,18 @@ class GestorCitas(object):
                     delta = cita.getFecha() - datetime.today()
                     tiempo = (delta.total_seconds() - cita.getAnticipacion()) * 1000
                     #print 'Cita: '+ cita.getDescripcion() + '\n Anticipación: ' + unicode(tiempo)
+                    self.citas.append(cita)
                     timer.start(tiempo)
                     self.timer.append(timer)
+                    
         except Exception as e:
             print e                
     
     def __seCumpleCita(self):
         if len(self.citas):
             cita = self.citas.pop(0)
+            if self.callback:
+                self.callback()
             preferencias = Preferencias()
             tipoAlarma = preferencias.getTipoAlarma()
             if tipoAlarma & Preferencias_GUI.MENSAJE_CORREO == Preferencias_GUI.MENSAJE_CORREO:

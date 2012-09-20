@@ -93,6 +93,12 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         self.lista3.setContextMenuPolicy(QtCore.Qt.ActionsContextMenu)
         self.lista3.addActions([actionEliminar, actionEditar])
         
+        gestor = GestorCitas()
+        gestor.registrarCallBack(self.callBack)
+        
+    def callBack(self):
+        self.__redibujar()
+        
     def __clickEliminar(self):
         items = self.lista3.selectedItems()
         if len(items) != 0:
@@ -231,6 +237,11 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         except Exception as e:
             print e
             
+    def reject(self, *args, **kwargs):
+        gestor = GestorCitas()
+        gestor.retirarCallBack()
+        return QtGui.QDialog.reject(self, *args, **kwargs)
+            
     def __montarTodas(self):
         self.__citas = self.__cargarCitas()
         while self.lista.count() > 0:
@@ -238,7 +249,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         while self.lista3.count() > 0:
             self.lista3.takeItem(0)
         for cita in self.__citas:
-            if cita.getFecha() + timedelta(0, cita.getAnticipacion()) > datetime.today():
+            if cita.getFecha() - timedelta(0, cita.getAnticipacion()) > datetime.today():
                 item = ItemListas(cita, self.lista)
                 self.lista.addItem(item)
                 self.lista.setCurrentItem(item)
@@ -252,7 +263,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
             self.lista2.takeItem(0)
         if date == None:
             for cita in self.__citas:
-                if cita.getFecha() + timedelta(0, cita.getAnticipacion()) > datetime.today():
+                if cita.getFecha() - timedelta(0, cita.getAnticipacion()) > datetime.today():
                     self.__dia = date = cita.getFecha().date()
                     break
             else:
