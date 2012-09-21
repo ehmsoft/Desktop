@@ -1101,9 +1101,22 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
     def menuImportarArchivoClicked(self):
         fname = QtGui.QFileDialog.getOpenFileName(self, 'Importar Archivo')[0]
         if fname != '':
-            if QtGui.QMessageBox.question(self, "Restaurar Archivo", u"Si continúa, se borrará toda la información que tiene en el programa y se reemplazará por la información del arhivo que está importando. ¿Seguro que desea Continuar?", QtGui.QMessageBox.Yes | QtGui.QMessageBox.No) == QtGui.QMessageBox.Yes:
-                shutil.copy(fname, ConnectionManager(MainApp.CARPETAEHM).getDbLocation())
-    
+            if QtGui.QMessageBox.question(self, "Restaurar Archivo", u"Si continúa, se borrará toda la información que tiene en el programa y se reemplazará por la información del arhivo que está importando, y deberá volver a abrir la aplicación para actualizar los cambios. ¿Seguro que desea Continuar?", QtGui.QMessageBox.Yes | QtGui.QMessageBox.No) == QtGui.QMessageBox.Yes:
+                flag = False
+                try:
+                    import sqlite3
+                    conn = sqlite3.connect(fname)
+                    c = conn.cursor()
+                    c.execute("SELECT * FROM procesos")
+                    shutil.copy(fname, ConnectionManager(MainApp.CARPETAEHM).getDbLocation())
+                    flag = True
+                except:
+                    QtGui.QMessageBox.warning(self, "Restaurar Archivo", u"Ha ocurrido un error al importar el archivo, asegúrese que es un archivo válido de copia de seguridad.\nSi el problema persiste contacte a soporte@ehmsoft.com")
+                finally:
+                    conn.close()
+                    if flag:
+                        sys.exit(0)
+                    
     def menuAyudaDesactivar(self):
         des = DesactivarApp(MainApp.CARPETAEHM, self)
         des.desactivarAplicacion()
