@@ -205,7 +205,7 @@ class Juzgado(object):
     
     def toCSV(self):
         #Devuelve una lista con los valores de los atributos para CSV
-        listaReturn = [u'%s' % self.__nombre,u'%s' % self.__telefono,u'%s' % self.__direccion,u'%s' % self.__ciudad, u'%s' % self.__tipo]
+        listaReturn = [self.__nombre.encode('utf-8'),self.__telefono.encode('utf-8'),self.__direccion.encode('utf-8'),self.__ciudad.encode('utf-8'), self.__tipo.encode('utf-8')]
         for campo in self.__campos:
             listaReturn.append([u'{0}:{1}'.format(campo.getNombre(), campo.getValor())])
         return listaReturn

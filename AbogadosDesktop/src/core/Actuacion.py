@@ -175,7 +175,7 @@ class Actuacion(object):
         return [u'descripcion', u'fechaCreacion', u'fechaVencimiento', u'juzgado', u'campos']
     def toCSV(self):
         #Devuelve una lista con los valores de los atributos para CSV
-        listaReturn = [u'%s' % self.__descripcion, u'%s' % self.__fecha, u'%s' % self.__fechaProxima, u'%s' % self.__juzgado.getNombre()]
+        listaReturn = [self.__descripcion.encode('utf-8'), self.__fecha.encode('utf-8'), self.__fechaProxima.encode('utf-8'), self.__juzgado.getNombre().encode('utf-8') ]
         for campo in self.__campos:
             listaReturn.append([u'{0}:{1}'.format(campo.getNombre(), campo.getValor())])
         return listaReturn
