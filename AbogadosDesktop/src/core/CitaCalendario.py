@@ -134,6 +134,12 @@ class CitaCalendario(object):
         else:
             raise TypeError('Tipo de dato no admitido')
         
+    def textoCorreo(self):
+        if self.__conFecha:
+            return u'Descripción: %s\nFecha: %s\nAnticipación: %s' % (self.getDescripcion(), '{:%d/%m/%Y %I:%M %p}'.format(self.getFecha()), self.transAnticipacion(self.getAnticipacion()))
+        else:
+            return u'Descripción: %s\nHora: %s\nAnticipación: %s' % (self.getDescripcion(), '{:%I:%M %p}'.format(self.getFecha()), self.transAnticipacion(self.getAnticipacion()))
+    
     def __str__(self):
         if self.__conFecha:
             return u'Descripción: %s\nFecha: %s\nAnticipación: %s' % (self.getDescripcion(), '{:%d/%m/%Y %I:%M %p}'.format(self.getFecha()), self.transAnticipacion(self.getAnticipacion()))

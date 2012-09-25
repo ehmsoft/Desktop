@@ -23,9 +23,10 @@ class Correo(QThread):
         mailServer.ehlo()
         mailServer.login("info@ehmsoft.com","NcPtlc.32")
         
-        msg = MIMEText(repr(cita))
+        msg = MIMEText(cita.textoCorreo().encode('utf-8'))
         
-        msg['Subject'] = u'Notificación de cita %s' % cita.getDescripcion().encode('utf-8')
+        sub = u'Notificación de cita %s' % cita.getDescripcion()
+        msg['Subject'] = sub.encode('utf-8')
         msg['From'] = 'info@ehmsoft.com'
         msg['To'] = correo
         
