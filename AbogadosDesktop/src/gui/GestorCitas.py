@@ -38,11 +38,15 @@ class GestorCitas(object):
             t.stop()
         del self.timer[:]
         del self.citas[:]
+        
+    def __compararCitas(self, a, b):
+        return int((a.getFecha() - timedelta(0, a.getAnticipacion()) - b.getFecha() - timedelta(0, b.getAnticipacion())).total_seconds())
     
     def __cargarCitas(self):
         try:
             p = Persistence()
             citas = p.consultarCitasCalendario()
+            citas = sorted(citas, self.__compararCitas)
             for cita in citas:
                 if cita.isAlarma() and cita.getFecha() - timedelta(0, cita.getAnticipacion()) > datetime.today():
                     timer = QtCore.QTimer(self.parent)

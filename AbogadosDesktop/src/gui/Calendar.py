@@ -186,8 +186,8 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
                         cita1 = None
                     dialogo = NuevaCita(actuacion=actuacion, cita=cita1, parent=self)
                     if dialogo.exec_():
-                        cita = dialogo.getCita()
-                        self.__ubicarCita(cita)
+                        #cita = dialogo.getCita()
+                        #self.__ubicarCita(cita)
                         self.__redibujar()
                     dialogo.setParent(None)
                 else:
@@ -227,11 +227,14 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
                 self.__montarDia(date)
                 self.tabWidget.setCurrentIndex(1)
                 break
+    def __compararCitas(self, a, b):
+        return int((a.getFecha() - timedelta(0, a.getAnticipacion()) - b.getFecha() - timedelta(0, b.getAnticipacion())).total_seconds())
+    
         
     def __cargarCitas(self):
         try:
             p = Persistence()
-            citas = p.consultarCitasCalendario()
+            citas = sorted(p.consultarCitasCalendario(), self.__compararCitas)
             self.__calendar.setCitas(citas)
             return citas
         except Exception as e:
@@ -261,16 +264,16 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         self.__citas = self.__cargarCitas()
         while self.lista2.count() > 0:
             self.lista2.takeItem(0)
-        if date == None:
+        if not date:
             for cita in self.__citas:
                 if cita.getFecha() - timedelta(0, cita.getAnticipacion()) > datetime.today():
                     self.__dia = date = cita.getFecha().date()
                     break
             else:
-                date = datetime.today().date()
+                date = DATE.today()
         else:
-            if not isinstance(date, DATE):
-                self.__dia = date.date()
+            if isinstance(date, datetime):
+                self.__dia = date = date.date()
             else:
                 self.__dia = date
         self.tabWidget.setTabText(1, '{:%d/%m/%Y}'.format(date))
