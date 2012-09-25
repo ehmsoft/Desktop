@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 Created on 04/08/2011
 
@@ -323,7 +324,7 @@ class Proceso(object):
     
     def toCSV(self):
         #Devuelve una lista con los valores de los atributos para CSV
-        listaReturn = [self.__radicado, self.__demandante.getNombre(), self.__demandado.getNombre(), self.__fecha, self.__juzgado.getNombre(),self.__radicadoUnico, self.__estado, self.__categoria.getDescripcion(),self.__tipo,self.__notas]
+        listaReturn = [u'%s' % self.__radicado, u'%s' % self.__demandante.getNombre(), u'%s' % self.__demandado.getNombre(), u'%s' % self.__fecha, u'%s' % self.__juzgado.getNombre(), u'%s' % self.__radicadoUnico, u'%s' % self.__estado, u'%s' % self.__categoria.getDescripcion(), u'%s' % self.__tipo,self.__notas]
         for campo in self.__campos:
-            listaReturn.append(['{0}:{1}'.format(campo.getNombre(), campo.getValor())])
+            listaReturn.append([u'{0}:{1}'.format(campo.getNombre(), campo.getValor())])
         return listaReturn

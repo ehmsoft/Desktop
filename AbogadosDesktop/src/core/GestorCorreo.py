@@ -25,7 +25,7 @@ class Correo(QThread):
         
         msg = MIMEText(repr(cita))
         
-        msg['Subject'] = u'Notificación de cita ' + cita.getDescripcion()
+        msg['Subject'] = u'Notificación de cita %s' % cita.getDescripcion()
         msg['From'] = 'info@ehmsoft.com'
         msg['To'] = correo
         

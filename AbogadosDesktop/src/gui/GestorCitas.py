@@ -75,9 +75,9 @@ class GestorCitas(object):
                     print e.message
                     QtGui.QMessageBox.information(self.parent, 'Error', u"Error al enviar correo electrónico de notificación de una cita. Por favor verifique su conexión a internet e intente de nuevo. Si el problema persiste por favor comuníquese con nuestro personal de soporte técnico: soporte@ehmsoft.com")
             if tipoAlarma & Preferencias_GUI.MENSAJE_ICONO == Preferencias_GUI.MENSAJE_ICONO:
-                self.tray.showMessage(u'Notificación de cita' + cita.getDescripcion(), unicode(cita))
+                self.tray.showMessage(u'Notificación de cita' + cita.getDescripcion(), unicode(cita)) #TODO: Verificar unicode
             if tipoAlarma & Preferencias_GUI.MENSAJE_EMERGENTE == Preferencias_GUI.MENSAJE_EMERGENTE:
                 message = QtGui.QMessageBox()
                 message.setIcon(QtGui.QMessageBox.Warning)
-                message.setText("Se cumple la cita:\n" + unicode(cita))
+                message.setText("Se cumple la cita:\n" + unicode(cita))#TODO: Verificar unicode
                 message.exec_()

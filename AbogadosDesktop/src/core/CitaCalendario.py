@@ -66,7 +66,7 @@ class CitaCalendario(object):
     def getAnticipacion(self):
         return self.__anticipacion
     def getDescripcion(self):
-        return unicode(self.__descripcion)
+        return self.__descripcion
     def isAlarma(self):
         return self.__alarma
     
