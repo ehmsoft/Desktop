@@ -96,6 +96,7 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             self.txtEstado.setText(plantilla.getEstado())
             self.sbPrioridad.setValue(plantilla.getPrioridad())
             self.txtNotas.setText(plantilla.getNotas())
+            self.dteFecha.setDateTime(datetime.today())
         else:
             self.dteFecha.setDateTime(datetime.today())
             
