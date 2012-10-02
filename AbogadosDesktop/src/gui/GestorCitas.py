@@ -51,7 +51,7 @@ class GestorCitas(object):
                 if cita.isAlarma() and cita.getFecha() - timedelta(0, cita.getAnticipacion()) > datetime.today():
                     timer = QtCore.QTimer(self.parent)
                     timer.setSingleShot(True)
-                    timer.timeout.connect(lambda : self.__seCumpleCita)
+                    timer.timeout.connect(self.__seCumpleCita)
                     delta = cita.getFecha() - datetime.today()
                     tiempo = (delta.total_seconds() - cita.getAnticipacion()) * 1000
                     #print 'Cita: '+ cita.getDescripcion() + '\n Anticipación: ' + unicode(tiempo)
