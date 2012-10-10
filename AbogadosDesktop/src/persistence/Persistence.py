@@ -82,12 +82,14 @@ class Persistence(object):
             if persona.getTipo() == 1:
                 #c.execute('''UPDATE demandantes SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_demandante = ?''', (persona.getId_persona(),))
                 c.execute('''DELETE FROM demandantes WHERE id_demandante = ?''',(persona.getId_persona(),))
+                c.execute('''DELETE FROM atributos_demandante WHERE id_demandante = ?''',(persona.getId_persona(),))
                 c.execute('''UPDATE procesos SET id_demandante = 1 WHERE id_demandante = ?''', (persona.getId_persona(),))
                 c.execute('''UPDATE plantillas SET id_demandante = 1 WHERE id_demandante = ?''', (persona.getId_persona(),))
 
             elif persona.getTipo() == 2:
                 #c.execute('''UPDATE demandados SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_demandado = ?''', (persona.getId_persona(),))
                 c.execute('''DELETE FROM demandados WHERE id_demandado = ?''',(persona.getId_persona(),))
+                c.execute('''DELETE FROM atributos_demandado WHERE id_demandado = ?''',(persona.getId_persona(),))
                 c.execute('''UPDATE procesos SET id_demandado = 1 WHERE id_demandado = ?''', (persona.getId_persona(),))
                 c.execute('''UPDATE plantillas SET id_demandado = 1 WHERE id_demandado = ?''', (persona.getId_persona(),))
 
