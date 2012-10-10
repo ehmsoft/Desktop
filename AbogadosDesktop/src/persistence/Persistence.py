@@ -963,7 +963,8 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE citas SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_cita = ?''', (cita.getId_cita(),))
+            #c.execute('''UPDATE citas SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_cita = ?''', (cita.getId_cita(),))
+            c.execute('''DELETE FROM citas WHERE id_cita = ?''', (cita.getId_cita(),))
             conn.commit()            
         except Exception as e:
             raise e
