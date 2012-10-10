@@ -789,7 +789,8 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_juzgado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_juzgado = ?''', (campoPersonalizado.getId_campo(),))
+            #c.execute('''UPDATE atributos_juzgado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_juzgado = ?''', (campoPersonalizado.getId_campo(),))
+            c.execute('''DELETE FROM atributos_juzgado WHERE id_atributo_juzgado = ?''', (campoPersonalizado.getId_campo(),))
             conn.commit()            
         except Exception as e:
             raise e
