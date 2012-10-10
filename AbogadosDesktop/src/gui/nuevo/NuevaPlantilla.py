@@ -20,6 +20,7 @@ from NuevaCategoria import NuevaCategoria
 from persistence.Persistence import Persistence
 from gui.DialogoAuxiliar import DialogoAuxiliar
 from gui import Util
+import sqlite3
 
 class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
     '''
@@ -261,52 +262,58 @@ class NuevaPlantilla(QtGui.QDialog, Ui_NuevaPlantilla):
             self.txtNombre.setFocus()
     
     def __guardar(self):
-        del(self.__dialogo)
+        if hasattr(self, '__dialogo'):  
+            del(self.__dialogo)
+        guardar = True
+        p = Persistence()
+        nombre = self.txtNombre.text()
+        demandante = self.__demandante
+        demandado = self.__demandado
+        juzgado = self.__juzgado
+        radicado = self.txtRadicado.text()
+        radicadoUnico = self.txtRadicadoUnico.text()
+        estado = self.txtEstado.text()
+        categoria = self.__categoria
+        tipo = self.txtTipo.text()
+        notas = self.txtNotas.toPlainText()
+        prioridad = self.sbPrioridad.value()
+        campos = self.__gestor.getCampos()
+        if not self.__plantilla:
+            plantilla = Plantilla(nombre = nombre, demandante = demandante, demandado = demandado,
+                                  juzgado = juzgado, radicado = radicado, radicadoUnico = radicadoUnico,
+                                  estado = estado, categoria = categoria, tipo = tipo, notas = notas,
+                                  campos = campos, prioridad = prioridad)
+        else:
+            camposNuevos = self.__gestor.getCamposNuevos()
+            camposEliminados = self.__gestor.getCamposEliminados()
+            for campo in camposEliminados:
+                p.borrarCampoPersonalizado(campo)
+            for campo in camposNuevos:
+                p.guardarCampoPersonalizado(campo, self.__plantilla.getId_proceso())
+            self.__plantilla.setNombre(nombre)
+            self.__plantilla.setDemandante(demandante)
+            self.__plantilla.setDemandado(demandado)
+            self.__plantilla.setJuzgado(juzgado)
+            self.__plantilla.setRadicado(radicado)
+            self.__plantilla.setRadicadoUnico(radicadoUnico)
+            self.__plantilla.setEstado(estado)
+            self.__plantilla.setCategoria(categoria)
+            self.__plantilla.setTipo(tipo)
+            self.__plantilla.setNotas(notas)
+            self.__plantilla.setPrioridad(prioridad)
+            self.__plantilla.setCampos(campos)
+            guardar = False
         try:
-            p = Persistence()
-            nombre = self.txtNombre.text()
-            demandante = self.__demandante
-            demandado = self.__demandado
-            juzgado = self.__juzgado
-            radicado = self.txtRadicado.text()
-            radicadoUnico = self.txtRadicadoUnico.text()
-            estado = self.txtEstado.text()
-            categoria = self.__categoria
-            tipo = self.txtTipo.text()
-            notas = self.txtNotas.toPlainText()
-            prioridad = self.sbPrioridad.value()
-            campos = self.__gestor.getCampos()
-            if self.__plantilla is None:
-                plantilla = Plantilla(nombre = nombre, demandante = demandante, demandado = demandado,
-                                      juzgado = juzgado, radicado = radicado, radicadoUnico = radicadoUnico,
-                                      estado = estado, categoria = categoria, tipo = tipo, notas = notas,
-                                      campos = campos, prioridad = prioridad)
-                p.guardarPlantilla(plantilla)
+            if guardar:
+                Persistence().guardarPlantilla(plantilla)
                 self.__plantilla = plantilla
             else:
-                camposNuevos = self.__gestor.getCamposNuevos()
-                camposEliminados = self.__gestor.getCamposEliminados()
-                for campo in camposEliminados:
-                    p.borrarCampoPersonalizado(campo)
-                for campo in camposNuevos:
-                    p.guardarCampoPersonalizado(campo, self.__plantilla.getId_proceso())
-                self.__plantilla.setNombre(nombre)
-                self.__plantilla.setDemandante(demandante)
-                self.__plantilla.setDemandado(demandado)
-                self.__plantilla.setJuzgado(juzgado)
-                self.__plantilla.setRadicado(radicado)
-                self.__plantilla.setRadicadoUnico(radicadoUnico)
-                self.__plantilla.setEstado(estado)
-                self.__plantilla.setCategoria(categoria)
-                self.__plantilla.setTipo(tipo)
-                self.__plantilla.setNotas(notas)
-                self.__plantilla.setPrioridad(prioridad)
-                self.__plantilla.setCampos(campos)
-                p.actualizarPlantilla(self.__plantilla)
-        except Exception, e:
-            print "Guardar plantilla -> %s con %s" % (e, e.args)
-        finally:
+                Persistence().actualizarPlantilla(self.__plantilla)
+        except sqlite3.IntegrityError:
+            QtGui.QMessageBox.information(self, 'Error', 'El elemento ya existe')
+        else:
             return QtGui.QDialog.accept(self)
+            
                 
     def getPlantilla(self):
         return self.__plantilla
