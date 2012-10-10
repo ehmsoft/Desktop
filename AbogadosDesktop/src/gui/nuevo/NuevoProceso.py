@@ -26,6 +26,7 @@ from gui.DialogoAuxiliar import DialogoAuxiliar
 from core.Plantilla import Plantilla
 from gui import Util
 from gui.GestorCitas import GestorCitas
+import sqlite3
 
 class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
     '''
@@ -329,55 +330,61 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
             self.__guardar()
     
     def __guardar(self):
-        del(self.__dialogo)
+        if hasattr(self, '__dialogo'):
+            del(self.__dialogo)
+        guardar = True
+        self.organizarActuaciones()
+        p = Persistence()
+        demandante = self.__demandante
+        demandado = self.__demandado
+        fecha = self.dteFecha.dateTime().toPython()
+        juzgado = self.__juzgado
+        radicado = self.txtRadicado.text()
+        radicadoUnico = self.txtRadicadoUnico.text()
+        actuaciones = self.__actuaciones
+        estado = self.txtEstado.text()
+        categoria = self.__categoria
+        tipo = self.txtTipo.text()
+        notas = self.txtNotas.toPlainText()
+        prioridad = self.sbPrioridad.value()
+        campos = self.__gestor.getCampos()
+        if self.__proceso is None:
+            proceso = Proceso(demandante=demandante, demandado=demandado, fecha=fecha, juzgado=juzgado,
+                              radicado=radicado, radicadoUnico=radicadoUnico, actuaciones=actuaciones,
+                              estado=estado, categoria=categoria, tipo=tipo, notas=notas,
+                              prioridad=prioridad, campos=campos)
+        else:
+            camposNuevos = self.__gestor.getCamposNuevos()
+            camposEliminados = self.__gestor.getCamposEliminados()
+            for campo in camposEliminados:
+                p.borrarCampoPersonalizado(campo)
+            for campo in camposNuevos:
+                p.guardarCampoPersonalizado(campo, self.__proceso.getId_proceso())
+            self.__proceso.setDemandante(demandante)
+            self.__proceso.setDemandado(demandado)
+            self.__proceso.setFecha(fecha)
+            self.__proceso.setJuzgado(juzgado)
+            self.__proceso.setRadicado(radicado)
+            self.__proceso.setRadicadoUnico(radicadoUnico)
+            self.__proceso.setActuaciones(actuaciones)
+            self.__proceso.setEstado(estado)
+            self.__proceso.setCategoria(categoria)
+            self.__proceso.setTipo(tipo)
+            self.__proceso.setNotas(notas)
+            self.__proceso.setPrioridad(prioridad)
+            self.__proceso.setCampos(campos)
+            guardar = False
         try:
-            self.organizarActuaciones()
             p = Persistence()
-            demandante = self.__demandante
-            demandado = self.__demandado
-            fecha = self.dteFecha.dateTime().toPython()
-            juzgado = self.__juzgado
-            radicado = self.txtRadicado.text()
-            radicadoUnico = self.txtRadicadoUnico.text()
-            actuaciones = self.__actuaciones
-            estado = self.txtEstado.text()
-            categoria = self.__categoria
-            tipo = self.txtTipo.text()
-            notas = self.txtNotas.toPlainText()
-            prioridad = self.sbPrioridad.value()
-            campos = self.__gestor.getCampos()
-            if self.__proceso is None:
-                proceso = Proceso(demandante=demandante, demandado=demandado, fecha=fecha, juzgado=juzgado,
-                                  radicado=radicado, radicadoUnico=radicadoUnico, actuaciones=actuaciones,
-                                  estado=estado, categoria=categoria, tipo=tipo, notas=notas,
-                                  prioridad=prioridad, campos=campos)
+            if guardar:
                 p.guardarProceso(proceso)
                 self.__proceso = proceso
             else:
-                camposNuevos = self.__gestor.getCamposNuevos()
-                camposEliminados = self.__gestor.getCamposEliminados()
-                for campo in camposEliminados:
-                    p.borrarCampoPersonalizado(campo)
-                for campo in camposNuevos:
-                    p.guardarCampoPersonalizado(campo, self.__proceso.getId_proceso())
-                self.__proceso.setDemandante(demandante)
-                self.__proceso.setDemandado(demandado)
-                self.__proceso.setFecha(fecha)
-                self.__proceso.setJuzgado(juzgado)
-                self.__proceso.setRadicado(radicado)
-                self.__proceso.setRadicadoUnico(radicadoUnico)
-                self.__proceso.setActuaciones(actuaciones)
-                self.__proceso.setEstado(estado)
-                self.__proceso.setCategoria(categoria)
-                self.__proceso.setTipo(tipo)
-                self.__proceso.setNotas(notas)
-                self.__proceso.setPrioridad(prioridad)
-                self.__proceso.setCampos(campos)
                 p.actualizarProceso(self.__proceso)
             self.guardarCitas(actuaciones)
-        except Exception, e:
-            print "Guardar proceso -> %s con %s" % (e, e.args)
-        finally:
+        except sqlite3.IntegrityError:
+            QtGui.QMessageBox.information(self, 'Error', 'El elemento ya existe')
+        else:
             return QtGui.QDialog.accept(self)
         
     @classmethod
