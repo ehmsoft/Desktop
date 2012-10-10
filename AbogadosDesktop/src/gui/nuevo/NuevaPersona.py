@@ -8,6 +8,7 @@ from NuevoCampo import NuevoCampo
 from gui.GestorCampos import GestorCampos
 from gui.ListadoDialogo import ListadoDialogo
 from gui import Util
+import sqlite3
 
 class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
     def __init__(self, persona=None, tipo=None, parent=None):
@@ -66,43 +67,48 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
         return self.__persona
     
     def __guardar(self):
+        guardar = True
+        tipo = self.__tipo
+        nombre = self.txtNombre.text()
+        cedula = self.txtCedula.text()
+        telefono = self.txtTelefono.text()
+        direccion = self.txtDireccion.text()
+        correo = self.txtCorreo.text()
+        notas = self.txtNotas.toPlainText()
+        campos = self.__gestor.getCampos()
+        if not self.__persona:
+            self.__persona = Persona(tipo=tipo, id=cedula, nombre=nombre, telefono=telefono, direccion=direccion, correo=correo, notas=notas, campos=campos)                                
+        else:
+            camposNuevos = self.__gestor.getCamposNuevos()
+            camposEliminados = self.__gestor.getCamposEliminados()
+            for campo in camposEliminados:
+                if self.__tipo is 1:
+                    Persistence().borrarCampoDemandante(campo)
+                else:
+                    Persistence().borrarCampoDemandado(campo)
+            for campo in camposNuevos:
+                if self.__tipo is 1:
+                    Persistence().guardarCampoDemandante(campoPersonalizado=campo, id_demandante=self.__persona.getId_persona())
+                else:
+                    Persistence().guardarCampoDemandado(campoPersonalizado=campo, id_demandado=self.__persona.getId_persona())
+            self.__persona.setNombre(nombre)
+            self.__persona.setId(cedula)
+            self.__persona.setTelefono(telefono)
+            self.__persona.setDireccion(direccion)
+            self.__persona.setCorreo(correo)
+            self.__persona.setNotas(notas)
+            self.__persona.setCampos(campos)
+            guardar = False
         try:
-            p = Persistence()
-            tipo = self.__tipo
-            nombre = self.txtNombre.text()
-            cedula = self.txtCedula.text()
-            telefono = self.txtTelefono.text()
-            direccion = self.txtDireccion.text()
-            correo = self.txtCorreo.text()
-            notas = self.txtNotas.toPlainText()
-            campos = self.__gestor.getCampos()
-            if not self.__persona:
-                self.__persona = Persona(tipo=tipo, id=cedula, nombre=nombre, telefono=telefono, direccion=direccion, correo=correo, notas=notas, campos=campos)                                
-                p.guardarPersona(self.__persona)
+            if guardar:
+                Persistence().guardarPersona(self.__persona)
             else:
-                camposNuevos = self.__gestor.getCamposNuevos()
-                camposEliminados = self.__gestor.getCamposEliminados()
-                for campo in camposEliminados:
-                    if self.__tipo is 1:
-                        p.borrarCampoDemandante(campo)
-                    else:
-                        p.borrarCampoDemandado(campo)
-                for campo in camposNuevos:
-                    if self.__tipo is 1:
-                        p.guardarCampoDemandante(campoPersonalizado=campo, id_demandante=self.__persona.getId_persona())
-                    else:
-                        p.guardarCampoDemandado(campoPersonalizado=campo, id_demandado=self.__persona.getId_persona())
-                self.__persona.setNombre(nombre)
-                self.__persona.setId(cedula)
-                self.__persona.setTelefono(telefono)
-                self.__persona.setDireccion(direccion)
-                self.__persona.setCorreo(correo)
-                self.__persona.setNotas(notas)
-                self.__persona.setCampos(campos)
-                p.actualizarPersona(self.__persona)
-        except Exception, e:
-            print e
-        finally:
+                Persistence().actualizarPersona(self.__persona)
+        except sqlite3.IntegrityError:
+            if guardar:
+                self.__persona = None
+            QtGui.QMessageBox.information(self, 'Error', 'El elemento ya existe')
+        else:
             return QtGui.QDialog.accept(self)
             
     def accept(self):
