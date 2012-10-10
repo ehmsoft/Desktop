@@ -368,10 +368,11 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE categorias SET eliminado = 1,fecha_mod = datetime('now','localtime') WHERE id_categoria = ?''', (categoria.getId_categoria(),))        
+            #c.execute('''UPDATE categorias SET eliminado = 1,fecha_mod = datetime('now','localtime') WHERE id_categoria = ?''', (categoria.getId_categoria(),))        
+            #c.execute('''UPDATE plantillas SET id_categoria = 1 WHERE id_categoria = ?''', (categoria.getId_categoria(),))        
+            c.execute('''DELETE FROM categorias WHERE id_categoria = ?''', (categoria.getId_categoria(),))        
             c.execute('''UPDATE procesos SET id_categoria = 1 WHERE id_categoria = ?''', (categoria.getId_categoria(),))        
             c.execute('''UPDATE plantillas SET id_categoria = 1 WHERE id_categoria = ?''', (categoria.getId_categoria(),))        
-
             conn.commit()            
         except Exception as e:
             raise e
