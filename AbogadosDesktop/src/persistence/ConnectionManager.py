@@ -51,7 +51,7 @@ class ConnectionManager(object):
             #Crear tabla Atributos por actuacion, para relacionar los campos personalizados con los actuaciones
             c.execute('''CREATE TABLE 'atributos_actuacion'('id_atributo_actuacion' INTEGER PRIMARY KEY,'id_atributo' INTEGER,'id_actuacion' INTEGER,'valor' TEXT, 'nuevo' BOOLEAN DEFAULT 1, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')), FOREIGN KEY(id_atributo) REFERENCES atributosActuacion(id_atributo),FOREIGN KEY(id_actuacion) REFERENCES actuaciones(id_actuacion),UNIQUE('id_atributo','id_actuacion','valor'))''')
             #Crear tabla Categorias
-            c.execute('''CREATE TABLE 'categorias'('id_categoria' INTEGER PRIMARY KEY,'descripcion' TEXT, 'nuevo' BOOLEAN DEFAULT 1, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')))''')
+            c.execute('''CREATE TABLE 'categorias'('id_categoria' INTEGER PRIMARY KEY,'descripcion' TEXT, 'nuevo' BOOLEAN DEFAULT 1, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')), UNIQUE('descripcion'))''')
             #Crear tabla Atributos
             c.execute('''CREATE TABLE 'atributos'('id_atributo' INTEGER PRIMARY KEY,'nombre' TEXT,'obligatorio' BOOLEAN,'longitud_max' INTEGER,'longitud_min' INTEGER, 'nuevo' BOOLEAN DEFAULT 1, 'modificado' BOOLEAN DEFAULT 0, 'eliminado' BOOLEAN DEFAULT 0, 'fecha_mod' DATE DEFAULT (datetime('now', 'localtime')), UNIQUE('nombre','obligatorio'))''')
             #Crear tabla Atributos por Proceso
