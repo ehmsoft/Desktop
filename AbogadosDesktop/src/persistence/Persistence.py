@@ -133,6 +133,7 @@ class Persistence(object):
             c = conn.cursor()
             #c.execute('''UPDATE juzgados SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_juzgado = ?''', (juzgado.getId_juzgado(),))
             c.execute('''DELETE FROM juzgados WHERE id_juzgado = ?''',(juzgado.getId_juzgado(),))
+            c.execute('''DELETE FROM atributos_juzgado WHERE id_juzgado = ?''',(juzgado.getId_juzgado(),))
             c.execute('''UPDATE procesos SET id_juzgado = 1 WHERE id_juzgado = ?''', (juzgado.getId_juzgado(),))
             c.execute('''UPDATE actuaciones SET id_juzgado = 1 WHERE id_juzgado = ?''', (juzgado.getId_juzgado(),))
             c.execute('''UPDATE plantillas SET id_juzgado = 1 WHERE id_juzgado = ?''', (juzgado.getId_juzgado(),))
