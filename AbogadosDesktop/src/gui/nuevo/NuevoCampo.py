@@ -10,6 +10,7 @@ from core.CampoPersonalizado import CampoPersonalizado
 from persistence.Persistence import Persistence
 from NuevoCampoScreen import Ui_NuevoCampo
 from gui import Util
+import sqlite3
 
 class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
     '''
@@ -67,14 +68,22 @@ class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
         return self.__campo
     
     def __guardar(self):
+        guardar = True
+        p = Persistence()
+        if self.__campo is None:
+            campo = CampoPersonalizado(self.txtNombre.text())
+            campo.setLongitudMax(self.sbLongMax.value())
+            campo.setLongitudMin(self.sbLongMin.value())
+            campo.setObligatorio(self.cbObligatorio.isChecked())
+            self.__campo = campo
+        else:
+            self.__campo.setNombre(self.txtNombre.text())
+            self.__campo.setLongitudMax(self.sbLongMax.value())
+            self.__campo.setLongitudMin(self.sbLongMin.value())
+            self.__campo.setObligatorio(self.cbObligatorio.isChecked())
+            guardar = False               
         try:
-            p = Persistence()
-            if self.__campo is None:
-                campo = CampoPersonalizado(self.txtNombre.text())
-                campo.setLongitudMax(self.sbLongMax.value())
-                campo.setLongitudMin(self.sbLongMin.value())
-                campo.setObligatorio(self.cbObligatorio.isChecked())
-                
+            if guardar:
                 if self.__tipo is self.__class__.PERSONA:
                     p.guardarAtributoPersona(campo)
                 elif self.__tipo is self.__class__.JUZGADO:
@@ -83,12 +92,7 @@ class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
                     p.guardarAtributoActuacion(campo)
                 elif self.__tipo is self.__class__.PROCESO:
                     p.guardarAtributo(campo)
-                self.__campo = campo
             else:
-                self.__campo.setNombre(self.txtNombre.text())
-                self.__campo.setLongitudMax(self.sbLongMax.value())
-                self.__campo.setLongitudMin(self.sbLongMin.value())
-                self.__campo.setObligatorio(self.cbObligatorio.isChecked())
                 if self.__tipo is self.__class__.PERSONA:
                     p.actualizarAtributoPersona(self.__campo)
                 elif self.__tipo is self.__class__.JUZGADO:
@@ -97,10 +101,11 @@ class NuevoCampo(QtGui.QDialog, Ui_NuevoCampo):
                     p.actualizarAtributoActuacion(self.__campo)
                 elif self.__tipo is self.__class__.PROCESO:
                     p.actualizarAtributo(self.__campo)
-                    
-        except Exception, e:
-            print e
-        finally:
+        except sqlite3.IntegrityError:
+            if guardar:
+                self.__campo = None
+            QtGui.QMessageBox.information(self, 'Error', 'El elemento ya existe')
+        else:
             return QtGui.QDialog.accept(self)
             
     def accept(self):

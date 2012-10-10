@@ -11,7 +11,7 @@ from NuevaCategoriaScreen import Ui_NuevaCategoria
 from core.Categoria import Categoria
 from persistence.Persistence import Persistence
 from gui import Util
-
+import sqlite3
 
 class NuevaCategoria(QDialog, Ui_NuevaCategoria):
     def __init__(self, categoria=None, parent=None):
@@ -31,20 +31,25 @@ class NuevaCategoria(QDialog, Ui_NuevaCategoria):
         return self.__categoria
     
     def __guardar(self):
+        guardar = True
+        p = Persistence()
+        if self.__categoria is None:
+            categoria = Categoria()
+            categoria.setDescripcion(self.txtCategoria.text())
+            self.__categoria = categoria
+        else:
+            self.__categoria.setDescripcion(self.txtCategoria.text())
+            guardar = False        
         try:
-            p = Persistence()
-            if self.__categoria is None:
-                categoria = Categoria()
-                categoria.setDescripcion(self.txtCategoria.text())
+            if guardar:
                 p.guardarCategoria(categoria)
-                self.__categoria = categoria
             else:
-                self.__categoria.setDescripcion(self.txtCategoria.text())
                 p.actualizarCategoria(self.__categoria)
-                    
-        except Exception, e:
-            print e
-        finally:
+        except sqlite3.IntegrityError:
+            if guardar:
+                self.__categoria = None
+            QMessageBox.information(self, 'Error', 'El elemento ya existe')
+        else:
             return QDialog.accept(self)
 
     

@@ -14,7 +14,7 @@ from gui.ListadoDialogo import ListadoDialogo
 from NuevoCampo import NuevoCampo
 from gui.GestorCampos import GestorCampos
 from gui import Util
-
+import sqlite3
 
 class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
     '''
@@ -60,34 +60,40 @@ class NuevoJuzgado(QtGui.QDialog, Ui_NuevoJuzgado):
         return self.__juzgado
     
     def __guardar(self):
+        guardar = True
+        p = Persistence()
+        nombre = self.txtNombre.text()
+        direccion = self.txtDireccion.text()
+        telefono = self.txtTelefono.text()
+        ciudad = self.txtCiudad.text()
+        tipo = self.txtTipo.text()
+        campos = self.__gestor.getCampos()
+        if not self.__juzgado:
+            self.__juzgado = Juzgado(nombre=nombre, ciudad=ciudad, direccion=direccion, telefono=telefono, tipo=tipo, campos=campos)                
+        else:
+            camposNuevos = self.__gestor.getCamposNuevos()
+            camposEliminados = self.__gestor.getCamposEliminados()
+            for campo in camposEliminados:
+                p.borrarCampoJuzgado(campo)
+            for campo in camposNuevos:
+                p.guardarCampoJuzgado(campo, self.__juzgado.getId_juzgado())
+            self.__juzgado.setNombre(nombre)
+            self.__juzgado.setDireccion(direccion)
+            self.__juzgado.setCiudad(ciudad)
+            self.__juzgado.setTelefono(telefono)
+            self.__juzgado.setTipo(tipo)
+            self.__juzgado.setCampos(campos)
+            guardar = False                    
         try:
-            p = Persistence()
-            nombre = self.txtNombre.text()
-            direccion = self.txtDireccion.text()
-            telefono = self.txtTelefono.text()
-            ciudad = self.txtCiudad.text()
-            tipo = self.txtTipo.text()
-            campos = self.__gestor.getCampos()
-            if not self.__juzgado:
-                self.__juzgado = Juzgado(nombre=nombre, ciudad=ciudad, direccion=direccion, telefono=telefono, tipo=tipo, campos=campos)                
+            if guardar:
                 p.guardarJuzgado(self.__juzgado)
             else:
-                camposNuevos = self.__gestor.getCamposNuevos()
-                camposEliminados = self.__gestor.getCamposEliminados()
-                for campo in camposEliminados:
-                    p.borrarCampoJuzgado(campo)
-                for campo in camposNuevos:
-                    p.guardarCampoJuzgado(campo, self.__juzgado.getId_juzgado())
-                self.__juzgado.setNombre(nombre)
-                self.__juzgado.setDireccion(direccion)
-                self.__juzgado.setCiudad(ciudad)
-                self.__juzgado.setTelefono(telefono)
-                self.__juzgado.setTipo(tipo)
-                self.__juzgado.setCampos(campos)
-                p.actualizarJuzgado(self.__juzgado)                    
-        except Exception, e:
-            print e
-        finally:
+                p.actualizarJuzgado(self.__juzgado) 
+        except sqlite3.IntegrityError:
+            if guardar:
+                self.__juzgado = None
+            QtGui.QMessageBox.information(self, 'Error', 'El elemento ya existe')
+        else:
             return QtGui.QDialog.accept(self)
             
     def accept(self):
