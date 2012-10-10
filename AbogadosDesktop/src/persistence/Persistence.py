@@ -333,6 +333,7 @@ class Persistence(object):
             c.execute('''DELETE FROM actuaciones WHERE id_proceso = ?''',(proceso.getId_proceso(),))
             #c.execute('''UPDATE atributos_proceso SET eliminado = 1,fecha_mod = datetime('now','localtime') WHERE id_proceso = ?''', (proceso.getId_proceso(),))
             c.execute('''DELETE FROM atributos_proceso WHERE id_proceso = ?''',(proceso.getId_proceso(),))
+            #Aqui algun dia debe ir lo de borrar archivos por proceso
             for actuacion in proceso.getActuaciones():
                 c.execute('''DELETE FROM citas WHERE id_actuacion = ?''',(actuacion.getId_actuacion(),))
             conn.commit()
@@ -913,7 +914,8 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE archivo_proceso SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_archivo_proceso = ?''', (archivo.getId_archivo_proceso(),))
+            #c.execute('''UPDATE archivo_proceso SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_archivo_proceso = ?''', (archivo.getId_archivo_proceso(),))
+            c.execute('''DELETE FROM archivo_proceso WHERE id_archivo_proceso = ?''', (archivo.getId_archivo_proceso(),))
             conn.commit()            
         except Exception as e:
             raise e
