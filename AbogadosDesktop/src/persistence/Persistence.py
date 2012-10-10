@@ -447,9 +447,10 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE plantillas SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''', (plantilla.getId_plantilla(),))
-            c.execute('''UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''', (plantilla.getId_plantilla(),))
-            
+            #c.execute('''UPDATE plantillas SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''', (plantilla.getId_plantilla(),))
+            #c.execute('''UPDATE atributos_plantilla SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_plantilla = ?''', (plantilla.getId_plantilla(),))
+            c.execute('''DELETE FROM plantillas WHERE id_plantilla = ?''', (plantilla.getId_plantilla(),))
+            c.execute('''DELETE FROM atributos_plantilla WHERE id_plantilla = ?''', (plantilla.getId_plantilla(),))
             conn.commit()
                 
         except Exception as e:
