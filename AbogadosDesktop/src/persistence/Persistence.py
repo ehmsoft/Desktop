@@ -921,7 +921,9 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation(), detect_types = sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
             c = conn.cursor()
-            c.execute('''UPDATE citas SET eliminado = 1 WHERE fecha < date('now','localtime') AND eliminado = 0 ''')
+            #c.execute('''UPDATE citas SET eliminado = 1 WHERE fecha < date('now','localtime') AND eliminado = 0 ''')
+            c.execute('''DELETE FROM citas WHERE fecha < date('now','localtime')''')
+            conn.commit()
         except Exception as e:
             raise e
         finally:
