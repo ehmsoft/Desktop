@@ -178,8 +178,8 @@ class Persistence(object):
             #c.execute('''UPDATE actuaciones SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''', (actuacion.getId_actuacion(),))
             c.execute('''DELETE FROM actuaciones WHERE id_actuacion = ?''',(actuacion.getId_actuacion(),))
             c.execute('''DELETE FROM citas WHERE id_actuacion = ?''',(actuacion.getId_actuacion(),))
-            c.execute('''UPDATE atributos_actuacion SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''', (actuacion.getId_actuacion(),))
-            # SE DEBE BORRAR ATRIBUTOS_ACTUACION TAMBIEN??
+            #c.execute('''UPDATE atributos_actuacion SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_actuacion = ?''', (actuacion.getId_actuacion(),))
+            c.execute('''DELETE FROM atributos_actuacion WHERE id_actuacion = ?''',(actuacion.getId_actuacion(),))
             conn.commit()            
         except Exception as e:
             raise e
