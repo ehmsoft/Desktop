@@ -706,7 +706,8 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_demandado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_demandado = ?''', (campoPersonalizado.getId_campo(),))
+            #c.execute('''UPDATE atributos_demandado SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_demandado = ?''', (campoPersonalizado.getId_campo(),))
+            c.execute('''DELETE FROM atributos_demandado WHERE id_atributo_demandado = ?''', (campoPersonalizado.getId_campo(),))            
             conn.commit()            
         except Exception as e:
             raise e
@@ -867,7 +868,8 @@ class Persistence(object):
             self.__conMgr.prepararBD()
             conn = sqlite3.connect(self.__conMgr.getDbLocation())
             c = conn.cursor()
-            c.execute('''UPDATE atributos_actuacion SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_actuacion = ?''', (campoPersonalizado.getId_campo(),))
+            #c.execute('''UPDATE atributos_actuacion SET eliminado = 1, fecha_mod = datetime('now','localtime') WHERE id_atributo_actuacion = ?''', (campoPersonalizado.getId_campo(),))
+            c.execute('''DELETE FROM atributos_actuacion WHERE id_atributo_actuacion = ?''', (campoPersonalizado.getId_campo(),))
             conn.commit()            
         except Exception as e:
             raise e
