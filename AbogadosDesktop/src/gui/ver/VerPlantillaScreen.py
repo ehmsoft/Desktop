@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'verPlantilla.ui'
+# Form implementation generated from reading ui file 'ui/verPlantilla.ui'
 #
-# Created: Mon Mar 19 22:45:40 2012
+# Created: Fri Oct 19 10:01:38 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_VerPlantilla(object):
     def setupUi(self, VerPlantilla):
         VerPlantilla.setObjectName("VerPlantilla")
-        VerPlantilla.resize(292, 292)
+        VerPlantilla.resize(292, 388)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -144,12 +144,12 @@ class Ui_VerPlantilla(object):
         self.lbl0.setText(QtGui.QApplication.translate("VerPlantilla", "Nombre:", None, QtGui.QApplication.UnicodeUTF8))
         self.lblNombre.setToolTip(QtGui.QApplication.translate("VerPlantilla", "Nombre descriptivo para la plantilla", None, QtGui.QApplication.UnicodeUTF8))
         self.lblNombre.setStatusTip(QtGui.QApplication.translate("VerPlantilla", "Nombre descriptivo para la plantilla", None, QtGui.QApplication.UnicodeUTF8))
-        self.lbl1.setText(QtGui.QApplication.translate("VerPlantilla", "Demandante:", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblDemandante.setToolTip(QtGui.QApplication.translate("VerPlantilla", "El nombre del demandante", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblDemandante.setStatusTip(QtGui.QApplication.translate("VerPlantilla", "El nombre del demandante", None, QtGui.QApplication.UnicodeUTF8))
-        self.lbl2.setText(QtGui.QApplication.translate("VerPlantilla", "Demandado:", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblDemandado.setToolTip(QtGui.QApplication.translate("VerPlantilla", "El nombre del demandado", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblDemandado.setStatusTip(QtGui.QApplication.translate("VerPlantilla", "El nombre del demandado", None, QtGui.QApplication.UnicodeUTF8))
+        self.lbl1.setText(QtGui.QApplication.translate("VerPlantilla", "Cliente:", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblDemandante.setToolTip(QtGui.QApplication.translate("VerPlantilla", "El nombre del cliente", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblDemandante.setStatusTip(QtGui.QApplication.translate("VerPlantilla", "El nombre del cliente", None, QtGui.QApplication.UnicodeUTF8))
+        self.lbl2.setText(QtGui.QApplication.translate("VerPlantilla", "Contraparte:", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblDemandado.setToolTip(QtGui.QApplication.translate("VerPlantilla", "El nombre de la contraparte", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblDemandado.setStatusTip(QtGui.QApplication.translate("VerPlantilla", "El nombre de la contraparte", None, QtGui.QApplication.UnicodeUTF8))
         self.lbl4.setText(QtGui.QApplication.translate("VerPlantilla", "Juzgado:", None, QtGui.QApplication.UnicodeUTF8))
         self.lblJuzgado.setToolTip(QtGui.QApplication.translate("VerPlantilla", "El nombre del juzgado del proceso", None, QtGui.QApplication.UnicodeUTF8))
         self.lblJuzgado.setStatusTip(QtGui.QApplication.translate("VerPlantilla", "El nombre del juzgado del proceso", None, QtGui.QApplication.UnicodeUTF8))

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>394</width>
-    <height>535</height>
+    <width>466</width>
+    <height>538</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -63,8 +63,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>350</width>
-               <height>385</height>
+               <width>349</width>
+               <height>400</height>
               </rect>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -73,14 +73,14 @@
                 <item row="0" column="0">
                  <widget class="QLabel" name="label">
                   <property name="text">
-                   <string>Demandante:</string>
+                   <string>Cliente:</string>
                   </property>
                  </widget>
                 </item>
                 <item row="1" column="0">
                  <widget class="QLabel" name="label_2">
                   <property name="text">
-                   <string>Demandado:</string>
+                   <string>Contraparte:</string>
                   </property>
                  </widget>
                 </item>
@@ -296,8 +296,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>364</width>
-            <height>421</height>
+            <width>394</width>
+            <height>370</height>
            </rect>
           </property>
           <layout class="QGridLayout" name="gridLayout_5">

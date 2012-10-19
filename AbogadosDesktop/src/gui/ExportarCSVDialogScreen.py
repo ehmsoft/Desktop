@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'uis/exportarCSVDialog.ui'
+# Form implementation generated from reading ui file 'ui/exportarCSVDialog.ui'
 #
-# Created: Thu Mar 22 20:30:00 2012
+# Created: Fri Oct 19 09:59:33 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -78,8 +78,8 @@ class Ui_ExportarCSVDialog(object):
         ExportarCSVDialog.setWindowTitle(QtGui.QApplication.translate("ExportarCSVDialog", "Exportar a CSV", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox.setTitle(QtGui.QApplication.translate("ExportarCSVDialog", "¿Qué desea Exportar?", None, QtGui.QApplication.UnicodeUTF8))
         self.rdProcesos.setText(QtGui.QApplication.translate("ExportarCSVDialog", "Procesos", None, QtGui.QApplication.UnicodeUTF8))
-        self.rdDemandantes.setText(QtGui.QApplication.translate("ExportarCSVDialog", "Demandantes", None, QtGui.QApplication.UnicodeUTF8))
-        self.rdDemandados.setText(QtGui.QApplication.translate("ExportarCSVDialog", "Demandados", None, QtGui.QApplication.UnicodeUTF8))
+        self.rdDemandantes.setText(QtGui.QApplication.translate("ExportarCSVDialog", "Clientes", None, QtGui.QApplication.UnicodeUTF8))
+        self.rdDemandados.setText(QtGui.QApplication.translate("ExportarCSVDialog", "Contrapartes", None, QtGui.QApplication.UnicodeUTF8))
         self.rdJuzgados.setText(QtGui.QApplication.translate("ExportarCSVDialog", "Juzgados", None, QtGui.QApplication.UnicodeUTF8))
         self.rdActuaciones.setText(QtGui.QApplication.translate("ExportarCSVDialog", "Actuaciones", None, QtGui.QApplication.UnicodeUTF8))
         self.rdActuacionesCriticas.setText(QtGui.QApplication.translate("ExportarCSVDialog", "Eventos Próximos", None, QtGui.QApplication.UnicodeUTF8))

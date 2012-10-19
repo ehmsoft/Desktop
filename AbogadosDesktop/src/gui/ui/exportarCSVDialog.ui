@@ -43,14 +43,14 @@
           <item>
            <widget class="QRadioButton" name="rdDemandantes">
             <property name="text">
-             <string>Demandantes</string>
+             <string>Clientes</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QRadioButton" name="rdDemandados">
             <property name="text">
-             <string>Demandados</string>
+             <string>Contrapartes</string>
             </property>
            </widget>
           </item>

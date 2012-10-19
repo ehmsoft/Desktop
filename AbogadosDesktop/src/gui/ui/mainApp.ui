@@ -135,12 +135,12 @@
   </action>
   <action name="actionNuevoDemandante">
    <property name="text">
-    <string>Demandante</string>
+    <string>Cliente</string>
    </property>
   </action>
   <action name="actionNuevoDemandado">
    <property name="text">
-    <string>Demandado</string>
+    <string>Contraparte</string>
    </property>
   </action>
   <action name="actionNuevoJuzgado">

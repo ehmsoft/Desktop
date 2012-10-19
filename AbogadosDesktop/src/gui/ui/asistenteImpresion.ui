@@ -44,7 +44,7 @@
            <string>Imprime un demandante con toda su información detallada</string>
           </property>
           <property name="text">
-           <string>Un demandante con toda su información</string>
+           <string>Un cliente con toda su información</string>
           </property>
          </widget>
         </item>
@@ -57,7 +57,7 @@
            <string>Imprime un demandado con toda su información detallada</string>
           </property>
           <property name="text">
-           <string>Un demandado con toda su información</string>
+           <string>Una contraparte con toda su información</string>
           </property>
          </widget>
         </item>
@@ -113,7 +113,7 @@
            <string>Imprime una lista de demandantes con información general de cada uno.</string>
           </property>
           <property name="text">
-           <string>Listado de demandantes</string>
+           <string>Listado de clientes</string>
           </property>
          </widget>
         </item>
@@ -126,7 +126,7 @@
            <string>Imprime una lista de demandados con información general de cada uno.</string>
           </property>
           <property name="text">
-           <string>Listado de demandados</string>
+           <string>Listado de contrapartes</string>
           </property>
          </widget>
         </item>
