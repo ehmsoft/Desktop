@@ -221,7 +221,7 @@ class Proceso(object):
             raise TypeError('Tipo de dato no admitido')
         
     def __str__(self):
-        return u'Radicado:{0}\n  Demandante:{1}\n  Demandado:{2}\n  Juzgado:{3}'.format(self.getRadicado(), self.getDemandante(), self.getDemandado(), self.getJuzgado())
+        return u'Radicado:{0}\n  Cliente:{1}\n  Contraparte:{2}\n  Juzgado:{3}'.format(self.getRadicado(), self.getDemandante(), self.getDemandado(), self.getJuzgado())
     
     def __eq__(self, other):
         if other is None:
@@ -320,7 +320,7 @@ class Proceso(object):
     @classmethod
     def getHeaders(self):
         #Devuelve una lista de strings con los encabezados del CSV
-        return [u'radicado',u'demandante',u'demandado',u'fecha',u'juzgado',u'radicadoUnico',u'estado',u'categoria',u'tipo',u'notas',u'prioridad',u'campos']
+        return [u'radicado',u'cliente',u'contraparte',u'fecha',u'juzgado',u'radicadoUnico',u'estado',u'categoria',u'tipo',u'notas',u'prioridad',u'campos']
     
     def toCSV(self):
         #Devuelve una lista con los valores de los atributos para CSV

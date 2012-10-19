@@ -39,19 +39,19 @@ class NuevaPersona(QtGui.QDialog, Ui_NuevaPersona):
         if self.__tipo is 1:
             constante = ListadoDialogo.CAMPODEMANDADO
             if persona is None:
-                self.setWindowTitle("Nuevo demandante")
-                self.groupBox.setTitle("Ingrese los datos del nuevo demandante:")
+                self.setWindowTitle("Nuevo cliente")
+                self.groupBox.setTitle("Ingrese los datos del nuevo cliente:")
             else:
-                self.setWindowTitle("Editar demandante")
-                self.groupBox.setTitle("Ingrese los datos del demandante:")
+                self.setWindowTitle("Editar cliente")
+                self.groupBox.setTitle("Ingrese los datos del cliente:")
         elif self.__tipo is 2:
             constante = ListadoDialogo.CAMPODEMANDADO
             if persona is None:
-                self.setWindowTitle("Nuevo demandado")
-                self.groupBox.setTitle("Ingrese los datos del nuevo demandado:")
+                self.setWindowTitle("Nueva contraparte")
+                self.groupBox.setTitle("Ingrese los datos de la nueva contraparte:")
             else:
-                self.setWindowTitle("Editar demandado")
-                self.groupBox.setTitle("Ingrese los datos del demandado:")
+                self.setWindowTitle("Editar contraparte")
+                self.groupBox.setTitle("Ingrese los datos de la contraparte:")
                 
         self.__gestor = GestorCampos(campos=campos, formLayout=self.formLayout, parent=self, constante_de_edicion=NuevoCampo.PERSONA, constante_de_creacion=constante)
         self.connect(self.btnAdd, QtCore.SIGNAL("clicked()"), self.__gestor.addCampo)

@@ -42,6 +42,6 @@ class VerPersona(QtGui.QWidget, Ui_VerPersona):
                 self.formLayout.addRow(label, lblBox)
             
             if self.__tipo == 1:
-                self.setWindowTitle('Ver Demandante')
+                self.setWindowTitle('Ver Cliente')
             else:
-                self.setWindowTitle('Ver Demandado')
+                self.setWindowTitle('Ver Contraparte')
