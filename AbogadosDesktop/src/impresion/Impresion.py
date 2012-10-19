@@ -38,12 +38,12 @@ class Impresion(object):
     def imprimirPersonas(self,tipo,personas=None):
         html = self.imprimirLogo()
         if tipo == 1:
-            html += "<HEAD><TITLE>LISTA DE DEMANDANTES</TITLE></HEAD><BODY><FONT SIZE= '+2'><B>Lista de Clientes:</B></FONT><BR><BR>"
+            html += "<HEAD><TITLE>LISTA DE CLIENTES</TITLE></HEAD><BODY><FONT SIZE= '+2'><B>Lista de Clientes:</B></FONT><BR><BR>"
             if personas is None:
                 p = Persistence()
                 personas = p.consultarDemandantes()            
         elif tipo == 2:
-            html += "<HEAD><TITLE>LISTA DE DEMANDADOS</TITLE></HEAD><BODY><FONT SIZE= '+2'><B>Lista de Contrapartes:</B></FONT><BR><BR>"
+            html += "<HEAD><TITLE>LISTA DE CONTRAPARTES</TITLE></HEAD><BODY><FONT SIZE= '+2'><B>Lista de Contrapartes:</B></FONT><BR><BR>"
             if personas is None:
                 p = Persistence()
                 personas = p.consultarDemandados()

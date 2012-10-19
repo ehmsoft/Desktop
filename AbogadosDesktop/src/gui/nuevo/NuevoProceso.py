@@ -308,12 +308,12 @@ class NuevoProceso(QtGui.QDialog, Ui_NuevoProceso):
         if self.__demandante is None or self.__demandante.getId_persona() is "1":
             message = QtGui.QMessageBox()
             message.setIcon(QtGui.QMessageBox.Warning)
-            message.setText("El demandante se considera obligatorio")
+            message.setText("El cliente se considera obligatorio")
             message.exec_()
         elif self.__demandado is None or self.__demandado.getId_persona() is "1":
             message = QtGui.QMessageBox()
             message.setIcon(QtGui.QMessageBox.Warning)
-            message.setText("El demandado se considera obligatorio")
+            message.setText("La contraparte se considera obligatorio")
             message.exec_()
         elif self.__juzgado is None or self.__juzgado.getId_juzgado() is "1":
             message = QtGui.QMessageBox()
