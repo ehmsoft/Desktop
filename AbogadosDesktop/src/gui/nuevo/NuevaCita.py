@@ -37,7 +37,7 @@ class NuevaCita(QtGui.QDialog, Ui_Cita):
             self.checkBox.setChecked(False)
             self.checkBoxChanged(False) 
         else:
-            raise TypeError('Todos los argumentos no pueden ser vacíos')
+            raise TypeError(u'Todos los argumentos no pueden ser vacíos')
 
         
     def checkBoxChanged(self, check):

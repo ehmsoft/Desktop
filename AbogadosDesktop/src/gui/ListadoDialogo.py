@@ -62,7 +62,7 @@ class ListadoDialogo (QtGui.QDialog):
             self.setWindowTitle('Seleccione una plantilla')
         elif self.__tipo is self.ACTUACION:
             if proceso:
-                self.setWindowTitle('Seleccione una actuación')
+                self.setWindowTitle(u'Seleccione una actuación')
                 objetos = self.__p.consultarActuaciones(proceso)
             else:
                 raise AttributeError('Proceso no puede ser None')
