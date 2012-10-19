@@ -38,10 +38,10 @@
         <item>
          <widget class="QRadioButton" name="rdDemandante">
           <property name="toolTip">
-           <string>Imprime un demandante con toda su información detallada</string>
+           <string>Imprime un cliente con toda su información detallada</string>
           </property>
           <property name="statusTip">
-           <string>Imprime un demandante con toda su información detallada</string>
+           <string>Imprime un cliente con toda su información detallada</string>
           </property>
           <property name="text">
            <string>Un cliente con toda su información</string>
@@ -51,10 +51,10 @@
         <item>
          <widget class="QRadioButton" name="rdDemandado">
           <property name="toolTip">
-           <string>Imprime un demandado con toda su información detallada</string>
+           <string>Imprime una contraparte con toda su información detallada</string>
           </property>
           <property name="statusTip">
-           <string>Imprime un demandado con toda su información detallada</string>
+           <string>Imprime una contraparte con toda su información detallada</string>
           </property>
           <property name="text">
            <string>Una contraparte con toda su información</string>
@@ -107,10 +107,10 @@
         <item>
          <widget class="QRadioButton" name="rdListadoDemandantes">
           <property name="toolTip">
-           <string>Imprime una lista de demandantes con información general de cada uno.</string>
+           <string>Imprime una lista de clientes con información general de cada uno.</string>
           </property>
           <property name="statusTip">
-           <string>Imprime una lista de demandantes con información general de cada uno.</string>
+           <string>Imprime una lista de clientes con información general de cada uno.</string>
           </property>
           <property name="text">
            <string>Listado de clientes</string>
@@ -120,10 +120,10 @@
         <item>
          <widget class="QRadioButton" name="rdListadoDemandados">
           <property name="toolTip">
-           <string>Imprime una lista de demandados con información general de cada uno.</string>
+           <string>Imprime una lista de contrapartes con información general de cada uno.</string>
           </property>
           <property name="statusTip">
-           <string>Imprime una lista de demandados con información general de cada uno.</string>
+           <string>Imprime una lista de contrapartes con información general de cada uno.</string>
           </property>
           <property name="text">
            <string>Listado de contrapartes</string>
