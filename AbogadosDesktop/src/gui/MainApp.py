@@ -989,8 +989,10 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         objeto = self.columna1.getCentralWidget().currentItem().getObjeto()
         nuevaActuacion = NuevaActuacion()
         if nuevaActuacion.exec_():
+            act = nuevaActuacion.getActuacion()
             p = Persistence()
-            p.guardarActuacion(nuevaActuacion.getActuacion(), objeto.getId_proceso())
+            p.guardarActuacion(act, objeto.getId_proceso())
+            NuevoProceso.guardarCitas([act])
         del nuevaActuacion
         self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTACTUACIONES))
         self.elementChanged()
@@ -1036,8 +1038,10 @@ class MainApp(QtGui.QMainWindow, Ui_mainApp):
         if procesoSelect.exec_():
             nuevaActuacion = NuevaActuacion()
             if nuevaActuacion.exec_():
+                act = nuevaActuacion.getActuacion()
                 p = Persistence()
-                p.guardarActuacion(nuevaActuacion.getActuacion(), procesoSelect.getSelected().getId_proceso())
+                p.guardarActuacion(act, procesoSelect.getSelected().getId_proceso())
+                NuevoProceso.guardarCitas([act])
             del nuevaActuacion
             self.listaIzquierda.setCurrentRow(self.lista.index(MainApp.TXTACTUACIONES))
             self.elementChanged()
