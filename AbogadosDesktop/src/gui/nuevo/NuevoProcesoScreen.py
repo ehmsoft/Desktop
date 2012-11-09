@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'nuevoProceso.ui'
+# Form implementation generated from reading ui file 'ui/nuevoProceso.ui'
 #
-# Created: Fri Aug  3 11:33:21 2012
+# Created: Fri Oct 19 10:01:13 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_NuevoProceso(object):
     def setupUi(self, NuevoProceso):
         NuevoProceso.setObjectName("NuevoProceso")
-        NuevoProceso.resize(394, 535)
+        NuevoProceso.resize(466, 538)
         self.gridLayout_2 = QtGui.QGridLayout(NuevoProceso)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.buttonBox = QtGui.QDialogButtonBox(NuevoProceso)
@@ -41,7 +41,7 @@ class Ui_NuevoProceso(object):
         self.scrollArea_2.setWidgetResizable(True)
         self.scrollArea_2.setObjectName("scrollArea_2")
         self.scrollAreaWidgetContents_2 = QtGui.QWidget()
-        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 350, 385))
+        self.scrollAreaWidgetContents_2.setGeometry(QtCore.QRect(0, 0, 349, 400))
         self.scrollAreaWidgetContents_2.setObjectName("scrollAreaWidgetContents_2")
         self.verticalLayout_3 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents_2)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
@@ -151,7 +151,7 @@ class Ui_NuevoProceso(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 364, 421))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 394, 370))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.gridLayout_5 = QtGui.QGridLayout(self.scrollAreaWidgetContents)
         self.gridLayout_5.setObjectName("gridLayout_5")
@@ -181,8 +181,8 @@ class Ui_NuevoProceso(object):
     def retranslateUi(self, NuevoProceso):
         NuevoProceso.setWindowTitle(QtGui.QApplication.translate("NuevoProceso", "Nuevo proceso", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox.setTitle(QtGui.QApplication.translate("NuevoProceso", "Ingrese los datos del nuevo proceso:", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("NuevoProceso", "Demandante:", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("NuevoProceso", "Demandado:", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate("NuevoProceso", "Cliente:", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setText(QtGui.QApplication.translate("NuevoProceso", "Contraparte:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("NuevoProceso", "Juzgado:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_4.setText(QtGui.QApplication.translate("NuevoProceso", "Radicado:", None, QtGui.QApplication.UnicodeUTF8))
         self.label_5.setText(QtGui.QApplication.translate("NuevoProceso", "Radicado único:", None, QtGui.QApplication.UnicodeUTF8))

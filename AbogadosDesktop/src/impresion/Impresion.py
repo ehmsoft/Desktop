@@ -38,12 +38,12 @@ class Impresion(object):
     def imprimirPersonas(self,tipo,personas=None):
         html = self.imprimirLogo()
         if tipo == 1:
-            html += "<HEAD><TITLE>LISTA DE DEMANDANTES</TITLE></HEAD><BODY><FONT SIZE= '+2'><B>Lista de Demandantes:</B></FONT><BR><BR>"
+            html += "<HEAD><TITLE>LISTA DE CLIENTES</TITLE></HEAD><BODY><FONT SIZE= '+2'><B>Lista de Clientes:</B></FONT><BR><BR>"
             if personas is None:
                 p = Persistence()
                 personas = p.consultarDemandantes()            
         elif tipo == 2:
-            html += "<HEAD><TITLE>LISTA DE DEMANDADOS</TITLE></HEAD><BODY><FONT SIZE= '+2'><B>Lista de Demandos:</B></FONT><BR><BR>"
+            html += "<HEAD><TITLE>LISTA DE CONTRAPARTES</TITLE></HEAD><BODY><FONT SIZE= '+2'><B>Lista de Contrapartes:</B></FONT><BR><BR>"
             if personas is None:
                 p = Persistence()
                 personas = p.consultarDemandados()
@@ -66,7 +66,7 @@ class Impresion(object):
     def imprimirProcesos(self,procesos=None):
         html = self.imprimirLogo()
         html +=("<HEAD><TITLE>LISTA DE PROCESOS </TITLE></HEAD><BODY><FONT SIZE='+2'><B>Lista de Procesos: </B></FONT><BR><BR>")
-        html += ("<TABLE BORDER =1 CELLSPACING = 0 WIDTH ='98%'><TR><TH>Radicado</TH><TH>Radicado Unico</TH><TH>Demandante</TH><TH>Demandado</TH><TH>Juzgado</TH><TH>Fecha</TH><TH>Estado</TH><TH>Categoria</TH><TH>Tipo</TH><TH>Notas</TH>")
+        html += ("<TABLE BORDER =1 CELLSPACING = 0 WIDTH ='98%'><TR><TH>Radicado</TH><TH>Radicado Unico</TH><TH>Cliente</TH><TH>Contraparte</TH><TH>Juzgado</TH><TH>Fecha</TH><TH>Estado</TH><TH>Categoria</TH><TH>Tipo</TH><TH>Notas</TH>")
         if procesos is None:
             p = Persistence()
             procesos = p.consultarProcesos()
@@ -168,9 +168,9 @@ class Impresion(object):
         if persona.getCorreo() != "":
             html += persona.getCorreo() + "<BR>"
         if persona.getTipo() == 1:
-            html += "Tipo: Demandante <BR>"
+            html += "Tipo: Cliente <BR>"
         elif persona.getTipo() == 2:
-            html += "Tipo: Demandado <BR>"
+            html += "Tipo: Contraparte <BR>"
         else:
             raise Exception('el tipo de persona no existe')                            
         if persona.getNotas() != "":
@@ -188,7 +188,7 @@ class Impresion(object):
             
         if proceso.getRadicadoUnico() != "":
             html += "Radicado Unico: " + proceso.getRadicadoUnico() + "<BR>"
-        html+="Demandante: "+ proceso.getDemandante().getNombre() +"<BR>"+"Demandado: "+ proceso.getDemandado().getNombre() +"<BR>"+"Juzgado: "+ proceso.getJuzgado().getNombre() +"<BR>"+"Categoria: "+ proceso.getCategoria().getDescripcion()+"<BR>"
+        html+="Cliente: "+ proceso.getDemandante().getNombre() +"<BR>"+"Contraparte: "+ proceso.getDemandado().getNombre() +"<BR>"+"Juzgado: "+ proceso.getJuzgado().getNombre() +"<BR>"+"Categoria: "+ proceso.getCategoria().getDescripcion()+"<BR>"
         if proceso.getFecha() != "":
             html+= "Fecha: " + '{:%d-%m-%Y}'.format(proceso.getFecha()) + "<BR>"
         if proceso.getEstado() != "":

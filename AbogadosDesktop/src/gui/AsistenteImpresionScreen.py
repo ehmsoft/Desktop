@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'asistenteImpresion.ui'
+# Form implementation generated from reading ui file 'ui/asistenteImpresion.ui'
 #
-# Created: Mon Mar 26 01:20:39 2012
+# Created: Fri Oct 19 10:15:17 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -76,12 +76,12 @@ class Ui_AsistenteImpresionDialog(object):
         self.rdProceso.setToolTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime un proceso con toda su información detallada", None, QtGui.QApplication.UnicodeUTF8))
         self.rdProceso.setStatusTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime un proceso con toda su información detallada", None, QtGui.QApplication.UnicodeUTF8))
         self.rdProceso.setText(QtGui.QApplication.translate("AsistenteImpresionDialog", "Un proceso con toda su información", None, QtGui.QApplication.UnicodeUTF8))
-        self.rdDemandante.setToolTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime un demandante con toda su información detallada", None, QtGui.QApplication.UnicodeUTF8))
-        self.rdDemandante.setStatusTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime un demandante con toda su información detallada", None, QtGui.QApplication.UnicodeUTF8))
-        self.rdDemandante.setText(QtGui.QApplication.translate("AsistenteImpresionDialog", "Un demandante con toda su información", None, QtGui.QApplication.UnicodeUTF8))
-        self.rdDemandado.setToolTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime un demandado con toda su información detallada", None, QtGui.QApplication.UnicodeUTF8))
-        self.rdDemandado.setStatusTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime un demandado con toda su información detallada", None, QtGui.QApplication.UnicodeUTF8))
-        self.rdDemandado.setText(QtGui.QApplication.translate("AsistenteImpresionDialog", "Un demandado con toda su información", None, QtGui.QApplication.UnicodeUTF8))
+        self.rdDemandante.setToolTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime un cliente con toda su información detallada", None, QtGui.QApplication.UnicodeUTF8))
+        self.rdDemandante.setStatusTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime un cliente con toda su información detallada", None, QtGui.QApplication.UnicodeUTF8))
+        self.rdDemandante.setText(QtGui.QApplication.translate("AsistenteImpresionDialog", "Un cliente con toda su información", None, QtGui.QApplication.UnicodeUTF8))
+        self.rdDemandado.setToolTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime una contraparte con toda su información detallada", None, QtGui.QApplication.UnicodeUTF8))
+        self.rdDemandado.setStatusTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime una contraparte con toda su información detallada", None, QtGui.QApplication.UnicodeUTF8))
+        self.rdDemandado.setText(QtGui.QApplication.translate("AsistenteImpresionDialog", "Una contraparte con toda su información", None, QtGui.QApplication.UnicodeUTF8))
         self.rdJuzgado.setToolTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime un juzgado con toda su información detallada", None, QtGui.QApplication.UnicodeUTF8))
         self.rdJuzgado.setStatusTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime un juzgado con toda su información detallada", None, QtGui.QApplication.UnicodeUTF8))
         self.rdJuzgado.setText(QtGui.QApplication.translate("AsistenteImpresionDialog", "Un juzgado con toda la información", None, QtGui.QApplication.UnicodeUTF8))
@@ -91,12 +91,12 @@ class Ui_AsistenteImpresionDialog(object):
         self.rdListadoProcesos.setToolTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime una lista de procesos con información general de cada uno.", None, QtGui.QApplication.UnicodeUTF8))
         self.rdListadoProcesos.setStatusTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime una lista de procesos con información general de cada uno.", None, QtGui.QApplication.UnicodeUTF8))
         self.rdListadoProcesos.setText(QtGui.QApplication.translate("AsistenteImpresionDialog", "Listado de procesos", None, QtGui.QApplication.UnicodeUTF8))
-        self.rdListadoDemandantes.setToolTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime una lista de demandantes con información general de cada uno.", None, QtGui.QApplication.UnicodeUTF8))
-        self.rdListadoDemandantes.setStatusTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime una lista de demandantes con información general de cada uno.", None, QtGui.QApplication.UnicodeUTF8))
-        self.rdListadoDemandantes.setText(QtGui.QApplication.translate("AsistenteImpresionDialog", "Listado de demandantes", None, QtGui.QApplication.UnicodeUTF8))
-        self.rdListadoDemandados.setToolTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime una lista de demandados con información general de cada uno.", None, QtGui.QApplication.UnicodeUTF8))
-        self.rdListadoDemandados.setStatusTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime una lista de demandados con información general de cada uno.", None, QtGui.QApplication.UnicodeUTF8))
-        self.rdListadoDemandados.setText(QtGui.QApplication.translate("AsistenteImpresionDialog", "Listado de demandados", None, QtGui.QApplication.UnicodeUTF8))
+        self.rdListadoDemandantes.setToolTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime una lista de clientes con información general de cada uno.", None, QtGui.QApplication.UnicodeUTF8))
+        self.rdListadoDemandantes.setStatusTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime una lista de clientes con información general de cada uno.", None, QtGui.QApplication.UnicodeUTF8))
+        self.rdListadoDemandantes.setText(QtGui.QApplication.translate("AsistenteImpresionDialog", "Listado de clientes", None, QtGui.QApplication.UnicodeUTF8))
+        self.rdListadoDemandados.setToolTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime una lista de contrapartes con información general de cada uno.", None, QtGui.QApplication.UnicodeUTF8))
+        self.rdListadoDemandados.setStatusTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime una lista de contrapartes con información general de cada uno.", None, QtGui.QApplication.UnicodeUTF8))
+        self.rdListadoDemandados.setText(QtGui.QApplication.translate("AsistenteImpresionDialog", "Listado de contrapartes", None, QtGui.QApplication.UnicodeUTF8))
         self.rdListadoActuaciones.setToolTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime la lista de actuaciones de un proceso", None, QtGui.QApplication.UnicodeUTF8))
         self.rdListadoActuaciones.setStatusTip(QtGui.QApplication.translate("AsistenteImpresionDialog", "Imprime la lista de actuaciones de un proceso", None, QtGui.QApplication.UnicodeUTF8))
         self.rdListadoActuaciones.setText(QtGui.QApplication.translate("AsistenteImpresionDialog", "Listado de actuaciones", None, QtGui.QApplication.UnicodeUTF8))

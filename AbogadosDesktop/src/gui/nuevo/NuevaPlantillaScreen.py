@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'nuevaPlantilla.ui'
+# Form implementation generated from reading ui file 'ui/nuevaPlantilla.ui'
 #
-# Created: Fri Aug  3 11:28:22 2012
+# Created: Fri Oct 19 10:00:42 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_NuevaPlantilla(object):
     def setupUi(self, NuevaPlantilla):
         NuevaPlantilla.setObjectName("NuevaPlantilla")
-        NuevaPlantilla.resize(339, 497)
+        NuevaPlantilla.resize(349, 505)
         self.gridLayout_2 = QtGui.QGridLayout(NuevaPlantilla)
         self.gridLayout_2.setObjectName("gridLayout_2")
         self.line = QtGui.QFrame(NuevaPlantilla)
@@ -35,7 +35,7 @@ class Ui_NuevaPlantilla(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 309, 382))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 276, 397))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
@@ -148,10 +148,10 @@ class Ui_NuevaPlantilla(object):
         NuevaPlantilla.setWindowTitle(QtGui.QApplication.translate("NuevaPlantilla", "Nueva plantilla", None, QtGui.QApplication.UnicodeUTF8))
         self.groupBox.setTitle(QtGui.QApplication.translate("NuevaPlantilla", "Ingrese los datos de la nueva plantilla:", None, QtGui.QApplication.UnicodeUTF8))
         self.lblNombre.setText(QtGui.QApplication.translate("NuevaPlantilla", "Nombre:", None, QtGui.QApplication.UnicodeUTF8))
-        self.label.setText(QtGui.QApplication.translate("NuevaPlantilla", "Demandante:", None, QtGui.QApplication.UnicodeUTF8))
+        self.label.setText(QtGui.QApplication.translate("NuevaPlantilla", "Cliente:", None, QtGui.QApplication.UnicodeUTF8))
         self.lblDemandante.setToolTip(QtGui.QApplication.translate("NuevaPlantilla", "Click derecho para más opciones", None, QtGui.QApplication.UnicodeUTF8))
         self.lblDemandante.setText(QtGui.QApplication.translate("NuevaPlantilla", "vacío", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_2.setText(QtGui.QApplication.translate("NuevaPlantilla", "Demandado:", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setText(QtGui.QApplication.translate("NuevaPlantilla", "Contraparte:", None, QtGui.QApplication.UnicodeUTF8))
         self.lblDemandado.setToolTip(QtGui.QApplication.translate("NuevaPlantilla", "Click derecho para más opciones", None, QtGui.QApplication.UnicodeUTF8))
         self.lblDemandado.setText(QtGui.QApplication.translate("NuevaPlantilla", "vacío", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("NuevaPlantilla", "Juzgado:", None, QtGui.QApplication.UnicodeUTF8))

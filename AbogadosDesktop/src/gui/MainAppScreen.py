@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui/mainApp.ui'
 #
-# Created: Thu Sep 13 19:53:00 2012
+# Created: Fri Oct 19 09:59:51 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -148,8 +148,8 @@ class Ui_mainApp(object):
         self.menuCalendario.setTitle(QtGui.QApplication.translate("mainApp", "Calendario", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevoProceso.setText(QtGui.QApplication.translate("mainApp", "Proceso", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevaPlantilla.setText(QtGui.QApplication.translate("mainApp", "Plantilla", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionNuevoDemandante.setText(QtGui.QApplication.translate("mainApp", "Demandante", None, QtGui.QApplication.UnicodeUTF8))
-        self.actionNuevoDemandado.setText(QtGui.QApplication.translate("mainApp", "Demandado", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionNuevoDemandante.setText(QtGui.QApplication.translate("mainApp", "Cliente", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionNuevoDemandado.setText(QtGui.QApplication.translate("mainApp", "Contraparte", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevoJuzgado.setText(QtGui.QApplication.translate("mainApp", "Juzgado", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevaActuacion.setText(QtGui.QApplication.translate("mainApp", "Actuación", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNuevaCategoria.setText(QtGui.QApplication.translate("mainApp", "Categoría", None, QtGui.QApplication.UnicodeUTF8))

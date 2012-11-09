@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'uis/verProceso.ui'
+# Form implementation generated from reading ui file 'ui/verProceso.ui'
 #
-# Created: Fri Aug 10 11:12:47 2012
+# Created: Fri Oct 19 10:02:06 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.0
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_VerProceso(object):
     def setupUi(self, VerProceso):
         VerProceso.setObjectName("VerProceso")
-        VerProceso.resize(409, 523)
+        VerProceso.resize(396, 523)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -36,7 +36,7 @@ class Ui_VerProceso(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 351, 455))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 348, 455))
         self.scrollAreaWidgetContents.setMinimumSize(QtCore.QSize(0, 399))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.verticalLayout = QtGui.QVBoxLayout(self.scrollAreaWidgetContents)
@@ -167,12 +167,12 @@ class Ui_VerProceso(object):
 
     def retranslateUi(self, VerProceso):
         VerProceso.setWindowTitle(QtGui.QApplication.translate("VerProceso", "Ver Proceso", None, QtGui.QApplication.UnicodeUTF8))
-        self.lbl1.setText(QtGui.QApplication.translate("VerProceso", "Demandante:", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblDemandante.setToolTip(QtGui.QApplication.translate("VerProceso", "El nombre del demandante", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblDemandante.setStatusTip(QtGui.QApplication.translate("VerProceso", "El nombre del demandante", None, QtGui.QApplication.UnicodeUTF8))
-        self.lbl2.setText(QtGui.QApplication.translate("VerProceso", "Demandado:", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblDemandado.setToolTip(QtGui.QApplication.translate("VerProceso", "El nombre del demandado", None, QtGui.QApplication.UnicodeUTF8))
-        self.lblDemandado.setStatusTip(QtGui.QApplication.translate("VerProceso", "El nombre del demandado", None, QtGui.QApplication.UnicodeUTF8))
+        self.lbl1.setText(QtGui.QApplication.translate("VerProceso", "Cliente:", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblDemandante.setToolTip(QtGui.QApplication.translate("VerProceso", "El nombre del cliente", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblDemandante.setStatusTip(QtGui.QApplication.translate("VerProceso", "El nombre del cliente", None, QtGui.QApplication.UnicodeUTF8))
+        self.lbl2.setText(QtGui.QApplication.translate("VerProceso", "Contraparte:", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblDemandado.setToolTip(QtGui.QApplication.translate("VerProceso", "El nombre de la contraparte", None, QtGui.QApplication.UnicodeUTF8))
+        self.lblDemandado.setStatusTip(QtGui.QApplication.translate("VerProceso", "El nombre de la contraparte", None, QtGui.QApplication.UnicodeUTF8))
         self.lbl3.setText(QtGui.QApplication.translate("VerProceso", "Fecha:", None, QtGui.QApplication.UnicodeUTF8))
         self.dteFecha.setToolTip(QtGui.QApplication.translate("VerProceso", "La fecha de creación del proceso", None, QtGui.QApplication.UnicodeUTF8))
         self.dteFecha.setStatusTip(QtGui.QApplication.translate("VerProceso", "La fecha de creación del proceso", None, QtGui.QApplication.UnicodeUTF8))

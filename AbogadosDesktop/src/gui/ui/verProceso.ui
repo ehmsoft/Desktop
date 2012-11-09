@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>409</width>
+    <width>396</width>
     <height>523</height>
    </rect>
   </property>
@@ -73,7 +73,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>351</width>
+            <width>348</width>
             <height>455</height>
            </rect>
           </property>
@@ -101,17 +101,17 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>Demandante:</string>
+                <string>Cliente:</string>
                </property>
               </widget>
              </item>
              <item row="0" column="1">
               <widget class="QLabel" name="lblDemandante">
                <property name="toolTip">
-                <string>El nombre del demandante</string>
+                <string>El nombre del cliente</string>
                </property>
                <property name="statusTip">
-                <string>El nombre del demandante</string>
+                <string>El nombre del cliente</string>
                </property>
                <property name="text">
                 <string/>
@@ -127,17 +127,17 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>Demandado:</string>
+                <string>Contraparte:</string>
                </property>
               </widget>
              </item>
              <item row="1" column="1">
               <widget class="QLabel" name="lblDemandado">
                <property name="toolTip">
-                <string>El nombre del demandado</string>
+                <string>El nombre de la contraparte</string>
                </property>
                <property name="statusTip">
-                <string>El nombre del demandado</string>
+                <string>El nombre de la contraparte</string>
                </property>
                <property name="text">
                 <string/>

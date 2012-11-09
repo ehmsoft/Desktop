@@ -10,8 +10,8 @@ from CampoPersonalizado import CampoPersonalizado
 class Persona(object):
     '''
     Clase Persona
-    Tipo 1 Demandante
-    Tipo 2 Demandado
+    Tipo 1 Cliene
+    Tipo 2 Contraparte
     '''
 
 
