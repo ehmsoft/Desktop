@@ -228,7 +228,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
                 self.tabWidget.setCurrentIndex(1)
                 break
     def __compararCitas(self, a, b):
-        return int(((a.getFecha() - timedelta(0, a.getAnticipacion())) - (b.getFecha() - timedelta(0, b.getAnticipacion()))).total_seconds())
+        return int((a.getFecha() - b.getFecha()).total_seconds())
     
         
     def __cargarCitas(self):
