@@ -252,7 +252,7 @@ class Calendar(QtGui.QDialog, Ui_Calendar):
         while self.lista3.count() > 0:
             self.lista3.takeItem(0)
         for cita in self.__citas:
-            if cita.getFecha() - timedelta(0, cita.getAnticipacion()) > datetime.today():
+            if cita.getFecha() > datetime.today():
                 item = ItemListas(cita, self.lista)
                 self.lista.addItem(item)
                 self.lista.setCurrentItem(item)
