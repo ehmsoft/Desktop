@@ -6,22 +6,15 @@ Created on 05/12/2012
 '''
 import unittest
 from core.Persona import Persona
-from core.Proceso import Proceso
-from core.Actuacion import Actuacion
 from core.CampoPersonalizado import CampoPersonalizado
-from core.Categoria import Categoria
-from core.Juzgado import Juzgado
-from core.Plantilla import Plantilla
-from core.CitaCalendario import CitaCalendario
-from core.ActuacionCritica import ActuacionCritica
 
-class CoreTest(unittest.TestCase):
+class PersonaTest(unittest.TestCase):
     '''
-    Clase para correr pruebas unitarias sobre el paquete core
+    Clase para correr pruebas unitarias sobre la clase Persona
     '''
     def setUp(self):
-        self.demandante = Persona(1, "1088279267", "Andres", "3168746839", "Calle", "elfotografo007@gmail.com", "Esto es una nota")
-        self.demandado = Persona(2, "1088286673", "Sara", "3117607783", "Barrio", "saris021@hotmail.com", "Esto es una nota")
+        self.demandante = Persona(tipo=1, id="1088279267", nombre="Andres", telefono="3168746839", direccion="Calle", correo="elfotografo007@gmail.com", notas="Esto es una nota")
+        self.demandado = Persona(tipo=2, id="1088286673", nombre="Sara", telefono="3117607783", direccion="Barrio", correo="saris021@hotmail.com", notas="Esto es una nota")
         
     def testPersonasDiferentes(self):
         self.assertNotEqual(self.demandante, self.demandado, "El demandante y el demandado deben ser diferentes")
@@ -55,7 +48,7 @@ class CoreTest(unittest.TestCase):
         self.assertIsNone(self.demandado.getId_persona(), "El id_persona del demandado debe ser None")
         
     def testAgregarCampo(self):
-        campo = CampoPersonalizado("cumpleanos", "10")
+        campo = CampoPersonalizado(nombre="cumpleanos", valor="10")
         self.demandante.addCampo(campo)
         self.demandado.addCampo(campo)
         self.assertListEqual(self.demandante.getCampos(), self.demandado.getCampos(), "Se debe devolver una lista con el campo personalizado cumpleanos")
