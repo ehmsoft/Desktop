@@ -5,8 +5,6 @@ Created on 06/12/2012
 @author: elfotografo007
 '''
 import unittest
-from core.Actuacion import Actuacion
-from datetime import datetime
 from core.CampoPersonalizado import CampoPersonalizado
 from core.Juzgado import Juzgado
 from core.Persona import Persona
