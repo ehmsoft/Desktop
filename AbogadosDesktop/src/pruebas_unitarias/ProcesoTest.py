@@ -33,7 +33,7 @@ class ProcesoTest(unittest.TestCase):
         self.proceso2.addActuacion(self.actuacionCampos)
     
     def testProcesosDiferentes(self):
-        self.assertNotEqual(self.proceso, self.proceso2, u"Las actuaciones deben ser diferentes")
+        self.assertNotEqual(self.proceso, self.proceso2, u"Los procesos deben ser diferentes")
     
     def testGetJuzgado(self):
         self.assertEqual(self.proceso.getJuzgado(), self.juzgado, "El juzgado no coincide")
